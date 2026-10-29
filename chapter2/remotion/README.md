@@ -1,21 +1,22 @@
-# 《上下文工程》Remotion 科普动画
+# 《上下文工程》Remotion 完整章节动画课
 
-基于《AI Agents in Depth》第二章“上下文工程”的中文动态图形动画工程。主视觉采用暖纸白、森林绿、珊瑚红和芥末黄，使用项目文件、消息流、缓存块和信息压缩作为统一的视觉隐喻。
+基于《AI Agents in Depth》第二章“上下文工程”的动画课程工程。目标是让零基础观众通过观看理解本章核心机制、工程取舍和关键实验结论，而不只是了解几个概念。
 
-## 主要信息
+## 视频规格
 
 - 分辨率：1920 × 1080（16:9）
 - 帧率：30 fps
-- 成片时长：6 分钟
-- 总帧数：10,800
+- 当前时间轴：11 分 20 秒，20,400 帧
 - 技术栈：React、TypeScript、Remotion、SVG、CSS
-- 默认输出：`out/context-engineering.mp4`
+- 默认输出：out/context-engineering.mp4
 
-## 运行要求
+## 本次全章覆盖扩展
 
-建议 Node.js 20.19+ 或 22.x。Remotion 4 的 Chrome/渲染依赖由 Remotion CLI 管理。首次渲染时请确保网络可下载所需浏览器资源。
+新增教学场景：API 消息结构、Chat Template、提示工程与 Few-shot、Agent 状态栏、六种压缩策略与生产分层压缩、子 Agent 上下文隔离。现有场景也扩展了时间轴。章节知识映射见 ../director-plan.md，镜头时间码与完整旁白稿见 ../storyboard.md。
 
-## 安装与预览
+## 安装、预览和渲染
+
+建议 Node.js 20.19+ 或 22.x。
 
 ```bash
 npm install
@@ -23,53 +24,34 @@ npm run typecheck
 npm run dev
 ```
 
-Studio 启动后选择 `ContextEngineering` Composition 预览。
-
-## 渲染
+Studio 启动后选择 ContextEngineering Composition。
 
 ```bash
-# 先渲染前 24 秒测试片段（0-719 帧）
+# 前 24 秒烟雾测试
 npm run render:preview
 
 # 完整视频
 npm run render
 
-# 导出一个指定帧做静帧检查
-npx remotion still src/index.ts ContextEngineering out/still.png --frame=5400
+# 渲染某个时间点的静帧（示例：第 10 分钟附近）
+npx remotion still src/index.ts ContextEngineering out/still.png --frame=18000
 ```
 
-如需明确指定编码器及覆盖配置：
+## 场景结构
 
-```bash
-npx remotion render src/index.ts ContextEngineering out/context-engineering.mp4 --codec=h264
-```
+- Intro：信息缺失导致任务失败
+- ContextMap：上下文构成与筛选
+- ChapterDeepDive：API 消息结构、Chat Template、提示工程、状态栏、压缩策略、子 Agent 隔离
+- AgentLoop：工具调用闭环、执行与结果回流
+- Cache：稳定前缀与缓存复用
+- PromptAndSafety：Skills、提示注入与纵深防御
+- StateAndCompress：上下文膨胀、摘要与状态压缩
+- Conclusion：全章总结
 
-## 项目结构
+## 验证状态与限制
 
-```text
-src/
-  index.ts                 Remotion 注册入口
-  Root.tsx                 Composition 注册
-  MainVideo.tsx            全片场景时间轴
-  theme.ts                 分辨率、帧率、颜色设计令牌
-  components/
-    Background.tsx         统一背景与章节标签
-    Typography.tsx         动态文字与字幕组件
-    Panel.tsx              卡片式信息组件
-  scenes/
-    Intro.tsx               信息不足导致任务失败
-    ContextMap.tsx          上下文构成
-    AgentLoop.tsx            模型与工具的交互循环
-    PromptAndSafety.tsx      系统规则、Skills 与提示注入
-    Cache.tsx                前缀稳定与缓存
-    StateAndCompress.tsx     状态栏与上下文压缩
-    Conclusion.tsx           总结与片尾
-```
+源码和时间轴已推送到 GitHub，但本轮尚未完成 npm 安装、TypeScript 检查、Studio 预览、视频渲染或逐镜头视觉验收。请勿将“已上传源码”理解为“成片已验证”。
 
-## 工程说明
+当前尚未嵌入录制或生成的旁白音轨。完整旁白稿位于 storyboard.md；正式成片应将旁白录音、字幕和镜头动作按帧同步。动画中的支付代码、日志和状态为教学示例；原文实验数据必须标注实验条件，不能作为普遍性能承诺。
 
-- 所有动画均基于 `useCurrentFrame`、`interpolate` 与固定配置，未使用系统时间或随机数。
-- 场景时间由 `MainVideo.tsx` 集中管理，镜头区间连续，没有场景之间的时间空档。
-- 片中出现的项目、工具输出和任务状态是为教学制作的虚构示例，不是实际执行结果。
-- 不包含自动生成的旁白音轨。当前版本通过动态图形与中文字幕讲解；可在后续把经确认的旁白录音添加到 `public/` 并按帧同步。
-- “KV Cache”指单次推理中的 K/V 缓存；跨请求复用相同前缀在服务商语境中常称 Prompt Cache。具体缓存行为依模型服务、路由和缓存策略而不同。
+KV Cache 与 Prompt Cache 的命名及缓存行为依模型服务和推理系统而异。上下文压缩是有损提炼，来源引用只能帮助回查，不能保证摘要无损。
