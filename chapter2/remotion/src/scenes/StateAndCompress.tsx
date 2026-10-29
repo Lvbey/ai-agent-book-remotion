@@ -5,7 +5,7 @@ import {COLORS} from '../theme';
 const clamp={extrapolateLeft:'clamp' as const,extrapolateRight:'clamp' as const};
 const a=(f:number,s:number,e:number)=>interpolate(f,[s,e],[0,1],{...clamp,easing:Easing.out(Easing.cubic)});
 export const StateAndCompress:React.FC=()=>{
- const f=useCurrentFrame();
+ const f=useCurrentFrame()*0.233;
  const phase=f<110?0:f<230?1:f<350?2:f<470?3:4;
  const logs=Array.from({length:24},(_,i)=>({x:120+(i%6)*175,y:255+Math.floor(i/6)*110,t:['搜索输出','重复日志','旧尝试','测试结果'][i%4]}));
  const summary=[
