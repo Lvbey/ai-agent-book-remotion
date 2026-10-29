@@ -8,7 +8,8 @@
     "typecheck": "tsc --noEmit",
     "render": "remotion render src/index.ts ContextEngineering out/context-engineering.mp4",
     "render:preview": "remotion render src/index.ts ContextEngineering out/preview.mp4 --frames=0-719",
-    "still": "remotion still src/index.ts ContextEngineering out/still.png --frame=1800"
+    "still": "remotion still src/index.ts ContextEngineering out/still.png --frame=1800",
+    "check:timing": "node scripts/check-scene-timing.mjs"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.332",
