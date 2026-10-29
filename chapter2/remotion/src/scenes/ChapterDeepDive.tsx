@@ -82,6 +82,8 @@ export const StateBar:React.FC=()=>{
 
 export const CompressionStrategies:React.FC=()=>{
  const f=useStoryFrame('CompressionStrategies');
+ const layered=p(f,140,158);
+ const layers=['大结果限量','删除重复噪声','微压缩新历史','归档阶段摘要','阈值触发全局压缩'];
  const strategies=[
   {name:'无压缩',desc:'原始结果全部保留',cost:'窗口很快溢出',c:COLORS.coral},
   {name:'逐页摘要',desc:'每个结果各自总结',cost:'信息碎片化、重复多',c:COLORS.gold},
@@ -94,8 +96,23 @@ export const CompressionStrategies:React.FC=()=>{
   <div style={{position:'absolute',left:100,top:100,fontSize:52,fontWeight:850,opacity:p(f,0,18)}}>压缩不是“把文字变短”这么简单</div>
   <div style={{position:'absolute',left:110,top:180,fontSize:24,color:COLORS.inkSoft,opacity:p(f,10,25)}}>同一批搜索资料，不同策略会留下不同的可用信息。</div>
   <svg width="1920" height="1080" style={{position:'absolute',inset:0}}>
-   {strategies.map((s,i)=>{const y=245+i*105;return <g key={s.name} opacity={p(f,20+i*22,38+i*22)}><rect {...rect(120,y,1670,78,'#FFFEF9',s.c)}/><rect x="120" y={y} width="14" height="78" rx="7" fill={s.c}/><text x="165" y={y+32} fontSize="23" fill={s.c} fontWeight="800">{s.name}</text><text x="420" y={y+32} fontSize="21" fill={COLORS.ink}>{s.desc}</text><text x="420" y={y+60} fontSize="19" fill={COLORS.inkSoft}>结果：{s.cost}</text></g>})}
-   <g opacity={p(f,170,200)}><rect {...rect(120,900,1670,75,'#E4EEE5',COLORS.green)}/><text x="155" y="947" fontSize="23" fill={COLORS.green} fontWeight="800">原文特定实验：任务感知策略显著降低了该任务的 token 使用量；数字不是普遍保证。</text></g>
+   {strategies.map((s,i)=>{const y=245+i*105;return <g key={s.name} opacity={p(f,20+i*22,38+i*22)*(1-layered)}><rect {...rect(120,y,1670,78,'#FFFEF9',s.c)}/><rect x="120" y={y} width="14" height="78" rx="7" fill={s.c}/><text x="165" y={y+32} fontSize="23" fill={s.c} fontWeight="800">{s.name}</text><text x="420" y={y+32} fontSize="21" fill={COLORS.ink}>{s.desc}</text><text x="420" y={y+60} fontSize="19" fill={COLORS.inkSoft}>结果：{s.cost}</text></g>})}
+   <g opacity={layered}>
+    <rect {...rect(120,235,1670,620,'#FFFEF9',COLORS.green)}/>
+    <text x="155" y="300" fontSize="32" fill={COLORS.green} fontWeight="800">生产系统不只选一种，而是逐层减小噪声</text>
+    {layers.map((name,i)=><g key={name} opacity={p(f,148+i*9,155+i*9)}>
+      <rect {...rect(150+i*325,385,300,150,i%2===0?'#E4EEE5':'#E3EBF3',i%2===0?COLORS.green:COLORS.blue)}/>
+      <text x={170+i*325} y="435" fontSize="20" fill={COLORS.inkSoft}>第 {i+1} 层</text>
+      <text x={170+i*325} y="480" fontSize="23" fill={COLORS.ink} fontWeight="800">{name}</text>
+      {i<4&&<path d={'M '+(455+i*325)+' 460 l 16 0 l -9 -7 m 9 7 l -9 7'} fill="none" stroke={COLORS.green} strokeWidth="3"/>}
+    </g>)}
+    <g opacity={p(f,190,210)}>
+      <rect {...rect(200,610,1500,125,'#F8E3DC',COLORS.coral)}/>
+      <text x="245" y="660" fontSize="25" fill={COLORS.coral} fontWeight="800">连续失败时：熔断，而不是无限追加错误日志</text>
+      <text x="245" y="704" fontSize="21" fill={COLORS.ink}>超出预算 → 停止重试 → 保留失败原因、关键状态与证据</text>
+    </g>
+   </g>
+   <g opacity={p(f,200,218)}><rect {...rect(120,900,1670,75,'#E4EEE5',COLORS.green)}/><text x="155" y="947" fontSize="23" fill={COLORS.green} fontWeight="800">原文特定实验：任务感知策略显著降低了该任务的 token 使用量；数字不是普遍保证。</text></g>
   </svg>
  </AbsoluteFill>;
 };
