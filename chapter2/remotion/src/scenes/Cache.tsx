@@ -1,35 +1,31 @@
 import React from 'react';
-import {AbsoluteFill, interpolate, useCurrentFrame} from 'remotion';
+import {AbsoluteFill,interpolate,useCurrentFrame,Easing} from 'remotion';
 import {Background} from '../components/Background';
-import {TextReveal, Caption} from '../components/Typography';
 import {COLORS} from '../theme';
-
-export const Cache: React.FC = () => {
-  const f=useCurrentFrame();
-  const old=interpolate(f,[30,70],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
-  const good=interpolate(f,[115,145],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
-  return <AbsoluteFill>
-    <Background chapter="05 / CACHE LOVES STABILITY" />
-    <div style={{position:'absolute',top:95,left:0,right:0,display:'flex',justifyContent:'center'}}><TextReveal text="有些信息，最好不要每次重写" size={55} align="center" start={5}/></div>
-    <div style={{position:'absolute',left:170,top:250,width:700,height:430}}>
-      <div style={{fontSize:31,fontWeight:800,color:COLORS.danger,marginBottom:26}}>错误：把当前时间写进最前面</div>
-      <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>{['系统规则','当前时间 09:01','工具说明','历史消息'].map((t,i)=><div key={t} style={{padding:'20px 16px',background:i===1?'#F8E0D9':'#DFE9E0',borderRadius:12,border:`2px solid ${i===1?COLORS.coral:COLORS.green}`,fontSize:21,fontWeight:700,opacity:interpolate(f,[18+i*12,30+i*12],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'})}}>{t}</div>)}</div>
-      <div style={{marginTop:34,background:'#F8E0D9',padding:20,borderRadius:16,opacity:old}}>
-        <div style={{fontSize:23,fontWeight:800,color:COLORS.danger}}>下一次请求：09:02</div>
-        <div style={{height:22,display:'flex',gap:4,marginTop:15}}>{Array.from({length:16},(_,i)=><div key={i} style={{height:22,flex:1,background:i<2?'#D9674E':'#D2AAA0',borderRadius:4}}/>)}</div>
-        <div style={{fontSize:21,marginTop:12}}>动态内容靠前 → 后面大段缓存难以复用</div>
-      </div>
-    </div>
-    <div style={{position:'absolute',left:1030,top:250,width:720,height:430}}>
-      <div style={{fontSize:31,fontWeight:800,color:COLORS.green,marginBottom:26}}>更好：稳定前缀，动态内容后置</div>
-      <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>{['系统规则','工具说明','历史消息','追加当前时间'].map((t,i)=><div key={t} style={{padding:'20px 16px',background:i===3?'#F6E8C8':'#DFE9E0',borderRadius:12,border:`2px solid ${i===3?COLORS.gold:COLORS.green}`,fontSize:21,fontWeight:700,opacity:interpolate(f,[35+i*12,47+i*12],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'})}}>{t}</div>)}</div>
-      <div style={{marginTop:34,background:'#DFEDE3',padding:20,borderRadius:16,opacity:good}}>
-        <div style={{fontSize:23,fontWeight:800,color:COLORS.green}}>下一次请求：09:02</div>
-        <div style={{height:22,display:'flex',gap:4,marginTop:15}}>{Array.from({length:16},(_,i)=><div key={i} style={{height:22,flex:1,background:i<13?'#5AA88B':'#E7B44E',borderRadius:4}}/>)}</div>
-        <div style={{fontSize:21,marginTop:12}}>相同的前缀 → 有机会复用已有计算</div>
-      </div>
-    </div>
-    <div style={{position:'absolute',left:870,top:390,fontSize:65,color:COLORS.inkSoft,fontWeight:300}}>→</div>
-    <Caption text="KV Cache 是单次推理中的缓存；跨请求复用相同前缀通常称为 Prompt Cache。" start={170} end={220}/>
-  </AbsoluteFill>;
-};
+const clamp={extrapolateLeft:'clamp' as const,extrapolateRight:'clamp' as const};
+const a=(f:number,s:number,e:number)=>interpolate(f,[s,e],[0,1],{...clamp,easing:Easing.out(Easing.cubic)});
+export const Cache:React.FC=()=>{
+ const f=useCurrentFrame();
+ const phase=f<100?0:f<210?1:f<320?2:f<430?3:4;
+ const blocks=Array.from({length:18},(_,i)=>i);
+ const changed=phase===0?5:phase===1?2:phase===2?5:phase===3?2:5;
+ const progress=interpolate(f,[70,150,250,330,430],[0,0.28,0.55,0.78,1],clamp);
+ return <AbsoluteFill>
+  <Background chapter="05 / KV CACHE & STABLE PREFIX"/>
+  <div style={{position:'absolute',left:100,top:95,fontSize:52,fontWeight:850,opacity:a(f,0,18)}}>缓存复用，取决于前缀是否匹配</div>
+  <div style={{position:'absolute',left:110,top:185,fontSize:24,color:COLORS.inkSoft,opacity:a(f,10,25)}}>示意：同一个请求模板连续运行两次</div>
+  <svg width="1920" height="1080" style={{position:'absolute',inset:0}}>
+   <text x="130" y="285" fontSize="28" fill={COLORS.ink} fontWeight="800">请求 A</text>
+   <text x="130" y="525" fontSize="28" fill={COLORS.ink} fontWeight="800">请求 B</text>
+   {blocks.map((i)=><g key={'a'+i} opacity={a(f,20+i*3,34+i*3)}><rect x={270+i*77} y="235" width="66" height="80" rx="9" fill={i<14?'#DCE9E0':'#DCE5F0'} stroke={i<14?COLORS.green:COLORS.blue} strokeWidth="2"/><text x={303+i*77} y="282" fontSize="18" fill={COLORS.ink} textAnchor="middle">{i<5?'SYS':i<9?'TOOL':i<14?'RULE':'MSG'}</text></g>)}
+   {blocks.map((i)=>{const prefixMatch=i<changed; const c=phase<2?'#5AA88B':prefixMatch?'#5AA88B':i===changed?'#D9674E':'#E7B44E'; const opacity=phase<2?a(f,80+i*2,94+i*2):a(f,200+i*5,215+i*5);return <g key={'b'+i} opacity={opacity}><rect x={270+i*77} y="475" width="66" height="80" rx="9" fill={c} stroke={c} strokeWidth="2"/><text x={303+i*77} y="522" fontSize="18" fill={i===changed?'#fff':COLORS.ink} textAnchor="middle">{i<5?'SYS':i<9?'TOOL':i<14?'RULE':'MSG'}</text></g>})}
+   <path d="M 270 345 L 1650 345" stroke={COLORS.inkSoft} strokeWidth="2" strokeDasharray="4 8" opacity={a(f,55,75)}/>
+   <path d={'M '+(270+changed*77)+' 400 L '+(270+changed*77)+' 455'} stroke={COLORS.coral} strokeWidth="5" opacity={a(f,170,190)}/>
+   <path d={'M '+(270+changed*77)+' 405 l -10 12 m 10 -12 l 10 12'} stroke={COLORS.coral} strokeWidth="5" fill="none" opacity={a(f,170,190)}/>
+   <rect x="270" y="620" width="1385" height="36" rx="18" fill="#E6EAE3"/><rect x="270" y="620" width={1385*progress} height="36" rx="18" fill={phase<2?COLORS.green:'#5AA88B'}/>
+   <text x="270" y="700" fontSize="23" fill={COLORS.green} fontWeight="800" opacity={a(f,80,100)}>绿色：与之前前缀匹配，有机会复用缓存</text>
+   <text x="270" y="744" fontSize="23" fill={COLORS.coral} fontWeight="800" opacity={a(f,180,200)}>红色：变化点；其后的缓存复用可能受影响</text>
+   <g opacity={a(f,300,330)}><rect x="270" y="795" width="1385" height="105" rx="18" fill="#FFFEF9" stroke={COLORS.green} strokeWidth="2"/><text x="305" y="838" fontSize="24" fill={COLORS.ink} fontWeight="800">工程做法：稳定规则和工具定义放前面，动态信息尽量追加在后面。</text><text x="305" y="875" fontSize="20" fill={COLORS.inkSoft}>实际缓存粒度、有效期与跨请求复用行为由模型服务和推理系统决定。</text></g>
+  </svg>
+ </AbsoluteFill>;
+}
