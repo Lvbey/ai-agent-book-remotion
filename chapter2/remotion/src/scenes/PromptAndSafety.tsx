@@ -1,11 +1,12 @@
 import React from 'react';
-import {AbsoluteFill,interpolate,useCurrentFrame,Easing} from 'remotion';
+import {AbsoluteFill,interpolate,Easing} from 'remotion';
 import {Background} from '../components/Background';
+import {useStoryFrame} from '../sceneTiming';
 import {COLORS} from '../theme';
 const clamp={extrapolateLeft:'clamp' as const,extrapolateRight:'clamp' as const};
 const a=(f:number,s:number,e:number)=>interpolate(f,[s,e],[0,1],{...clamp,easing:Easing.out(Easing.cubic)});
 export const PromptAndSafety:React.FC=()=>{
- const f=useCurrentFrame()*3.5;
+ const f=useStoryFrame('PromptAndSafety');
  const skillOpen=a(f,105,145), malicious=a(f,250,270), isolate=a(f,310,345), validated=a(f,440,470);
  return <AbsoluteFill>
   <Background chapter="04 / RULES, SKILLS & SAFETY"/>
