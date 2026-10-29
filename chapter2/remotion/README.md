@@ -21,6 +21,7 @@
 ```bash
 npm install
 npm run typecheck
+npm run check:timing
 npm run dev
 ```
 
@@ -47,6 +48,16 @@ npx remotion still src/index.ts ContextEngineering out/still.png --frame=18000
 - PromptAndSafety：Skills、提示注入与纵深防御
 - StateAndCompress：上下文膨胀、摘要与状态压缩
 - Conclusion：全章总结
+
+## 时间轴静帧问题修复（2026-10-29）
+
+之前多个场景直接把 `useCurrentFrame()` 乘以 1.5、7.05、11.25 等倍率，但动画的 `interpolate` 关键帧仍只有几十到几百帧，导致内容在开头几秒出现后长时间停住。例如 00:50–01:14 属于 00:30–01:15 的 ContextMap 场景，原本的帧倍率使多数内容早早结束。
+
+现在 13 个场景改用 `src/sceneTiming.ts` 的 `useStoryFrame(key)`，按真实场景时长映射到各自的分镜关键帧；结尾仅保留 1.5–2 秒的阅读缓冲。ContextMap 增加逐项聚焦、重点更新；压缩策略场景增加生产级分层展示，避免长期停在六行清单。
+
+运行 `npm run check:timing` 可检查时钟接入、时长和 00:50–01:14 对应的分镜推进。**这是代码层面回归检查，不等于逐帧渲染对比。**
+
+建议在 Studio 检查 00:50 / 01:00 / 01:10 / 01:14 的画面差异，并在所有场景的开始、中间、结束位置查看动画是否与旁白同步。更改场景时长时应仅改 `sceneTiming.ts`，并按需要更新 `authoredEnd` / `hold`。
 
 ## 验证状态与限制
 
