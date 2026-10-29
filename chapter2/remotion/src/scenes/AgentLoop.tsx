@@ -5,7 +5,7 @@ import {COLORS} from '../theme';
 const clamp={extrapolateLeft:'clamp' as const,extrapolateRight:'clamp' as const};
 const a=(f:number,s:number,e:number)=>interpolate(f,[s,e],[0,1],{...clamp,easing:Easing.out(Easing.cubic)});
 export const AgentLoop:React.FC=()=>{
- const f=useCurrentFrame()*0.333;
+ const f=useCurrentFrame()*8.57;
  const step=f<105?0:f<225?1:f<345?2:f<465?3:f<585?4:5;
  const node=(x:number,y:number,w:number,h:number,title:string,sub:string,color:string,opacity:number,active:boolean)=> <g opacity={opacity} key={title}><rect x={x} y={y} width={w} height={h} rx="18" fill={active?'#DDECE2':'#FFFEF9'} stroke={color} strokeWidth={active?4:2}/><text x={x+22} y={y+38} fontSize="25" fill={COLORS.ink} fontWeight="800">{title}</text><text x={x+22} y={y+72} fontSize="18" fill={COLORS.inkSoft}>{sub}</text></g>;
  const packetX=interpolate(f,[95,135,225,265,345,385,465,505],[180,500,500,900,900,1300,1300,500],clamp);
