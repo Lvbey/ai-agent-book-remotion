@@ -5,7 +5,7 @@ import {COLORS} from '../theme';
 const clamp={extrapolateLeft:'clamp' as const,extrapolateRight:'clamp' as const};
 const a=(f:number,s:number,e:number)=>interpolate(f,[s,e],[0,1],{...clamp,easing:Easing.out(Easing.cubic)});
 export const Conclusion:React.FC=()=>{
- const f=useCurrentFrame();
+ const f=useCurrentFrame()*0.317;
  const cards=[
   {n:'01',t:'组织',d:'规则清楚，结构稳定',c:COLORS.green},
   {n:'02',t:'供给',d:'技能按需，状态显式',c:COLORS.blue},
