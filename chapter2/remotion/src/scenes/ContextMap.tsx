@@ -1,6 +1,7 @@
 import React from 'react';
-import {AbsoluteFill,interpolate,useCurrentFrame,Easing} from 'remotion';
+import {AbsoluteFill,interpolate,Easing} from 'remotion';
 import {Background} from '../components/Background';
+import {useStoryFrame} from '../sceneTiming';
 import {COLORS} from '../theme';
 const clamp={extrapolateLeft:'clamp' as const,extrapolateRight:'clamp' as const};
 const a=(f:number,s:number,e:number)=>interpolate(f,[s,e],[0,1],{...clamp,easing:Easing.out(Easing.cubic)});
@@ -12,7 +13,7 @@ const items=[
  {name:'工具结果',detail:'日志与测试反馈',c:'#7A8F6A'}
 ];
 export const ContextMap:React.FC=()=>{
- const f=useCurrentFrame()*1.5;
+ const f=useStoryFrame('ContextMap');
  const selected=f<150?0:f<300?1:f<450?2:f<600?3:4;
  const showWindow=a(f,50,80), assemble=a(f,160,205), filter=a(f,330,370), final=a(f,650,685);
  return <AbsoluteFill>
