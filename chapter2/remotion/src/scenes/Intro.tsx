@@ -6,7 +6,7 @@ import {COLORS} from '../theme';
 const clamp={extrapolateLeft:'clamp' as const,extrapolateRight:'clamp' as const};
 const appear=(f:number,a:number,b:number)=>interpolate(f,[a,b],[0,1],{...clamp,easing:Easing.out(Easing.cubic)});
 export const Intro:React.FC=()=>{
- const f=useCurrentFrame()*0.78;
+ const f=useCurrentFrame()*1.28;
  const cursor=interpolate(f,[25,95],[0,1],clamp);
  const bad=appear(f,105,118);
  const error=appear(f,155,168);
