@@ -12,7 +12,7 @@ const items=[
  {name:'工具结果',detail:'日志与测试反馈',c:'#7A8F6A'}
 ];
 export const ContextMap:React.FC=()=>{
- const f=useCurrentFrame();
+ const f=useCurrentFrame()*0.467;
  const selected=f<150?0:f<300?1:f<450?2:f<600?3:4;
  const showWindow=a(f,50,80), assemble=a(f,160,205), filter=a(f,330,370), final=a(f,650,685);
  return <AbsoluteFill>
