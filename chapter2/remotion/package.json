@@ -1,0 +1,25 @@
+{
+  "name": "context-engineering-animation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A Chinese educational Remotion animation about context engineering for AI agents",
+  "scripts": {
+    "dev": "remotion studio src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "render": "remotion render src/index.ts ContextEngineering out/context-engineering.mp4",
+    "render:preview": "remotion render src/index.ts ContextEngineering out/preview.mp4 --frames=0-719",
+    "still": "remotion still src/index.ts ContextEngineering out/still.png --frame=1800"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.332",
+    "@remotion/google-fonts": "^4.0.332",
+    "remotion": "^4.0.332",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.7",
+    "typescript": "^5.9.2"
+  }
+}
