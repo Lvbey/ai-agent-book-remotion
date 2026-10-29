@@ -1,9 +1,11 @@
+import {TOTAL_FRAMES} from './sceneTiming';
+
 export const VIDEO = {
   width: 1920,
   height: 1080,
   fps: 30,
-  durationInSeconds: 680,
-  durationInFrames: 20400,
+  durationInSeconds: TOTAL_FRAMES / 30,
+  durationInFrames: TOTAL_FRAMES,
 } as const;
 
 export const COLORS = {
