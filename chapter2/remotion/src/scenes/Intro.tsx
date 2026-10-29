@@ -1,12 +1,13 @@
 import React from 'react';
-import {AbsoluteFill, interpolate, useCurrentFrame, Easing} from 'remotion';
+import {AbsoluteFill, interpolate, Easing} from 'remotion';
 import {Background} from '../components/Background';
+import {useStoryFrame} from '../sceneTiming';
 import {COLORS} from '../theme';
 
 const clamp={extrapolateLeft:'clamp' as const,extrapolateRight:'clamp' as const};
 const appear=(f:number,a:number,b:number)=>interpolate(f,[a,b],[0,1],{...clamp,easing:Easing.out(Easing.cubic)});
 export const Intro:React.FC=()=>{
- const f=useCurrentFrame()*1.28;
+ const f=useStoryFrame('Intro');
  const cursor=interpolate(f,[25,95],[0,1],clamp);
  const bad=appear(f,105,118);
  const error=appear(f,155,168);
