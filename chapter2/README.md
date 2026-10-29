@@ -1,39 +1,27 @@
-# 《上下文工程》Remotion 动画项目
+# 《上下文工程》完整章节动画课程
 
-本目录包含《AI Agent Book》第二章“上下文工程”的科普动画策划文档与 Remotion 实现。
+本目录包含第二章的全章知识映射、分镜与 Remotion 工程。
 
-## 项目结构
+- director-plan.md：完整知识清单与内容映射
+- storyboard.md：13 个章节场景、时间轴与旁白稿
+- remotion/：动画工程源码
 
-- `director-plan.md`：知识提取、内容映射、导演方案与视觉规范
-- `storyboard.md`：完整分镜、旁白、镜头时间码与验收标准
-- `remotion/`：React + TypeScript + Remotion 工程
-
-## 本地运行
-
-进入 `remotion/` 目录：
+## 运行
 
 ```bash
+cd remotion
 npm install
 npm run typecheck
 npm run dev
-```
-
-导出完整 MP4：
-
-```bash
 npm run render
 ```
 
-视频规格：1920×1080、30 fps、6 分钟（10,800 帧）。
+视频时间轴规格：1920×1080、30 fps、11 分 20 秒、20,400 帧。
 
-## 动画修订说明
+## 重要说明
 
-首版存在长时间静止的问题。当前已更新 7 个主要场景的实现，加入帧驱动的逐步显现、代码错误揭示、信息块汇聚、工具调用与结果回流、Skills 按需展开、提示注入隔离、缓存前缀匹配、上下文压缩以及前后对比。各场景的关键动作时间已拉伸到对应场景时长内，避免只在开头几秒变化、后面长时间定格。
+这次不再把目标限定为 6 分钟的概念科普，而是扩展为覆盖整章核心机制的教学版，增加 API 消息结构、Chat Template、提示工程/Few-shot、状态栏、六种压缩策略、生产分层压缩和子 Agent 隔离等内容。
 
-## 验证状态
+源码已推送，但尚未完成 TypeScript 检查、Studio 预览、渲染和逐镜头视觉验收；旁白也尚未录制或合成。因此当前状态是“扩展版工程与教学脚本已提交”，不是“最终成片已通过验收”。
 
-已推送并核对 GitHub 文件树。制作环境此前访问 npm registry 时遇到 DNS `EAI_AGAIN`，因此尚未在该环境完成依赖安装、TypeScript 检查、Remotion Studio 预览或视频渲染。请在可访问 npm registry 的环境执行上述命令，并逐场景进行最终视觉验收。
-
-## 资料来源
-
-[指定原文：book/chapter2.md](https://github.com/bojieli/ai-agent-book/blob/main/book/chapter2.md)
+原文：[AI Agents in Depth · Chapter 2](https://github.com/bojieli/ai-agent-book/blob/main/book/chapter2.md)
