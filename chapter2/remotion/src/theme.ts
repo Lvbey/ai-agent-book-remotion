@@ -2,8 +2,8 @@ export const VIDEO = {
   width: 1920,
   height: 1080,
   fps: 30,
-  durationInSeconds: 360,
-  durationInFrames: 10800,
+  durationInSeconds: 680,
+  durationInFrames: 20400,
 } as const;
 
 export const COLORS = {
