@@ -4,6 +4,7 @@
 
 - director-plan.md：完整知识清单与内容映射
 - storyboard.md：13 个章节场景、时间轴与旁白稿
+- [voiceover-handoff.md](voiceover-handoff.md)：豆包 2.0 知性女声配音、本地 Codex API 实现与字幕/Remotion 同步交接
 - remotion/：动画工程源码
 
 ## 运行
