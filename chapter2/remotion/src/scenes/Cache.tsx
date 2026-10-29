@@ -5,7 +5,7 @@ import {COLORS} from '../theme';
 const clamp={extrapolateLeft:'clamp' as const,extrapolateRight:'clamp' as const};
 const a=(f:number,s:number,e:number)=>interpolate(f,[s,e],[0,1],{...clamp,easing:Easing.out(Easing.cubic)});
 export const Cache:React.FC=()=>{
- const f=useCurrentFrame();
+ const f=useCurrentFrame()*0.287;
  const phase=f<100?0:f<210?1:f<320?2:f<430?3:4;
  const blocks=Array.from({length:18},(_,i)=>i);
  const changed=phase===0?5:phase===1?2:phase===2?5:phase===3?2:5;
