@@ -1,6 +1,7 @@
 import React from 'react';
-import {AbsoluteFill, interpolate, useCurrentFrame, Easing} from 'remotion';
+import {AbsoluteFill, interpolate, Easing} from 'remotion';
 import {Background} from '../components/Background';
+import {useStoryFrame} from '../sceneTiming';
 import {COLORS} from '../theme';
 
 const cl = {extrapolateLeft:'clamp' as const, extrapolateRight:'clamp' as const};
@@ -8,7 +9,7 @@ const p = (f:number,s:number,e:number) => interpolate(f,[s,e],[0,1],{...cl,easin
 const rect = (x:number,y:number,w:number,h:number,fill:string,stroke:string='#D8DED4') => ({x,y,width:w,height:h,rx:14,fill,stroke,strokeWidth:2});
 
 export const ApiStructure:React.FC=()=>{
- const f=useCurrentFrame()*7.05;
+ const f=useStoryFrame('ApiStructure');
  const roles=[['system','开发者规则',COLORS.green],['user','用户任务',COLORS.blue],['assistant','模型回复 / 工具请求',COLORS.gold],['tool','工具执行结果',COLORS.coral]];
  return <AbsoluteFill><Background chapter="03 / API MESSAGE STRUCTURE"/>
   <div style={{position:'absolute',left:100,top:100,fontSize:52,fontWeight:850,opacity:p(f,0,18)}}>模型每次收到的，是一份被组装好的请求</div>
@@ -26,7 +27,7 @@ export const ApiStructure:React.FC=()=>{
 };
 
 export const ChatTemplate:React.FC=()=>{
- const f=useCurrentFrame()*5.1;
+ const f=useStoryFrame('ChatTemplate');
  const tokens=['<|im_start|>','system','You are helpful','<|im_end|>','<|im_start|>','user','Hello!','<|im_end|>','<|im_start|>','assistant'];
  return <AbsoluteFill><Background chapter="04 / FROM MESSAGES TO TOKENS"/>
   <div style={{position:'absolute',left:100,top:100,fontSize:52,fontWeight:850,opacity:p(f,0,18)}}>消息列表，还不是模型真正处理的形式</div>
@@ -46,7 +47,7 @@ export const ChatTemplate:React.FC=()=>{
 };
 
 export const PromptEngineering:React.FC=()=>{
- const f=useCurrentFrame()*6.92;
+ const f=useStoryFrame('PromptEngineering');
  const messy=['一定要简洁','解释所有细节','不要太长','必须详细','先测再改','不要运行测试'];
  const ordered=[['目标','修复支付回调重复扣款'],['流程','读取规范 → 定位代码 → 修改 → 测试'],['边界','不提交代码；不泄露密钥'],['输出','总结改动与测试结果']];
  return <AbsoluteFill><Background chapter="07 / PROMPT ENGINEERING"/>
@@ -63,7 +64,7 @@ export const PromptEngineering:React.FC=()=>{
 };
 
 export const StateBar:React.FC=()=>{
- const f=useCurrentFrame()*5.45;
+ const f=useStoryFrame('StateBar');
  const rows=[['目标','找到支付回调入口'],['已完成','读取 callbacks.py'],['已证实','重试路径没有幂等保护'],['计数','搜索 8 次 / 测试 2 次'],['下一步','检查调用点并补测试']];
  return <AbsoluteFill><Background chapter="10 / AGENT STATE BAR"/>
   <div style={{position:'absolute',left:100,top:100,fontSize:52,fontWeight:850,opacity:p(f,0,18)}}>别让模型每一步都重新猜“现在进展到哪了”</div>
@@ -80,7 +81,7 @@ export const StateBar:React.FC=()=>{
 };
 
 export const CompressionStrategies:React.FC=()=>{
- const f=useCurrentFrame()*11.25;
+ const f=useStoryFrame('CompressionStrategies');
  const strategies=[
   {name:'无压缩',desc:'原始结果全部保留',cost:'窗口很快溢出',c:COLORS.coral},
   {name:'逐页摘要',desc:'每个结果各自总结',cost:'信息碎片化、重复多',c:COLORS.gold},
@@ -100,7 +101,7 @@ export const CompressionStrategies:React.FC=()=>{
 };
 
 export const SubAgentIsolation:React.FC=()=>{
- const f=useCurrentFrame()*5.51;
+ const f=useStoryFrame('SubAgentIsolation');
  return <AbsoluteFill><Background chapter="12 / ISOLATION OVER COMPRESSION"/>
   <div style={{position:'absolute',left:100,top:100,fontSize:52,fontWeight:850,opacity:p(f,0,18)}}>更好的减法：让噪声根本不进入主上下文</div>
   <svg width="1920" height="1080" style={{position:'absolute',inset:0}}>
