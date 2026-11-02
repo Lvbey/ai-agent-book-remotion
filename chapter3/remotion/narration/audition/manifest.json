@@ -1,0 +1,18 @@
+{
+  "purpose": "voice identity / speech rate / term pronunciation review",
+  "unitIds": [
+    "EP01-U001",
+    "EP01-U002",
+    "EP01-U003"
+  ],
+  "durationSeconds": 33.935,
+  "status": "ready-for-listening",
+  "text": "上一章我们解决的是单次交互里的上下文管理。这一章要处理一个更难的问题：对话结束之后，Agent 还能不能记住你、记住知识。这种持久化的记忆体系，可以拆成两个尺度来看。第一个尺度是用户记忆，它面向单个用户，在与这位用户的交互中逐渐了解他的偏好、习惯和需求。第二个尺度是知识库，它面向所有用户共享的集体知识。比如一个行业的法规体系、一家公司内部的操作流程、一个技术领域的专业文档。",
+  "config": {
+    "resource": "seed-tts-2.0",
+    "speaker": "zh_female_zhixingnv_uranus_bigtts",
+    "sample_rate": 48000,
+    "speech_rate": 0,
+    "instruction": "请用知性、清晰、亲切而略带活泼的普通话女声讲解，像 B 站知识区 UP 主在和观众聊天。提问带好奇，重点自然强调，不要播音腔，不要刻意卖萌。"
+  }
+}

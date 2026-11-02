@@ -1,0 +1,902 @@
+{
+  "available": true,
+  "masterAudio": "narration/ep01-narration.mp3",
+  "durationSeconds": 1821.233,
+  "sampleRate": 48000,
+  "provider": "doubao-seed-tts-2.0",
+  "speaker": "zh_female_zhixingnv_uranus_bigtts",
+  "speechRate": 0,
+  "unitCount": 148,
+  "totalSpeechSeconds": 1789.49,
+  "wordLevelCaptions": true,
+  "units": [
+    {
+      "id": "EP01-U001",
+      "startFrame": 0,
+      "durationInFrames": 324,
+      "speechSeconds": 10.57
+    },
+    {
+      "id": "EP01-U002",
+      "startFrame": 324,
+      "durationInFrames": 392,
+      "speechSeconds": 12.86
+    },
+    {
+      "id": "EP01-U003",
+      "startFrame": 716,
+      "durationInFrames": 343,
+      "speechSeconds": 11.23
+    },
+    {
+      "id": "EP01-U004",
+      "startFrame": 1059,
+      "durationInFrames": 305,
+      "speechSeconds": 9.95
+    },
+    {
+      "id": "EP01-U005",
+      "startFrame": 1364,
+      "durationInFrames": 340,
+      "speechSeconds": 11.13
+    },
+    {
+      "id": "EP01-U006",
+      "startFrame": 1704,
+      "durationInFrames": 310,
+      "speechSeconds": 10.11
+    },
+    {
+      "id": "EP01-U007",
+      "startFrame": 2014,
+      "durationInFrames": 379,
+      "speechSeconds": 12.43
+    },
+    {
+      "id": "EP01-U008",
+      "startFrame": 2393,
+      "durationInFrames": 307,
+      "speechSeconds": 10.02
+    },
+    {
+      "id": "EP01-U009",
+      "startFrame": 2700,
+      "durationInFrames": 438,
+      "speechSeconds": 14.39
+    },
+    {
+      "id": "EP01-U010",
+      "startFrame": 3138,
+      "durationInFrames": 302,
+      "speechSeconds": 9.86
+    },
+    {
+      "id": "EP01-U011",
+      "startFrame": 3440,
+      "durationInFrames": 326,
+      "speechSeconds": 10.64
+    },
+    {
+      "id": "EP01-U012",
+      "startFrame": 3766,
+      "durationInFrames": 293,
+      "speechSeconds": 9.54
+    },
+    {
+      "id": "EP01-U013",
+      "startFrame": 4059,
+      "durationInFrames": 312,
+      "speechSeconds": 10.19
+    },
+    {
+      "id": "EP01-U014",
+      "startFrame": 4371,
+      "durationInFrames": 343,
+      "speechSeconds": 11.22
+    },
+    {
+      "id": "EP01-U015",
+      "startFrame": 4714,
+      "durationInFrames": 391,
+      "speechSeconds": 12.83
+    },
+    {
+      "id": "EP01-U016",
+      "startFrame": 5105,
+      "durationInFrames": 339,
+      "speechSeconds": 11.07
+    },
+    {
+      "id": "EP01-U017",
+      "startFrame": 5444,
+      "durationInFrames": 285,
+      "speechSeconds": 9.28
+    },
+    {
+      "id": "EP01-U018",
+      "startFrame": 5729,
+      "durationInFrames": 337,
+      "speechSeconds": 11.01
+    },
+    {
+      "id": "EP01-U019",
+      "startFrame": 6066,
+      "durationInFrames": 322,
+      "speechSeconds": 10.53
+    },
+    {
+      "id": "EP01-U020",
+      "startFrame": 6388,
+      "durationInFrames": 337,
+      "speechSeconds": 11.01
+    },
+    {
+      "id": "EP01-U021",
+      "startFrame": 6725,
+      "durationInFrames": 378,
+      "speechSeconds": 12.4
+    },
+    {
+      "id": "EP01-U022",
+      "startFrame": 7103,
+      "durationInFrames": 342,
+      "speechSeconds": 11.18
+    },
+    {
+      "id": "EP01-U023",
+      "startFrame": 7445,
+      "durationInFrames": 436,
+      "speechSeconds": 14.32
+    },
+    {
+      "id": "EP01-U024",
+      "startFrame": 7881,
+      "durationInFrames": 365,
+      "speechSeconds": 11.95
+    },
+    {
+      "id": "EP01-U025",
+      "startFrame": 8246,
+      "durationInFrames": 376,
+      "speechSeconds": 12.31
+    },
+    {
+      "id": "EP01-U026",
+      "startFrame": 8622,
+      "durationInFrames": 260,
+      "speechSeconds": 8.45
+    },
+    {
+      "id": "EP01-U027",
+      "startFrame": 8882,
+      "durationInFrames": 414,
+      "speechSeconds": 13.6
+    },
+    {
+      "id": "EP01-U028",
+      "startFrame": 9296,
+      "durationInFrames": 314,
+      "speechSeconds": 10.25
+    },
+    {
+      "id": "EP01-U029",
+      "startFrame": 9610,
+      "durationInFrames": 329,
+      "speechSeconds": 10.74
+    },
+    {
+      "id": "EP01-U030",
+      "startFrame": 9939,
+      "durationInFrames": 276,
+      "speechSeconds": 8.98
+    },
+    {
+      "id": "EP01-U031",
+      "startFrame": 10215,
+      "durationInFrames": 341,
+      "speechSeconds": 11.14
+    },
+    {
+      "id": "EP01-U032",
+      "startFrame": 10556,
+      "durationInFrames": 359,
+      "speechSeconds": 11.74
+    },
+    {
+      "id": "EP01-U033",
+      "startFrame": 10915,
+      "durationInFrames": 312,
+      "speechSeconds": 10.17
+    },
+    {
+      "id": "EP01-U034",
+      "startFrame": 11227,
+      "durationInFrames": 350,
+      "speechSeconds": 11.46
+    },
+    {
+      "id": "EP01-U035",
+      "startFrame": 11577,
+      "durationInFrames": 334,
+      "speechSeconds": 10.92
+    },
+    {
+      "id": "EP01-U036",
+      "startFrame": 11911,
+      "durationInFrames": 299,
+      "speechSeconds": 9.75
+    },
+    {
+      "id": "EP01-U037",
+      "startFrame": 12210,
+      "durationInFrames": 297,
+      "speechSeconds": 9.68
+    },
+    {
+      "id": "EP01-U038",
+      "startFrame": 12507,
+      "durationInFrames": 348,
+      "speechSeconds": 11.37
+    },
+    {
+      "id": "EP01-U039",
+      "startFrame": 12855,
+      "durationInFrames": 341,
+      "speechSeconds": 11.15
+    },
+    {
+      "id": "EP01-U040",
+      "startFrame": 13196,
+      "durationInFrames": 405,
+      "speechSeconds": 13.28
+    },
+    {
+      "id": "EP01-U041",
+      "startFrame": 13601,
+      "durationInFrames": 323,
+      "speechSeconds": 10.54
+    },
+    {
+      "id": "EP01-U042",
+      "startFrame": 13924,
+      "durationInFrames": 364,
+      "speechSeconds": 11.91
+    },
+    {
+      "id": "EP01-U043",
+      "startFrame": 14288,
+      "durationInFrames": 330,
+      "speechSeconds": 10.78
+    },
+    {
+      "id": "EP01-U044",
+      "startFrame": 14618,
+      "durationInFrames": 328,
+      "speechSeconds": 10.73
+    },
+    {
+      "id": "EP01-U045",
+      "startFrame": 14946,
+      "durationInFrames": 360,
+      "speechSeconds": 11.78
+    },
+    {
+      "id": "EP01-U046",
+      "startFrame": 15306,
+      "durationInFrames": 421,
+      "speechSeconds": 13.82
+    },
+    {
+      "id": "EP01-U047",
+      "startFrame": 15727,
+      "durationInFrames": 392,
+      "speechSeconds": 12.84
+    },
+    {
+      "id": "EP01-U048",
+      "startFrame": 16119,
+      "durationInFrames": 492,
+      "speechSeconds": 16.19
+    },
+    {
+      "id": "EP01-U049",
+      "startFrame": 16611,
+      "durationInFrames": 382,
+      "speechSeconds": 12.53
+    },
+    {
+      "id": "EP01-U050",
+      "startFrame": 16993,
+      "durationInFrames": 314,
+      "speechSeconds": 10.25
+    },
+    {
+      "id": "EP01-U051",
+      "startFrame": 17307,
+      "durationInFrames": 508,
+      "speechSeconds": 16.71
+    },
+    {
+      "id": "EP01-U052",
+      "startFrame": 17815,
+      "durationInFrames": 309,
+      "speechSeconds": 10.1
+    },
+    {
+      "id": "EP01-U053",
+      "startFrame": 18124,
+      "durationInFrames": 220,
+      "speechSeconds": 7.11
+    },
+    {
+      "id": "EP01-U054",
+      "startFrame": 18344,
+      "durationInFrames": 366,
+      "speechSeconds": 11.98
+    },
+    {
+      "id": "EP01-U055",
+      "startFrame": 18710,
+      "durationInFrames": 391,
+      "speechSeconds": 12.82
+    },
+    {
+      "id": "EP01-U056",
+      "startFrame": 19101,
+      "durationInFrames": 291,
+      "speechSeconds": 9.5
+    },
+    {
+      "id": "EP01-U057",
+      "startFrame": 19392,
+      "durationInFrames": 405,
+      "speechSeconds": 13.27
+    },
+    {
+      "id": "EP01-U058",
+      "startFrame": 19797,
+      "durationInFrames": 380,
+      "speechSeconds": 12.45
+    },
+    {
+      "id": "EP01-U059",
+      "startFrame": 20177,
+      "durationInFrames": 338,
+      "speechSeconds": 11.04
+    },
+    {
+      "id": "EP01-U060",
+      "startFrame": 20515,
+      "durationInFrames": 280,
+      "speechSeconds": 9.11
+    },
+    {
+      "id": "EP01-U061",
+      "startFrame": 20795,
+      "durationInFrames": 506,
+      "speechSeconds": 16.65
+    },
+    {
+      "id": "EP01-U062",
+      "startFrame": 21301,
+      "durationInFrames": 325,
+      "speechSeconds": 10.61
+    },
+    {
+      "id": "EP01-U063",
+      "startFrame": 21626,
+      "durationInFrames": 533,
+      "speechSeconds": 17.56
+    },
+    {
+      "id": "EP01-U064",
+      "startFrame": 22159,
+      "durationInFrames": 260,
+      "speechSeconds": 8.46
+    },
+    {
+      "id": "EP01-U065",
+      "startFrame": 22419,
+      "durationInFrames": 291,
+      "speechSeconds": 9.49
+    },
+    {
+      "id": "EP01-U066",
+      "startFrame": 22710,
+      "durationInFrames": 336,
+      "speechSeconds": 11
+    },
+    {
+      "id": "EP01-U067",
+      "startFrame": 23046,
+      "durationInFrames": 478,
+      "speechSeconds": 15.72
+    },
+    {
+      "id": "EP01-U068",
+      "startFrame": 23524,
+      "durationInFrames": 344,
+      "speechSeconds": 11.26
+    },
+    {
+      "id": "EP01-U069",
+      "startFrame": 23868,
+      "durationInFrames": 431,
+      "speechSeconds": 14.16
+    },
+    {
+      "id": "EP01-U070",
+      "startFrame": 24299,
+      "durationInFrames": 549,
+      "speechSeconds": 18.09
+    },
+    {
+      "id": "EP01-U071",
+      "startFrame": 24848,
+      "durationInFrames": 427,
+      "speechSeconds": 14.02
+    },
+    {
+      "id": "EP01-U072",
+      "startFrame": 25275,
+      "durationInFrames": 465,
+      "speechSeconds": 15.27
+    },
+    {
+      "id": "EP01-U073",
+      "startFrame": 25740,
+      "durationInFrames": 396,
+      "speechSeconds": 12.97
+    },
+    {
+      "id": "EP01-U074",
+      "startFrame": 26136,
+      "durationInFrames": 292,
+      "speechSeconds": 9.53
+    },
+    {
+      "id": "EP01-U075",
+      "startFrame": 26428,
+      "durationInFrames": 473,
+      "speechSeconds": 15.56
+    },
+    {
+      "id": "EP01-U076",
+      "startFrame": 26901,
+      "durationInFrames": 401,
+      "speechSeconds": 13.14
+    },
+    {
+      "id": "EP01-U077",
+      "startFrame": 27302,
+      "durationInFrames": 413,
+      "speechSeconds": 13.55
+    },
+    {
+      "id": "EP01-U078",
+      "startFrame": 27715,
+      "durationInFrames": 444,
+      "speechSeconds": 14.6
+    },
+    {
+      "id": "EP01-U079",
+      "startFrame": 28159,
+      "durationInFrames": 437,
+      "speechSeconds": 14.36
+    },
+    {
+      "id": "EP01-U080",
+      "startFrame": 28596,
+      "durationInFrames": 459,
+      "speechSeconds": 15.1
+    },
+    {
+      "id": "EP01-U081",
+      "startFrame": 29055,
+      "durationInFrames": 317,
+      "speechSeconds": 10.36
+    },
+    {
+      "id": "EP01-U082",
+      "startFrame": 29372,
+      "durationInFrames": 348,
+      "speechSeconds": 11.39
+    },
+    {
+      "id": "EP01-U083",
+      "startFrame": 29720,
+      "durationInFrames": 359,
+      "speechSeconds": 11.75
+    },
+    {
+      "id": "EP01-U084",
+      "startFrame": 30079,
+      "durationInFrames": 351,
+      "speechSeconds": 11.49
+    },
+    {
+      "id": "EP01-U085",
+      "startFrame": 30430,
+      "durationInFrames": 338,
+      "speechSeconds": 11.05
+    },
+    {
+      "id": "EP01-U086",
+      "startFrame": 30768,
+      "durationInFrames": 430,
+      "speechSeconds": 14.11
+    },
+    {
+      "id": "EP01-U087",
+      "startFrame": 31198,
+      "durationInFrames": 353,
+      "speechSeconds": 11.56
+    },
+    {
+      "id": "EP01-U088",
+      "startFrame": 31551,
+      "durationInFrames": 339,
+      "speechSeconds": 11.09
+    },
+    {
+      "id": "EP01-U089",
+      "startFrame": 31890,
+      "durationInFrames": 408,
+      "speechSeconds": 13.39
+    },
+    {
+      "id": "EP01-U090",
+      "startFrame": 32298,
+      "durationInFrames": 375,
+      "speechSeconds": 12.3
+    },
+    {
+      "id": "EP01-U091",
+      "startFrame": 32673,
+      "durationInFrames": 313,
+      "speechSeconds": 10.23
+    },
+    {
+      "id": "EP01-U092",
+      "startFrame": 32986,
+      "durationInFrames": 510,
+      "speechSeconds": 16.8
+    },
+    {
+      "id": "EP01-U093",
+      "startFrame": 33496,
+      "durationInFrames": 457,
+      "speechSeconds": 15.01
+    },
+    {
+      "id": "EP01-U094",
+      "startFrame": 33953,
+      "durationInFrames": 397,
+      "speechSeconds": 13.02
+    },
+    {
+      "id": "EP01-U095",
+      "startFrame": 34350,
+      "durationInFrames": 363,
+      "speechSeconds": 11.87
+    },
+    {
+      "id": "EP01-U096",
+      "startFrame": 34713,
+      "durationInFrames": 342,
+      "speechSeconds": 11.18
+    },
+    {
+      "id": "EP01-U097",
+      "startFrame": 35055,
+      "durationInFrames": 309,
+      "speechSeconds": 10.1
+    },
+    {
+      "id": "EP01-U098",
+      "startFrame": 35364,
+      "durationInFrames": 324,
+      "speechSeconds": 10.59
+    },
+    {
+      "id": "EP01-U099",
+      "startFrame": 35688,
+      "durationInFrames": 336,
+      "speechSeconds": 10.99
+    },
+    {
+      "id": "EP01-U100",
+      "startFrame": 36024,
+      "durationInFrames": 349,
+      "speechSeconds": 11.43
+    },
+    {
+      "id": "EP01-U101",
+      "startFrame": 36373,
+      "durationInFrames": 309,
+      "speechSeconds": 10.09
+    },
+    {
+      "id": "EP01-U102",
+      "startFrame": 36682,
+      "durationInFrames": 477,
+      "speechSeconds": 15.7
+    },
+    {
+      "id": "EP01-U103",
+      "startFrame": 37159,
+      "durationInFrames": 316,
+      "speechSeconds": 10.31
+    },
+    {
+      "id": "EP01-U104",
+      "startFrame": 37475,
+      "durationInFrames": 333,
+      "speechSeconds": 10.9
+    },
+    {
+      "id": "EP01-U105",
+      "startFrame": 37808,
+      "durationInFrames": 453,
+      "speechSeconds": 14.89
+    },
+    {
+      "id": "EP01-U106",
+      "startFrame": 38261,
+      "durationInFrames": 426,
+      "speechSeconds": 13.98
+    },
+    {
+      "id": "EP01-U107",
+      "startFrame": 38687,
+      "durationInFrames": 416,
+      "speechSeconds": 13.64
+    },
+    {
+      "id": "EP01-U108",
+      "startFrame": 39103,
+      "durationInFrames": 465,
+      "speechSeconds": 15.3
+    },
+    {
+      "id": "EP01-U109",
+      "startFrame": 39568,
+      "durationInFrames": 311,
+      "speechSeconds": 10.16
+    },
+    {
+      "id": "EP01-U110",
+      "startFrame": 39879,
+      "durationInFrames": 377,
+      "speechSeconds": 12.35
+    },
+    {
+      "id": "EP01-U111",
+      "startFrame": 40256,
+      "durationInFrames": 316,
+      "speechSeconds": 10.32
+    },
+    {
+      "id": "EP01-U112",
+      "startFrame": 40572,
+      "durationInFrames": 285,
+      "speechSeconds": 9.3
+    },
+    {
+      "id": "EP01-U113",
+      "startFrame": 40857,
+      "durationInFrames": 330,
+      "speechSeconds": 10.79
+    },
+    {
+      "id": "EP01-U114",
+      "startFrame": 41187,
+      "durationInFrames": 417,
+      "speechSeconds": 13.68
+    },
+    {
+      "id": "EP01-U115",
+      "startFrame": 41604,
+      "durationInFrames": 362,
+      "speechSeconds": 11.85
+    },
+    {
+      "id": "EP01-U116",
+      "startFrame": 41966,
+      "durationInFrames": 392,
+      "speechSeconds": 12.84
+    },
+    {
+      "id": "EP01-U117",
+      "startFrame": 42358,
+      "durationInFrames": 435,
+      "speechSeconds": 14.28
+    },
+    {
+      "id": "EP01-U118",
+      "startFrame": 42793,
+      "durationInFrames": 451,
+      "speechSeconds": 14.83
+    },
+    {
+      "id": "EP01-U119",
+      "startFrame": 43244,
+      "durationInFrames": 326,
+      "speechSeconds": 10.65
+    },
+    {
+      "id": "EP01-U120",
+      "startFrame": 43570,
+      "durationInFrames": 526,
+      "speechSeconds": 17.31
+    },
+    {
+      "id": "EP01-U121",
+      "startFrame": 44096,
+      "durationInFrames": 321,
+      "speechSeconds": 10.49
+    },
+    {
+      "id": "EP01-U122",
+      "startFrame": 44417,
+      "durationInFrames": 575,
+      "speechSeconds": 18.94
+    },
+    {
+      "id": "EP01-U123",
+      "startFrame": 44992,
+      "durationInFrames": 389,
+      "speechSeconds": 12.74
+    },
+    {
+      "id": "EP01-U124",
+      "startFrame": 45381,
+      "durationInFrames": 413,
+      "speechSeconds": 13.56
+    },
+    {
+      "id": "EP01-U125",
+      "startFrame": 45794,
+      "durationInFrames": 485,
+      "speechSeconds": 15.94
+    },
+    {
+      "id": "EP01-U126",
+      "startFrame": 46279,
+      "durationInFrames": 451,
+      "speechSeconds": 14.83
+    },
+    {
+      "id": "EP01-U127",
+      "startFrame": 46730,
+      "durationInFrames": 491,
+      "speechSeconds": 16.14
+    },
+    {
+      "id": "EP01-U128",
+      "startFrame": 47221,
+      "durationInFrames": 357,
+      "speechSeconds": 11.68
+    },
+    {
+      "id": "EP01-U129",
+      "startFrame": 47578,
+      "durationInFrames": 290,
+      "speechSeconds": 9.46
+    },
+    {
+      "id": "EP01-U130",
+      "startFrame": 47868,
+      "durationInFrames": 285,
+      "speechSeconds": 9.27
+    },
+    {
+      "id": "EP01-U131",
+      "startFrame": 48153,
+      "durationInFrames": 324,
+      "speechSeconds": 10.58
+    },
+    {
+      "id": "EP01-U132",
+      "startFrame": 48477,
+      "durationInFrames": 360,
+      "speechSeconds": 11.79
+    },
+    {
+      "id": "EP01-U133",
+      "startFrame": 48837,
+      "durationInFrames": 247,
+      "speechSeconds": 8.03
+    },
+    {
+      "id": "EP01-U134",
+      "startFrame": 49084,
+      "durationInFrames": 326,
+      "speechSeconds": 10.65
+    },
+    {
+      "id": "EP01-U135",
+      "startFrame": 49410,
+      "durationInFrames": 328,
+      "speechSeconds": 10.73
+    },
+    {
+      "id": "EP01-U136",
+      "startFrame": 49738,
+      "durationInFrames": 360,
+      "speechSeconds": 11.8
+    },
+    {
+      "id": "EP01-U137",
+      "startFrame": 50098,
+      "durationInFrames": 296,
+      "speechSeconds": 9.64
+    },
+    {
+      "id": "EP01-U138",
+      "startFrame": 50394,
+      "durationInFrames": 445,
+      "speechSeconds": 14.62
+    },
+    {
+      "id": "EP01-U139",
+      "startFrame": 50839,
+      "durationInFrames": 381,
+      "speechSeconds": 12.47
+    },
+    {
+      "id": "EP01-U140",
+      "startFrame": 51220,
+      "durationInFrames": 484,
+      "speechSeconds": 15.91
+    },
+    {
+      "id": "EP01-U141",
+      "startFrame": 51704,
+      "durationInFrames": 397,
+      "speechSeconds": 13.02
+    },
+    {
+      "id": "EP01-U142",
+      "startFrame": 52101,
+      "durationInFrames": 380,
+      "speechSeconds": 12.45
+    },
+    {
+      "id": "EP01-U143",
+      "startFrame": 52481,
+      "durationInFrames": 275,
+      "speechSeconds": 8.96
+    },
+    {
+      "id": "EP01-U144",
+      "startFrame": 52756,
+      "durationInFrames": 395,
+      "speechSeconds": 12.94
+    },
+    {
+      "id": "EP01-U145",
+      "startFrame": 53151,
+      "durationInFrames": 355,
+      "speechSeconds": 11.63
+    },
+    {
+      "id": "EP01-U146",
+      "startFrame": 53506,
+      "durationInFrames": 343,
+      "speechSeconds": 11.23
+    },
+    {
+      "id": "EP01-U147",
+      "startFrame": 53849,
+      "durationInFrames": 352,
+      "speechSeconds": 11.53
+    },
+    {
+      "id": "EP01-U148",
+      "startFrame": 54201,
+      "durationInFrames": 436,
+      "speechSeconds": 14.31
+    }
+  ]
+}

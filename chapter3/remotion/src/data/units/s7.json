@@ -1,0 +1,271 @@
+[
+  {
+    "id": "EP01-U106",
+    "scene": "Frameworks",
+    "title": "从设计到工程实现",
+    "kp": ["FRM-001"],
+    "text": "前面讨论的存储格式和记忆类型，最终都要落到工程实现。开源社区已经出现多个专门的记忆管理框架，这里以 Mem0 和 Memobase 为例，看两种设计理念如何取舍。",
+    "steps": [
+      {"kind": "note", "label": "Mem0：通用记忆流水线"},
+      {"kind": "note", "label": "Memobase：聚焦用户画像"}
+    ]
+  },
+  {
+    "id": "EP01-U107",
+    "scene": "Frameworks",
+    "title": "Mem0 的演进",
+    "kp": ["FRM-001"],
+    "text": "Mem0 的演进本身就是一个很有启发性的系统设计案例：2025 年的论文和 v2 把冲突处理放在写入阶段，而 2026 年 4 月发布的 v3，把它移到了检索阶段。",
+    "steps": [
+      {"kind": "v2stage", "label": "v2（2025 论文）· 写入时消歧"},
+      {"kind": "v3stage", "label": "v3（2026.04）· 检索时消歧"}
+    ]
+  },
+  {
+    "id": "EP01-U108",
+    "scene": "Frameworks",
+    "title": "v2 的三步流程",
+    "kp": ["FRM-002"],
+    "text": "先看 v2。对话结束后，LLM 先抽取候选事实；系统再用向量检索找到相近的已有记忆；最后由 LLM 在 ADD、UPDATE、DELETE、NOOP 之间做出决定。",
+    "steps": [
+      {"kind": "v2stage", "label": "对话 → LLM 抽取候选事实"},
+      {"kind": "v2stage", "label": "向量检索 → 相近已有记忆"},
+      {"kind": "decide", "label": "ADD · UPDATE · DELETE · NOOP"}
+    ]
+  },
+  {
+    "id": "EP01-U109",
+    "scene": "Frameworks",
+    "title": "北京到上海的更新",
+    "kp": ["FRM-003"],
+    "text": "用户先说我住在北京，后来又说我搬到了上海。系统会把前一条 UPDATE 成住在上海，在写入阶段就把冲突消除掉。",
+    "steps": [
+      {"kind": "v2stage", "label": "事实 1：住在北京"},
+      {"kind": "v2stage", "label": "事实 2：搬到上海"},
+      {"kind": "decide", "label": "UPDATE → 住在上海"}
+    ]
+  },
+  {
+    "id": "EP01-U110",
+    "scene": "Frameworks",
+    "title": "Mem0-g 图记忆变体",
+    "kp": ["FRM-004"],
+    "text": "论文还描述了图记忆变体 Mem0-g，用实体和关系组成的图，来支持多跳问题与时序问题。这是当年的设计，后面我们会说明它的现状。",
+    "steps": [
+      {"kind": "v2stage", "label": "Mem0-g：实体—关系图"},
+      {"kind": "note", "label": "支持多跳与时序问题"}
+    ]
+  },
+  {
+    "id": "EP01-U111",
+    "scene": "Frameworks",
+    "title": "v2 的优势",
+    "kp": ["FRM-005"],
+    "text": "这个方案的优势很明显：记忆库始终简洁一致。同一件事只保留一条当前事实，读起来干净，下游消费也不用再做判断。",
+    "steps": [
+      {"kind": "note", "label": "记忆库简洁一致"},
+      {"kind": "note", "label": "下游消费无需再判断"}
+    ]
+  },
+  {
+    "id": "EP01-U112",
+    "scene": "Frameworks",
+    "title": "v2 的风险：不可逆",
+    "kp": ["FRM-006"],
+    "text": "风险在于，一次错误的 UPDATE 或 DELETE 会不可逆地丢失历史信息。模型一旦判断错，原来的记录就真的没有了。",
+    "steps": [
+      {"kind": "decide", "label": "错误 UPDATE → 覆盖原值"},
+      {"kind": "decide", "label": "错误 DELETE → 记录消失"},
+      {"kind": "note", "label": "不可逆"}
+    ]
+  },
+  {
+    "id": "EP01-U113",
+    "scene": "Frameworks",
+    "title": "v2 的风险：成本",
+    "kp": ["FRM-007"],
+    "text": "另一个风险是成本：每条候选事实都要经历一次检索，再加上一次 LLM 判断。写入路径很长，延迟和费用都不低。",
+    "steps": [
+      {"kind": "v2stage", "label": "每条候选事实 → 1 次检索"},
+      {"kind": "v2stage", "label": "每条候选事实 → 1 次 LLM 判断"},
+      {"kind": "note", "label": "写入路径长"}
+    ]
+  },
+  {
+    "id": "EP01-U114",
+    "scene": "Frameworks",
+    "title": "v3：仅追加写入",
+    "kp": ["FRM-008"],
+    "text": "v3 换了个方向：当前管线用一次 LLM 调用抽取事实，并且只做 ADD。住在北京和稍后搬到上海，会作为带时间信息的两条事实并存。",
+    "steps": [
+      {"kind": "v3stage", "label": "1× LLM 抽取 · 单次"},
+      {"kind": "v3stage", "label": "ADD-only · 仅追加"},
+      {"kind": "v3stage", "label": "住在北京 + 搬到上海（带时间）并存"}
+    ]
+  },
+  {
+    "id": "EP01-U115",
+    "scene": "Frameworks",
+    "title": "v3：混合检索与排序",
+    "kp": ["FRM-009"],
+    "text": "查询时，系统融合语义相似度、BM25 关键词和实体匹配，并结合时间信息排序。Agent 确认完成的动作，也成为一等事实参与检索。",
+    "steps": [
+      {"kind": "v3stage", "label": "语义相似度"},
+      {"kind": "v3stage", "label": "BM25 关键词"},
+      {"kind": "v3stage", "label": "实体匹配"},
+      {"kind": "v3stage", "label": "时间信息排序"}
+    ]
+  },
+  {
+    "id": "EP01-U116",
+    "scene": "Frameworks",
+    "title": "v3 的收益",
+    "kp": ["FRM-010"],
+    "text": "这样既避免了错误 UPDATE 或 DELETE 丢失历史，又减少了 LLM 调用次数，还能用多种检索信号加上时间排序，找出当前真正有效的事实。",
+    "steps": [
+      {"kind": "note", "label": "避免丢失历史"},
+      {"kind": "note", "label": "减少 LLM 调用"},
+      {"kind": "note", "label": "多信号 + 时间排序找出当前事实"}
+    ]
+  },
+  {
+    "id": "EP01-U117",
+    "scene": "Frameworks",
+    "title": "v3 报告的提升",
+    "kp": ["FRM-011"],
+    "text": "Mem0 报告的数据是：LoCoMo 从 71.4 提升到 92.5，提升 21.1 分；LongMemEval 从 67.8 提升到 94.4，提升 26.6 分。",
+    "steps": [
+      {"kind": "metric", "label": "LoCoMo", "v": "71.4 → 92.5"},
+      {"kind": "metric", "label": "LongMemEval", "v": "67.8 → 94.4"}
+    ]
+  },
+  {
+    "id": "EP01-U118",
+    "scene": "Frameworks",
+    "title": "Mem0-g 的现状",
+    "kp": ["FRM-012"],
+    "text": "需要提醒的是：当前开源版本已经移除了外部图存储以及 relations 返回值，实体链接仅用于内部检索加权。所以 Mem0-g 应当理解为历史设计，而不是当前能力。",
+    "steps": [
+      {"kind": "note", "label": "已移除外部图存储"},
+      {"kind": "note", "label": "已移除 relations 返回值"},
+      {"kind": "note", "label": "实体链接仅用于内部加权"}
+    ]
+  },
+  {
+    "id": "EP01-U119",
+    "scene": "Frameworks",
+    "title": "Memobase 的理念",
+    "kp": ["FRM-013"],
+    "text": "再看 Memobase。它的设计理念和 Mem0 不同：与其做通用的记忆流水线，不如聚焦用户画像这一个具体形态，把它做深做透。",
+    "steps": [
+      {"kind": "note", "label": "Memobase · memodb-io/memobase"},
+      {"kind": "note", "label": "聚焦用户画像"}
+    ]
+  },
+  {
+    "id": "EP01-U120",
+    "scene": "Frameworks",
+    "title": "用户画像的槽位",
+    "kp": ["FRM-014"],
+    "text": "用户画像是一组可由开发者配置的槽位，按主题和子主题两级组织。比如 basic_info 下面是姓名，interest 下面是兴趣偏好，work 下面是职位。开发者可以精确控制画像的范围和粒度。",
+    "steps": [
+      {"kind": "profile", "label": "basic_info → 姓名"},
+      {"kind": "profile", "label": "interest → 兴趣偏好"},
+      {"kind": "profile", "label": "work → 职位"},
+      {"kind": "note", "label": "开发者可配置范围与粒度"}
+    ]
+  },
+  {
+    "id": "EP01-U121",
+    "scene": "Frameworks",
+    "title": "事件记忆",
+    "kp": ["FRM-015"],
+    "text": "另一部分是事件记忆，它按时间线记录用户经历过的事件，专门用来回答我们上次讨论预算是什么时候这类与时间有关的问题。",
+    "steps": [
+      {"kind": "event", "label": "时间线：事件序列"},
+      {"kind": "event", "label": "我们上次讨论预算是什么时候？"}
+    ]
+  },
+  {
+    "id": "EP01-U122",
+    "scene": "Frameworks",
+    "title": "缓冲批处理",
+    "kp": ["FRM-016"],
+    "text": "工程上，Memobase 采用缓冲批处理策略：对话先在缓冲区累积，达到一定规模或者时限之后，再统一触发一次记忆提取，以此摊薄 LLM 调用成本。查询侧只需读取已整理好的画像和事件，保证低延迟。",
+    "steps": [
+      {"kind": "buffer", "label": "对话进入缓冲区累积"},
+      {"kind": "buffer", "label": "达到规模或时限 → 统一提取"},
+      {"kind": "buffer", "label": "查询侧只读已整理结果 → 低延迟"}
+    ]
+  },
+  {
+    "id": "EP01-U123",
+    "scene": "Frameworks",
+    "title": "两个框架的覆盖",
+    "kp": ["FRM-017"],
+    "text": "两个框架各自只覆盖了记忆设计空间的一部分：Mem0 的事实条目接近语义记忆；Memobase 的画像近似语义记忆，事件记忆则近似情景记忆。",
+    "steps": [
+      {"kind": "cmp", "label": "Mem0 事实条目 ≈ 语义记忆"},
+      {"kind": "cmp", "label": "Memobase 画像 ≈ 语义记忆"},
+      {"kind": "cmp", "label": "Memobase 事件记忆 ≈ 情景记忆"}
+    ]
+  },
+  {
+    "id": "EP01-U124",
+    "scene": "Frameworks",
+    "title": "参考架构（图 3-4）",
+    "kp": ["FRM-018"],
+    "text": "把视野放宽，可以按认知科学的分类，设想一种多类型记忆协同的参考架构，也就是图 3-4。需要强调：这是对设计空间的概括，而不是某个具体项目的实现。",
+    "steps": [
+      {"kind": "arch", "label": "多类型记忆协同 · 参考架构"},
+      {"kind": "note", "label": "对设计空间的概括，非具体项目实现"}
+    ]
+  },
+  {
+    "id": "EP01-U125",
+    "scene": "Frameworks",
+    "title": "多维元数据检索",
+    "kp": ["FRM-019"],
+    "text": "这个参考架构真正新增的重点，是情景记忆的多维元数据检索：它存储带有丰富元数据的事件序列，包括时间戳、情感标记、任务标识，可以按时间、主题等多个维度组合检索。",
+    "steps": [
+      {"kind": "arch", "label": "时间戳"},
+      {"kind": "arch", "label": "情感标记"},
+      {"kind": "arch", "label": "任务标识"},
+      {"kind": "arch", "label": "多维度组合检索"}
+    ]
+  },
+  {
+    "id": "EP01-U126",
+    "scene": "Frameworks",
+    "title": "工作记忆层",
+    "kp": ["FRM-020"],
+    "text": "此外，参考架构还显式保留了工作记忆这一层，用来管理当前任务状态，并与长期记忆动态交互：重要信息选择性转移到长期记忆，相关的长期记忆被激活加载到工作记忆。",
+    "steps": [
+      {"kind": "arch", "label": "工作记忆：当前任务状态"},
+      {"kind": "arch", "label": "选择性转移 ↑"},
+      {"kind": "arch", "label": "激活加载 ↓"}
+    ]
+  },
+  {
+    "id": "EP01-U127",
+    "scene": "Frameworks",
+    "title": "工作记忆 vs 轨迹",
+    "kp": ["FRM-021"],
+    "text": "这里要特别说明工作记忆与轨迹的关系：两者都为当前决策提供即时上下文，但轨迹是不可变的完整事件序列，按时间追加；工作记忆则是经过筛选和激活的动态子集，按相关性裁剪。",
+    "steps": [
+      {"kind": "cmp", "label": "轨迹：不可变 · 按时间追加"},
+      {"kind": "cmp", "label": "工作记忆：动态子集 · 按相关性裁剪"}
+    ]
+  },
+  {
+    "id": "EP01-U128",
+    "scene": "Frameworks",
+    "title": "工程取舍",
+    "kp": ["FRM-022"],
+    "text": "实际框架往往只实现其中一两种类型。按业务需要取舍，比追求大而全更符合工程现实。这也是评价任何记忆框架时最实用的标准。",
+    "steps": [
+      {"kind": "note", "label": "按业务需要取舍"},
+      {"kind": "note", "label": "不追求大而全"}
+    ]
+  }
+]

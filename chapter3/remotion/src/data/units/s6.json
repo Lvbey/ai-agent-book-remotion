@@ -1,0 +1,151 @@
+[
+  {
+    "id": "EP01-U093",
+    "scene": "Cognition",
+    "title": "工作记忆与上下文窗口",
+    "kp": ["COG-001"],
+    "text": "我们已经看了四种具体的记忆策略，现在用认知科学的框架补充另一个维度：记忆内容的类型。先说工作记忆，它对应 Agent 的上下文窗口，是处理当前任务的临时信息空间。",
+    "steps": [
+      {"kind": "wm", "label": "工作记忆 = 上下文窗口"},
+      {"kind": "wm", "label": "处理当前任务的临时空间"}
+    ]
+  },
+  {
+    "id": "EP01-U094",
+    "scene": "Cognition",
+    "title": "工作记忆里有什么",
+    "kp": ["COG-002"],
+    "text": "轨迹就是工作记忆中最核心的内容。但工作记忆还不止于此，它也可能包含从长期记忆中激活、加载进来的信息。这一点后面讲参考架构时会再用上。",
+    "steps": [
+      {"kind": "wm", "label": "轨迹 = 工作记忆的核心内容"},
+      {"kind": "wm", "label": "也可能含激活加载的长期记忆"}
+    ]
+  },
+  {
+    "id": "EP01-U095",
+    "scene": "Cognition",
+    "title": "情景记忆：人类例子",
+    "kp": ["COG-003"],
+    "text": "长期记忆细分为三种。第一种是情景记忆，关于具体事件和经历。人类的例子是：上周三和同事在那家意大利餐厅吃了一顿很棒的晚餐。",
+    "steps": [
+      {"kind": "type", "label": "情景记忆 Episodic", "v": "episodic"},
+      {"kind": "human", "label": "上周三和同事吃意大利餐"}
+    ]
+  },
+  {
+    "id": "EP01-U096",
+    "scene": "Cognition",
+    "title": "情景记忆：Agent 对应",
+    "kp": ["COG-003"],
+    "text": "对应到 Agent，就是前面订机票例子里的：用户订了下周五去东京的 ANA 航班。它记录了一个具体事件的时间、对象和细节。",
+    "steps": [
+      {"kind": "agent", "label": "用户订了下周五去东京的 ANA 航班", "v": "episodic"},
+      {"kind": "note", "label": "记录时间 · 对象 · 细节"}
+    ]
+  },
+  {
+    "id": "EP01-U097",
+    "scene": "Cognition",
+    "title": "语义记忆：人类例子",
+    "kp": ["COG-004"],
+    "text": "第二种是语义记忆，从具体事件中抽象出的一般性知识。人类的例子是：意大利的首都是罗马。它不依赖于某次具体经历。",
+    "steps": [
+      {"kind": "type", "label": "语义记忆 Semantic", "v": "semantic"},
+      {"kind": "human", "label": "意大利的首都是罗马"}
+    ]
+  },
+  {
+    "id": "EP01-U098",
+    "scene": "Cognition",
+    "title": "语义记忆：Agent 对应",
+    "kp": ["COG-004"],
+    "text": "对应到 Agent，就是用户是素食者、用户偏好靠窗座位。这些不是某次对话的记录，而是从多次交互中提炼出来的稳定特征。",
+    "steps": [
+      {"kind": "agent", "label": "用户是素食者", "v": "semantic"},
+      {"kind": "agent", "label": "用户偏好靠窗座位", "v": "semantic"},
+      {"kind": "note", "label": "多次交互提炼的稳定特征"}
+    ]
+  },
+  {
+    "id": "EP01-U099",
+    "scene": "Cognition",
+    "title": "程序记忆：人类例子",
+    "kp": ["COG-005"],
+    "text": "第三种是程序记忆，关于行为模式和流程。人类的例子是骑自行车这种能力：你很难用语言完整描述它，但身体记得怎么骑。",
+    "steps": [
+      {"kind": "type", "label": "程序记忆 Procedural", "v": "procedural"},
+      {"kind": "human", "label": "骑自行车的能力"}
+    ]
+  },
+  {
+    "id": "EP01-U100",
+    "scene": "Cognition",
+    "title": "程序记忆：Agent 对应",
+    "kp": ["COG-005"],
+    "text": "对应到 Agent，就是从用户反复订机票的模式中学到的通用流程：先搜索直飞航班，确认座位偏好，使用常旅客号码，最后订餐。",
+    "steps": [
+      {"kind": "agent", "label": "先搜索直飞航班", "v": "procedural"},
+      {"kind": "agent", "label": "确认座位偏好", "v": "procedural"},
+      {"kind": "agent", "label": "使用常旅客号码", "v": "procedural"},
+      {"kind": "agent", "label": "订餐", "v": "procedural"}
+    ]
+  },
+  {
+    "id": "EP01-U101",
+    "scene": "Cognition",
+    "title": "三套分类体系",
+    "kp": ["COG-006"],
+    "text": "到这里，我们其实已经引入了三套分类体系，很容易混淆。表 3-1 一次性厘清它们的关系：答案是它们相互正交。",
+    "steps": [
+      {"kind": "matrix", "label": "记忆层次 · 存储格式 · 认知类型"},
+      {"kind": "note", "label": "三套体系 = 正交维度"}
+    ]
+  },
+  {
+    "id": "EP01-U102",
+    "scene": "Cognition",
+    "title": "表 3-1 的具体内容",
+    "kp": ["COG-007"],
+    "text": "第一套是记忆层次，回答存在哪里：轨迹、用户长期记忆、业务状态。第二套是存储格式，回答怎么存：四种格式。第三套是认知类型，回答存什么：情景、语义、程序。",
+    "steps": [
+      {"kind": "matrix", "label": "记忆层次 → 存在哪里？"},
+      {"kind": "matrix", "label": "存储格式 → 怎么存？"},
+      {"kind": "matrix", "label": "认知类型 → 存什么？"}
+    ]
+  },
+  {
+    "id": "EP01-U103",
+    "scene": "Cognition",
+    "title": "自由组合一",
+    "kp": ["COG-008"],
+    "text": "因为是正交的，所以可以自由组合。比如一条用户偏好靠窗座位的语义记忆，可以用 Simple Notes 格式，存储在用户长期记忆里。",
+    "steps": [
+      {"kind": "combo", "label": "语义记忆", "v": "semantic"},
+      {"kind": "combo", "label": "Simple Notes", "v": "format"},
+      {"kind": "combo", "label": "用户长期记忆", "v": "layer"}
+    ]
+  },
+  {
+    "id": "EP01-U104",
+    "scene": "Cognition",
+    "title": "自由组合二",
+    "kp": ["COG-008"],
+    "text": "反过来，一段先搜直飞、确认座位、用常旅客号的程序记忆，也可以用 Advanced JSON Cards 格式存储。两个维度互不约束。",
+    "steps": [
+      {"kind": "combo", "label": "程序记忆", "v": "procedural"},
+      {"kind": "combo", "label": "Advanced JSON Cards", "v": "format"},
+      {"kind": "note", "label": "两个维度互不约束"}
+    ]
+  },
+  {
+    "id": "EP01-U105",
+    "scene": "Cognition",
+    "title": "怎么选",
+    "kp": ["COG-009"],
+    "text": "所以怎么选？选择哪种格式，取决于工程需求，也就是简单性和表达力之间的取舍；选择存什么类型，取决于业务场景，也就是你需要记住事实、事件还是流程。",
+    "steps": [
+      {"kind": "note", "label": "格式 → 工程需求（简单性 vs 表达力）"},
+      {"kind": "note", "label": "类型 → 业务场景（事实 / 事件 / 流程）"}
+    ]
+  }
+]

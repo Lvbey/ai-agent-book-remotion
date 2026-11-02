@@ -1,0 +1,167 @@
+[
+  {
+    "id": "EP01-U044",
+    "scene": "Layers",
+    "title": "设计的三个维度",
+    "kp": ["LAY-001"],
+    "text": "有了评估标准，就可以进入具体设计。记忆系统的设计可以拆成三个独立的维度：放哪里、怎么存、存什么。这一节先回答放哪里。",
+    "steps": [
+      {"kind": "dim", "label": "放哪里", "v": "本节"},
+      {"kind": "dim", "label": "怎么存", "v": "下一节"},
+      {"kind": "dim", "label": "存什么", "v": "认知科学一节"}
+    ]
+  },
+  {
+    "id": "EP01-U045",
+    "scene": "Layers",
+    "title": "为什么要分层",
+    "kp": ["LAY-002"],
+    "text": "为了让 Agent 既能高效处理当前任务，又能跨会话提供个性化服务，记忆需要分成不同的层次。就像人有短期工作记忆和长期记忆的区分一样。",
+    "steps": [
+      {"kind": "note", "label": "当前任务 → 高效"},
+      {"kind": "note", "label": "跨会话 → 个性化"}
+    ]
+  },
+  {
+    "id": "EP01-U046",
+    "scene": "Layers",
+    "title": "轨迹的定义",
+    "kp": ["LAY-002"],
+    "text": "第一个层次是轨迹，英文叫 Trajectory。它是一次 Agent 运行过程中的完整历史记录，也对应第一章定义的动态轨迹：用户消息、模型回复、工具执行结果。",
+    "steps": [
+      {"kind": "append", "label": "用户消息"},
+      {"kind": "append", "label": "模型回复"},
+      {"kind": "append", "label": "工具执行结果"}
+    ]
+  },
+  {
+    "id": "EP01-U047",
+    "scene": "Layers",
+    "title": "只增不改 append-only",
+    "kp": ["LAY-003"],
+    "text": "轨迹按时间顺序排列，并且只增不改：新的事件不断追加到末尾，而已经写入的记录不会被修改或删除。这种模式在计算机领域叫做 append-only。",
+    "steps": [
+      {"kind": "append", "label": "事件 4"},
+      {"kind": "append", "label": "事件 5"},
+      {"kind": "freeze", "label": "已写入记录不可修改"}
+    ]
+  },
+  {
+    "id": "EP01-U048",
+    "scene": "Layers",
+    "title": "容易混淆的一点",
+    "kp": ["LAY-004"],
+    "text": "这里要澄清一个很容易混淆的点：只增不改描述的是用于追溯、调试或审计的原始事件记录。而每轮实际发送给模型的运行时上下文，是可以压缩、重组，或者用摘要替换部分历史的。",
+    "steps": [
+      {"kind": "freeze", "label": "原始事件记录：只增不改"},
+      {"kind": "compress", "label": "运行时上下文：可压缩"},
+      {"kind": "compress", "label": "可重组 · 可用摘要替换"}
+    ]
+  },
+  {
+    "id": "EP01-U049",
+    "scene": "Layers",
+    "title": "保留策略取决于系统",
+    "kp": ["LAY-004"],
+    "text": "原始记录是否完整保留，取决于具体系统的数据保留与审计要求。这两件事不要混为一谈：一层是审计用的原始日志，一层是喂给模型的上下文。",
+    "steps": [
+      {"kind": "note", "label": "审计层：原始日志"},
+      {"kind": "note", "label": "输入层：模型上下文"},
+      {"kind": "note", "label": "保留策略由系统决定"}
+    ]
+  },
+  {
+    "id": "EP01-U050",
+    "scene": "Layers",
+    "title": "轨迹的作用",
+    "kp": ["LAY-005"],
+    "text": "轨迹为 Agent 的决策提供即时上下文：我刚才说了什么、用户是怎么回应的、工具返回了什么结果。这三个问题都要靠它回答。",
+    "steps": [
+      {"kind": "note", "label": "我刚才说了什么？"},
+      {"kind": "note", "label": "用户如何回应？"},
+      {"kind": "note", "label": "工具返回了什么？"}
+    ]
+  },
+  {
+    "id": "EP01-U051",
+    "scene": "Layers",
+    "title": "流水账 vs 档案",
+    "kp": ["LAY-009"],
+    "text": "和用户长期记忆对比一下：轨迹是单次会话的完整原始记录，按时间追加且不修改；长期记忆则是跨会话提炼出的稳定信息，会被反复改写、合并、淘汰。前者是流水账，后者是档案。",
+    "steps": [
+      {"kind": "contrast", "label": "轨迹：流水账", "v": "trajectory"},
+      {"kind": "contrast", "label": "长期记忆：档案", "v": "longTerm"},
+      {"kind": "contrast", "label": "改写 · 合并 · 淘汰", "v": "longTerm"}
+    ]
+  },
+  {
+    "id": "EP01-U052",
+    "scene": "Layers",
+    "title": "用户长期记忆的定义",
+    "kp": ["LAY-006"],
+    "text": "用户长期记忆是跨会话、跨实例的持久化存储，通常以键值对的形式，与特定的用户 ID 绑定。用户 ID 是它的主键。",
+    "steps": [
+      {"kind": "write", "label": "user_id = u_10086", "v": "主键"},
+      {"kind": "note", "label": "跨会话 · 跨实例持久化"}
+    ]
+  },
+  {
+    "id": "EP01-U053",
+    "scene": "Layers",
+    "title": "长期记忆存什么",
+    "kp": ["LAY-007"],
+    "text": "里面存的是三类内容：偏好设置、历史交互摘要，以及从对话中提取出来的知识点。",
+    "steps": [
+      {"kind": "write", "label": "偏好设置", "v": "seat=window"},
+      {"kind": "write", "label": "历史交互摘要", "v": "summary"},
+      {"kind": "write", "label": "提取的知识点", "v": "facts"}
+    ]
+  },
+  {
+    "id": "EP01-U054",
+    "scene": "Layers",
+    "title": "显式读写",
+    "kp": ["LAY-008"],
+    "text": "Agent 通过特定的工具调用，显式地读取和更新长期记忆，以此实现跨会话的个性化和连续性。请注意，这是显式的调用，不是自动发生的。",
+    "steps": [
+      {"kind": "read", "label": "memory.read(user_id)"},
+      {"kind": "write", "label": "memory.update(fact)", "v": "显式"},
+      {"kind": "note", "label": "工具调用 → 跨会话连续性"}
+    ]
+  },
+  {
+    "id": "EP01-U055",
+    "scene": "Layers",
+    "title": "业务状态",
+    "kp": ["LAY-010"],
+    "text": "此外，一些 Agent 还支持业务状态：这是开发者定义的高层状态抽象，表示任务的逻辑阶段，比如需要澄清、处理请求中、等待付款、请求完成。",
+    "steps": [
+      {"kind": "state", "label": "需要澄清"},
+      {"kind": "state", "label": "处理请求中"},
+      {"kind": "state", "label": "等待付款"},
+      {"kind": "state", "label": "请求完成"}
+    ]
+  },
+  {
+    "id": "EP01-U056",
+    "scene": "Layers",
+    "title": "业务状态的意义",
+    "kp": ["LAY-011"],
+    "text": "这类高层状态抽象，在事件驱动的 Agent 架构中尤其重要。我们在第六章讨论事件驱动架构设计时，还会再展开。",
+    "steps": [
+      {"kind": "note", "label": "事件驱动架构"},
+      {"kind": "note", "label": "第六章展开"}
+    ]
+  },
+  {
+    "id": "EP01-U057",
+    "scene": "Layers",
+    "title": "本章聚焦的两个层次",
+    "kp": ["LAY-012"],
+    "text": "本章聚焦轨迹和用户长期记忆这两个核心层次。分层设计既保证 Agent 高效处理当前任务，依赖轨迹；又让它具备长期个性化能力，依赖长期记忆。",
+    "steps": [
+      {"kind": "contrast", "label": "当前任务 → 轨迹", "v": "trajectory"},
+      {"kind": "contrast", "label": "长期个性化 → 长期记忆", "v": "longTerm"}
+    ]
+  }
+]

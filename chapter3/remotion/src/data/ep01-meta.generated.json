@@ -1,0 +1,27 @@
+{
+  "episode": "EP01",
+  "title": "用户记忆系统",
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "totalFrames": 54637,
+  "totalSeconds": 1821.2333333333333,
+  "unitCount": 148,
+  "captionCount": 725,
+  "charsPerSec": 5.4,
+  "estimated": false,
+  "captionTimestampSource": "provider",
+  "speechSeconds": 1789.49,
+  "gapSeconds": 0.2,
+  "audio": {
+    "provider": "doubao-seed-tts-2.0",
+    "sampleRate": 48000,
+    "speaker": "zh_female_zhixingnv_uranus_bigtts",
+    "speechRate": 0,
+    "resource": "seed-tts-2.0",
+    "unitCount": 148,
+    "fallbackUnits": [],
+    "wordLevelTimestamps": true
+  },
+  "note": "阶段 B 真实语音时间轴：单元时长取配音音频实测值（已裁首尾静音），字幕区间由 provider 字级时间戳对齐。"
+}

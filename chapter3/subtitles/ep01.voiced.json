@@ -1,0 +1,5835 @@
+{
+  "meta": {
+    "episode": "EP01",
+    "title": "用户记忆系统",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "totalFrames": 54637,
+    "totalSeconds": 1821.2333333333333,
+    "unitCount": 148,
+    "captionCount": 725,
+    "charsPerSec": 5.4,
+    "estimated": false,
+    "captionTimestampSource": "provider",
+    "speechSeconds": 1789.49,
+    "gapSeconds": 0.2,
+    "audio": {
+      "provider": "doubao-seed-tts-2.0",
+      "sampleRate": 48000,
+      "speaker": "zh_female_zhixingnv_uranus_bigtts",
+      "speechRate": 0,
+      "resource": "seed-tts-2.0",
+      "unitCount": 148,
+      "fallbackUnits": [],
+      "wordLevelTimestamps": true
+    },
+    "note": "阶段 B 真实语音时间轴：单元时长取配音音频实测值（已裁首尾静音），字幕区间由 provider 字级时间戳对齐。",
+    "schema": "Remotion @remotion/captions Caption（扩展 startFrame/endFrame/unitId）",
+    "estimatedTiming": false,
+    "wordLevelTimestamps": true,
+    "generatedFrom": "chapter3/remotion/src/data/units/*.json + narration/ep01/audio-index.json"
+  },
+  "captions": [
+    {
+      "id": "EP01-U001-C01",
+      "text": "上一章我们解决的是单次交互里的上下文",
+      "startMs": 0,
+      "endMs": 3333,
+      "timestampMs": 1667,
+      "confidence": 0.9378
+    },
+    {
+      "id": "EP01-U001-C02",
+      "text": "管理。",
+      "startMs": 3333,
+      "endMs": 4167,
+      "timestampMs": 3750,
+      "confidence": 0.8964
+    },
+    {
+      "id": "EP01-U001-C03",
+      "text": "这一章要处理一个更难的问题：",
+      "startMs": 4167,
+      "endMs": 6567,
+      "timestampMs": 5367,
+      "confidence": 0.8136
+    },
+    {
+      "id": "EP01-U001-C04",
+      "text": "对话结束之后，",
+      "startMs": 6567,
+      "endMs": 7967,
+      "timestampMs": 7267,
+      "confidence": 0.9027
+    },
+    {
+      "id": "EP01-U001-C05",
+      "text": "Agent 还能不能记住你、记住知识。",
+      "startMs": 7967,
+      "endMs": 10733,
+      "timestampMs": 9350,
+      "confidence": 0.7393
+    },
+    {
+      "id": "EP01-U002-C01",
+      "text": "这种持久化的记忆体系，",
+      "startMs": 10800,
+      "endMs": 12600,
+      "timestampMs": 11700,
+      "confidence": 0.9272
+    },
+    {
+      "id": "EP01-U002-C02",
+      "text": "可以拆成两个尺度来看。",
+      "startMs": 12600,
+      "endMs": 14433,
+      "timestampMs": 13517,
+      "confidence": 0.9077
+    },
+    {
+      "id": "EP01-U002-C03",
+      "text": "第一个尺度是用户记忆，",
+      "startMs": 14433,
+      "endMs": 16600,
+      "timestampMs": 15517,
+      "confidence": 0.9124
+    },
+    {
+      "id": "EP01-U002-C04",
+      "text": "它面向单个用户，",
+      "startMs": 16600,
+      "endMs": 18233,
+      "timestampMs": 17417,
+      "confidence": 0.9192
+    },
+    {
+      "id": "EP01-U002-C05",
+      "text": "在与这位用户的交互中逐渐了解他的偏好",
+      "startMs": 18233,
+      "endMs": 21800,
+      "timestampMs": 20017,
+      "confidence": 0.8546
+    },
+    {
+      "id": "EP01-U002-C06",
+      "text": "、",
+      "startMs": 21800,
+      "endMs": 22267,
+      "timestampMs": 22033,
+      "confidence": 0.5639
+    },
+    {
+      "id": "EP01-U002-C07",
+      "text": "习惯和需求。",
+      "startMs": 22267,
+      "endMs": 23800,
+      "timestampMs": 23033,
+      "confidence": 0.4856
+    },
+    {
+      "id": "EP01-U003-C01",
+      "text": "第二个尺度是知识库，",
+      "startMs": 23867,
+      "endMs": 25733,
+      "timestampMs": 24800,
+      "confidence": 0.9122
+    },
+    {
+      "id": "EP01-U003-C02",
+      "text": "它面向所有用户共享的集体知识。",
+      "startMs": 25733,
+      "endMs": 28600,
+      "timestampMs": 27167,
+      "confidence": 0.928
+    },
+    {
+      "id": "EP01-U003-C03",
+      "text": "比如一个行业的法规体系、",
+      "startMs": 28600,
+      "endMs": 30900,
+      "timestampMs": 29750,
+      "confidence": 0.8484
+    },
+    {
+      "id": "EP01-U003-C04",
+      "text": "一家公司内部的操作流程、",
+      "startMs": 30900,
+      "endMs": 33133,
+      "timestampMs": 32017,
+      "confidence": 0.8676
+    },
+    {
+      "id": "EP01-U003-C05",
+      "text": "一个技术领域的专业文档。",
+      "startMs": 33133,
+      "endMs": 35233,
+      "timestampMs": 34183,
+      "confidence": 0.9173
+    },
+    {
+      "id": "EP01-U004-C01",
+      "text": "一句话区分：",
+      "startMs": 35300,
+      "endMs": 36600,
+      "timestampMs": 35950,
+      "confidence": 0.7505
+    },
+    {
+      "id": "EP01-U004-C02",
+      "text": "用户记忆让 Agent 成为懂你的助手，",
+      "startMs": 36600,
+      "endMs": 39733,
+      "timestampMs": 38167,
+      "confidence": 0.8866
+    },
+    {
+      "id": "EP01-U004-C03",
+      "text": "知识库让 Agent 成为某个领域的专家。",
+      "startMs": 39733,
+      "endMs": 42933,
+      "timestampMs": 41333,
+      "confidence": 0.8546
+    },
+    {
+      "id": "EP01-U004-C04",
+      "text": "前者个性化，后者专业化。",
+      "startMs": 42933,
+      "endMs": 45400,
+      "timestampMs": 44167,
+      "confidence": 0.896
+    },
+    {
+      "id": "EP01-U005-C01",
+      "text": "有意思的是，",
+      "startMs": 45467,
+      "endMs": 46467,
+      "timestampMs": 45967,
+      "confidence": 0.8548
+    },
+    {
+      "id": "EP01-U005-C02",
+      "text": "这两个尺度解决的其实是同一个问题，",
+      "startMs": 46467,
+      "endMs": 49367,
+      "timestampMs": 47917,
+      "confidence": 0.9361
+    },
+    {
+      "id": "EP01-U005-C03",
+      "text": "只是对象不同。",
+      "startMs": 49367,
+      "endMs": 50667,
+      "timestampMs": 50017,
+      "confidence": 0.9196
+    },
+    {
+      "id": "EP01-U005-C04",
+      "text": "所以它们共用同一批底层技术，",
+      "startMs": 50667,
+      "endMs": 53433,
+      "timestampMs": 52050,
+      "confidence": 0.9154
+    },
+    {
+      "id": "EP01-U005-C05",
+      "text": "最典型的就是向量检索和知识压缩。",
+      "startMs": 53433,
+      "endMs": 56733,
+      "timestampMs": 55083,
+      "confidence": 0.8989
+    },
+    {
+      "id": "EP01-U006-C01",
+      "text": "也面临同样的三个麻烦：信息冲突、",
+      "startMs": 56833,
+      "endMs": 59733,
+      "timestampMs": 58283,
+      "confidence": 0.8465
+    },
+    {
+      "id": "EP01-U006-C02",
+      "text": "知识过期、检索不准。",
+      "startMs": 59733,
+      "endMs": 61900,
+      "timestampMs": 60817,
+      "confidence": 0.8232
+    },
+    {
+      "id": "EP01-U006-C03",
+      "text": "这三个词会贯穿整章，",
+      "startMs": 61900,
+      "endMs": 64000,
+      "timestampMs": 62950,
+      "confidence": 0.9265
+    },
+    {
+      "id": "EP01-U006-C04",
+      "text": "后面每一节其实都是在和它们打交道。",
+      "startMs": 64000,
+      "endMs": 67067,
+      "timestampMs": 65533,
+      "confidence": 0.7084
+    },
+    {
+      "id": "EP01-U007-C01",
+      "text": "本章的路线很清晰：",
+      "startMs": 67133,
+      "endMs": 68900,
+      "timestampMs": 68017,
+      "confidence": 0.8395
+    },
+    {
+      "id": "EP01-U007-C02",
+      "text": "从单次会话的上下文管理，",
+      "startMs": 68900,
+      "endMs": 71500,
+      "timestampMs": 70200,
+      "confidence": 0.8688
+    },
+    {
+      "id": "EP01-U007-C03",
+      "text": "扩展到跨会话的持久化知识体系。",
+      "startMs": 71500,
+      "endMs": 74567,
+      "timestampMs": 73033,
+      "confidence": 0.8622
+    },
+    {
+      "id": "EP01-U007-C04",
+      "text": "先构建用户记忆系统，",
+      "startMs": 74567,
+      "endMs": 76467,
+      "timestampMs": 75517,
+      "confidence": 0.8889
+    },
+    {
+      "id": "EP01-U007-C05",
+      "text": "再深入知识库的检索增强生成技术。",
+      "startMs": 76467,
+      "endMs": 79700,
+      "timestampMs": 78083,
+      "confidence": 0.7775
+    },
+    {
+      "id": "EP01-U008-C01",
+      "text": "这一集只讲第一部分：用户记忆系统。",
+      "startMs": 79767,
+      "endMs": 83300,
+      "timestampMs": 81533,
+      "confidence": 0.8298
+    },
+    {
+      "id": "EP01-U008-C02",
+      "text": "图 3-1 就是整章的知识脉络，",
+      "startMs": 83300,
+      "endMs": 86100,
+      "timestampMs": 84700,
+      "confidence": 0.8365
+    },
+    {
+      "id": "EP01-U008-C03",
+      "text": "我们会把左边这条线从头到尾完整走通。",
+      "startMs": 86100,
+      "endMs": 89933,
+      "timestampMs": 88017,
+      "confidence": 0.8471
+    },
+    {
+      "id": "EP01-U009-C01",
+      "text": "要让 Agent 跨会话提供个性化服务，",
+      "startMs": 90033,
+      "endMs": 93133,
+      "timestampMs": 91583,
+      "confidence": 0.8787
+    },
+    {
+      "id": "EP01-U009-C02",
+      "text": "就需要一层持久的用户记忆。",
+      "startMs": 93133,
+      "endMs": 95667,
+      "timestampMs": 94400,
+      "confidence": 0.9141
+    },
+    {
+      "id": "EP01-U009-C03",
+      "text": "注意它并不保存每句对话，",
+      "startMs": 95667,
+      "endMs": 98100,
+      "timestampMs": 96883,
+      "confidence": 0.9131
+    },
+    {
+      "id": "EP01-U009-C04",
+      "text": "而是用额外的 LLM 调用，去提取、",
+      "startMs": 98100,
+      "endMs": 101867,
+      "timestampMs": 99983,
+      "confidence": 0.7831
+    },
+    {
+      "id": "EP01-U009-C05",
+      "text": "压缩并审查对未来有用的事实。",
+      "startMs": 101867,
+      "endMs": 104533,
+      "timestampMs": 103200,
+      "confidence": 0.8346
+    },
+    {
+      "id": "EP01-U010-C01",
+      "text": "这和上下文学习完全不同：",
+      "startMs": 104600,
+      "endMs": 106700,
+      "timestampMs": 105650,
+      "confidence": 0.8704
+    },
+    {
+      "id": "EP01-U010-C02",
+      "text": "上下文学习只在当前窗口里生效，",
+      "startMs": 106700,
+      "endMs": 109967,
+      "timestampMs": 108333,
+      "confidence": 0.9142
+    },
+    {
+      "id": "EP01-U010-C03",
+      "text": "窗口一关，那些信息就消失了，",
+      "startMs": 109967,
+      "endMs": 112367,
+      "timestampMs": 111167,
+      "confidence": 0.9035
+    },
+    {
+      "id": "EP01-U010-C04",
+      "text": "下次对话还得从零开始。",
+      "startMs": 112367,
+      "endMs": 114600,
+      "timestampMs": 113483,
+      "confidence": 0.6656
+    },
+    {
+      "id": "EP01-U011-C01",
+      "text": "我们用一个具体例子。用户说：",
+      "startMs": 114667,
+      "endMs": 117400,
+      "timestampMs": 116033,
+      "confidence": 0.8079
+    },
+    {
+      "id": "EP01-U011-C02",
+      "text": "帮我订下周五去东京的机票，",
+      "startMs": 117400,
+      "endMs": 119900,
+      "timestampMs": 118650,
+      "confidence": 0.9071
+    },
+    {
+      "id": "EP01-U011-C03",
+      "text": "我偏好靠窗座位；另外我吃素，",
+      "startMs": 119900,
+      "endMs": 122767,
+      "timestampMs": 121333,
+      "confidence": 0.8773
+    },
+    {
+      "id": "EP01-U011-C04",
+      "text": "所以航班上需要一份特殊餐食。",
+      "startMs": 122767,
+      "endMs": 125467,
+      "timestampMs": 124117,
+      "confidence": 0.8779
+    },
+    {
+      "id": "EP01-U012-C01",
+      "text": "Agent 调用了机票搜索工具，",
+      "startMs": 125533,
+      "endMs": 127633,
+      "timestampMs": 126583,
+      "confidence": 0.9231
+    },
+    {
+      "id": "EP01-U012-C02",
+      "text": "返回三个选项。",
+      "startMs": 127633,
+      "endMs": 128900,
+      "timestampMs": 128267,
+      "confidence": 0.9595
+    },
+    {
+      "id": "EP01-U012-C03",
+      "text": "它根据用户偏好过滤出有靠窗座位的航班",
+      "startMs": 128900,
+      "endMs": 132467,
+      "timestampMs": 130683,
+      "confidence": 0.9091
+    },
+    {
+      "id": "EP01-U012-C04",
+      "text": "，",
+      "startMs": 132467,
+      "endMs": 133033,
+      "timestampMs": 132750,
+      "confidence": 0.9448
+    },
+    {
+      "id": "EP01-U012-C05",
+      "text": "并推荐了 ANA 的直飞。",
+      "startMs": 133033,
+      "endMs": 135233,
+      "timestampMs": 134133,
+      "confidence": 0.8001
+    },
+    {
+      "id": "EP01-U013-C01",
+      "text": "用户回复：就订这个，",
+      "startMs": 135300,
+      "endMs": 137567,
+      "timestampMs": 136433,
+      "confidence": 0.6863
+    },
+    {
+      "id": "EP01-U013-C02",
+      "text": "另外用我的美联航 MileagePlus 会员",
+      "startMs": 137567,
+      "endMs": 140300,
+      "timestampMs": 138933,
+      "confidence": 0.7747
+    },
+    {
+      "id": "EP01-U013-C03",
+      "text": "号 12345678。",
+      "startMs": 140300,
+      "endMs": 142600,
+      "timestampMs": 141450,
+      "confidence": 0.7817
+    },
+    {
+      "id": "EP01-U013-C04",
+      "text": "这句话里藏着一条关键的长期信息。",
+      "startMs": 142600,
+      "endMs": 145633,
+      "timestampMs": 144117,
+      "confidence": 0.7809
+    },
+    {
+      "id": "EP01-U014-C01",
+      "text": "对话结束后，",
+      "startMs": 145700,
+      "endMs": 146833,
+      "timestampMs": 146267,
+      "confidence": 0.8965
+    },
+    {
+      "id": "EP01-U014-C02",
+      "text": "框架会再调用一次专门的 LLM，",
+      "startMs": 146833,
+      "endMs": 150267,
+      "timestampMs": 148550,
+      "confidence": 0.8092
+    },
+    {
+      "id": "EP01-U014-C03",
+      "text": "让它分析整段对话，",
+      "startMs": 150267,
+      "endMs": 151967,
+      "timestampMs": 151117,
+      "confidence": 0.8307
+    },
+    {
+      "id": "EP01-U014-C04",
+      "text": "把值得长期记住的信息提取出来。",
+      "startMs": 151967,
+      "endMs": 154700,
+      "timestampMs": 153333,
+      "confidence": 0.9334
+    },
+    {
+      "id": "EP01-U014-C05",
+      "text": "这一步是独立于对话本身的。",
+      "startMs": 154700,
+      "endMs": 157067,
+      "timestampMs": 155883,
+      "confidence": 0.8036
+    },
+    {
+      "id": "EP01-U015-C01",
+      "text": "它提取出四条：偏好靠窗座位；素食者，",
+      "startMs": 157133,
+      "endMs": 161233,
+      "timestampMs": 159183,
+      "confidence": 0.7968
+    },
+    {
+      "id": "EP01-U015-C02",
+      "text": "航班需要特殊餐；",
+      "startMs": 161233,
+      "endMs": 163000,
+      "timestampMs": 162117,
+      "confidence": 0.9275
+    },
+    {
+      "id": "EP01-U015-C03",
+      "text": "美联航会员号 12345678；",
+      "startMs": 163000,
+      "endMs": 166033,
+      "timestampMs": 164517,
+      "confidence": 0.8083
+    },
+    {
+      "id": "EP01-U015-C04",
+      "text": "近期有东京出行计划。",
+      "startMs": 166033,
+      "endMs": 168000,
+      "timestampMs": 167017,
+      "confidence": 0.9334
+    },
+    {
+      "id": "EP01-U015-C05",
+      "text": "每条都带了类别标签。",
+      "startMs": 168000,
+      "endMs": 170100,
+      "timestampMs": 169050,
+      "confidence": 0.6054
+    },
+    {
+      "id": "EP01-U016-C01",
+      "text": "第一条规则是选择性。",
+      "startMs": 170167,
+      "endMs": 172500,
+      "timestampMs": 171333,
+      "confidence": 0.9141
+    },
+    {
+      "id": "EP01-U016-C02",
+      "text": "像搜索返回了三个选项这种短期细节会被",
+      "startMs": 172500,
+      "endMs": 176167,
+      "timestampMs": 174333,
+      "confidence": 0.92
+    },
+    {
+      "id": "EP01-U016-C03",
+      "text": "直接丢弃，",
+      "startMs": 176167,
+      "endMs": 177233,
+      "timestampMs": 176700,
+      "confidence": 0.9069
+    },
+    {
+      "id": "EP01-U016-C04",
+      "text": "它对未来没有任何用处，",
+      "startMs": 177233,
+      "endMs": 179267,
+      "timestampMs": 178250,
+      "confidence": 0.9332
+    },
+    {
+      "id": "EP01-U016-C05",
+      "text": "留下来只会污染记忆库。",
+      "startMs": 179267,
+      "endMs": 181400,
+      "timestampMs": 180333,
+      "confidence": 0.9169
+    },
+    {
+      "id": "EP01-U017-C01",
+      "text": "第二条是抽象化。这次订了靠窗，",
+      "startMs": 181467,
+      "endMs": 184467,
+      "timestampMs": 182967,
+      "confidence": 0.8453
+    },
+    {
+      "id": "EP01-U017-C02",
+      "text": "要归纳成用户长期偏好靠窗，",
+      "startMs": 184467,
+      "endMs": 187333,
+      "timestampMs": 185900,
+      "confidence": 0.9038
+    },
+    {
+      "id": "EP01-U017-C03",
+      "text": "而不是记成某年某月某日订过一次靠窗座",
+      "startMs": 187333,
+      "endMs": 190367,
+      "timestampMs": 188850,
+      "confidence": 0.8727
+    },
+    {
+      "id": "EP01-U017-C04",
+      "text": "位。",
+      "startMs": 190367,
+      "endMs": 190900,
+      "timestampMs": 190633,
+      "confidence": 0.8728
+    },
+    {
+      "id": "EP01-U018-C01",
+      "text": "第三条是结构化。",
+      "startMs": 190967,
+      "endMs": 193000,
+      "timestampMs": 191983,
+      "confidence": 0.897
+    },
+    {
+      "id": "EP01-U018-C02",
+      "text": "事实要用可检索的字段来保存：",
+      "startMs": 193000,
+      "endMs": 195533,
+      "timestampMs": 194267,
+      "confidence": 0.7928
+    },
+    {
+      "id": "EP01-U018-C03",
+      "text": "类别是偏好，键是座位，值是靠窗。",
+      "startMs": 195533,
+      "endMs": 198967,
+      "timestampMs": 197250,
+      "confidence": 0.9164
+    },
+    {
+      "id": "EP01-U018-C04",
+      "text": "这样后面才能被准确、快速地取回。",
+      "startMs": 198967,
+      "endMs": 202133,
+      "timestampMs": 200550,
+      "confidence": 0.6719
+    },
+    {
+      "id": "EP01-U019-C01",
+      "text": "在动手设计之前，先要回答一个问题：",
+      "startMs": 202200,
+      "endMs": 205367,
+      "timestampMs": 203783,
+      "confidence": 0.8815
+    },
+    {
+      "id": "EP01-U019-C02",
+      "text": "什么样的记忆系统才算好？",
+      "startMs": 205367,
+      "endMs": 207700,
+      "timestampMs": 206533,
+      "confidence": 0.915
+    },
+    {
+      "id": "EP01-U019-C03",
+      "text": "先确立评估标准，",
+      "startMs": 207700,
+      "endMs": 209267,
+      "timestampMs": 208483,
+      "confidence": 0.9189
+    },
+    {
+      "id": "EP01-U019-C04",
+      "text": "后面讨论各种设计方案时，",
+      "startMs": 209267,
+      "endMs": 211367,
+      "timestampMs": 210317,
+      "confidence": 0.9232
+    },
+    {
+      "id": "EP01-U019-C05",
+      "text": "才有统一的标尺。",
+      "startMs": 211367,
+      "endMs": 212867,
+      "timestampMs": 212117,
+      "confidence": 0.7372
+    },
+    {
+      "id": "EP01-U020-C01",
+      "text": "学术界已经发布了若干公开基准，",
+      "startMs": 212933,
+      "endMs": 215800,
+      "timestampMs": 214367,
+      "confidence": 0.9182
+    },
+    {
+      "id": "EP01-U020-C02",
+      "text": "其中 LoCoMo 比较有代表性。",
+      "startMs": 215800,
+      "endMs": 218567,
+      "timestampMs": 217183,
+      "confidence": 0.882
+    },
+    {
+      "id": "EP01-U020-C03",
+      "text": "它构造了平均约三百轮、",
+      "startMs": 218567,
+      "endMs": 220867,
+      "timestampMs": 219717,
+      "confidence": 0.8428
+    },
+    {
+      "id": "EP01-U020-C04",
+      "text": "最多三十五个会话的超长多轮对话。",
+      "startMs": 220867,
+      "endMs": 224100,
+      "timestampMs": 222483,
+      "confidence": 0.9331
+    },
+    {
+      "id": "EP01-U021-C01",
+      "text": "它通过三类任务来考察模型：问答、",
+      "startMs": 224167,
+      "endMs": 227300,
+      "timestampMs": 225733,
+      "confidence": 0.7848
+    },
+    {
+      "id": "EP01-U021-C02",
+      "text": "事件摘要，以及多模态对话生成。",
+      "startMs": 227300,
+      "endMs": 230500,
+      "timestampMs": 228900,
+      "confidence": 0.9328
+    },
+    {
+      "id": "EP01-U021-C03",
+      "text": "其中问答又细分为单跳、多跳、",
+      "startMs": 230500,
+      "endMs": 233633,
+      "timestampMs": 232067,
+      "confidence": 0.8121
+    },
+    {
+      "id": "EP01-U021-C04",
+      "text": "时间推理、开放域和对抗性问题。",
+      "startMs": 233633,
+      "endMs": 236700,
+      "timestampMs": 235167,
+      "confidence": 0.7815
+    },
+    {
+      "id": "EP01-U022-C01",
+      "text": "综合 LoCoMo 这类基准和商业记忆产品",
+      "startMs": 236767,
+      "endMs": 239733,
+      "timestampMs": 238250,
+      "confidence": 0.8562
+    },
+    {
+      "id": "EP01-U022-C02",
+      "text": "的实践，",
+      "startMs": 239733,
+      "endMs": 240733,
+      "timestampMs": 240233,
+      "confidence": 0.8645
+    },
+    {
+      "id": "EP01-U022-C03",
+      "text": "用户记忆能力可以归纳为八项。请注意，",
+      "startMs": 240733,
+      "endMs": 244100,
+      "timestampMs": 242417,
+      "confidence": 0.8765
+    },
+    {
+      "id": "EP01-U022-C04",
+      "text": "这是笔者的归纳口径，",
+      "startMs": 244100,
+      "endMs": 245833,
+      "timestampMs": 244967,
+      "confidence": 0.898
+    },
+    {
+      "id": "EP01-U022-C05",
+      "text": "不是某一个基准的原始分类。",
+      "startMs": 245833,
+      "endMs": 248100,
+      "timestampMs": 246967,
+      "confidence": 0.9212
+    },
+    {
+      "id": "EP01-U023-C01",
+      "text": "前四项是：个人信息保留，",
+      "startMs": 248167,
+      "endMs": 250567,
+      "timestampMs": 249367,
+      "confidence": 0.846
+    },
+    {
+      "id": "EP01-U023-C02",
+      "text": "记住身份等长期信息；偏好追踪，",
+      "startMs": 250567,
+      "endMs": 253700,
+      "timestampMs": 252133,
+      "confidence": 0.9184
+    },
+    {
+      "id": "EP01-U023-C03",
+      "text": "跟踪长期偏好；上下文切换，",
+      "startMs": 253700,
+      "endMs": 256433,
+      "timestampMs": 255067,
+      "confidence": 0.9253
+    },
+    {
+      "id": "EP01-U023-C04",
+      "text": "在多个话题之间保持连贯；记忆更新，",
+      "startMs": 256433,
+      "endMs": 259800,
+      "timestampMs": 258117,
+      "confidence": 0.9223
+    },
+    {
+      "id": "EP01-U023-C05",
+      "text": "遇到矛盾的新信息时能正确处理。",
+      "startMs": 259800,
+      "endMs": 262633,
+      "timestampMs": 261217,
+      "confidence": 0.9246
+    },
+    {
+      "id": "EP01-U024-C01",
+      "text": "后四项是：多会话连续性；复杂思考，",
+      "startMs": 262700,
+      "endMs": 266533,
+      "timestampMs": 264617,
+      "confidence": 0.7509
+    },
+    {
+      "id": "EP01-U024-C02",
+      "text": "比如知道用户对花生过敏，",
+      "startMs": 266533,
+      "endMs": 268867,
+      "timestampMs": 267700,
+      "confidence": 0.9002
+    },
+    {
+      "id": "EP01-U024-C03",
+      "text": "推荐泰国菜时要主动提醒花生成分；",
+      "startMs": 268867,
+      "endMs": 272233,
+      "timestampMs": 270550,
+      "confidence": 0.9278
+    },
+    {
+      "id": "EP01-U024-C04",
+      "text": "时间感知；以及冲突解决。",
+      "startMs": 272233,
+      "endMs": 274800,
+      "timestampMs": 273517,
+      "confidence": 0.6606
+    },
+    {
+      "id": "EP01-U025-C01",
+      "text": "复杂思考这个例子值得展开：",
+      "startMs": 274867,
+      "endMs": 277367,
+      "timestampMs": 276117,
+      "confidence": 0.7892
+    },
+    {
+      "id": "EP01-U025-C02",
+      "text": "用户说想吃泰国菜，",
+      "startMs": 277367,
+      "endMs": 279400,
+      "timestampMs": 278383,
+      "confidence": 0.923
+    },
+    {
+      "id": "EP01-U025-C03",
+      "text": "系统要能联想到花生过敏这条记忆，",
+      "startMs": 279400,
+      "endMs": 282600,
+      "timestampMs": 281000,
+      "confidence": 0.9245
+    },
+    {
+      "id": "EP01-U025-C04",
+      "text": "主动提示注意花生成分。",
+      "startMs": 282600,
+      "endMs": 284833,
+      "timestampMs": 283717,
+      "confidence": 0.9416
+    },
+    {
+      "id": "EP01-U025-C05",
+      "text": "这是跨记忆片段的联合推理。",
+      "startMs": 284833,
+      "endMs": 287333,
+      "timestampMs": 286083,
+      "confidence": 0.7682
+    },
+    {
+      "id": "EP01-U026-C01",
+      "text": "在此基础上，",
+      "startMs": 287400,
+      "endMs": 288100,
+      "timestampMs": 287750,
+      "confidence": 0.9148
+    },
+    {
+      "id": "EP01-U026-C02",
+      "text": "我们设计了更贴合 Agent 场景的三层次",
+      "startMs": 288100,
+      "endMs": 290967,
+      "timestampMs": 289533,
+      "confidence": 0.9271
+    },
+    {
+      "id": "EP01-U026-C03",
+      "text": "评估框架，",
+      "startMs": 290967,
+      "endMs": 291867,
+      "timestampMs": 291417,
+      "confidence": 0.9232
+    },
+    {
+      "id": "EP01-U026-C04",
+      "text": "把记忆能力分成三个递进的层级。",
+      "startMs": 291867,
+      "endMs": 294433,
+      "timestampMs": 293150,
+      "confidence": 0.9048
+    },
+    {
+      "id": "EP01-U026-C05",
+      "text": "最底层是基础回忆。",
+      "startMs": 294433,
+      "endMs": 296000,
+      "timestampMs": 295217,
+      "confidence": 0.9363
+    },
+    {
+      "id": "EP01-U027-C01",
+      "text": "基础回忆要求 Agent 准确存储和检索用",
+      "startMs": 296067,
+      "endMs": 299967,
+      "timestampMs": 298017,
+      "confidence": 0.9031
+    },
+    {
+      "id": "EP01-U027-C02",
+      "text": "户直接提供的、",
+      "startMs": 299967,
+      "endMs": 301433,
+      "timestampMs": 300700,
+      "confidence": 0.7645
+    },
+    {
+      "id": "EP01-U027-C03",
+      "text": "结构化的、无歧义的信息。",
+      "startMs": 301433,
+      "endMs": 303500,
+      "timestampMs": 302467,
+      "confidence": 0.7417
+    },
+    {
+      "id": "EP01-U027-C04",
+      "text": "比如用户说我的会员号是 12345，",
+      "startMs": 303500,
+      "endMs": 307167,
+      "timestampMs": 305333,
+      "confidence": 0.8746
+    },
+    {
+      "id": "EP01-U027-C05",
+      "text": "下次需要时要能精确返回。",
+      "startMs": 307167,
+      "endMs": 309800,
+      "timestampMs": 308483,
+      "confidence": 0.7937
+    },
+    {
+      "id": "EP01-U028-C01",
+      "text": "第二层是多会话检索：",
+      "startMs": 309867,
+      "endMs": 312100,
+      "timestampMs": 310983,
+      "confidence": 0.8549
+    },
+    {
+      "id": "EP01-U028-C02",
+      "text": "面对来自不同对象、",
+      "startMs": 312100,
+      "endMs": 313933,
+      "timestampMs": 313017,
+      "confidence": 0.779
+    },
+    {
+      "id": "EP01-U028-C03",
+      "text": "不同时期的多段会话，",
+      "startMs": 313933,
+      "endMs": 315633,
+      "timestampMs": 314783,
+      "confidence": 0.8497
+    },
+    {
+      "id": "EP01-U028-C04",
+      "text": "要能检索出所有相关信息，",
+      "startMs": 315633,
+      "endMs": 318033,
+      "timestampMs": 316833,
+      "confidence": 0.9386
+    },
+    {
+      "id": "EP01-U028-C05",
+      "text": "并在此基础上推理判断。",
+      "startMs": 318033,
+      "endMs": 320267,
+      "timestampMs": 319150,
+      "confidence": 0.9305
+    },
+    {
+      "id": "EP01-U029-C01",
+      "text": "第一个例子：用户有两辆车，",
+      "startMs": 320333,
+      "endMs": 322833,
+      "timestampMs": 321583,
+      "confidence": 0.8628
+    },
+    {
+      "id": "EP01-U029-C02",
+      "text": "他说给我的车预约保养。",
+      "startMs": 322833,
+      "endMs": 325100,
+      "timestampMs": 323967,
+      "confidence": 0.9163
+    },
+    {
+      "id": "EP01-U029-C03",
+      "text": "系统要找出两辆车的全部信息，",
+      "startMs": 325100,
+      "endMs": 327633,
+      "timestampMs": 326367,
+      "confidence": 0.9237
+    },
+    {
+      "id": "EP01-U029-C04",
+      "text": "并主动询问是哪一辆，",
+      "startMs": 327633,
+      "endMs": 329500,
+      "timestampMs": 328567,
+      "confidence": 0.8934
+    },
+    {
+      "id": "EP01-U029-C05",
+      "text": "而不是随便猜一辆。",
+      "startMs": 329500,
+      "endMs": 331233,
+      "timestampMs": 330367,
+      "confidence": 0.6313
+    },
+    {
+      "id": "EP01-U030-C01",
+      "text": "第二个例子：询问贷款状态时，",
+      "startMs": 331300,
+      "endMs": 334333,
+      "timestampMs": 332817,
+      "confidence": 0.8195
+    },
+    {
+      "id": "EP01-U030-C02",
+      "text": "系统要能分辨正在履行的有效合同，",
+      "startMs": 334333,
+      "endMs": 337233,
+      "timestampMs": 335783,
+      "confidence": 0.8619
+    },
+    {
+      "id": "EP01-U030-C03",
+      "text": "忽略过去咨询过、但并没有生效的报价。",
+      "startMs": 337233,
+      "endMs": 340433,
+      "timestampMs": 338833,
+      "confidence": 0.8497
+    },
+    {
+      "id": "EP01-U031-C01",
+      "text": "第三个例子：取消洛杉矶之旅时，",
+      "startMs": 340500,
+      "endMs": 343500,
+      "timestampMs": 342000,
+      "confidence": 0.8313
+    },
+    {
+      "id": "EP01-U031-C02",
+      "text": "系统要理解旅行是一个复合事件，",
+      "startMs": 343500,
+      "endMs": 346367,
+      "timestampMs": 344933,
+      "confidence": 0.884
+    },
+    {
+      "id": "EP01-U031-C03",
+      "text": "主动关联机票、酒店等所有相关预订，",
+      "startMs": 346367,
+      "endMs": 349800,
+      "timestampMs": 348083,
+      "confidence": 0.8716
+    },
+    {
+      "id": "EP01-U031-C04",
+      "text": "而不是只取消其中一项。",
+      "startMs": 349800,
+      "endMs": 351800,
+      "timestampMs": 350800,
+      "confidence": 0.4139
+    },
+    {
+      "id": "EP01-U032-C01",
+      "text": "第三层是主动服务，",
+      "startMs": 351867,
+      "endMs": 353867,
+      "timestampMs": 352867,
+      "confidence": 0.8579
+    },
+    {
+      "id": "EP01-U032-C02",
+      "text": "这是衡量 Agent 是否达到助理水准的最",
+      "startMs": 353867,
+      "endMs": 357033,
+      "timestampMs": 355450,
+      "confidence": 0.8666
+    },
+    {
+      "id": "EP01-U032-C03",
+      "text": "高标准：",
+      "startMs": 357033,
+      "endMs": 357967,
+      "timestampMs": 357500,
+      "confidence": 0.7976
+    },
+    {
+      "id": "EP01-U032-C04",
+      "text": "综合多个会话、甚至很久以前的信息，",
+      "startMs": 357967,
+      "endMs": 361267,
+      "timestampMs": 359617,
+      "confidence": 0.8458
+    },
+    {
+      "id": "EP01-U032-C05",
+      "text": "提供具有预见性的主动帮助。",
+      "startMs": 361267,
+      "endMs": 363767,
+      "timestampMs": 362517,
+      "confidence": 0.6896
+    },
+    {
+      "id": "EP01-U033-C01",
+      "text": "预订国际航班时，",
+      "startMs": 363867,
+      "endMs": 365367,
+      "timestampMs": 364617,
+      "confidence": 0.9259
+    },
+    {
+      "id": "EP01-U033-C02",
+      "text": "主动关联数月前存储的护照信息，",
+      "startMs": 365367,
+      "endMs": 368467,
+      "timestampMs": 366917,
+      "confidence": 0.9396
+    },
+    {
+      "id": "EP01-U033-C03",
+      "text": "发现即将过期并发出预警。注意，",
+      "startMs": 368467,
+      "endMs": 371533,
+      "timestampMs": 370000,
+      "confidence": 0.9181
+    },
+    {
+      "id": "EP01-U033-C04",
+      "text": "用户并没有要求它去检查护照。",
+      "startMs": 371533,
+      "endMs": 374167,
+      "timestampMs": 372850,
+      "confidence": 0.7549
+    },
+    {
+      "id": "EP01-U034-C01",
+      "text": "手机损坏时，主动整合所有保障方案：",
+      "startMs": 374233,
+      "endMs": 377600,
+      "timestampMs": 375917,
+      "confidence": 0.9164
+    },
+    {
+      "id": "EP01-U034-C02",
+      "text": "手机自带的保修、",
+      "startMs": 377600,
+      "endMs": 379367,
+      "timestampMs": 378483,
+      "confidence": 0.8125
+    },
+    {
+      "id": "EP01-U034-C03",
+      "text": "信用卡附加的保修条款、运营商的保险，",
+      "startMs": 379367,
+      "endMs": 382800,
+      "timestampMs": 381083,
+      "confidence": 0.8588
+    },
+    {
+      "id": "EP01-U034-C04",
+      "text": "给用户一份完整的解决方案选项列表。",
+      "startMs": 382800,
+      "endMs": 385833,
+      "timestampMs": 384317,
+      "confidence": 0.7355
+    },
+    {
+      "id": "EP01-U035-C01",
+      "text": "报税季主动从过去一年的记录里搜寻并整",
+      "startMs": 385900,
+      "endMs": 389700,
+      "timestampMs": 387800,
+      "confidence": 0.9142
+    },
+    {
+      "id": "EP01-U035-C02",
+      "text": "合所有税务文件：",
+      "startMs": 389700,
+      "endMs": 391433,
+      "timestampMs": 390567,
+      "confidence": 0.8478
+    },
+    {
+      "id": "EP01-U035-C03",
+      "text": "股票销售、自由职业收入、房产税，",
+      "startMs": 391433,
+      "endMs": 394700,
+      "timestampMs": 393067,
+      "confidence": 0.7638
+    },
+    {
+      "id": "EP01-U035-C04",
+      "text": "呈现一份完整的待办清单。",
+      "startMs": 394700,
+      "endMs": 396967,
+      "timestampMs": 395833,
+      "confidence": 0.9311
+    },
+    {
+      "id": "EP01-U036-C01",
+      "text": "这种能力的关键在于：",
+      "startMs": 397033,
+      "endMs": 398733,
+      "timestampMs": 397883,
+      "confidence": 0.8567
+    },
+    {
+      "id": "EP01-U036-C02",
+      "text": "在没有明确指令的情况下，",
+      "startMs": 398733,
+      "endMs": 401000,
+      "timestampMs": 399867,
+      "confidence": 0.9233
+    },
+    {
+      "id": "EP01-U036-C03",
+      "text": "主动规避潜在问题、整合复杂信息。",
+      "startMs": 401000,
+      "endMs": 404167,
+      "timestampMs": 402583,
+      "confidence": 0.8609
+    },
+    {
+      "id": "EP01-U036-C04",
+      "text": "它也因此成为三层里最难的一层。",
+      "startMs": 404167,
+      "endMs": 406933,
+      "timestampMs": 405550,
+      "confidence": 0.9032
+    },
+    {
+      "id": "EP01-U037-C01",
+      "text": "这个三层次框架会贯穿本章。",
+      "startMs": 407000,
+      "endMs": 409767,
+      "timestampMs": 408383,
+      "confidence": 0.8643
+    },
+    {
+      "id": "EP01-U037-C02",
+      "text": "后面的实验 3-9 和实验 3-11，",
+      "startMs": 409767,
+      "endMs": 413000,
+      "timestampMs": 411383,
+      "confidence": 0.7663
+    },
+    {
+      "id": "EP01-U037-C03",
+      "text": "都会用它来衡量检索技术对记忆能力的提",
+      "startMs": 413000,
+      "endMs": 416167,
+      "timestampMs": 414583,
+      "confidence": 0.888
+    },
+    {
+      "id": "EP01-U037-C04",
+      "text": "升。",
+      "startMs": 416167,
+      "endMs": 416833,
+      "timestampMs": 416500,
+      "confidence": 0.7104
+    },
+    {
+      "id": "EP01-U038-C01",
+      "text": "实验 3-1 就是按这个框架构建评估集：",
+      "startMs": 416900,
+      "endMs": 420733,
+      "timestampMs": 418817,
+      "confidence": 0.7579
+    },
+    {
+      "id": "EP01-U038-C02",
+      "text": "每层各二十个测试用例，",
+      "startMs": 420733,
+      "endMs": 422900,
+      "timestampMs": 421817,
+      "confidence": 0.9294
+    },
+    {
+      "id": "EP01-U038-C03",
+      "text": "每个用例包含大量事实细节。",
+      "startMs": 422900,
+      "endMs": 425467,
+      "timestampMs": 424183,
+      "confidence": 0.9203
+    },
+    {
+      "id": "EP01-U038-C04",
+      "text": "第一层的用例通常由单个会话构成。",
+      "startMs": 425467,
+      "endMs": 428433,
+      "timestampMs": 426950,
+      "confidence": 0.9116
+    },
+    {
+      "id": "EP01-U039-C01",
+      "text": "第二层和第三层的用例，",
+      "startMs": 428500,
+      "endMs": 430533,
+      "timestampMs": 429517,
+      "confidence": 0.8746
+    },
+    {
+      "id": "EP01-U039-C02",
+      "text": "则由多个跨时间、跨对象的会话构成，",
+      "startMs": 430533,
+      "endMs": 433933,
+      "timestampMs": 432233,
+      "confidence": 0.8291
+    },
+    {
+      "id": "EP01-U039-C03",
+      "text": "每个用例合计大约五十轮沟通。",
+      "startMs": 433933,
+      "endMs": 436867,
+      "timestampMs": 435400,
+      "confidence": 0.9108
+    },
+    {
+      "id": "EP01-U039-C04",
+      "text": "信息分散在这么多轮里，才是难点。",
+      "startMs": 436867,
+      "endMs": 439800,
+      "timestampMs": 438333,
+      "confidence": 0.8279
+    },
+    {
+      "id": "EP01-U040-C01",
+      "text": "评估时要求被测 Agent 先根据第一个会",
+      "startMs": 439867,
+      "endMs": 443567,
+      "timestampMs": 441717,
+      "confidence": 0.8711
+    },
+    {
+      "id": "EP01-U040-C02",
+      "text": "话生成记忆，",
+      "startMs": 443567,
+      "endMs": 445033,
+      "timestampMs": 444300,
+      "confidence": 0.9262
+    },
+    {
+      "id": "EP01-U040-C03",
+      "text": "再根据记忆和下一个会话修改记忆。",
+      "startMs": 445033,
+      "endMs": 448400,
+      "timestampMs": 446717,
+      "confidence": 0.9028
+    },
+    {
+      "id": "EP01-U040-C04",
+      "text": "关键限制是：它只能访问记忆，",
+      "startMs": 448400,
+      "endMs": 451067,
+      "timestampMs": 449733,
+      "confidence": 0.8092
+    },
+    {
+      "id": "EP01-U040-C05",
+      "text": "不能回看之前的原始对话。",
+      "startMs": 451067,
+      "endMs": 453300,
+      "timestampMs": 452183,
+      "confidence": 0.7217
+    },
+    {
+      "id": "EP01-U041-C01",
+      "text": "所有会话处理完、记忆生成完毕后，",
+      "startMs": 453367,
+      "endMs": 456533,
+      "timestampMs": 454950,
+      "confidence": 0.831
+    },
+    {
+      "id": "EP01-U041-C02",
+      "text": "再用一个新的用户问题去问它，",
+      "startMs": 456533,
+      "endMs": 458900,
+      "timestampMs": 457717,
+      "confidence": 0.8726
+    },
+    {
+      "id": "EP01-U041-C03",
+      "text": "要求它只依据记忆作答。",
+      "startMs": 458900,
+      "endMs": 461133,
+      "timestampMs": 460017,
+      "confidence": 0.8814
+    },
+    {
+      "id": "EP01-U041-C04",
+      "text": "此时原始对话已经完全不可见。",
+      "startMs": 461133,
+      "endMs": 464067,
+      "timestampMs": 462600,
+      "confidence": 0.7313
+    },
+    {
+      "id": "EP01-U042-C01",
+      "text": "评分采用 LLM-as-a-judge，",
+      "startMs": 464133,
+      "endMs": 467700,
+      "timestampMs": 465917,
+      "confidence": 0.8404
+    },
+    {
+      "id": "EP01-U042-C02",
+      "text": "也就是让另一个 LLM 来当评委，",
+      "startMs": 467700,
+      "endMs": 471267,
+      "timestampMs": 469483,
+      "confidence": 0.8405
+    },
+    {
+      "id": "EP01-U042-C03",
+      "text": "把回答和参考答案做对比，",
+      "startMs": 471267,
+      "endMs": 473700,
+      "timestampMs": 472483,
+      "confidence": 0.8885
+    },
+    {
+      "id": "EP01-U042-C04",
+      "text": "给出该测试用例的奖励得分。",
+      "startMs": 473700,
+      "endMs": 476200,
+      "timestampMs": 474950,
+      "confidence": 0.7265
+    },
+    {
+      "id": "EP01-U043-C01",
+      "text": "这套评估集和评估脚本都收录在配套仓库",
+      "startMs": 476267,
+      "endMs": 479933,
+      "timestampMs": 478100,
+      "confidence": 0.9305
+    },
+    {
+      "id": "EP01-U043-C02",
+      "text": "的 user-memory 项目里，",
+      "startMs": 479933,
+      "endMs": 482233,
+      "timestampMs": 481083,
+      "confidence": 0.7809
+    },
+    {
+      "id": "EP01-U043-C03",
+      "text": "读者可以查看每层测试用例的完整定义，",
+      "startMs": 482233,
+      "endMs": 485400,
+      "timestampMs": 483817,
+      "confidence": 0.8768
+    },
+    {
+      "id": "EP01-U043-C04",
+      "text": "也可以自己跑一遍。",
+      "startMs": 485400,
+      "endMs": 487200,
+      "timestampMs": 486300,
+      "confidence": 0.2968
+    },
+    {
+      "id": "EP01-U044-C01",
+      "text": "有了评估标准，就可以进入具体设计。",
+      "startMs": 487267,
+      "endMs": 489867,
+      "timestampMs": 488567,
+      "confidence": 0.935
+    },
+    {
+      "id": "EP01-U044-C02",
+      "text": "记忆系统的设计可以拆成三个独立的维度",
+      "startMs": 489867,
+      "endMs": 493000,
+      "timestampMs": 491433,
+      "confidence": 0.8459
+    },
+    {
+      "id": "EP01-U044-C03",
+      "text": "：",
+      "startMs": 493000,
+      "endMs": 493600,
+      "timestampMs": 493300,
+      "confidence": 0.5925
+    },
+    {
+      "id": "EP01-U044-C04",
+      "text": "放哪里、怎么存、存什么。",
+      "startMs": 493600,
+      "endMs": 496167,
+      "timestampMs": 494883,
+      "confidence": 0.6973
+    },
+    {
+      "id": "EP01-U044-C05",
+      "text": "这一节先回答放哪里。",
+      "startMs": 496167,
+      "endMs": 498133,
+      "timestampMs": 497150,
+      "confidence": 0.6747
+    },
+    {
+      "id": "EP01-U045-C01",
+      "text": "为了让 Agent 既能高效处理当前任务，",
+      "startMs": 498233,
+      "endMs": 501467,
+      "timestampMs": 499850,
+      "confidence": 0.9071
+    },
+    {
+      "id": "EP01-U045-C02",
+      "text": "又能跨会话提供个性化服务，",
+      "startMs": 501467,
+      "endMs": 504067,
+      "timestampMs": 502767,
+      "confidence": 0.8753
+    },
+    {
+      "id": "EP01-U045-C03",
+      "text": "记忆需要分成不同的层次。",
+      "startMs": 504067,
+      "endMs": 506100,
+      "timestampMs": 505083,
+      "confidence": 0.8777
+    },
+    {
+      "id": "EP01-U045-C04",
+      "text": "就像人有短期工作记忆和长期记忆的区分",
+      "startMs": 506100,
+      "endMs": 508900,
+      "timestampMs": 507500,
+      "confidence": 0.5842
+    },
+    {
+      "id": "EP01-U045-C05",
+      "text": "一样。",
+      "startMs": 508900,
+      "endMs": 510133,
+      "timestampMs": 509517,
+      "confidence": 0.3483
+    },
+    {
+      "id": "EP01-U046-C01",
+      "text": "第一个层次是轨迹，",
+      "startMs": 510200,
+      "endMs": 512033,
+      "timestampMs": 511117,
+      "confidence": 0.8973
+    },
+    {
+      "id": "EP01-U046-C02",
+      "text": "英文叫 Trajectory。",
+      "startMs": 512033,
+      "endMs": 513933,
+      "timestampMs": 512983,
+      "confidence": 0.7939
+    },
+    {
+      "id": "EP01-U046-C03",
+      "text": "它是一次 Agent 运行过程中的完整历史",
+      "startMs": 513933,
+      "endMs": 517000,
+      "timestampMs": 515467,
+      "confidence": 0.91
+    },
+    {
+      "id": "EP01-U046-C04",
+      "text": "记录，",
+      "startMs": 517000,
+      "endMs": 517767,
+      "timestampMs": 517383,
+      "confidence": 0.8994
+    },
+    {
+      "id": "EP01-U046-C05",
+      "text": "也对应第一章定义的动态轨迹：",
+      "startMs": 517767,
+      "endMs": 520667,
+      "timestampMs": 519217,
+      "confidence": 0.8679
+    },
+    {
+      "id": "EP01-U046-C06",
+      "text": "用户消息、模型回复、工具执行结果。",
+      "startMs": 520667,
+      "endMs": 524167,
+      "timestampMs": 522417,
+      "confidence": 0.8233
+    },
+    {
+      "id": "EP01-U047-C01",
+      "text": "轨迹按时间顺序排列，并且只增不改：",
+      "startMs": 524233,
+      "endMs": 527700,
+      "timestampMs": 525967,
+      "confidence": 0.8289
+    },
+    {
+      "id": "EP01-U047-C02",
+      "text": "新的事件不断追加到末尾，",
+      "startMs": 527700,
+      "endMs": 530133,
+      "timestampMs": 528917,
+      "confidence": 0.9211
+    },
+    {
+      "id": "EP01-U047-C03",
+      "text": "而已经写入的记录不会被修改或删除。",
+      "startMs": 530133,
+      "endMs": 533500,
+      "timestampMs": 531817,
+      "confidence": 0.927
+    },
+    {
+      "id": "EP01-U047-C04",
+      "text": "这种模式在计算机领域叫做 append-on",
+      "startMs": 533500,
+      "endMs": 536967,
+      "timestampMs": 535233,
+      "confidence": 0.8891
+    },
+    {
+      "id": "EP01-U047-C05",
+      "text": "ly。",
+      "startMs": 536967,
+      "endMs": 537233,
+      "timestampMs": 537100,
+      "confidence": 0.3391
+    },
+    {
+      "id": "EP01-U048-C01",
+      "text": "这里要澄清一个很容易混淆的点：",
+      "startMs": 537300,
+      "endMs": 540000,
+      "timestampMs": 538650,
+      "confidence": 0.8559
+    },
+    {
+      "id": "EP01-U048-C02",
+      "text": "只增不改描述的是用于追溯、",
+      "startMs": 540000,
+      "endMs": 543133,
+      "timestampMs": 541567,
+      "confidence": 0.8531
+    },
+    {
+      "id": "EP01-U048-C03",
+      "text": "调试或审计的原始事件记录。",
+      "startMs": 543133,
+      "endMs": 545867,
+      "timestampMs": 544500,
+      "confidence": 0.8208
+    },
+    {
+      "id": "EP01-U048-C04",
+      "text": "而每轮实际发送给模型的运行时上下文，",
+      "startMs": 545867,
+      "endMs": 549333,
+      "timestampMs": 547600,
+      "confidence": 0.9001
+    },
+    {
+      "id": "EP01-U048-C05",
+      "text": "是可以压缩、重组，",
+      "startMs": 549333,
+      "endMs": 551167,
+      "timestampMs": 550250,
+      "confidence": 0.8081
+    },
+    {
+      "id": "EP01-U048-C06",
+      "text": "或者用摘要替换部分历史的。",
+      "startMs": 551167,
+      "endMs": 553633,
+      "timestampMs": 552400,
+      "confidence": 0.9067
+    },
+    {
+      "id": "EP01-U049-C01",
+      "text": "原始记录是否完整保留，",
+      "startMs": 553733,
+      "endMs": 555800,
+      "timestampMs": 554767,
+      "confidence": 0.9363
+    },
+    {
+      "id": "EP01-U049-C02",
+      "text": "取决于具体系统的数据保留与审计要求。",
+      "startMs": 555800,
+      "endMs": 559467,
+      "timestampMs": 557633,
+      "confidence": 0.9034
+    },
+    {
+      "id": "EP01-U049-C03",
+      "text": "这两件事不要混为一谈：",
+      "startMs": 559467,
+      "endMs": 561567,
+      "timestampMs": 560517,
+      "confidence": 0.8218
+    },
+    {
+      "id": "EP01-U049-C04",
+      "text": "一层是审计用的原始日志，",
+      "startMs": 561567,
+      "endMs": 564033,
+      "timestampMs": 562800,
+      "confidence": 0.9033
+    },
+    {
+      "id": "EP01-U049-C05",
+      "text": "一层是喂给模型的上下文。",
+      "startMs": 564033,
+      "endMs": 566367,
+      "timestampMs": 565200,
+      "confidence": 0.7805
+    },
+    {
+      "id": "EP01-U050-C01",
+      "text": "轨迹为 Agent 的决策提供即时上下文：",
+      "startMs": 566433,
+      "endMs": 569867,
+      "timestampMs": 568150,
+      "confidence": 0.8719
+    },
+    {
+      "id": "EP01-U050-C02",
+      "text": "我刚才说了什么、用户是怎么回应的、",
+      "startMs": 569867,
+      "endMs": 572833,
+      "timestampMs": 571350,
+      "confidence": 0.8438
+    },
+    {
+      "id": "EP01-U050-C03",
+      "text": "工具返回了什么结果。",
+      "startMs": 572833,
+      "endMs": 574600,
+      "timestampMs": 573717,
+      "confidence": 0.9504
+    },
+    {
+      "id": "EP01-U050-C04",
+      "text": "这三个问题都要靠它回答。",
+      "startMs": 574600,
+      "endMs": 576833,
+      "timestampMs": 575717,
+      "confidence": 0.7104
+    },
+    {
+      "id": "EP01-U051-C01",
+      "text": "和用户长期记忆对比一下：",
+      "startMs": 576900,
+      "endMs": 579167,
+      "timestampMs": 578033,
+      "confidence": 0.7908
+    },
+    {
+      "id": "EP01-U051-C02",
+      "text": "轨迹是单次会话的完整原始记录，",
+      "startMs": 579167,
+      "endMs": 582533,
+      "timestampMs": 580850,
+      "confidence": 0.8909
+    },
+    {
+      "id": "EP01-U051-C03",
+      "text": "按时间追加且不修改；",
+      "startMs": 582533,
+      "endMs": 584633,
+      "timestampMs": 583583,
+      "confidence": 0.8966
+    },
+    {
+      "id": "EP01-U051-C04",
+      "text": "长期记忆则是跨会话提炼出的稳定信息，",
+      "startMs": 584633,
+      "endMs": 588333,
+      "timestampMs": 586483,
+      "confidence": 0.8776
+    },
+    {
+      "id": "EP01-U051-C05",
+      "text": "会被反复改写、合并、淘汰。",
+      "startMs": 588333,
+      "endMs": 591267,
+      "timestampMs": 589800,
+      "confidence": 0.7701
+    },
+    {
+      "id": "EP01-U051-C06",
+      "text": "前者是流水账，后者是档案。",
+      "startMs": 591267,
+      "endMs": 593767,
+      "timestampMs": 592517,
+      "confidence": 0.8907
+    },
+    {
+      "id": "EP01-U052-C01",
+      "text": "用户长期记忆是跨会话、",
+      "startMs": 593867,
+      "endMs": 595567,
+      "timestampMs": 594717,
+      "confidence": 0.7849
+    },
+    {
+      "id": "EP01-U052-C02",
+      "text": "跨实例的持久化存储，",
+      "startMs": 595567,
+      "endMs": 598167,
+      "timestampMs": 596867,
+      "confidence": 0.7862
+    },
+    {
+      "id": "EP01-U052-C03",
+      "text": "通常以键值对的形式，",
+      "startMs": 598167,
+      "endMs": 599933,
+      "timestampMs": 599050,
+      "confidence": 0.9099
+    },
+    {
+      "id": "EP01-U052-C04",
+      "text": "与特定的用户 ID 绑定。",
+      "startMs": 599933,
+      "endMs": 602100,
+      "timestampMs": 601017,
+      "confidence": 0.8398
+    },
+    {
+      "id": "EP01-U052-C05",
+      "text": "用户 ID 是它的主键。",
+      "startMs": 602100,
+      "endMs": 604067,
+      "timestampMs": 603083,
+      "confidence": 0.8531
+    },
+    {
+      "id": "EP01-U053-C01",
+      "text": "里面存的是三类内容：偏好设置、",
+      "startMs": 604133,
+      "endMs": 607233,
+      "timestampMs": 605683,
+      "confidence": 0.7816
+    },
+    {
+      "id": "EP01-U053-C02",
+      "text": "历史交互摘要，",
+      "startMs": 607233,
+      "endMs": 608733,
+      "timestampMs": 607983,
+      "confidence": 0.8434
+    },
+    {
+      "id": "EP01-U053-C03",
+      "text": "以及从对话中提取出来的知识点。",
+      "startMs": 608733,
+      "endMs": 611400,
+      "timestampMs": 610067,
+      "confidence": 0.8476
+    },
+    {
+      "id": "EP01-U054-C01",
+      "text": "Agent 通过特定的工具调用，",
+      "startMs": 611467,
+      "endMs": 614233,
+      "timestampMs": 612850,
+      "confidence": 0.8722
+    },
+    {
+      "id": "EP01-U054-C02",
+      "text": "显式地读取和更新长期记忆，",
+      "startMs": 614233,
+      "endMs": 616933,
+      "timestampMs": 615583,
+      "confidence": 0.8482
+    },
+    {
+      "id": "EP01-U054-C03",
+      "text": "以此实现跨会话的个性化和连续性。",
+      "startMs": 616933,
+      "endMs": 620100,
+      "timestampMs": 618517,
+      "confidence": 0.8833
+    },
+    {
+      "id": "EP01-U054-C04",
+      "text": "请注意，这是显式的调用，",
+      "startMs": 620100,
+      "endMs": 622167,
+      "timestampMs": 621133,
+      "confidence": 0.9257
+    },
+    {
+      "id": "EP01-U054-C05",
+      "text": "不是自动发生的。",
+      "startMs": 622167,
+      "endMs": 623600,
+      "timestampMs": 622883,
+      "confidence": 0.6129
+    },
+    {
+      "id": "EP01-U055-C01",
+      "text": "此外，一些 Agent 还支持业务状态：",
+      "startMs": 623667,
+      "endMs": 626967,
+      "timestampMs": 625317,
+      "confidence": 0.8209
+    },
+    {
+      "id": "EP01-U055-C02",
+      "text": "这是开发者定义的高层状态抽象，",
+      "startMs": 626967,
+      "endMs": 629967,
+      "timestampMs": 628467,
+      "confidence": 0.9128
+    },
+    {
+      "id": "EP01-U055-C03",
+      "text": "表示任务的逻辑阶段，比如需要澄清、",
+      "startMs": 629967,
+      "endMs": 633433,
+      "timestampMs": 631700,
+      "confidence": 0.852
+    },
+    {
+      "id": "EP01-U055-C04",
+      "text": "处理请求中、等待付款、请求完成。",
+      "startMs": 633433,
+      "endMs": 636633,
+      "timestampMs": 635033,
+      "confidence": 0.6014
+    },
+    {
+      "id": "EP01-U056-C01",
+      "text": "这类高层状态抽象，",
+      "startMs": 636700,
+      "endMs": 638533,
+      "timestampMs": 637617,
+      "confidence": 0.9367
+    },
+    {
+      "id": "EP01-U056-C02",
+      "text": "在事件驱动的 Agent 架构中尤其重要。",
+      "startMs": 638533,
+      "endMs": 641867,
+      "timestampMs": 640200,
+      "confidence": 0.8957
+    },
+    {
+      "id": "EP01-U056-C03",
+      "text": "我们在第六章讨论事件驱动架构设计时，",
+      "startMs": 641867,
+      "endMs": 645100,
+      "timestampMs": 643483,
+      "confidence": 0.9176
+    },
+    {
+      "id": "EP01-U056-C04",
+      "text": "还会再展开。",
+      "startMs": 645100,
+      "endMs": 646333,
+      "timestampMs": 645717,
+      "confidence": 0.5051
+    },
+    {
+      "id": "EP01-U057-C01",
+      "text": "本章聚焦轨迹和用户长期记忆这两个核心",
+      "startMs": 646400,
+      "endMs": 649967,
+      "timestampMs": 648183,
+      "confidence": 0.916
+    },
+    {
+      "id": "EP01-U057-C02",
+      "text": "层次。",
+      "startMs": 649967,
+      "endMs": 650900,
+      "timestampMs": 650433,
+      "confidence": 0.8712
+    },
+    {
+      "id": "EP01-U057-C03",
+      "text": "分层设计既保证 Agent 高效处理当前任",
+      "startMs": 650900,
+      "endMs": 654400,
+      "timestampMs": 652650,
+      "confidence": 0.9068
+    },
+    {
+      "id": "EP01-U057-C04",
+      "text": "务，",
+      "startMs": 654400,
+      "endMs": 654900,
+      "timestampMs": 654650,
+      "confidence": 0.8835
+    },
+    {
+      "id": "EP01-U057-C05",
+      "text": "依赖轨迹；又让它具备长期个性化能力，",
+      "startMs": 654900,
+      "endMs": 658467,
+      "timestampMs": 656683,
+      "confidence": 0.8831
+    },
+    {
+      "id": "EP01-U057-C06",
+      "text": "依赖长期记忆。",
+      "startMs": 658467,
+      "endMs": 659833,
+      "timestampMs": 659150,
+      "confidence": 0.8702
+    },
+    {
+      "id": "EP01-U058-C01",
+      "text": "解决了放哪里和怎么评估，",
+      "startMs": 659900,
+      "endMs": 661933,
+      "timestampMs": 660917,
+      "confidence": 0.9518
+    },
+    {
+      "id": "EP01-U058-C02",
+      "text": "下一个问题是怎么存。同一条用户信息，",
+      "startMs": 661933,
+      "endMs": 665367,
+      "timestampMs": 663650,
+      "confidence": 0.9107
+    },
+    {
+      "id": "EP01-U058-C03",
+      "text": "可以用不同的粒度和结构来表示。",
+      "startMs": 665367,
+      "endMs": 668200,
+      "timestampMs": 666783,
+      "confidence": 0.9215
+    },
+    {
+      "id": "EP01-U058-C04",
+      "text": "下面这四种格式，",
+      "startMs": 668200,
+      "endMs": 669733,
+      "timestampMs": 668967,
+      "confidence": 0.9476
+    },
+    {
+      "id": "EP01-U058-C05",
+      "text": "代表了粒度和结构复杂度的递进。",
+      "startMs": 669733,
+      "endMs": 672500,
+      "timestampMs": 671117,
+      "confidence": 0.9357
+    },
+    {
+      "id": "EP01-U059-C01",
+      "text": "第一种是 Simple Notes，",
+      "startMs": 672567,
+      "endMs": 674367,
+      "timestampMs": 673467,
+      "confidence": 0.9079
+    },
+    {
+      "id": "EP01-U059-C02",
+      "text": "体现极简主义设计。",
+      "startMs": 674367,
+      "endMs": 676333,
+      "timestampMs": 675350,
+      "confidence": 0.8908
+    },
+    {
+      "id": "EP01-U059-C03",
+      "text": "每条记忆是一个最小的、",
+      "startMs": 676333,
+      "endMs": 678367,
+      "timestampMs": 677350,
+      "confidence": 0.8569
+    },
+    {
+      "id": "EP01-U059-C04",
+      "text": "不可再分的事实，",
+      "startMs": 678367,
+      "endMs": 679900,
+      "timestampMs": 679133,
+      "confidence": 0.9453
+    },
+    {
+      "id": "EP01-U059-C05",
+      "text": "比如用户邮箱是 john@example.com。",
+      "startMs": 679900,
+      "endMs": 683767,
+      "timestampMs": 681833,
+      "confidence": 0.807
+    },
+    {
+      "id": "EP01-U060-C01",
+      "text": "它的优势是开销极低，",
+      "startMs": 683833,
+      "endMs": 686100,
+      "timestampMs": 684967,
+      "confidence": 0.8446
+    },
+    {
+      "id": "EP01-U060-C02",
+      "text": "支持 O(1) 操作，也就是耗时固定、",
+      "startMs": 686100,
+      "endMs": 689000,
+      "timestampMs": 687550,
+      "confidence": 0.6797
+    },
+    {
+      "id": "EP01-U060-C03",
+      "text": "不随数据量增长的操作。",
+      "startMs": 689000,
+      "endMs": 690900,
+      "timestampMs": 689950,
+      "confidence": 0.8609
+    },
+    {
+      "id": "EP01-U060-C04",
+      "text": "单条事实的读写非常快。",
+      "startMs": 690900,
+      "endMs": 693100,
+      "timestampMs": 692000,
+      "confidence": 0.9333
+    },
+    {
+      "id": "EP01-U061-C01",
+      "text": "代价是信息关联性完全丢失。",
+      "startMs": 693167,
+      "endMs": 696133,
+      "timestampMs": 694650,
+      "confidence": 0.8891
+    },
+    {
+      "id": "EP01-U061-C02",
+      "text": "在 TechCorp 担任高级工程师、",
+      "startMs": 696133,
+      "endMs": 698600,
+      "timestampMs": 697367,
+      "confidence": 0.7368
+    },
+    {
+      "id": "EP01-U061-C03",
+      "text": "负责推荐系统开发，",
+      "startMs": 698600,
+      "endMs": 700367,
+      "timestampMs": 699483,
+      "confidence": 0.929
+    },
+    {
+      "id": "EP01-U061-C04",
+      "text": "会被拆成三个独立事实：",
+      "startMs": 700367,
+      "endMs": 702500,
+      "timestampMs": 701433,
+      "confidence": 0.8176
+    },
+    {
+      "id": "EP01-U061-C05",
+      "text": "在 TechCorp 工作、",
+      "startMs": 702500,
+      "endMs": 704200,
+      "timestampMs": 703350,
+      "confidence": 0.5764
+    },
+    {
+      "id": "EP01-U061-C06",
+      "text": "职位是高级工程师、负责推荐系统。",
+      "startMs": 704200,
+      "endMs": 707367,
+      "timestampMs": 705783,
+      "confidence": 0.6539
+    },
+    {
+      "id": "EP01-U061-C07",
+      "text": "同一份工作的内在联系被割裂了。",
+      "startMs": 707367,
+      "endMs": 709967,
+      "timestampMs": 708667,
+      "confidence": 0.9259
+    },
+    {
+      "id": "EP01-U062-C01",
+      "text": "于是，",
+      "startMs": 710100,
+      "endMs": 710667,
+      "timestampMs": 710383,
+      "confidence": 0.8315
+    },
+    {
+      "id": "EP01-U062-C02",
+      "text": "当遇到需要综合多条信息才能回答的查询",
+      "startMs": 710667,
+      "endMs": 713833,
+      "timestampMs": 712250,
+      "confidence": 0.9398
+    },
+    {
+      "id": "EP01-U062-C03",
+      "text": "时，",
+      "startMs": 713833,
+      "endMs": 714567,
+      "timestampMs": 714200,
+      "confidence": 0.8541
+    },
+    {
+      "id": "EP01-U062-C04",
+      "text": "系统必须重新把这些碎片拼起来。",
+      "startMs": 714567,
+      "endMs": 717400,
+      "timestampMs": 715983,
+      "confidence": 0.9188
+    },
+    {
+      "id": "EP01-U062-C05",
+      "text": "这一步往往还得交给 LLM 去做。",
+      "startMs": 717400,
+      "endMs": 720800,
+      "timestampMs": 719100,
+      "confidence": 0.8596
+    },
+    {
+      "id": "EP01-U063-C01",
+      "text": "第二种是 Enhanced Notes，",
+      "startMs": 720867,
+      "endMs": 722733,
+      "timestampMs": 721800,
+      "confidence": 0.9171
+    },
+    {
+      "id": "EP01-U063-C02",
+      "text": "采用整体视角。",
+      "startMs": 722733,
+      "endMs": 724133,
+      "timestampMs": 723433,
+      "confidence": 0.9281
+    },
+    {
+      "id": "EP01-U063-C03",
+      "text": "每条记忆保存为一段包含完整上下文的段",
+      "startMs": 724133,
+      "endMs": 727867,
+      "timestampMs": 726000,
+      "confidence": 0.8775
+    },
+    {
+      "id": "EP01-U063-C04",
+      "text": "落。比如：",
+      "startMs": 727867,
+      "endMs": 729033,
+      "timestampMs": 728450,
+      "confidence": 0.6503
+    },
+    {
+      "id": "EP01-U063-C05",
+      "text": "用户在 TechCorp 担任高级软件工程师",
+      "startMs": 729033,
+      "endMs": 732267,
+      "timestampMs": 730650,
+      "confidence": 0.8156
+    },
+    {
+      "id": "EP01-U063-C06",
+      "text": "，",
+      "startMs": 732267,
+      "endMs": 732933,
+      "timestampMs": 732600,
+      "confidence": 0.7899
+    },
+    {
+      "id": "EP01-U063-C07",
+      "text": "专注机器学习已有三年，",
+      "startMs": 732933,
+      "endMs": 735167,
+      "timestampMs": 734050,
+      "confidence": 0.881
+    },
+    {
+      "id": "EP01-U063-C08",
+      "text": "目前领导一个推荐系统项目，团队五人。",
+      "startMs": 735167,
+      "endMs": 738567,
+      "timestampMs": 736867,
+      "confidence": 0.9242
+    },
+    {
+      "id": "EP01-U064-C01",
+      "text": "这种表示保留了信息的叙事结构，",
+      "startMs": 738633,
+      "endMs": 741233,
+      "timestampMs": 739933,
+      "confidence": 0.8895
+    },
+    {
+      "id": "EP01-U064-C02",
+      "text": "确保语义完整而丰富。",
+      "startMs": 741233,
+      "endMs": 743333,
+      "timestampMs": 742283,
+      "confidence": 0.901
+    },
+    {
+      "id": "EP01-U064-C03",
+      "text": "读起来就像一段自然语言的档案，",
+      "startMs": 743333,
+      "endMs": 745733,
+      "timestampMs": 744533,
+      "confidence": 0.8959
+    },
+    {
+      "id": "EP01-U064-C04",
+      "text": "不需要二次拼装。",
+      "startMs": 745733,
+      "endMs": 747233,
+      "timestampMs": 746483,
+      "confidence": 0.9261
+    },
+    {
+      "id": "EP01-U065-C01",
+      "text": "代价之一是存储冗余：",
+      "startMs": 747300,
+      "endMs": 749700,
+      "timestampMs": 748500,
+      "confidence": 0.7997
+    },
+    {
+      "id": "EP01-U065-C02",
+      "text": "相同的信息会在多个段落里重复出现，",
+      "startMs": 749700,
+      "endMs": 753133,
+      "timestampMs": 751417,
+      "confidence": 0.9517
+    },
+    {
+      "id": "EP01-U065-C03",
+      "text": "同一家公司、",
+      "startMs": 753133,
+      "endMs": 754300,
+      "timestampMs": 753717,
+      "confidence": 0.7857
+    },
+    {
+      "id": "EP01-U065-C04",
+      "text": "同一个职位可能被写好几遍。",
+      "startMs": 754300,
+      "endMs": 756933,
+      "timestampMs": 755617,
+      "confidence": 0.9133
+    },
+    {
+      "id": "EP01-U066-C01",
+      "text": "代价之二是更新复杂：某个属性变了，",
+      "startMs": 757000,
+      "endMs": 760900,
+      "timestampMs": 758950,
+      "confidence": 0.8652
+    },
+    {
+      "id": "EP01-U066-C02",
+      "text": "可能需要重写多个段落。",
+      "startMs": 760900,
+      "endMs": 763067,
+      "timestampMs": 761983,
+      "confidence": 0.9362
+    },
+    {
+      "id": "EP01-U066-C03",
+      "text": "公司没变但职位变了，",
+      "startMs": 763067,
+      "endMs": 765233,
+      "timestampMs": 764150,
+      "confidence": 0.9125
+    },
+    {
+      "id": "EP01-U066-C04",
+      "text": "你仍然要改动所有包含职位的段落。",
+      "startMs": 765233,
+      "endMs": 768133,
+      "timestampMs": 766683,
+      "confidence": 0.923
+    },
+    {
+      "id": "EP01-U067-C01",
+      "text": "第三种是 JSON Cards，",
+      "startMs": 768200,
+      "endMs": 770600,
+      "timestampMs": 769400,
+      "confidence": 0.829
+    },
+    {
+      "id": "EP01-U067-C02",
+      "text": "采用三层嵌套结构：类别、子类别、",
+      "startMs": 770600,
+      "endMs": 774400,
+      "timestampMs": 772500,
+      "confidence": 0.7737
+    },
+    {
+      "id": "EP01-U067-C03",
+      "text": "键值对。",
+      "startMs": 774400,
+      "endMs": 775433,
+      "timestampMs": 774917,
+      "confidence": 0.9506
+    },
+    {
+      "id": "EP01-U067-C04",
+      "text": "比如 personal.contact.email，",
+      "startMs": 775433,
+      "endMs": 778433,
+      "timestampMs": 776933,
+      "confidence": 0.7627
+    },
+    {
+      "id": "EP01-U067-C05",
+      "text": "或者 work.position.title。",
+      "startMs": 778433,
+      "endMs": 781267,
+      "timestampMs": 779850,
+      "confidence": 0.8053
+    },
+    {
+      "id": "EP01-U067-C06",
+      "text": "它模拟了人类对信息的分类方式。",
+      "startMs": 781267,
+      "endMs": 784067,
+      "timestampMs": 782667,
+      "confidence": 0.9547
+    },
+    {
+      "id": "EP01-U068-C01",
+      "text": "它支持部分更新：",
+      "startMs": 784133,
+      "endMs": 785833,
+      "timestampMs": 784983,
+      "confidence": 0.7981
+    },
+    {
+      "id": "EP01-U068-C02",
+      "text": "修改 work.position.title 不会影响",
+      "startMs": 785833,
+      "endMs": 789300,
+      "timestampMs": 787567,
+      "confidence": 0.8319
+    },
+    {
+      "id": "EP01-U068-C03",
+      "text": "到 work.company.name。",
+      "startMs": 789300,
+      "endMs": 791733,
+      "timestampMs": 790517,
+      "confidence": 0.7928
+    },
+    {
+      "id": "EP01-U068-C04",
+      "text": "这种局部修改是可预测的，",
+      "startMs": 791733,
+      "endMs": 793967,
+      "timestampMs": 792850,
+      "confidence": 0.9371
+    },
+    {
+      "id": "EP01-U068-C05",
+      "text": "结构也容易扩展。",
+      "startMs": 793967,
+      "endMs": 795533,
+      "timestampMs": 794750,
+      "confidence": 0.5247
+    },
+    {
+      "id": "EP01-U069-C01",
+      "text": "缺陷在于刚性结构假设信息可以被清晰分",
+      "startMs": 795600,
+      "endMs": 799167,
+      "timestampMs": 797383,
+      "confidence": 0.9306
+    },
+    {
+      "id": "EP01-U069-C02",
+      "text": "类。",
+      "startMs": 799167,
+      "endMs": 799833,
+      "timestampMs": 799500,
+      "confidence": 0.9214
+    },
+    {
+      "id": "EP01-U069-C03",
+      "text": "比如周末用 Python 开发个人项目，",
+      "startMs": 799833,
+      "endMs": 802467,
+      "timestampMs": 801150,
+      "confidence": 0.8809
+    },
+    {
+      "id": "EP01-U069-C04",
+      "text": "同时涉及时间偏好、",
+      "startMs": 802467,
+      "endMs": 804467,
+      "timestampMs": 803467,
+      "confidence": 0.8177
+    },
+    {
+      "id": "EP01-U069-C05",
+      "text": "技术偏好和活动类型，",
+      "startMs": 804467,
+      "endMs": 806500,
+      "timestampMs": 805483,
+      "confidence": 0.8602
+    },
+    {
+      "id": "EP01-U069-C06",
+      "text": "强行归入单一类别就会丢失多维性。",
+      "startMs": 806500,
+      "endMs": 809900,
+      "timestampMs": 808200,
+      "confidence": 0.9135
+    },
+    {
+      "id": "EP01-U070-C01",
+      "text": "第四种是 Advanced JSON Cards，",
+      "startMs": 809967,
+      "endMs": 813067,
+      "timestampMs": 811517,
+      "confidence": 0.8165
+    },
+    {
+      "id": "EP01-U070-C02",
+      "text": "它代表了从信息存储到知识管理的范式转",
+      "startMs": 813067,
+      "endMs": 816967,
+      "timestampMs": 815017,
+      "confidence": 0.9392
+    },
+    {
+      "id": "EP01-U070-C03",
+      "text": "变。",
+      "startMs": 816967,
+      "endMs": 817233,
+      "timestampMs": 817100,
+      "confidence": 0.9148
+    },
+    {
+      "id": "EP01-U070-C04",
+      "text": "每张卡片除了事实，",
+      "startMs": 817233,
+      "endMs": 819133,
+      "timestampMs": 818183,
+      "confidence": 0.9528
+    },
+    {
+      "id": "EP01-U070-C05",
+      "text": "还加入信息来源的叙事背景 backstory",
+      "startMs": 819133,
+      "endMs": 822733,
+      "timestampMs": 820933,
+      "confidence": 0.8726
+    },
+    {
+      "id": "EP01-U070-C06",
+      "text": "、",
+      "startMs": 822733,
+      "endMs": 823067,
+      "timestampMs": 822900,
+      "confidence": 0.5557
+    },
+    {
+      "id": "EP01-U070-C07",
+      "text": "主体身份 person、",
+      "startMs": 823067,
+      "endMs": 824800,
+      "timestampMs": 823933,
+      "confidence": 0.7848
+    },
+    {
+      "id": "EP01-U070-C08",
+      "text": "与用户的关系 relationship，",
+      "startMs": 824800,
+      "endMs": 826900,
+      "timestampMs": 825850,
+      "confidence": 0.9157
+    },
+    {
+      "id": "EP01-U070-C09",
+      "text": "以及时间戳。",
+      "startMs": 826900,
+      "endMs": 828200,
+      "timestampMs": 827550,
+      "confidence": 0.902
+    },
+    {
+      "id": "EP01-U071-C01",
+      "text": "这背后的核心思想是：",
+      "startMs": 828267,
+      "endMs": 830233,
+      "timestampMs": 829250,
+      "confidence": 0.8008
+    },
+    {
+      "id": "EP01-U071-C02",
+      "text": "同一条信息在不同场景下可能有完全不同",
+      "startMs": 830233,
+      "endMs": 833333,
+      "timestampMs": 831783,
+      "confidence": 0.8871
+    },
+    {
+      "id": "EP01-U071-C03",
+      "text": "的含义。",
+      "startMs": 833333,
+      "endMs": 834300,
+      "timestampMs": 833817,
+      "confidence": 0.9235
+    },
+    {
+      "id": "EP01-U071-C04",
+      "text": "张医生可能是用户自己的牙科医生，",
+      "startMs": 834300,
+      "endMs": 836967,
+      "timestampMs": 835633,
+      "confidence": 0.8819
+    },
+    {
+      "id": "EP01-U071-C05",
+      "text": "也可能是用户父亲的心脏科医生，",
+      "startMs": 836967,
+      "endMs": 839667,
+      "timestampMs": 838317,
+      "confidence": 0.8769
+    },
+    {
+      "id": "EP01-U071-C06",
+      "text": "脱离具体情境就无法正确理解。",
+      "startMs": 839667,
+      "endMs": 842433,
+      "timestampMs": 841050,
+      "confidence": 0.9118
+    },
+    {
+      "id": "EP01-U072-C01",
+      "text": "现实场景里，用户可能有多个身份：",
+      "startMs": 842500,
+      "endMs": 845333,
+      "timestampMs": 843917,
+      "confidence": 0.8604
+    },
+    {
+      "id": "EP01-U072-C02",
+      "text": "为自己、为父母、为子女。",
+      "startMs": 845333,
+      "endMs": 847933,
+      "timestampMs": 846633,
+      "confidence": 0.7248
+    },
+    {
+      "id": "EP01-U072-C03",
+      "text": "简单的键值存储无法准确区分这些归属。",
+      "startMs": 847933,
+      "endMs": 851867,
+      "timestampMs": 849900,
+      "confidence": 0.9134
+    },
+    {
+      "id": "EP01-U072-C04",
+      "text": "backstory 解释为什么存这条信息，",
+      "startMs": 851867,
+      "endMs": 854800,
+      "timestampMs": 853333,
+      "confidence": 0.9104
+    },
+    {
+      "id": "EP01-U072-C05",
+      "text": "person 和 relationship 解释为谁而",
+      "startMs": 854800,
+      "endMs": 857200,
+      "timestampMs": 856000,
+      "confidence": 0.7931
+    },
+    {
+      "id": "EP01-U072-C06",
+      "text": "存。",
+      "startMs": 857200,
+      "endMs": 857933,
+      "timestampMs": 857567,
+      "confidence": 0.4734
+    },
+    {
+      "id": "EP01-U073-C01",
+      "text": "当用户说帮我安排家人的年度体检时，",
+      "startMs": 858000,
+      "endMs": 861367,
+      "timestampMs": 859683,
+      "confidence": 0.9038
+    },
+    {
+      "id": "EP01-U073-C02",
+      "text": "系统可以通过 relationship 识别出所",
+      "startMs": 861367,
+      "endMs": 864100,
+      "timestampMs": 862733,
+      "confidence": 0.8571
+    },
+    {
+      "id": "EP01-U073-C03",
+      "text": "有家庭成员，",
+      "startMs": 864100,
+      "endMs": 865400,
+      "timestampMs": 864750,
+      "confidence": 0.9572
+    },
+    {
+      "id": "EP01-U073-C04",
+      "text": "再通过 backstory 了解每个人的健康",
+      "startMs": 865400,
+      "endMs": 868333,
+      "timestampMs": 866867,
+      "confidence": 0.8797
+    },
+    {
+      "id": "EP01-U073-C05",
+      "text": "历史，",
+      "startMs": 868333,
+      "endMs": 869033,
+      "timestampMs": 868683,
+      "confidence": 0.8502
+    },
+    {
+      "id": "EP01-U073-C06",
+      "text": "从而给出针对性的安排。",
+      "startMs": 869033,
+      "endMs": 871133,
+      "timestampMs": 870083,
+      "confidence": 0.5762
+    },
+    {
+      "id": "EP01-U074-C01",
+      "text": "代价是生成和维护成本较高：",
+      "startMs": 871200,
+      "endMs": 874300,
+      "timestampMs": 872750,
+      "confidence": 0.835
+    },
+    {
+      "id": "EP01-U074-C02",
+      "text": "每写一条记忆，",
+      "startMs": 874300,
+      "endMs": 875700,
+      "timestampMs": 875000,
+      "confidence": 0.8498
+    },
+    {
+      "id": "EP01-U074-C03",
+      "text": "都要额外抽取并维护这些元数据，",
+      "startMs": 875700,
+      "endMs": 878933,
+      "timestampMs": 877317,
+      "confidence": 0.9012
+    },
+    {
+      "id": "EP01-U074-C04",
+      "text": "调用更贵、也更慢。",
+      "startMs": 878933,
+      "endMs": 880867,
+      "timestampMs": 879900,
+      "confidence": 0.5909
+    },
+    {
+      "id": "EP01-U075-C01",
+      "text": "实践中的选择标准很明确：",
+      "startMs": 880933,
+      "endMs": 883300,
+      "timestampMs": 882117,
+      "confidence": 0.8783
+    },
+    {
+      "id": "EP01-U075-C02",
+      "text": "关键且少量的数据，比如用户偏好、",
+      "startMs": 883300,
+      "endMs": 886633,
+      "timestampMs": 884967,
+      "confidence": 0.8884
+    },
+    {
+      "id": "EP01-U075-C03",
+      "text": "关键人物关系，",
+      "startMs": 886633,
+      "endMs": 888133,
+      "timestampMs": 887383,
+      "confidence": 0.9155
+    },
+    {
+      "id": "EP01-U075-C04",
+      "text": "用 Advanced JSON Cards 保证可检索",
+      "startMs": 888133,
+      "endMs": 891333,
+      "timestampMs": 889733,
+      "confidence": 0.7648
+    },
+    {
+      "id": "EP01-U075-C05",
+      "text": "性；",
+      "startMs": 891333,
+      "endMs": 892100,
+      "timestampMs": 891717,
+      "confidence": 0.7054
+    },
+    {
+      "id": "EP01-U075-C06",
+      "text": "大量且非关键的对话事实，",
+      "startMs": 892100,
+      "endMs": 894467,
+      "timestampMs": 893283,
+      "confidence": 0.9438
+    },
+    {
+      "id": "EP01-U075-C07",
+      "text": "用 Simple Notes 降低成本。",
+      "startMs": 894467,
+      "endMs": 896633,
+      "timestampMs": 895550,
+      "confidence": 0.841
+    },
+    {
+      "id": "EP01-U076-C01",
+      "text": "多数生产系统采用混合模式：",
+      "startMs": 896700,
+      "endMs": 899367,
+      "timestampMs": 898033,
+      "confidence": 0.844
+    },
+    {
+      "id": "EP01-U076-C02",
+      "text": "同一个 Agent 内部，",
+      "startMs": 899367,
+      "endMs": 901133,
+      "timestampMs": 900250,
+      "confidence": 0.8018
+    },
+    {
+      "id": "EP01-U076-C03",
+      "text": "不同类别的信息走不同的路径。",
+      "startMs": 901133,
+      "endMs": 903633,
+      "timestampMs": 902383,
+      "confidence": 0.8754
+    },
+    {
+      "id": "EP01-U076-C04",
+      "text": "图 3-2 的横轴就是简单性递减、",
+      "startMs": 903633,
+      "endMs": 906767,
+      "timestampMs": 905200,
+      "confidence": 0.7466
+    },
+    {
+      "id": "EP01-U076-C05",
+      "text": "表达力递增，四种格式各占一个位置。",
+      "startMs": 906767,
+      "endMs": 910000,
+      "timestampMs": 908383,
+      "confidence": 0.9099
+    },
+    {
+      "id": "EP01-U077-C01",
+      "text": "实验 3-2 里，",
+      "startMs": 910067,
+      "endMs": 911967,
+      "timestampMs": 911017,
+      "confidence": 0.556
+    },
+    {
+      "id": "EP01-U077-C02",
+      "text": "user-memory 项目在统一接口下实现了",
+      "startMs": 911967,
+      "endMs": 914267,
+      "timestampMs": 913117,
+      "confidence": 0.8579
+    },
+    {
+      "id": "EP01-U077-C03",
+      "text": "这四种记忆模式。",
+      "startMs": 914267,
+      "endMs": 915800,
+      "timestampMs": 915033,
+      "confidence": 0.9031
+    },
+    {
+      "id": "EP01-U077-C04",
+      "text": "每种都提供完整实现：",
+      "startMs": 915800,
+      "endMs": 917800,
+      "timestampMs": 916800,
+      "confidence": 0.8451
+    },
+    {
+      "id": "EP01-U077-C05",
+      "text": "生成负责分析会话写入记忆，",
+      "startMs": 917800,
+      "endMs": 920400,
+      "timestampMs": 919100,
+      "confidence": 0.9204
+    },
+    {
+      "id": "EP01-U077-C06",
+      "text": "检索负责根据当前问题取回相关记忆。",
+      "startMs": 920400,
+      "endMs": 923767,
+      "timestampMs": 922083,
+      "confidence": 0.767
+    },
+    {
+      "id": "EP01-U078-C01",
+      "text": "运行时通过配置切换模式，",
+      "startMs": 923900,
+      "endMs": 926400,
+      "timestampMs": 925150,
+      "confidence": 0.8606
+    },
+    {
+      "id": "EP01-U078-C02",
+      "text": "就可以在实验 3-1 的三层次评估集上逐",
+      "startMs": 926400,
+      "endMs": 929967,
+      "timestampMs": 928183,
+      "confidence": 0.8173
+    },
+    {
+      "id": "EP01-U078-C03",
+      "text": "一测试，",
+      "startMs": 929967,
+      "endMs": 931000,
+      "timestampMs": 930483,
+      "confidence": 0.9451
+    },
+    {
+      "id": "EP01-U078-C04",
+      "text": "观察同一组测试会话在不同存储格式下提",
+      "startMs": 931000,
+      "endMs": 934633,
+      "timestampMs": 932817,
+      "confidence": 0.9279
+    },
+    {
+      "id": "EP01-U078-C05",
+      "text": "取出的记忆形态，",
+      "startMs": 934633,
+      "endMs": 936267,
+      "timestampMs": 935450,
+      "confidence": 0.9329
+    },
+    {
+      "id": "EP01-U078-C06",
+      "text": "以及最终回答的得分差异。",
+      "startMs": 936267,
+      "endMs": 938567,
+      "timestampMs": 937417,
+      "confidence": 0.7489
+    },
+    {
+      "id": "EP01-U079-C01",
+      "text": "实验观察与前文分析一致：",
+      "startMs": 938633,
+      "endMs": 941133,
+      "timestampMs": 939883,
+      "confidence": 0.8407
+    },
+    {
+      "id": "EP01-U079-C02",
+      "text": "Simple Notes 以最低的生成成本，",
+      "startMs": 941133,
+      "endMs": 944033,
+      "timestampMs": 942583,
+      "confidence": 0.8845
+    },
+    {
+      "id": "EP01-U079-C03",
+      "text": "通过了第一层基础回忆的多数用例；",
+      "startMs": 944033,
+      "endMs": 946933,
+      "timestampMs": 945483,
+      "confidence": 0.8994
+    },
+    {
+      "id": "EP01-U079-C04",
+      "text": "但在需要综合多条信息、",
+      "startMs": 946933,
+      "endMs": 949100,
+      "timestampMs": 948017,
+      "confidence": 0.8333
+    },
+    {
+      "id": "EP01-U079-C05",
+      "text": "区分同名实体的第二、",
+      "startMs": 949100,
+      "endMs": 950933,
+      "timestampMs": 950017,
+      "confidence": 0.8602
+    },
+    {
+      "id": "EP01-U079-C06",
+      "text": "三层用例上频繁失分。",
+      "startMs": 950933,
+      "endMs": 953133,
+      "timestampMs": 952033,
+      "confidence": 0.9067
+    },
+    {
+      "id": "EP01-U080-C01",
+      "text": "Advanced JSON Cards 在涉及消歧和跨",
+      "startMs": 953200,
+      "endMs": 957767,
+      "timestampMs": 955483,
+      "confidence": 0.8193
+    },
+    {
+      "id": "EP01-U080-C02",
+      "text": "会话关联的用例上表现最好，",
+      "startMs": 957767,
+      "endMs": 960133,
+      "timestampMs": 958950,
+      "confidence": 0.9094
+    },
+    {
+      "id": "EP01-U080-C03",
+      "text": "代价是每次会话结束后的记忆维护调用明",
+      "startMs": 960133,
+      "endMs": 963733,
+      "timestampMs": 961933,
+      "confidence": 0.9226
+    },
+    {
+      "id": "EP01-U080-C04",
+      "text": "显更贵、",
+      "startMs": 963733,
+      "endMs": 964667,
+      "timestampMs": 964200,
+      "confidence": 0.8116
+    },
+    {
+      "id": "EP01-U080-C05",
+      "text": "更慢。这就是表达力与成本的直接交换。",
+      "startMs": 964667,
+      "endMs": 968433,
+      "timestampMs": 966550,
+      "confidence": 0.7638
+    },
+    {
+      "id": "EP01-U081-C01",
+      "text": "建议读者在项目中亲手切换这四种模式，",
+      "startMs": 968500,
+      "endMs": 972067,
+      "timestampMs": 970283,
+      "confidence": 0.8978
+    },
+    {
+      "id": "EP01-U081-C02",
+      "text": "对比同一个测试用例生成的记忆文件。",
+      "startMs": 972067,
+      "endMs": 974967,
+      "timestampMs": 973517,
+      "confidence": 0.8971
+    },
+    {
+      "id": "EP01-U081-C03",
+      "text": "四种格式的差异，",
+      "startMs": 974967,
+      "endMs": 976400,
+      "timestampMs": 975683,
+      "confidence": 0.861
+    },
+    {
+      "id": "EP01-U081-C04",
+      "text": "在具体例子面前会一目了然。",
+      "startMs": 976400,
+      "endMs": 979000,
+      "timestampMs": 977700,
+      "confidence": 0.9226
+    },
+    {
+      "id": "EP01-U082-C01",
+      "text": "前面四种格式本质上都是文本。",
+      "startMs": 979067,
+      "endMs": 981933,
+      "timestampMs": 980500,
+      "confidence": 0.8832
+    },
+    {
+      "id": "EP01-U082-C02",
+      "text": "它们擅长召回单条事实，但聚合、",
+      "startMs": 981933,
+      "endMs": 985300,
+      "timestampMs": 983617,
+      "confidence": 0.7812
+    },
+    {
+      "id": "EP01-U082-C03",
+      "text": "冲突检测、约束执行这些操作，",
+      "startMs": 985300,
+      "endMs": 988100,
+      "timestampMs": 986700,
+      "confidence": 0.8609
+    },
+    {
+      "id": "EP01-U082-C04",
+      "text": "只能交给 LLM 去心算。",
+      "startMs": 988100,
+      "endMs": 990600,
+      "timestampMs": 989350,
+      "confidence": 0.8124
+    },
+    {
+      "id": "EP01-U083-C01",
+      "text": "User as Code 换了个思路：",
+      "startMs": 990667,
+      "endMs": 993433,
+      "timestampMs": 992050,
+      "confidence": 0.7936
+    },
+    {
+      "id": "EP01-U083-C02",
+      "text": "把用户状态改成带类型的可执行对象，",
+      "startMs": 993433,
+      "endMs": 996767,
+      "timestampMs": 995100,
+      "confidence": 0.9244
+    },
+    {
+      "id": "EP01-U083-C03",
+      "text": "并把规则写成普通函数，",
+      "startMs": 996767,
+      "endMs": 999033,
+      "timestampMs": 997900,
+      "confidence": 0.9123
+    },
+    {
+      "id": "EP01-U083-C04",
+      "text": "让表示和推理使用同一种可验证的介质。",
+      "startMs": 999033,
+      "endMs": 1002567,
+      "timestampMs": 1000800,
+      "confidence": 0.8994
+    },
+    {
+      "id": "EP01-U084-C01",
+      "text": "它借鉴了预写日志加检查点的机制：",
+      "startMs": 1002633,
+      "endMs": 1006233,
+      "timestampMs": 1004433,
+      "confidence": 0.8737
+    },
+    {
+      "id": "EP01-U084-C02",
+      "text": "会话结束后，",
+      "startMs": 1006233,
+      "endMs": 1007567,
+      "timestampMs": 1006900,
+      "confidence": 0.8495
+    },
+    {
+      "id": "EP01-U084-C03",
+      "text": "先把事实追加到只增日志里，",
+      "startMs": 1007567,
+      "endMs": 1010267,
+      "timestampMs": 1008917,
+      "confidence": 0.8672
+    },
+    {
+      "id": "EP01-U084-C04",
+      "text": "再定期从完整日志重建出带类型的状态。",
+      "startMs": 1010267,
+      "endMs": 1014267,
+      "timestampMs": 1012267,
+      "confidence": 0.9342
+    },
+    {
+      "id": "EP01-U085-C01",
+      "text": "这样做的好处是两头都占：",
+      "startMs": 1014333,
+      "endMs": 1016633,
+      "timestampMs": 1015483,
+      "confidence": 0.8811
+    },
+    {
+      "id": "EP01-U085-C02",
+      "text": "原始证据一条不丢，",
+      "startMs": 1016633,
+      "endMs": 1018567,
+      "timestampMs": 1017600,
+      "confidence": 0.8733
+    },
+    {
+      "id": "EP01-U085-C03",
+      "text": "同时又能得到一份可查询、",
+      "startMs": 1018567,
+      "endMs": 1020767,
+      "timestampMs": 1019667,
+      "confidence": 0.7587
+    },
+    {
+      "id": "EP01-U085-C04",
+      "text": "可执行的派生状态。日志负责真相，",
+      "startMs": 1020767,
+      "endMs": 1024067,
+      "timestampMs": 1022417,
+      "confidence": 0.9003
+    },
+    {
+      "id": "EP01-U085-C05",
+      "text": "状态负责效率。",
+      "startMs": 1024067,
+      "endMs": 1025533,
+      "timestampMs": 1024800,
+      "confidence": 0.5233
+    },
+    {
+      "id": "EP01-U086-C01",
+      "text": "看一个简化的状态片段：",
+      "startMs": 1025600,
+      "endMs": 1027233,
+      "timestampMs": 1026417,
+      "confidence": 0.8706
+    },
+    {
+      "id": "EP01-U086-C02",
+      "text": "passport 是一个 PassportInfo 对象",
+      "startMs": 1027233,
+      "endMs": 1030467,
+      "timestampMs": 1028850,
+      "confidence": 0.6879
+    },
+    {
+      "id": "EP01-U086-C03",
+      "text": "，",
+      "startMs": 1030467,
+      "endMs": 1031033,
+      "timestampMs": 1030750,
+      "confidence": 0.7418
+    },
+    {
+      "id": "EP01-U086-C04",
+      "text": "包含号码、国家和到期日；",
+      "startMs": 1031033,
+      "endMs": 1033600,
+      "timestampMs": 1032317,
+      "confidence": 0.771
+    },
+    {
+      "id": "EP01-U086-C05",
+      "text": "trips 是一个 Trip 列表，",
+      "startMs": 1033600,
+      "endMs": 1035533,
+      "timestampMs": 1034567,
+      "confidence": 0.7989
+    },
+    {
+      "id": "EP01-U086-C06",
+      "text": "每趟行程有目的地、",
+      "startMs": 1035533,
+      "endMs": 1037300,
+      "timestampMs": 1036417,
+      "confidence": 0.8326
+    },
+    {
+      "id": "EP01-U086-C07",
+      "text": "出发日期和是否国际航班。",
+      "startMs": 1037300,
+      "endMs": 1039867,
+      "timestampMs": 1038583,
+      "confidence": 0.734
+    },
+    {
+      "id": "EP01-U087-C01",
+      "text": "一旦状态带上了类型，",
+      "startMs": 1039967,
+      "endMs": 1041833,
+      "timestampMs": 1040900,
+      "confidence": 0.943
+    },
+    {
+      "id": "EP01-U087-C02",
+      "text": "原本需要 LLM 读一遍再心算的操作，",
+      "startMs": 1041833,
+      "endMs": 1045400,
+      "timestampMs": 1043617,
+      "confidence": 0.8901
+    },
+    {
+      "id": "EP01-U087-C03",
+      "text": "就可以交给确定性函数。结果可复现、",
+      "startMs": 1045400,
+      "endMs": 1048233,
+      "timestampMs": 1046817,
+      "confidence": 0.8263
+    },
+    {
+      "id": "EP01-U087-C04",
+      "text": "可测试，而不是每次都可能不一样。",
+      "startMs": 1048233,
+      "endMs": 1051633,
+      "timestampMs": 1049933,
+      "confidence": 0.2073
+    },
+    {
+      "id": "EP01-U088-C01",
+      "text": "比如聚合统计：直接遍历 trips，",
+      "startMs": 1051700,
+      "endMs": 1054900,
+      "timestampMs": 1053300,
+      "confidence": 0.7993
+    },
+    {
+      "id": "EP01-U088-C02",
+      "text": "筛出是国际航班、",
+      "startMs": 1054900,
+      "endMs": 1056767,
+      "timestampMs": 1055833,
+      "confidence": 0.7286
+    },
+    {
+      "id": "EP01-U088-C03",
+      "text": "并且出发年份是 2025 的行程，",
+      "startMs": 1056767,
+      "endMs": 1059300,
+      "timestampMs": 1058033,
+      "confidence": 0.8011
+    },
+    {
+      "id": "EP01-U088-C04",
+      "text": "然后计数。",
+      "startMs": 1059300,
+      "endMs": 1060533,
+      "timestampMs": 1059917,
+      "confidence": 0.9554
+    },
+    {
+      "id": "EP01-U088-C05",
+      "text": "代码里这个例子的结果是 2。",
+      "startMs": 1060533,
+      "endMs": 1062933,
+      "timestampMs": 1061733,
+      "confidence": 0.8288
+    },
+    {
+      "id": "EP01-U089-C01",
+      "text": "再比如冲突发现：",
+      "startMs": 1063000,
+      "endMs": 1064800,
+      "timestampMs": 1063900,
+      "confidence": 0.7985
+    },
+    {
+      "id": "EP01-U089-C02",
+      "text": "把当前用药和过敏史做交叉比对。",
+      "startMs": 1064800,
+      "endMs": 1068067,
+      "timestampMs": 1066433,
+      "confidence": 0.9009
+    },
+    {
+      "id": "EP01-U089-C03",
+      "text": "如果某个药物的药物类别和某个过敏原的",
+      "startMs": 1068067,
+      "endMs": 1071133,
+      "timestampMs": 1069600,
+      "confidence": 0.8763
+    },
+    {
+      "id": "EP01-U089-C04",
+      "text": "类别相同，",
+      "startMs": 1071133,
+      "endMs": 1072200,
+      "timestampMs": 1071667,
+      "confidence": 0.9205
+    },
+    {
+      "id": "EP01-U089-C05",
+      "text": "就发出冲突告警。这是一个纯函数，",
+      "startMs": 1072200,
+      "endMs": 1075267,
+      "timestampMs": 1073733,
+      "confidence": 0.934
+    },
+    {
+      "id": "EP01-U089-C06",
+      "text": "不靠模型猜。",
+      "startMs": 1075267,
+      "endMs": 1076533,
+      "timestampMs": 1075900,
+      "confidence": 0.8915
+    },
+    {
+      "id": "EP01-U090-C01",
+      "text": "第三种是约束执行：",
+      "startMs": 1076600,
+      "endMs": 1078567,
+      "timestampMs": 1077583,
+      "confidence": 0.781
+    },
+    {
+      "id": "EP01-U090-C02",
+      "text": "状态更新后自动检查护照有效期，",
+      "startMs": 1078567,
+      "endMs": 1081733,
+      "timestampMs": 1080150,
+      "confidence": 0.9457
+    },
+    {
+      "id": "EP01-U090-C03",
+      "text": "如果距出发日不足一百八十天就告警，",
+      "startMs": 1081733,
+      "endMs": 1085133,
+      "timestampMs": 1083433,
+      "confidence": 0.9376
+    },
+    {
+      "id": "EP01-U090-C04",
+      "text": "提示护照过期太近，",
+      "startMs": 1085133,
+      "endMs": 1086800,
+      "timestampMs": 1085967,
+      "confidence": 0.8727
+    },
+    {
+      "id": "EP01-U090-C05",
+      "text": "并带上具体行程和天数。",
+      "startMs": 1086800,
+      "endMs": 1089033,
+      "timestampMs": 1087917,
+      "confidence": 0.9208
+    },
+    {
+      "id": "EP01-U091-C01",
+      "text": "关键在于，",
+      "startMs": 1089100,
+      "endMs": 1090000,
+      "timestampMs": 1089550,
+      "confidence": 0.8955
+    },
+    {
+      "id": "EP01-U091-C02",
+      "text": "这个检查不需要等用户再次检索。",
+      "startMs": 1090000,
+      "endMs": 1092900,
+      "timestampMs": 1091450,
+      "confidence": 0.8565
+    },
+    {
+      "id": "EP01-U091-C03",
+      "text": "状态一变就会自动触发，",
+      "startMs": 1092900,
+      "endMs": 1094900,
+      "timestampMs": 1093900,
+      "confidence": 0.8861
+    },
+    {
+      "id": "EP01-U091-C04",
+      "text": "这正是前面三层次框架里主动服务能力的",
+      "startMs": 1094900,
+      "endMs": 1098300,
+      "timestampMs": 1096600,
+      "confidence": 0.9156
+    },
+    {
+      "id": "EP01-U091-C05",
+      "text": "工程来源。",
+      "startMs": 1098300,
+      "endMs": 1099467,
+      "timestampMs": 1098883,
+      "confidence": 0.6605
+    },
+    {
+      "id": "EP01-U092-C01",
+      "text": "User as Code 的完整设计与评测，",
+      "startMs": 1099533,
+      "endMs": 1102700,
+      "timestampMs": 1101117,
+      "confidence": 0.8739
+    },
+    {
+      "id": "EP01-U092-C02",
+      "text": "见 Li, Bojie 的论文 User as Code:",
+      "startMs": 1102700,
+      "endMs": 1106700,
+      "timestampMs": 1104700,
+      "confidence": 0.6266
+    },
+    {
+      "id": "EP01-U092-C03",
+      "text": " Executable Memory for Personali",
+      "startMs": 1106700,
+      "endMs": 1109267,
+      "timestampMs": 1107983,
+      "confidence": 0.879
+    },
+    {
+      "id": "EP01-U092-C04",
+      "text": "zed Agents，",
+      "startMs": 1109267,
+      "endMs": 1110400,
+      "timestampMs": 1109833,
+      "confidence": 0.7836
+    },
+    {
+      "id": "EP01-U092-C05",
+      "text": "arXiv 编号 2606.16707，",
+      "startMs": 1110400,
+      "endMs": 1114533,
+      "timestampMs": 1112467,
+      "confidence": 0.7174
+    },
+    {
+      "id": "EP01-U092-C06",
+      "text": "发表于 2026 年。",
+      "startMs": 1114533,
+      "endMs": 1116467,
+      "timestampMs": 1115500,
+      "confidence": 0.7386
+    },
+    {
+      "id": "EP01-U093-C01",
+      "text": "我们已经看了四种具体的记忆策略，",
+      "startMs": 1116533,
+      "endMs": 1119433,
+      "timestampMs": 1117983,
+      "confidence": 0.9175
+    },
+    {
+      "id": "EP01-U093-C02",
+      "text": "现在用认知科学的框架补充另一个维度：",
+      "startMs": 1119433,
+      "endMs": 1123000,
+      "timestampMs": 1121217,
+      "confidence": 0.8503
+    },
+    {
+      "id": "EP01-U093-C03",
+      "text": "记忆内容的类型。先说工作记忆，",
+      "startMs": 1123000,
+      "endMs": 1126133,
+      "timestampMs": 1124567,
+      "confidence": 0.9168
+    },
+    {
+      "id": "EP01-U093-C04",
+      "text": "它对应 Agent 的上下文窗口，",
+      "startMs": 1126133,
+      "endMs": 1128833,
+      "timestampMs": 1127483,
+      "confidence": 0.8755
+    },
+    {
+      "id": "EP01-U093-C05",
+      "text": "是处理当前任务的临时信息空间。",
+      "startMs": 1128833,
+      "endMs": 1131700,
+      "timestampMs": 1130267,
+      "confidence": 0.7085
+    },
+    {
+      "id": "EP01-U094-C01",
+      "text": "轨迹就是工作记忆中最核心的内容。",
+      "startMs": 1131767,
+      "endMs": 1135100,
+      "timestampMs": 1133433,
+      "confidence": 0.9127
+    },
+    {
+      "id": "EP01-U094-C02",
+      "text": "但工作记忆还不止于此，",
+      "startMs": 1135100,
+      "endMs": 1137133,
+      "timestampMs": 1136117,
+      "confidence": 0.905
+    },
+    {
+      "id": "EP01-U094-C03",
+      "text": "它也可能包含从长期记忆中激活、",
+      "startMs": 1137133,
+      "endMs": 1140133,
+      "timestampMs": 1138633,
+      "confidence": 0.8695
+    },
+    {
+      "id": "EP01-U094-C04",
+      "text": "加载进来的信息。",
+      "startMs": 1140133,
+      "endMs": 1141700,
+      "timestampMs": 1140917,
+      "confidence": 0.9467
+    },
+    {
+      "id": "EP01-U094-C05",
+      "text": "这一点后面讲参考架构时会再用上。",
+      "startMs": 1141700,
+      "endMs": 1144933,
+      "timestampMs": 1143317,
+      "confidence": 0.7784
+    },
+    {
+      "id": "EP01-U095-C01",
+      "text": "长期记忆细分为三种。",
+      "startMs": 1145000,
+      "endMs": 1147333,
+      "timestampMs": 1146167,
+      "confidence": 0.8793
+    },
+    {
+      "id": "EP01-U095-C02",
+      "text": "第一种是情景记忆，",
+      "startMs": 1147333,
+      "endMs": 1149200,
+      "timestampMs": 1148267,
+      "confidence": 0.8621
+    },
+    {
+      "id": "EP01-U095-C03",
+      "text": "关于具体事件和经历。人类的例子是：",
+      "startMs": 1149200,
+      "endMs": 1152400,
+      "timestampMs": 1150800,
+      "confidence": 0.8898
+    },
+    {
+      "id": "EP01-U095-C04",
+      "text": "上周三和同事在那家意大利餐厅吃了一顿",
+      "startMs": 1152400,
+      "endMs": 1155733,
+      "timestampMs": 1154067,
+      "confidence": 0.9025
+    },
+    {
+      "id": "EP01-U095-C05",
+      "text": "很棒的晚餐。",
+      "startMs": 1155733,
+      "endMs": 1157033,
+      "timestampMs": 1156383,
+      "confidence": 0.7234
+    },
+    {
+      "id": "EP01-U096-C01",
+      "text": "对应到 Agent，",
+      "startMs": 1157100,
+      "endMs": 1158733,
+      "timestampMs": 1157917,
+      "confidence": 0.7268
+    },
+    {
+      "id": "EP01-U096-C02",
+      "text": "就是前面订机票例子里的：",
+      "startMs": 1158733,
+      "endMs": 1160867,
+      "timestampMs": 1159800,
+      "confidence": 0.7967
+    },
+    {
+      "id": "EP01-U096-C03",
+      "text": "用户订了下周五去东京的 ANA 航班。",
+      "startMs": 1160867,
+      "endMs": 1164400,
+      "timestampMs": 1162633,
+      "confidence": 0.8706
+    },
+    {
+      "id": "EP01-U096-C04",
+      "text": "它记录了一个具体事件的时间、",
+      "startMs": 1164400,
+      "endMs": 1166333,
+      "timestampMs": 1165367,
+      "confidence": 0.8177
+    },
+    {
+      "id": "EP01-U096-C05",
+      "text": "对象和细节。",
+      "startMs": 1166333,
+      "endMs": 1168433,
+      "timestampMs": 1167383,
+      "confidence": 0.1726
+    },
+    {
+      "id": "EP01-U097-C01",
+      "text": "第二种是语义记忆，",
+      "startMs": 1168500,
+      "endMs": 1170400,
+      "timestampMs": 1169450,
+      "confidence": 0.8857
+    },
+    {
+      "id": "EP01-U097-C02",
+      "text": "从具体事件中抽象出的一般性知识。",
+      "startMs": 1170400,
+      "endMs": 1173633,
+      "timestampMs": 1172017,
+      "confidence": 0.9377
+    },
+    {
+      "id": "EP01-U097-C03",
+      "text": "人类的例子是：意大利的首都是罗马。",
+      "startMs": 1173633,
+      "endMs": 1176667,
+      "timestampMs": 1175150,
+      "confidence": 0.861
+    },
+    {
+      "id": "EP01-U097-C04",
+      "text": "它不依赖于某次具体经历。",
+      "startMs": 1176667,
+      "endMs": 1178733,
+      "timestampMs": 1177700,
+      "confidence": 0.9043
+    },
+    {
+      "id": "EP01-U098-C01",
+      "text": "对应到 Agent，就是用户是素食者、",
+      "startMs": 1178800,
+      "endMs": 1182067,
+      "timestampMs": 1180433,
+      "confidence": 0.8403
+    },
+    {
+      "id": "EP01-U098-C02",
+      "text": "用户偏好靠窗座位。",
+      "startMs": 1182067,
+      "endMs": 1184033,
+      "timestampMs": 1183050,
+      "confidence": 0.8931
+    },
+    {
+      "id": "EP01-U098-C03",
+      "text": "这些不是某次对话的记录，",
+      "startMs": 1184033,
+      "endMs": 1186133,
+      "timestampMs": 1185083,
+      "confidence": 0.9182
+    },
+    {
+      "id": "EP01-U098-C04",
+      "text": "而是从多次交互中提炼出来的稳定特征。",
+      "startMs": 1186133,
+      "endMs": 1189533,
+      "timestampMs": 1187833,
+      "confidence": 0.805
+    },
+    {
+      "id": "EP01-U099-C01",
+      "text": "第三种是程序记忆，",
+      "startMs": 1189600,
+      "endMs": 1191600,
+      "timestampMs": 1190600,
+      "confidence": 0.912
+    },
+    {
+      "id": "EP01-U099-C02",
+      "text": "关于行为模式和流程。",
+      "startMs": 1191600,
+      "endMs": 1193667,
+      "timestampMs": 1192633,
+      "confidence": 0.9481
+    },
+    {
+      "id": "EP01-U099-C03",
+      "text": "人类的例子是骑自行车这种能力：",
+      "startMs": 1193667,
+      "endMs": 1196700,
+      "timestampMs": 1195183,
+      "confidence": 0.8694
+    },
+    {
+      "id": "EP01-U099-C04",
+      "text": "你很难用语言完整描述它，",
+      "startMs": 1196700,
+      "endMs": 1199100,
+      "timestampMs": 1197900,
+      "confidence": 0.9084
+    },
+    {
+      "id": "EP01-U099-C05",
+      "text": "但身体记得怎么骑。",
+      "startMs": 1199100,
+      "endMs": 1200733,
+      "timestampMs": 1199917,
+      "confidence": 0.9225
+    },
+    {
+      "id": "EP01-U100-C01",
+      "text": "对应到 Agent，",
+      "startMs": 1200800,
+      "endMs": 1202433,
+      "timestampMs": 1201617,
+      "confidence": 0.7994
+    },
+    {
+      "id": "EP01-U100-C02",
+      "text": "就是从用户反复订机票的模式中学到的通",
+      "startMs": 1202433,
+      "endMs": 1205700,
+      "timestampMs": 1204067,
+      "confidence": 0.9013
+    },
+    {
+      "id": "EP01-U100-C03",
+      "text": "用流程：",
+      "startMs": 1205700,
+      "endMs": 1206700,
+      "timestampMs": 1206200,
+      "confidence": 0.7871
+    },
+    {
+      "id": "EP01-U100-C04",
+      "text": "先搜索直飞航班，确认座位偏好，",
+      "startMs": 1206700,
+      "endMs": 1209967,
+      "timestampMs": 1208333,
+      "confidence": 0.8844
+    },
+    {
+      "id": "EP01-U100-C05",
+      "text": "使用常旅客号码，最后订餐。",
+      "startMs": 1209967,
+      "endMs": 1212367,
+      "timestampMs": 1211167,
+      "confidence": 0.7251
+    },
+    {
+      "id": "EP01-U101-C01",
+      "text": "到这里，",
+      "startMs": 1212433,
+      "endMs": 1213233,
+      "timestampMs": 1212833,
+      "confidence": 0.9208
+    },
+    {
+      "id": "EP01-U101-C02",
+      "text": "我们其实已经引入了三套分类体系，",
+      "startMs": 1213233,
+      "endMs": 1215867,
+      "timestampMs": 1214550,
+      "confidence": 0.9122
+    },
+    {
+      "id": "EP01-U101-C03",
+      "text": "很容易混淆。",
+      "startMs": 1215867,
+      "endMs": 1217367,
+      "timestampMs": 1216617,
+      "confidence": 0.8407
+    },
+    {
+      "id": "EP01-U101-C04",
+      "text": "表 3-1 一次性厘清它们的关系：",
+      "startMs": 1217367,
+      "endMs": 1220500,
+      "timestampMs": 1218933,
+      "confidence": 0.7731
+    },
+    {
+      "id": "EP01-U101-C05",
+      "text": "答案是它们相互正交。",
+      "startMs": 1220500,
+      "endMs": 1222667,
+      "timestampMs": 1221583,
+      "confidence": 0.9536
+    },
+    {
+      "id": "EP01-U102-C01",
+      "text": "第一套是记忆层次，回答存在哪里：",
+      "startMs": 1222733,
+      "endMs": 1225867,
+      "timestampMs": 1224300,
+      "confidence": 0.8543
+    },
+    {
+      "id": "EP01-U102-C02",
+      "text": "轨迹、用户长期记忆、业务状态。",
+      "startMs": 1225867,
+      "endMs": 1229100,
+      "timestampMs": 1227483,
+      "confidence": 0.7837
+    },
+    {
+      "id": "EP01-U102-C03",
+      "text": "第二套是存储格式，回答怎么存：",
+      "startMs": 1229100,
+      "endMs": 1232033,
+      "timestampMs": 1230567,
+      "confidence": 0.8437
+    },
+    {
+      "id": "EP01-U102-C04",
+      "text": "四种格式。第三套是认知类型，",
+      "startMs": 1232033,
+      "endMs": 1234967,
+      "timestampMs": 1233500,
+      "confidence": 0.7478
+    },
+    {
+      "id": "EP01-U102-C05",
+      "text": "回答存什么：情景、语义、程序。",
+      "startMs": 1234967,
+      "endMs": 1238567,
+      "timestampMs": 1236767,
+      "confidence": 0.6729
+    },
+    {
+      "id": "EP01-U103-C01",
+      "text": "因为是正交的，所以可以自由组合。",
+      "startMs": 1238633,
+      "endMs": 1241767,
+      "timestampMs": 1240200,
+      "confidence": 0.9003
+    },
+    {
+      "id": "EP01-U103-C02",
+      "text": "比如一条用户偏好靠窗座位的语义记忆，",
+      "startMs": 1241767,
+      "endMs": 1245067,
+      "timestampMs": 1243417,
+      "confidence": 0.8948
+    },
+    {
+      "id": "EP01-U103-C03",
+      "text": "可以用 Simple Notes 格式，",
+      "startMs": 1245067,
+      "endMs": 1246900,
+      "timestampMs": 1245983,
+      "confidence": 0.86
+    },
+    {
+      "id": "EP01-U103-C04",
+      "text": "存储在用户长期记忆里。",
+      "startMs": 1246900,
+      "endMs": 1249100,
+      "timestampMs": 1248000,
+      "confidence": 0.6994
+    },
+    {
+      "id": "EP01-U104-C01",
+      "text": "反过来，一段先搜直飞、确认座位、",
+      "startMs": 1249167,
+      "endMs": 1252700,
+      "timestampMs": 1250933,
+      "confidence": 0.7703
+    },
+    {
+      "id": "EP01-U104-C02",
+      "text": "用常旅客号的程序记忆，",
+      "startMs": 1252700,
+      "endMs": 1254733,
+      "timestampMs": 1253717,
+      "confidence": 0.9134
+    },
+    {
+      "id": "EP01-U104-C03",
+      "text": "也可以用 Advanced JSON Cards 格式",
+      "startMs": 1254733,
+      "endMs": 1257633,
+      "timestampMs": 1256183,
+      "confidence": 0.7782
+    },
+    {
+      "id": "EP01-U104-C04",
+      "text": "存储。",
+      "startMs": 1257633,
+      "endMs": 1258467,
+      "timestampMs": 1258050,
+      "confidence": 0.9022
+    },
+    {
+      "id": "EP01-U104-C05",
+      "text": "两个维度互不约束。",
+      "startMs": 1258467,
+      "endMs": 1260200,
+      "timestampMs": 1259333,
+      "confidence": 0.8999
+    },
+    {
+      "id": "EP01-U105-C01",
+      "text": "所以怎么选？选择哪种格式，",
+      "startMs": 1260267,
+      "endMs": 1263000,
+      "timestampMs": 1261633,
+      "confidence": 0.8344
+    },
+    {
+      "id": "EP01-U105-C02",
+      "text": "取决于工程需求，",
+      "startMs": 1263000,
+      "endMs": 1264867,
+      "timestampMs": 1263933,
+      "confidence": 0.9474
+    },
+    {
+      "id": "EP01-U105-C03",
+      "text": "也就是简单性和表达力之间的取舍；",
+      "startMs": 1264867,
+      "endMs": 1268267,
+      "timestampMs": 1266567,
+      "confidence": 0.951
+    },
+    {
+      "id": "EP01-U105-C04",
+      "text": "选择存什么类型，取决于业务场景，",
+      "startMs": 1268267,
+      "endMs": 1271600,
+      "timestampMs": 1269933,
+      "confidence": 0.9222
+    },
+    {
+      "id": "EP01-U105-C05",
+      "text": "也就是你需要记住事实、事件还是流程。",
+      "startMs": 1271600,
+      "endMs": 1275300,
+      "timestampMs": 1273450,
+      "confidence": 0.7744
+    },
+    {
+      "id": "EP01-U106-C01",
+      "text": "前面讨论的存储格式和记忆类型，",
+      "startMs": 1275367,
+      "endMs": 1278333,
+      "timestampMs": 1276850,
+      "confidence": 0.9229
+    },
+    {
+      "id": "EP01-U106-C02",
+      "text": "最终都要落到工程实现。",
+      "startMs": 1278333,
+      "endMs": 1280667,
+      "timestampMs": 1279500,
+      "confidence": 0.9148
+    },
+    {
+      "id": "EP01-U106-C03",
+      "text": "开源社区已经出现多个专门的记忆管理框",
+      "startMs": 1280667,
+      "endMs": 1283700,
+      "timestampMs": 1282183,
+      "confidence": 0.8938
+    },
+    {
+      "id": "EP01-U106-C04",
+      "text": "架，",
+      "startMs": 1283700,
+      "endMs": 1284333,
+      "timestampMs": 1284017,
+      "confidence": 0.8558
+    },
+    {
+      "id": "EP01-U106-C05",
+      "text": "这里以 Mem0 和 Memobase 为例，",
+      "startMs": 1284333,
+      "endMs": 1288100,
+      "timestampMs": 1286217,
+      "confidence": 0.6629
+    },
+    {
+      "id": "EP01-U106-C06",
+      "text": "看两种设计理念如何取舍。",
+      "startMs": 1288100,
+      "endMs": 1289500,
+      "timestampMs": 1288800,
+      "confidence": 0.3035
+    },
+    {
+      "id": "EP01-U107-C01",
+      "text": "Mem0 的演进本身就是一个很有启发性的",
+      "startMs": 1290067,
+      "endMs": 1292833,
+      "timestampMs": 1291450,
+      "confidence": 0.8777
+    },
+    {
+      "id": "EP01-U107-C02",
+      "text": "系统设计案例：",
+      "startMs": 1292833,
+      "endMs": 1294767,
+      "timestampMs": 1293800,
+      "confidence": 0.7219
+    },
+    {
+      "id": "EP01-U107-C03",
+      "text": "2025 年的论文和 v2 把冲突处理放在写",
+      "startMs": 1294767,
+      "endMs": 1298000,
+      "timestampMs": 1296383,
+      "confidence": 0.8377
+    },
+    {
+      "id": "EP01-U107-C04",
+      "text": "入阶段，",
+      "startMs": 1298000,
+      "endMs": 1298933,
+      "timestampMs": 1298467,
+      "confidence": 0.8778
+    },
+    {
+      "id": "EP01-U107-C05",
+      "text": "而 2026 年 4 月发布的 v3，",
+      "startMs": 1298933,
+      "endMs": 1301467,
+      "timestampMs": 1300200,
+      "confidence": 0.6511
+    },
+    {
+      "id": "EP01-U107-C06",
+      "text": "把它移到了检索阶段。",
+      "startMs": 1301467,
+      "endMs": 1303367,
+      "timestampMs": 1302417,
+      "confidence": 0.674
+    },
+    {
+      "id": "EP01-U108-C01",
+      "text": "先看 v2。对话结束后，",
+      "startMs": 1303433,
+      "endMs": 1306767,
+      "timestampMs": 1305100,
+      "confidence": 0.6045
+    },
+    {
+      "id": "EP01-U108-C02",
+      "text": "LLM 先抽取候选事实；",
+      "startMs": 1306767,
+      "endMs": 1308767,
+      "timestampMs": 1307767,
+      "confidence": 0.8274
+    },
+    {
+      "id": "EP01-U108-C03",
+      "text": "系统再用向量检索找到相近的已有记忆；",
+      "startMs": 1308767,
+      "endMs": 1312400,
+      "timestampMs": 1310583,
+      "confidence": 0.8877
+    },
+    {
+      "id": "EP01-U108-C04",
+      "text": "最后由 LLM 在 ADD、UPDATE、",
+      "startMs": 1312400,
+      "endMs": 1317333,
+      "timestampMs": 1314867,
+      "confidence": 0.5687
+    },
+    {
+      "id": "EP01-U108-C05",
+      "text": "DELETE、NOOP 之间做出决定。",
+      "startMs": 1317333,
+      "endMs": 1318867,
+      "timestampMs": 1318100,
+      "confidence": 0.6109
+    },
+    {
+      "id": "EP01-U109-C01",
+      "text": "用户先说我住在北京，",
+      "startMs": 1318933,
+      "endMs": 1320900,
+      "timestampMs": 1319917,
+      "confidence": 0.9435
+    },
+    {
+      "id": "EP01-U109-C02",
+      "text": "后来又说我搬到了上海。",
+      "startMs": 1320900,
+      "endMs": 1323133,
+      "timestampMs": 1322017,
+      "confidence": 0.9291
+    },
+    {
+      "id": "EP01-U109-C03",
+      "text": "系统会把前一条 UPDATE 成住在上海，",
+      "startMs": 1323133,
+      "endMs": 1326533,
+      "timestampMs": 1324833,
+      "confidence": 0.9199
+    },
+    {
+      "id": "EP01-U109-C04",
+      "text": "在写入阶段就把冲突消除掉。",
+      "startMs": 1326533,
+      "endMs": 1329233,
+      "timestampMs": 1327883,
+      "confidence": 0.9418
+    },
+    {
+      "id": "EP01-U110-C01",
+      "text": "论文还描述了图记忆变体 Mem0-g，",
+      "startMs": 1329333,
+      "endMs": 1333333,
+      "timestampMs": 1331333,
+      "confidence": 0.8057
+    },
+    {
+      "id": "EP01-U110-C02",
+      "text": "用实体和关系组成的图，",
+      "startMs": 1333333,
+      "endMs": 1335500,
+      "timestampMs": 1334417,
+      "confidence": 0.8733
+    },
+    {
+      "id": "EP01-U110-C03",
+      "text": "来支持多跳问题与时序问题。",
+      "startMs": 1335500,
+      "endMs": 1338300,
+      "timestampMs": 1336900,
+      "confidence": 0.9117
+    },
+    {
+      "id": "EP01-U110-C04",
+      "text": "这是当年的设计，",
+      "startMs": 1338300,
+      "endMs": 1339633,
+      "timestampMs": 1338967,
+      "confidence": 0.9271
+    },
+    {
+      "id": "EP01-U110-C05",
+      "text": "后面我们会说明它的现状。",
+      "startMs": 1339633,
+      "endMs": 1341800,
+      "timestampMs": 1340717,
+      "confidence": 0.6799
+    },
+    {
+      "id": "EP01-U111-C01",
+      "text": "这个方案的优势很明显：",
+      "startMs": 1341867,
+      "endMs": 1343733,
+      "timestampMs": 1342800,
+      "confidence": 0.7949
+    },
+    {
+      "id": "EP01-U111-C02",
+      "text": "记忆库始终简洁一致。",
+      "startMs": 1343733,
+      "endMs": 1345900,
+      "timestampMs": 1344817,
+      "confidence": 0.8727
+    },
+    {
+      "id": "EP01-U111-C03",
+      "text": "同一件事只保留一条当前事实，",
+      "startMs": 1345900,
+      "endMs": 1348733,
+      "timestampMs": 1347317,
+      "confidence": 0.8929
+    },
+    {
+      "id": "EP01-U111-C04",
+      "text": "读起来干净，下游消费也不用再做判断。",
+      "startMs": 1348733,
+      "endMs": 1352333,
+      "timestampMs": 1350533,
+      "confidence": 0.7643
+    },
+    {
+      "id": "EP01-U112-C01",
+      "text": "风险在于，",
+      "startMs": 1352400,
+      "endMs": 1353433,
+      "timestampMs": 1352917,
+      "confidence": 0.845
+    },
+    {
+      "id": "EP01-U112-C02",
+      "text": "一次错误的 UPDATE 或 DELETE 会不可",
+      "startMs": 1353433,
+      "endMs": 1356433,
+      "timestampMs": 1354933,
+      "confidence": 0.8642
+    },
+    {
+      "id": "EP01-U112-C03",
+      "text": "逆地丢失历史信息。",
+      "startMs": 1356433,
+      "endMs": 1358267,
+      "timestampMs": 1357350,
+      "confidence": 0.8743
+    },
+    {
+      "id": "EP01-U112-C04",
+      "text": "模型一旦判断错，",
+      "startMs": 1358267,
+      "endMs": 1359467,
+      "timestampMs": 1358867,
+      "confidence": 0.7647
+    },
+    {
+      "id": "EP01-U112-C05",
+      "text": "原来的记录就真的没有了。",
+      "startMs": 1359467,
+      "endMs": 1361833,
+      "timestampMs": 1360650,
+      "confidence": 0.2671
+    },
+    {
+      "id": "EP01-U113-C01",
+      "text": "另一个风险是成本：",
+      "startMs": 1361900,
+      "endMs": 1363767,
+      "timestampMs": 1362833,
+      "confidence": 0.8147
+    },
+    {
+      "id": "EP01-U113-C02",
+      "text": "每条候选事实都要经历一次检索，",
+      "startMs": 1363767,
+      "endMs": 1367033,
+      "timestampMs": 1365400,
+      "confidence": 0.9125
+    },
+    {
+      "id": "EP01-U113-C03",
+      "text": "再加上一次 LLM 判断。写入路径很长，",
+      "startMs": 1367033,
+      "endMs": 1371033,
+      "timestampMs": 1369033,
+      "confidence": 0.8492
+    },
+    {
+      "id": "EP01-U113-C04",
+      "text": "延迟和费用都不低。",
+      "startMs": 1371033,
+      "endMs": 1372833,
+      "timestampMs": 1371933,
+      "confidence": 0.6493
+    },
+    {
+      "id": "EP01-U114-C01",
+      "text": "v3 换了个方向：",
+      "startMs": 1373500,
+      "endMs": 1374933,
+      "timestampMs": 1374217,
+      "confidence": 0.723
+    },
+    {
+      "id": "EP01-U114-C02",
+      "text": "当前管线用一次 LLM 调用抽取事实，",
+      "startMs": 1374933,
+      "endMs": 1379200,
+      "timestampMs": 1377067,
+      "confidence": 0.8918
+    },
+    {
+      "id": "EP01-U114-C03",
+      "text": "并且只做 ADD。",
+      "startMs": 1379200,
+      "endMs": 1381167,
+      "timestampMs": 1380183,
+      "confidence": 0.7855
+    },
+    {
+      "id": "EP01-U114-C04",
+      "text": "住在北京和稍后搬到上海，",
+      "startMs": 1381167,
+      "endMs": 1383433,
+      "timestampMs": 1382300,
+      "confidence": 0.9155
+    },
+    {
+      "id": "EP01-U114-C05",
+      "text": "会作为带时间信息的两条事实并存。",
+      "startMs": 1383433,
+      "endMs": 1386733,
+      "timestampMs": 1385083,
+      "confidence": 0.9533
+    },
+    {
+      "id": "EP01-U115-C01",
+      "text": "查询时，系统融合语义相似度、",
+      "startMs": 1386800,
+      "endMs": 1390167,
+      "timestampMs": 1388483,
+      "confidence": 0.787
+    },
+    {
+      "id": "EP01-U115-C02",
+      "text": "BM25 关键词和实体匹配，",
+      "startMs": 1390167,
+      "endMs": 1392333,
+      "timestampMs": 1391250,
+      "confidence": 0.8555
+    },
+    {
+      "id": "EP01-U115-C03",
+      "text": "并结合时间信息排序。",
+      "startMs": 1392333,
+      "endMs": 1394567,
+      "timestampMs": 1393450,
+      "confidence": 0.9232
+    },
+    {
+      "id": "EP01-U115-C04",
+      "text": "Agent 确认完成的动作，",
+      "startMs": 1394567,
+      "endMs": 1396433,
+      "timestampMs": 1395500,
+      "confidence": 0.9334
+    },
+    {
+      "id": "EP01-U115-C05",
+      "text": "也成为一等事实参与检索。",
+      "startMs": 1396433,
+      "endMs": 1398800,
+      "timestampMs": 1397617,
+      "confidence": 0.8458
+    },
+    {
+      "id": "EP01-U116-C01",
+      "text": "这样既避免了错误 UPDATE 或 DELETE ",
+      "startMs": 1398867,
+      "endMs": 1401733,
+      "timestampMs": 1400300,
+      "confidence": 0.8507
+    },
+    {
+      "id": "EP01-U116-C02",
+      "text": "丢失历史，",
+      "startMs": 1401733,
+      "endMs": 1402800,
+      "timestampMs": 1402267,
+      "confidence": 0.794
+    },
+    {
+      "id": "EP01-U116-C03",
+      "text": "又减少了 LLM 调用次数，",
+      "startMs": 1402800,
+      "endMs": 1405933,
+      "timestampMs": 1404367,
+      "confidence": 0.8232
+    },
+    {
+      "id": "EP01-U116-C04",
+      "text": "还能用多种检索信号加上时间排序，",
+      "startMs": 1405933,
+      "endMs": 1409467,
+      "timestampMs": 1407700,
+      "confidence": 0.9361
+    },
+    {
+      "id": "EP01-U116-C05",
+      "text": "找出当前真正有效的事实。",
+      "startMs": 1409467,
+      "endMs": 1411867,
+      "timestampMs": 1410667,
+      "confidence": 0.9333
+    },
+    {
+      "id": "EP01-U117-C01",
+      "text": "Mem0 报告的数据是：",
+      "startMs": 1411933,
+      "endMs": 1413967,
+      "timestampMs": 1412950,
+      "confidence": 0.6598
+    },
+    {
+      "id": "EP01-U117-C02",
+      "text": "LoCoMo 从 71.4 提升到 92.5，",
+      "startMs": 1413967,
+      "endMs": 1418167,
+      "timestampMs": 1416067,
+      "confidence": 0.654
+    },
+    {
+      "id": "EP01-U117-C03",
+      "text": "提升 21.1 分；",
+      "startMs": 1418167,
+      "endMs": 1420100,
+      "timestampMs": 1419133,
+      "confidence": 0.5139
+    },
+    {
+      "id": "EP01-U117-C04",
+      "text": "LongMemEval 从 67.8 提升到 94.4，",
+      "startMs": 1420100,
+      "endMs": 1424433,
+      "timestampMs": 1422267,
+      "confidence": 0.6541
+    },
+    {
+      "id": "EP01-U117-C05",
+      "text": "提升 26.6 分。",
+      "startMs": 1424433,
+      "endMs": 1426367,
+      "timestampMs": 1425400,
+      "confidence": 0.6093
+    },
+    {
+      "id": "EP01-U118-C01",
+      "text": "需要提醒的是：",
+      "startMs": 1426433,
+      "endMs": 1428000,
+      "timestampMs": 1427217,
+      "confidence": 0.7522
+    },
+    {
+      "id": "EP01-U118-C02",
+      "text": "当前开源版本已经移除了外部图存储以及",
+      "startMs": 1428000,
+      "endMs": 1431633,
+      "timestampMs": 1429817,
+      "confidence": 0.8627
+    },
+    {
+      "id": "EP01-U118-C03",
+      "text": " relations 返回值，",
+      "startMs": 1431633,
+      "endMs": 1436233,
+      "timestampMs": 1433933,
+      "confidence": 0.7166
+    },
+    {
+      "id": "EP01-U118-C04",
+      "text": "实体链接仅用于内部检索加权。",
+      "startMs": 1436233,
+      "endMs": 1438900,
+      "timestampMs": 1437567,
+      "confidence": 0.2071
+    },
+    {
+      "id": "EP01-U118-C05",
+      "text": "所以 Mem0-g 应当理解为历史设计，",
+      "startMs": 1438900,
+      "endMs": 1439933,
+      "timestampMs": 1439417,
+      "confidence": 0.4149
+    },
+    {
+      "id": "EP01-U118-C06",
+      "text": "而不是当前能力。",
+      "startMs": 1439933,
+      "endMs": 1441400,
+      "timestampMs": 1440667,
+      "confidence": 0.4958
+    },
+    {
+      "id": "EP01-U119-C01",
+      "text": "再看 Memobase。",
+      "startMs": 1441467,
+      "endMs": 1443833,
+      "timestampMs": 1442650,
+      "confidence": 0.6539
+    },
+    {
+      "id": "EP01-U119-C02",
+      "text": "它的设计理念和 Mem0 不同：",
+      "startMs": 1443833,
+      "endMs": 1445400,
+      "timestampMs": 1444617,
+      "confidence": 0.3579
+    },
+    {
+      "id": "EP01-U119-C03",
+      "text": "与其做通用的记忆流水线，",
+      "startMs": 1445400,
+      "endMs": 1447933,
+      "timestampMs": 1446667,
+      "confidence": 0.867
+    },
+    {
+      "id": "EP01-U119-C04",
+      "text": "不如聚焦用户画像这一个具体形态，",
+      "startMs": 1447933,
+      "endMs": 1450733,
+      "timestampMs": 1449333,
+      "confidence": 0.9375
+    },
+    {
+      "id": "EP01-U119-C05",
+      "text": "把它做深做透。",
+      "startMs": 1450733,
+      "endMs": 1452267,
+      "timestampMs": 1451500,
+      "confidence": 0.9244
+    },
+    {
+      "id": "EP01-U120-C01",
+      "text": "用户画像是一组可由开发者配置的槽位，",
+      "startMs": 1452367,
+      "endMs": 1455867,
+      "timestampMs": 1454117,
+      "confidence": 0.8715
+    },
+    {
+      "id": "EP01-U120-C02",
+      "text": "按主题和子主题两级组织。",
+      "startMs": 1455867,
+      "endMs": 1458500,
+      "timestampMs": 1457183,
+      "confidence": 0.8989
+    },
+    {
+      "id": "EP01-U120-C03",
+      "text": "比如 basic_info 下面是姓名，",
+      "startMs": 1458500,
+      "endMs": 1462267,
+      "timestampMs": 1460383,
+      "confidence": 0.8391
+    },
+    {
+      "id": "EP01-U120-C04",
+      "text": "interest 下面是兴趣偏好，",
+      "startMs": 1462267,
+      "endMs": 1464767,
+      "timestampMs": 1463517,
+      "confidence": 0.8955
+    },
+    {
+      "id": "EP01-U120-C05",
+      "text": "work 下面是职位。",
+      "startMs": 1464767,
+      "endMs": 1466400,
+      "timestampMs": 1465583,
+      "confidence": 0.4771
+    },
+    {
+      "id": "EP01-U120-C06",
+      "text": "开发者可以精确控制画像的范围和粒度。",
+      "startMs": 1466400,
+      "endMs": 1469800,
+      "timestampMs": 1468100,
+      "confidence": 0.7958
+    },
+    {
+      "id": "EP01-U121-C01",
+      "text": "另一部分是事件记忆，",
+      "startMs": 1469867,
+      "endMs": 1471933,
+      "timestampMs": 1470900,
+      "confidence": 0.8927
+    },
+    {
+      "id": "EP01-U121-C02",
+      "text": "它按时间线记录用户经历过的事件，",
+      "startMs": 1471933,
+      "endMs": 1475000,
+      "timestampMs": 1473467,
+      "confidence": 0.9191
+    },
+    {
+      "id": "EP01-U121-C03",
+      "text": "专门用来回答我们上次讨论预算是什么时",
+      "startMs": 1475000,
+      "endMs": 1478100,
+      "timestampMs": 1476550,
+      "confidence": 0.8942
+    },
+    {
+      "id": "EP01-U121-C04",
+      "text": "候这类与时间有关的问题。",
+      "startMs": 1478100,
+      "endMs": 1480500,
+      "timestampMs": 1479300,
+      "confidence": 0.76
+    },
+    {
+      "id": "EP01-U122-C01",
+      "text": "工程上，",
+      "startMs": 1480567,
+      "endMs": 1482133,
+      "timestampMs": 1481350,
+      "confidence": 0.7702
+    },
+    {
+      "id": "EP01-U122-C02",
+      "text": "Memobase 采用缓冲批处理策略：",
+      "startMs": 1482133,
+      "endMs": 1484467,
+      "timestampMs": 1483300,
+      "confidence": 0.7652
+    },
+    {
+      "id": "EP01-U122-C03",
+      "text": "对话先在缓冲区累积，",
+      "startMs": 1484467,
+      "endMs": 1486733,
+      "timestampMs": 1485600,
+      "confidence": 0.8946
+    },
+    {
+      "id": "EP01-U122-C04",
+      "text": "达到一定规模或者时限之后，",
+      "startMs": 1486733,
+      "endMs": 1489300,
+      "timestampMs": 1488017,
+      "confidence": 0.9239
+    },
+    {
+      "id": "EP01-U122-C05",
+      "text": "再统一触发一次记忆提取，",
+      "startMs": 1489300,
+      "endMs": 1491633,
+      "timestampMs": 1490467,
+      "confidence": 0.9053
+    },
+    {
+      "id": "EP01-U122-C06",
+      "text": "以此摊薄 LLM 调用成本。",
+      "startMs": 1491633,
+      "endMs": 1494600,
+      "timestampMs": 1493117,
+      "confidence": 0.7848
+    },
+    {
+      "id": "EP01-U122-C07",
+      "text": "查询侧只需读取已整理好的画像和事件，",
+      "startMs": 1494600,
+      "endMs": 1498267,
+      "timestampMs": 1496433,
+      "confidence": 0.9257
+    },
+    {
+      "id": "EP01-U122-C08",
+      "text": "保证低延迟。",
+      "startMs": 1498267,
+      "endMs": 1499667,
+      "timestampMs": 1498967,
+      "confidence": 0.8399
+    },
+    {
+      "id": "EP01-U123-C01",
+      "text": "两个框架各自只覆盖了记忆设计空间的一",
+      "startMs": 1499733,
+      "endMs": 1502900,
+      "timestampMs": 1501317,
+      "confidence": 0.8874
+    },
+    {
+      "id": "EP01-U123-C02",
+      "text": "部分：",
+      "startMs": 1502900,
+      "endMs": 1503867,
+      "timestampMs": 1503383,
+      "confidence": 0.6077
+    },
+    {
+      "id": "EP01-U123-C03",
+      "text": "Mem0 的事实条目接近语义记忆；",
+      "startMs": 1503867,
+      "endMs": 1507500,
+      "timestampMs": 1505683,
+      "confidence": 0.791
+    },
+    {
+      "id": "EP01-U123-C04",
+      "text": "Memobase 的画像近似语义记忆，",
+      "startMs": 1507500,
+      "endMs": 1509800,
+      "timestampMs": 1508650,
+      "confidence": 0.7762
+    },
+    {
+      "id": "EP01-U123-C05",
+      "text": "事件记忆则近似情景记忆。",
+      "startMs": 1509800,
+      "endMs": 1512633,
+      "timestampMs": 1511217,
+      "confidence": 0.8782
+    },
+    {
+      "id": "EP01-U124-C01",
+      "text": "把视野放宽，可以按认知科学的分类，",
+      "startMs": 1512700,
+      "endMs": 1516100,
+      "timestampMs": 1514400,
+      "confidence": 0.8504
+    },
+    {
+      "id": "EP01-U124-C02",
+      "text": "设想一种多类型记忆协同的参考架构，",
+      "startMs": 1516100,
+      "endMs": 1519400,
+      "timestampMs": 1517750,
+      "confidence": 0.8755
+    },
+    {
+      "id": "EP01-U124-C03",
+      "text": "也就是图 3-4。需要强调：",
+      "startMs": 1519400,
+      "endMs": 1522167,
+      "timestampMs": 1520783,
+      "confidence": 0.7653
+    },
+    {
+      "id": "EP01-U124-C04",
+      "text": "这是对设计空间的概括，",
+      "startMs": 1522167,
+      "endMs": 1523767,
+      "timestampMs": 1522967,
+      "confidence": 0.875
+    },
+    {
+      "id": "EP01-U124-C05",
+      "text": "而不是某个具体项目的实现。",
+      "startMs": 1523767,
+      "endMs": 1526400,
+      "timestampMs": 1525083,
+      "confidence": 0.3147
+    },
+    {
+      "id": "EP01-U125-C01",
+      "text": "这个参考架构真正新增的重点，",
+      "startMs": 1526467,
+      "endMs": 1529300,
+      "timestampMs": 1527883,
+      "confidence": 0.8719
+    },
+    {
+      "id": "EP01-U125-C02",
+      "text": "是情景记忆的多维元数据检索：",
+      "startMs": 1529300,
+      "endMs": 1532167,
+      "timestampMs": 1530733,
+      "confidence": 0.8362
+    },
+    {
+      "id": "EP01-U125-C03",
+      "text": "它存储带有丰富元数据的事件序列，",
+      "startMs": 1532167,
+      "endMs": 1535500,
+      "timestampMs": 1533833,
+      "confidence": 0.9208
+    },
+    {
+      "id": "EP01-U125-C04",
+      "text": "包括时间戳、情感标记、任务标识，",
+      "startMs": 1535500,
+      "endMs": 1539067,
+      "timestampMs": 1537283,
+      "confidence": 0.7765
+    },
+    {
+      "id": "EP01-U125-C05",
+      "text": "可以按时间、主题等多个维度组合检索。",
+      "startMs": 1539067,
+      "endMs": 1542567,
+      "timestampMs": 1540817,
+      "confidence": 0.7378
+    },
+    {
+      "id": "EP01-U126-C01",
+      "text": "此外，",
+      "startMs": 1542633,
+      "endMs": 1543267,
+      "timestampMs": 1542950,
+      "confidence": 0.8373
+    },
+    {
+      "id": "EP01-U126-C02",
+      "text": "参考架构还显式保留了工作记忆这一层，",
+      "startMs": 1543267,
+      "endMs": 1546800,
+      "timestampMs": 1545033,
+      "confidence": 0.9156
+    },
+    {
+      "id": "EP01-U126-C03",
+      "text": "用来管理当前任务状态，",
+      "startMs": 1546800,
+      "endMs": 1548867,
+      "timestampMs": 1547833,
+      "confidence": 0.9072
+    },
+    {
+      "id": "EP01-U126-C04",
+      "text": "并与长期记忆动态交互：",
+      "startMs": 1548867,
+      "endMs": 1551133,
+      "timestampMs": 1550000,
+      "confidence": 0.8261
+    },
+    {
+      "id": "EP01-U126-C05",
+      "text": "重要信息选择性转移到长期记忆，",
+      "startMs": 1551133,
+      "endMs": 1554100,
+      "timestampMs": 1552617,
+      "confidence": 0.9121
+    },
+    {
+      "id": "EP01-U126-C06",
+      "text": "相关的长期记忆被激活加载到工作记忆。",
+      "startMs": 1554100,
+      "endMs": 1557600,
+      "timestampMs": 1555850,
+      "confidence": 0.7878
+    },
+    {
+      "id": "EP01-U127-C01",
+      "text": "这里要特别说明工作记忆与轨迹的关系：",
+      "startMs": 1557667,
+      "endMs": 1560533,
+      "timestampMs": 1559100,
+      "confidence": 0.8514
+    },
+    {
+      "id": "EP01-U127-C02",
+      "text": "两者都为当前决策提供即时上下文，",
+      "startMs": 1560533,
+      "endMs": 1564033,
+      "timestampMs": 1562283,
+      "confidence": 0.8764
+    },
+    {
+      "id": "EP01-U127-C03",
+      "text": "但轨迹是不可变的完整事件序列，",
+      "startMs": 1564033,
+      "endMs": 1567100,
+      "timestampMs": 1565567,
+      "confidence": 0.9199
+    },
+    {
+      "id": "EP01-U127-C04",
+      "text": "按时间追加；",
+      "startMs": 1567100,
+      "endMs": 1568300,
+      "timestampMs": 1567700,
+      "confidence": 0.9275
+    },
+    {
+      "id": "EP01-U127-C05",
+      "text": "工作记忆则是经过筛选和激活的动态子集",
+      "startMs": 1568300,
+      "endMs": 1571867,
+      "timestampMs": 1570083,
+      "confidence": 0.8963
+    },
+    {
+      "id": "EP01-U127-C06",
+      "text": "，",
+      "startMs": 1571867,
+      "endMs": 1572500,
+      "timestampMs": 1572183,
+      "confidence": 0.7193
+    },
+    {
+      "id": "EP01-U127-C07",
+      "text": "按相关性裁剪。",
+      "startMs": 1572500,
+      "endMs": 1573967,
+      "timestampMs": 1573233,
+      "confidence": 0.9044
+    },
+    {
+      "id": "EP01-U128-C01",
+      "text": "实际框架往往只实现其中一两种类型。",
+      "startMs": 1574033,
+      "endMs": 1577000,
+      "timestampMs": 1575517,
+      "confidence": 0.9132
+    },
+    {
+      "id": "EP01-U128-C02",
+      "text": "按业务需要取舍，",
+      "startMs": 1577000,
+      "endMs": 1578667,
+      "timestampMs": 1577833,
+      "confidence": 0.8603
+    },
+    {
+      "id": "EP01-U128-C03",
+      "text": "比追求大而全更符合工程现实。",
+      "startMs": 1578667,
+      "endMs": 1581567,
+      "timestampMs": 1580117,
+      "confidence": 0.9243
+    },
+    {
+      "id": "EP01-U128-C04",
+      "text": "这也是评价任何记忆框架时最实用的标准",
+      "startMs": 1581567,
+      "endMs": 1584967,
+      "timestampMs": 1583267,
+      "confidence": 0.7468
+    },
+    {
+      "id": "EP01-U128-C05",
+      "text": "。",
+      "startMs": 1584967,
+      "endMs": 1585867,
+      "timestampMs": 1585417,
+      "confidence": 0.1574
+    },
+    {
+      "id": "EP01-U129-C01",
+      "text": "随着交互持续进行，",
+      "startMs": 1585933,
+      "endMs": 1587833,
+      "timestampMs": 1586883,
+      "confidence": 0.8795
+    },
+    {
+      "id": "EP01-U129-C02",
+      "text": "记忆系统面临存储空间和检索效率的双重",
+      "startMs": 1587833,
+      "endMs": 1591367,
+      "timestampMs": 1589600,
+      "confidence": 0.9122
+    },
+    {
+      "id": "EP01-U129-C03",
+      "text": "挑战。",
+      "startMs": 1591367,
+      "endMs": 1592267,
+      "timestampMs": 1591817,
+      "confidence": 0.9504
+    },
+    {
+      "id": "EP01-U129-C04",
+      "text": "简单的累积式存储会导致记忆爆炸。",
+      "startMs": 1592267,
+      "endMs": 1595533,
+      "timestampMs": 1593900,
+      "confidence": 0.8926
+    },
+    {
+      "id": "EP01-U130-C01",
+      "text": "它不仅消耗存储空间，",
+      "startMs": 1595600,
+      "endMs": 1597500,
+      "timestampMs": 1596550,
+      "confidence": 0.8966
+    },
+    {
+      "id": "EP01-U130-C02",
+      "text": "还会降低检索准确性。",
+      "startMs": 1597500,
+      "endMs": 1599833,
+      "timestampMs": 1598667,
+      "confidence": 0.8967
+    },
+    {
+      "id": "EP01-U130-C03",
+      "text": "记忆越多噪声越多，",
+      "startMs": 1599833,
+      "endMs": 1601667,
+      "timestampMs": 1600750,
+      "confidence": 0.8618
+    },
+    {
+      "id": "EP01-U130-C04",
+      "text": "找到真正相关那几条的概率反而下降。",
+      "startMs": 1601667,
+      "endMs": 1605033,
+      "timestampMs": 1603350,
+      "confidence": 0.8808
+    },
+    {
+      "id": "EP01-U131-C01",
+      "text": "第一层通过重要性评分来筛选。",
+      "startMs": 1605100,
+      "endMs": 1608033,
+      "timestampMs": 1606567,
+      "confidence": 0.8997
+    },
+    {
+      "id": "EP01-U131-C02",
+      "text": "一种常见的评分思路是综合四个因素：",
+      "startMs": 1608033,
+      "endMs": 1611233,
+      "timestampMs": 1609633,
+      "confidence": 0.8344
+    },
+    {
+      "id": "EP01-U131-C03",
+      "text": "访问频率、时间衰减、情感强度、",
+      "startMs": 1611233,
+      "endMs": 1614533,
+      "timestampMs": 1612883,
+      "confidence": 0.7223
+    },
+    {
+      "id": "EP01-U131-C04",
+      "text": "信息独特性。",
+      "startMs": 1614533,
+      "endMs": 1615833,
+      "timestampMs": 1615183,
+      "confidence": 0.9048
+    },
+    {
+      "id": "EP01-U132-C01",
+      "text": "具体来说：经常被检索的记忆更重要；",
+      "startMs": 1615900,
+      "endMs": 1619400,
+      "timestampMs": 1617650,
+      "confidence": 0.8484
+    },
+    {
+      "id": "EP01-U132-C02",
+      "text": "越久远的记忆越容易被遗忘；",
+      "startMs": 1619400,
+      "endMs": 1621833,
+      "timestampMs": 1620617,
+      "confidence": 0.8666
+    },
+    {
+      "id": "EP01-U132-C03",
+      "text": "带强烈情感标记的更容易保留；",
+      "startMs": 1621833,
+      "endMs": 1624633,
+      "timestampMs": 1623233,
+      "confidence": 0.9153
+    },
+    {
+      "id": "EP01-U132-C04",
+      "text": "而重复出现的信息，重要性反而降低。",
+      "startMs": 1624633,
+      "endMs": 1627833,
+      "timestampMs": 1626233,
+      "confidence": 0.8586
+    },
+    {
+      "id": "EP01-U133-C01",
+      "text": "评分低于阈值的记忆，",
+      "startMs": 1627900,
+      "endMs": 1630067,
+      "timestampMs": 1628983,
+      "confidence": 0.8041
+    },
+    {
+      "id": "EP01-U133-C02",
+      "text": "会被标记为可压缩或者可删除，",
+      "startMs": 1630067,
+      "endMs": 1632700,
+      "timestampMs": 1631383,
+      "confidence": 0.8524
+    },
+    {
+      "id": "EP01-U133-C03",
+      "text": "不再占用一级存储。这是一道自动闸门。",
+      "startMs": 1632700,
+      "endMs": 1636067,
+      "timestampMs": 1634383,
+      "confidence": 0.903
+    },
+    {
+      "id": "EP01-U134-C01",
+      "text": "举个例子：一条被访问五次、",
+      "startMs": 1636133,
+      "endMs": 1638933,
+      "timestampMs": 1637533,
+      "confidence": 0.706
+    },
+    {
+      "id": "EP01-U134-C02",
+      "text": "创建于三天前、带有强情感标记、",
+      "startMs": 1638933,
+      "endMs": 1642033,
+      "timestampMs": 1640483,
+      "confidence": 0.7504
+    },
+    {
+      "id": "EP01-U134-C03",
+      "text": "并且没有重复记录的记忆，",
+      "startMs": 1642033,
+      "endMs": 1644167,
+      "timestampMs": 1643100,
+      "confidence": 0.8979
+    },
+    {
+      "id": "EP01-U134-C04",
+      "text": "会获得较高的得分，被完整保留。",
+      "startMs": 1644167,
+      "endMs": 1646933,
+      "timestampMs": 1645550,
+      "confidence": 0.8579
+    },
+    {
+      "id": "EP01-U135-C01",
+      "text": "反过来，一条只被访问一次、",
+      "startMs": 1647000,
+      "endMs": 1649733,
+      "timestampMs": 1648367,
+      "confidence": 0.8006
+    },
+    {
+      "id": "EP01-U135-C02",
+      "text": "创建于九十天前、没有情感标记、",
+      "startMs": 1649733,
+      "endMs": 1652733,
+      "timestampMs": 1651233,
+      "confidence": 0.7784
+    },
+    {
+      "id": "EP01-U135-C03",
+      "text": "而且和其他三条记忆高度重复的记忆，",
+      "startMs": 1652733,
+      "endMs": 1655767,
+      "timestampMs": 1654250,
+      "confidence": 0.921
+    },
+    {
+      "id": "EP01-U135-C04",
+      "text": "可能就低于压缩阈值了。",
+      "startMs": 1655767,
+      "endMs": 1657867,
+      "timestampMs": 1656817,
+      "confidence": 0.8663
+    },
+    {
+      "id": "EP01-U136-C01",
+      "text": "第二层采用聚类：",
+      "startMs": 1657933,
+      "endMs": 1659567,
+      "timestampMs": 1658750,
+      "confidence": 0.8438
+    },
+    {
+      "id": "EP01-U136-C02",
+      "text": "相似的记忆被分到一组，",
+      "startMs": 1659567,
+      "endMs": 1661667,
+      "timestampMs": 1660617,
+      "confidence": 0.9109
+    },
+    {
+      "id": "EP01-U136-C03",
+      "text": "每组生成一条代表性摘要。",
+      "startMs": 1661667,
+      "endMs": 1664033,
+      "timestampMs": 1662850,
+      "confidence": 0.9246
+    },
+    {
+      "id": "EP01-U136-C04",
+      "text": "比如多次天气对话，",
+      "startMs": 1664033,
+      "endMs": 1665767,
+      "timestampMs": 1664900,
+      "confidence": 0.9164
+    },
+    {
+      "id": "EP01-U136-C05",
+      "text": "可以压缩成用户经常询问天气、",
+      "startMs": 1665767,
+      "endMs": 1668467,
+      "timestampMs": 1667117,
+      "confidence": 0.828
+    },
+    {
+      "id": "EP01-U136-C06",
+      "text": "特别关心降雨。",
+      "startMs": 1668467,
+      "endMs": 1669867,
+      "timestampMs": 1669167,
+      "confidence": 0.6333
+    },
+    {
+      "id": "EP01-U137-C01",
+      "text": "被压缩掉的原始详细记忆，",
+      "startMs": 1669933,
+      "endMs": 1672100,
+      "timestampMs": 1671017,
+      "confidence": 0.896
+    },
+    {
+      "id": "EP01-U137-C02",
+      "text": "可以存档到二级存储，需要时再取回。",
+      "startMs": 1672100,
+      "endMs": 1675500,
+      "timestampMs": 1673800,
+      "confidence": 0.8926
+    },
+    {
+      "id": "EP01-U137-C03",
+      "text": "这样它们不占用主检索路径，",
+      "startMs": 1675500,
+      "endMs": 1678033,
+      "timestampMs": 1676767,
+      "confidence": 0.9424
+    },
+    {
+      "id": "EP01-U137-C04",
+      "text": "但也没有彻底消失。",
+      "startMs": 1678033,
+      "endMs": 1679733,
+      "timestampMs": 1678883,
+      "confidence": 0.6843
+    },
+    {
+      "id": "EP01-U138-C01",
+      "text": "第三层是抽象和泛化：",
+      "startMs": 1679800,
+      "endMs": 1681967,
+      "timestampMs": 1680883,
+      "confidence": 0.862
+    },
+    {
+      "id": "EP01-U138-C02",
+      "text": "从具体的情景记忆中提取一般性规律，",
+      "startMs": 1681967,
+      "endMs": 1685633,
+      "timestampMs": 1683800,
+      "confidence": 0.9164
+    },
+    {
+      "id": "EP01-U138-C03",
+      "text": "转化成语义记忆或者程序记忆。",
+      "startMs": 1685633,
+      "endMs": 1688600,
+      "timestampMs": 1687117,
+      "confidence": 0.8802
+    },
+    {
+      "id": "EP01-U138-C04",
+      "text": "比如从多次购物对话中学到，",
+      "startMs": 1688600,
+      "endMs": 1691100,
+      "timestampMs": 1689850,
+      "confidence": 0.9052
+    },
+    {
+      "id": "EP01-U138-C05",
+      "text": "偏好性价比高的产品、重视用户评价。",
+      "startMs": 1691100,
+      "endMs": 1694567,
+      "timestampMs": 1692833,
+      "confidence": 0.7635
+    },
+    {
+      "id": "EP01-U139-C01",
+      "text": "构建用户记忆系统时，",
+      "startMs": 1694633,
+      "endMs": 1696700,
+      "timestampMs": 1695667,
+      "confidence": 0.8366
+    },
+    {
+      "id": "EP01-U139-C02",
+      "text": "还有一个核心挑战：",
+      "startMs": 1696700,
+      "endMs": 1698233,
+      "timestampMs": 1697467,
+      "confidence": 0.677
+    },
+    {
+      "id": "EP01-U139-C03",
+      "text": "让 Agent 既能利用用户信息提供个性化",
+      "startMs": 1698233,
+      "endMs": 1701600,
+      "timestampMs": 1699917,
+      "confidence": 0.9056
+    },
+    {
+      "id": "EP01-U139-C04",
+      "text": "服务，",
+      "startMs": 1701600,
+      "endMs": 1702367,
+      "timestampMs": 1701983,
+      "confidence": 0.9023
+    },
+    {
+      "id": "EP01-U139-C05",
+      "text": "又不让敏感数据暴露在 LLM 上下文和系",
+      "startMs": 1702367,
+      "endMs": 1706167,
+      "timestampMs": 1704267,
+      "confidence": 0.8847
+    },
+    {
+      "id": "EP01-U139-C06",
+      "text": "统日志里。",
+      "startMs": 1706167,
+      "endMs": 1707267,
+      "timestampMs": 1706717,
+      "confidence": 0.8325
+    },
+    {
+      "id": "EP01-U140-C01",
+      "text": "实验 3-3 给出的方案是：",
+      "startMs": 1707333,
+      "endMs": 1711067,
+      "timestampMs": 1709200,
+      "confidence": 0.681
+    },
+    {
+      "id": "EP01-U140-C02",
+      "text": "log-sanitization 项目通过 Ollama ",
+      "startMs": 1711067,
+      "endMs": 1712967,
+      "timestampMs": 1712017,
+      "confidence": 0.7451
+    },
+    {
+      "id": "EP01-U140-C03",
+      "text": "调用本地的 Qwen3 0.6B 小模型，",
+      "startMs": 1712967,
+      "endMs": 1716533,
+      "timestampMs": 1714750,
+      "confidence": 0.7768
+    },
+    {
+      "id": "EP01-U140-C04",
+      "text": "来实现 PII 检测与脱敏。",
+      "startMs": 1716533,
+      "endMs": 1718967,
+      "timestampMs": 1717750,
+      "confidence": 0.8205
+    },
+    {
+      "id": "EP01-U140-C05",
+      "text": "这个规格足够小，",
+      "startMs": 1718967,
+      "endMs": 1720400,
+      "timestampMs": 1719683,
+      "confidence": 0.8628
+    },
+    {
+      "id": "EP01-U140-C06",
+      "text": "可以在 CPU 和消费级设备上运行。",
+      "startMs": 1720400,
+      "endMs": 1723400,
+      "timestampMs": 1721900,
+      "confidence": 0.7789
+    },
+    {
+      "id": "EP01-U141-C01",
+      "text": "如果对精度有更高要求，",
+      "startMs": 1723467,
+      "endMs": 1725633,
+      "timestampMs": 1724550,
+      "confidence": 0.9203
+    },
+    {
+      "id": "EP01-U141-C02",
+      "text": "也可以按需切换到 qwen3:1.7b 或者 q",
+      "startMs": 1725633,
+      "endMs": 1730133,
+      "timestampMs": 1727883,
+      "confidence": 0.7149
+    },
+    {
+      "id": "EP01-U141-C03",
+      "text": "wen3:4b 这些更大的规格。",
+      "startMs": 1730133,
+      "endMs": 1733667,
+      "timestampMs": 1731900,
+      "confidence": 0.7617
+    },
+    {
+      "id": "EP01-U141-C04",
+      "text": "代价是算力，收益是识别能力。",
+      "startMs": 1733667,
+      "endMs": 1736633,
+      "timestampMs": 1735150,
+      "confidence": 0.91
+    },
+    {
+      "id": "EP01-U142-C01",
+      "text": "为什么要本地部署，",
+      "startMs": 1736700,
+      "endMs": 1738067,
+      "timestampMs": 1737383,
+      "confidence": 0.949
+    },
+    {
+      "id": "EP01-U142-C02",
+      "text": "而不调用云端 API？原因很明确：",
+      "startMs": 1738067,
+      "endMs": 1741167,
+      "timestampMs": 1739617,
+      "confidence": 0.7741
+    },
+    {
+      "id": "EP01-U142-C03",
+      "text": "日志本身就可能包含敏感信息，",
+      "startMs": 1741167,
+      "endMs": 1743900,
+      "timestampMs": 1742533,
+      "confidence": 0.9037
+    },
+    {
+      "id": "EP01-U142-C04",
+      "text": "把它发送到云端去脱敏，",
+      "startMs": 1743900,
+      "endMs": 1746033,
+      "timestampMs": 1744967,
+      "confidence": 0.8687
+    },
+    {
+      "id": "EP01-U142-C05",
+      "text": "这件事本身就违背了隐私保护的初衷。",
+      "startMs": 1746033,
+      "endMs": 1749300,
+      "timestampMs": 1747667,
+      "confidence": 0.8363
+    },
+    {
+      "id": "EP01-U143-C01",
+      "text": "系统能识别三类信息。",
+      "startMs": 1749367,
+      "endMs": 1751533,
+      "timestampMs": 1750450,
+      "confidence": 0.882
+    },
+    {
+      "id": "EP01-U143-C02",
+      "text": "第一类是结构化信息，比如身份证号、",
+      "startMs": 1751533,
+      "endMs": 1754767,
+      "timestampMs": 1753150,
+      "confidence": 0.8171
+    },
+    {
+      "id": "EP01-U143-C03",
+      "text": "银行卡号，它们有固定格式，",
+      "startMs": 1754767,
+      "endMs": 1757033,
+      "timestampMs": 1755900,
+      "confidence": 0.9221
+    },
+    {
+      "id": "EP01-U143-C04",
+      "text": "相对容易识别。",
+      "startMs": 1757033,
+      "endMs": 1758467,
+      "timestampMs": 1757750,
+      "confidence": 0.7063
+    },
+    {
+      "id": "EP01-U144-C01",
+      "text": "第二类是有一定模式的半结构化信息，",
+      "startMs": 1758533,
+      "endMs": 1761800,
+      "timestampMs": 1760167,
+      "confidence": 0.9303
+    },
+    {
+      "id": "EP01-U144-C02",
+      "text": "比如地址。",
+      "startMs": 1761800,
+      "endMs": 1763000,
+      "timestampMs": 1762400,
+      "confidence": 0.843
+    },
+    {
+      "id": "EP01-U144-C03",
+      "text": "第三类是自然语言表达的敏感内容，",
+      "startMs": 1763000,
+      "endMs": 1765867,
+      "timestampMs": 1764433,
+      "confidence": 0.8503
+    },
+    {
+      "id": "EP01-U144-C04",
+      "text": "比如用户随口说的我的密码是 abc123，",
+      "startMs": 1765867,
+      "endMs": 1769933,
+      "timestampMs": 1767900,
+      "confidence": 0.8496
+    },
+    {
+      "id": "EP01-U144-C05",
+      "text": "没有任何固定格式。",
+      "startMs": 1769933,
+      "endMs": 1771633,
+      "timestampMs": 1770783,
+      "confidence": 0.7117
+    },
+    {
+      "id": "EP01-U145-C01",
+      "text": "识别结果通过 JSON Schema 结构化输",
+      "startMs": 1771700,
+      "endMs": 1774900,
+      "timestampMs": 1773300,
+      "confidence": 0.885
+    },
+    {
+      "id": "EP01-U145-C02",
+      "text": "出，",
+      "startMs": 1774900,
+      "endMs": 1775667,
+      "timestampMs": 1775283,
+      "confidence": 0.7468
+    },
+    {
+      "id": "EP01-U145-C03",
+      "text": "包含三个字段：敏感信息的类型、",
+      "startMs": 1775667,
+      "endMs": 1778467,
+      "timestampMs": 1777067,
+      "confidence": 0.7324
+    },
+    {
+      "id": "EP01-U145-C04",
+      "text": "位置和置信度。下游程序可以直接消费，",
+      "startMs": 1778467,
+      "endMs": 1782000,
+      "timestampMs": 1780233,
+      "confidence": 0.9009
+    },
+    {
+      "id": "EP01-U145-C05",
+      "text": "不需要再做解析。",
+      "startMs": 1782000,
+      "endMs": 1783467,
+      "timestampMs": 1782733,
+      "confidence": 0.7455
+    },
+    {
+      "id": "EP01-U146-C01",
+      "text": "相比传统正则表达式，",
+      "startMs": 1783533,
+      "endMs": 1785633,
+      "timestampMs": 1784583,
+      "confidence": 0.9402
+    },
+    {
+      "id": "EP01-U146-C02",
+      "text": "基于 LLM 的脱敏召回率能达到百分之九",
+      "startMs": 1785633,
+      "endMs": 1789400,
+      "timestampMs": 1787517,
+      "confidence": 0.8705
+    },
+    {
+      "id": "EP01-U146-C03",
+      "text": "十五以上，",
+      "startMs": 1789400,
+      "endMs": 1790467,
+      "timestampMs": 1789933,
+      "confidence": 0.896
+    },
+    {
+      "id": "EP01-U146-C04",
+      "text": "同时显著降低了假阳性。",
+      "startMs": 1790467,
+      "endMs": 1792767,
+      "timestampMs": 1791617,
+      "confidence": 0.9181
+    },
+    {
+      "id": "EP01-U146-C05",
+      "text": "这是原书给出的实测数据。",
+      "startMs": 1792767,
+      "endMs": 1794900,
+      "timestampMs": 1793833,
+      "confidence": 0.8992
+    },
+    {
+      "id": "EP01-U147-C01",
+      "text": "对于超高吞吐量的场景，",
+      "startMs": 1794967,
+      "endMs": 1797133,
+      "timestampMs": 1796050,
+      "confidence": 0.8711
+    },
+    {
+      "id": "EP01-U147-C02",
+      "text": "可以采用混合策略：",
+      "startMs": 1797133,
+      "endMs": 1798700,
+      "timestampMs": 1797917,
+      "confidence": 0.6995
+    },
+    {
+      "id": "EP01-U147-C03",
+      "text": "先用正则快速过滤掉明显的模式，",
+      "startMs": 1798700,
+      "endMs": 1801733,
+      "timestampMs": 1800217,
+      "confidence": 0.9359
+    },
+    {
+      "id": "EP01-U147-C04",
+      "text": "再让 LLM 深度分析剩下的文本，",
+      "startMs": 1801733,
+      "endMs": 1804900,
+      "timestampMs": 1803317,
+      "confidence": 0.8556
+    },
+    {
+      "id": "EP01-U147-C05",
+      "text": "兼顾速度与召回。",
+      "startMs": 1804900,
+      "endMs": 1806633,
+      "timestampMs": 1805767,
+      "confidence": 0.927
+    },
+    {
+      "id": "EP01-U148-C01",
+      "text": "到这里，",
+      "startMs": 1806700,
+      "endMs": 1807533,
+      "timestampMs": 1807117,
+      "confidence": 0.9154
+    },
+    {
+      "id": "EP01-U148-C02",
+      "text": "用户记忆的表示和管理就讲完了。",
+      "startMs": 1807533,
+      "endMs": 1810333,
+      "timestampMs": 1808933,
+      "confidence": 0.8914
+    },
+    {
+      "id": "EP01-U148-C03",
+      "text": "接下来要解决的是检索问题：",
+      "startMs": 1810333,
+      "endMs": 1812900,
+      "timestampMs": 1811617,
+      "confidence": 0.8339
+    },
+    {
+      "id": "EP01-U148-C04",
+      "text": "当记忆量增长到成千上万条时，",
+      "startMs": 1812900,
+      "endMs": 1815833,
+      "timestampMs": 1814367,
+      "confidence": 0.9303
+    },
+    {
+      "id": "EP01-U148-C05",
+      "text": "怎么快速找到相关的那几条？",
+      "startMs": 1815833,
+      "endMs": 1818233,
+      "timestampMs": 1817033,
+      "confidence": 0.6523
+    },
+    {
+      "id": "EP01-U148-C06",
+      "text": "这正是 RAG 要解决的核心问题。",
+      "startMs": 1818233,
+      "endMs": 1821167,
+      "timestampMs": 1819700,
+      "confidence": 0.8879
+    }
+  ]
+}

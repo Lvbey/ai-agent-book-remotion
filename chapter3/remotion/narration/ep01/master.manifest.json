@@ -1,0 +1,26 @@
+{
+  "episode": "EP01",
+  "source": "narration/ep01/segments/*/audio.wav",
+  "durationSeconds": 1821.233,
+  "totalFrames": 54637,
+  "fps": 30,
+  "sampleRate": 48000,
+  "samplesPerFrame": 1600,
+  "totalSamples": 87419200,
+  "masterWavBytes": 174838444,
+  "masterMp3Bytes": 43710957,
+  "maxGapSamples": 11040,
+  "peak": 25002,
+  "peakDbfs": -2.3,
+  "rmsDbfs": -23.2,
+  "outputChannels": 2,
+  "loudness": {
+    "targetLufs": -18,
+    "targetTruePeak": -1.5,
+    "measuredInputLufs": -23.31,
+    "measuredInputTruePeak": -2.35,
+    "outputLufs": -18.2,
+    "outputTruePeak": -4.7
+  },
+  "frameAligned": true
+}

@@ -1,0 +1,24 @@
+# 依赖与构建产物不进版本库
+remotion/node_modules/
+remotion/out/
+remotion/.remotion/
+
+# 大体积中间产物（成片由 CI/本地重渲，或按发布渠道分发）
+*.mp4
+*.mov
+*.webm
+
+# 旁白配音音频：体积大且可用内容哈希复现
+# 重新生成：cd remotion && npm run narration:synth && npm run narration:build（需 DOUBAO_TTS_API_KEY）
+# 索引与清单（json）仍然入库，便于核对时长、配置与字级时码来源
+remotion/narration/ep01/segments/
+remotion/narration/ep01/master.wav
+remotion/narration/audition/*.wav
+remotion/public/narration/
+*.wav
+
+# QA 逐帧/切片截图：体量大且可由脚本重跑复现，不入库
+# 保留 qa/ 下的报告（*.md）与逐秒指标（*.json），它们才是评审要看的内容
+remotion/qa/**/*.png
+remotion/qa/**/*.jpg
+remotion/qa/**/*.jpeg

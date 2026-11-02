@@ -1,0 +1,1719 @@
+{
+  "meta": {
+    "episode": "EP01",
+    "title": "用户记忆系统",
+    "sourceRepo": "bojieli/ai-agent-book",
+    "sourcePath": "book/chapter3.md",
+    "sourceBranch": "main",
+    "sourceCommit": "dbc046eb896ac4e39aa19c7774c8bf49583b89a6",
+    "sourceBlobSha": "b3d88e68e098c0e473fe28a76887a8a741ff49ae",
+    "snapshotFetchedAt": "2026-10-30T15:40+08:00",
+    "snapshotFile": "chapter3/references/chapter3.source.md",
+    "totalUnits": 148,
+    "totalSeconds": 1652.0666666666666,
+    "totalFrames": 49562,
+    "totalKnowledgePoints": 116,
+    "covered": 116,
+    "coverageRate": 1,
+    "p0Total": 88,
+    "p0Covered": 88,
+    "p0Rate": 1,
+    "note": "status=covered 表示该知识点至少被一个语义单元讲解（必要条件）；「讲解到位」需 Gate 5 人工复核。"
+  },
+  "items": [
+    {
+      "id": "INTRO-001",
+      "sourceHeading": "引言（章节前言）",
+      "sourceAnchor": "chapter3.md#L3",
+      "importance": "P1",
+      "learningOutcome": "说明第二章与第三章的分界：单次会话上下文管理 vs 跨会话持久化",
+      "narrationUnitIds": [
+        "EP01-U001"
+      ],
+      "visualEventIds": [
+        "EP01-U001"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "INTRO-002",
+      "sourceHeading": "引言（章节前言）",
+      "sourceAnchor": "chapter3.md#L5",
+      "importance": "P0",
+      "learningOutcome": "定义用户记忆为个体尺度的个性化记忆",
+      "narrationUnitIds": [
+        "EP01-U002"
+      ],
+      "visualEventIds": [
+        "EP01-U002"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "INTRO-003",
+      "sourceHeading": "引言（章节前言）",
+      "sourceAnchor": "chapter3.md#L5",
+      "importance": "P0",
+      "learningOutcome": "定义知识库为群体尺度的共享集体知识，并能举出三类例子",
+      "narrationUnitIds": [
+        "EP01-U003"
+      ],
+      "visualEventIds": [
+        "EP01-U003"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "INTRO-004",
+      "sourceHeading": "引言（章节前言）",
+      "sourceAnchor": "chapter3.md#L5",
+      "importance": "P1",
+      "learningOutcome": "用一句话区分两个尺度：懂你的助手 vs 领域专家",
+      "narrationUnitIds": [
+        "EP01-U004"
+      ],
+      "visualEventIds": [
+        "EP01-U004"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "INTRO-005",
+      "sourceHeading": "引言（章节前言）",
+      "sourceAnchor": "chapter3.md#L7",
+      "importance": "P1",
+      "learningOutcome": "说明两者共用底层技术（向量检索、知识压缩）并面临同样麻烦（冲突、过期、检索不准）",
+      "narrationUnitIds": [
+        "EP01-U005",
+        "EP01-U006"
+      ],
+      "visualEventIds": [
+        "EP01-U005",
+        "EP01-U006"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "INTRO-006",
+      "sourceHeading": "引言（章节前言）",
+      "sourceAnchor": "chapter3.md#L9",
+      "importance": "P1",
+      "learningOutcome": "复述本章路线与 EP01 在本章中的位置（对应图 3-1）",
+      "narrationUnitIds": [
+        "EP01-U007",
+        "EP01-U008"
+      ],
+      "visualEventIds": [
+        "EP01-U007",
+        "EP01-U008"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "MEM-001",
+      "sourceHeading": "用户记忆系统（开篇）",
+      "sourceAnchor": "chapter3.md#L17",
+      "importance": "P0",
+      "learningOutcome": "说明持久用户记忆层不保存每句对话，而用额外 LLM 调用提取、压缩、审查",
+      "narrationUnitIds": [
+        "EP01-U009"
+      ],
+      "visualEventIds": [
+        "EP01-U009"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "MEM-002",
+      "sourceHeading": "用户记忆系统（开篇）",
+      "sourceAnchor": "chapter3.md#L17",
+      "importance": "P1",
+      "learningOutcome": "区分持久记忆与只在当前窗口生效的上下文学习",
+      "narrationUnitIds": [
+        "EP01-U010"
+      ],
+      "visualEventIds": [
+        "EP01-U010"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "MEM-003",
+      "sourceHeading": "用户记忆系统（开篇）",
+      "sourceAnchor": "chapter3.md#L19-L29",
+      "importance": "P0",
+      "learningOutcome": "复述东京订票示例对话中包含的原始信息",
+      "narrationUnitIds": [
+        "EP01-U011",
+        "EP01-U012",
+        "EP01-U013"
+      ],
+      "visualEventIds": [
+        "EP01-U011",
+        "EP01-U012",
+        "EP01-U013"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "MEM-004",
+      "sourceHeading": "用户记忆系统（开篇）",
+      "sourceAnchor": "chapter3.md#L31-L39",
+      "importance": "P0",
+      "learningOutcome": "列出会话后由专门 LLM 提取出的四条记忆及其类别",
+      "narrationUnitIds": [
+        "EP01-U014",
+        "EP01-U015"
+      ],
+      "visualEventIds": [
+        "EP01-U014",
+        "EP01-U015"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "MEM-005",
+      "sourceHeading": "用户记忆系统（开篇）",
+      "sourceAnchor": "chapter3.md#L41",
+      "importance": "P0",
+      "learningOutcome": "解释提取规则之一：选择性，丢弃短期细节",
+      "narrationUnitIds": [
+        "EP01-U016"
+      ],
+      "visualEventIds": [
+        "EP01-U016"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "MEM-006",
+      "sourceHeading": "用户记忆系统（开篇）",
+      "sourceAnchor": "chapter3.md#L41",
+      "importance": "P0",
+      "learningOutcome": "解释提取规则之二：抽象化，把单次事件归纳为长期偏好",
+      "narrationUnitIds": [
+        "EP01-U017"
+      ],
+      "visualEventIds": [
+        "EP01-U017"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "MEM-007",
+      "sourceHeading": "用户记忆系统（开篇）",
+      "sourceAnchor": "chapter3.md#L41",
+      "importance": "P0",
+      "learningOutcome": "解释提取规则之三：结构化，用可检索字段保存事实",
+      "narrationUnitIds": [
+        "EP01-U018"
+      ],
+      "visualEventIds": [
+        "EP01-U018"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "EVAL-001",
+      "sourceHeading": "记忆能力的评估：三层次框架",
+      "sourceAnchor": "chapter3.md#L45",
+      "importance": "P1",
+      "learningOutcome": "说明为什么先确立评估标准再讨论设计方案",
+      "narrationUnitIds": [
+        "EP01-U019"
+      ],
+      "visualEventIds": [
+        "EP01-U019"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "EVAL-002",
+      "sourceHeading": "记忆能力的评估：三层次框架",
+      "sourceAnchor": "chapter3.md#L45",
+      "importance": "P0",
+      "learningOutcome": "说明 LoCoMo 基准的规模：平均约 300 轮、最多 35 个会话",
+      "narrationUnitIds": [
+        "EP01-U020"
+      ],
+      "visualEventIds": [
+        "EP01-U020"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "EVAL-003",
+      "sourceHeading": "记忆能力的评估：三层次框架",
+      "sourceAnchor": "chapter3.md#L45",
+      "importance": "P0",
+      "learningOutcome": "列举 LoCoMo 的三类任务与问答的五个细分类型",
+      "narrationUnitIds": [
+        "EP01-U021"
+      ],
+      "visualEventIds": [
+        "EP01-U021"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "EVAL-004",
+      "sourceHeading": "记忆能力的评估：三层次框架",
+      "sourceAnchor": "chapter3.md#L47-L56",
+      "importance": "P0",
+      "learningOutcome": "列举八项记忆能力并解释复杂思考的花生过敏例子",
+      "narrationUnitIds": [
+        "EP01-U022",
+        "EP01-U023",
+        "EP01-U024",
+        "EP01-U025"
+      ],
+      "visualEventIds": [
+        "EP01-U022",
+        "EP01-U023",
+        "EP01-U024",
+        "EP01-U025"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "EVAL-005",
+      "sourceHeading": "记忆能力的评估：三层次框架",
+      "sourceAnchor": "chapter3.md#L47",
+      "importance": "P1",
+      "learningOutcome": "声明八项能力是笔者归纳口径，而非某一基准的原始分类",
+      "narrationUnitIds": [
+        "EP01-U022"
+      ],
+      "visualEventIds": [
+        "EP01-U022"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "EVAL-006",
+      "sourceHeading": "记忆能力的评估：三层次框架",
+      "sourceAnchor": "chapter3.md#L58-L60",
+      "importance": "P0",
+      "learningOutcome": "解释第一层基础回忆的判定标准与会员号例子",
+      "narrationUnitIds": [
+        "EP01-U026",
+        "EP01-U027"
+      ],
+      "visualEventIds": [
+        "EP01-U026",
+        "EP01-U027"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "EVAL-007",
+      "sourceHeading": "记忆能力的评估：三层次框架",
+      "sourceAnchor": "chapter3.md#L58-L62",
+      "importance": "P0",
+      "learningOutcome": "解释第二层多会话检索，并复述两辆车、贷款状态、洛杉矶之旅三个例子",
+      "narrationUnitIds": [
+        "EP01-U028",
+        "EP01-U029",
+        "EP01-U030",
+        "EP01-U031"
+      ],
+      "visualEventIds": [
+        "EP01-U028",
+        "EP01-U029",
+        "EP01-U030",
+        "EP01-U031"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "EVAL-008",
+      "sourceHeading": "记忆能力的评估：三层次框架",
+      "sourceAnchor": "chapter3.md#L58-L64",
+      "importance": "P0",
+      "learningOutcome": "解释第三层主动服务，并复述护照预警、手机保障、报税季三个例子",
+      "narrationUnitIds": [
+        "EP01-U032",
+        "EP01-U033",
+        "EP01-U034",
+        "EP01-U035",
+        "EP01-U036"
+      ],
+      "visualEventIds": [
+        "EP01-U032",
+        "EP01-U033",
+        "EP01-U034",
+        "EP01-U035",
+        "EP01-U036"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "EVAL-009",
+      "sourceHeading": "记忆能力的评估：三层次框架",
+      "sourceAnchor": "chapter3.md#L58",
+      "importance": "P1",
+      "learningOutcome": "说明该框架贯穿全章，实验 3-9 与 3-11 会复用",
+      "narrationUnitIds": [
+        "EP01-U037"
+      ],
+      "visualEventIds": [
+        "EP01-U037"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "EVAL-010",
+      "sourceHeading": "实验 3-1 ★",
+      "sourceAnchor": "chapter3.md#L68",
+      "importance": "P0",
+      "learningOutcome": "复述评估集规模：每层 20 个用例，二三层每用例约 50 轮",
+      "narrationUnitIds": [
+        "EP01-U038",
+        "EP01-U039"
+      ],
+      "visualEventIds": [
+        "EP01-U038",
+        "EP01-U039"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "EVAL-011",
+      "sourceHeading": "实验 3-1 ★",
+      "sourceAnchor": "chapter3.md#L68",
+      "importance": "P0",
+      "learningOutcome": "复述评估流程：逐会话生成并修改记忆，且不可回看原始对话",
+      "narrationUnitIds": [
+        "EP01-U040"
+      ],
+      "visualEventIds": [
+        "EP01-U040"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "EVAL-012",
+      "sourceHeading": "实验 3-1 ★",
+      "sourceAnchor": "chapter3.md#L68",
+      "importance": "P0",
+      "learningOutcome": "说明用新问答 + LLM-as-a-judge 与参考答案对比得到奖励得分",
+      "narrationUnitIds": [
+        "EP01-U041",
+        "EP01-U042"
+      ],
+      "visualEventIds": [
+        "EP01-U041",
+        "EP01-U042"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "EVAL-013",
+      "sourceHeading": "实验 3-1 ★",
+      "sourceAnchor": "chapter3.md#L70",
+      "importance": "P1",
+      "learningOutcome": "指出评估集与脚本收录在配套仓库 user-memory 项目",
+      "narrationUnitIds": [
+        "EP01-U043"
+      ],
+      "visualEventIds": [
+        "EP01-U043"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "LAY-001",
+      "sourceHeading": "记忆的层次结构",
+      "sourceAnchor": "chapter3.md#L74",
+      "importance": "P0",
+      "learningOutcome": "说明记忆设计的三个独立维度：放哪里、怎么存、存什么",
+      "narrationUnitIds": [
+        "EP01-U044"
+      ],
+      "visualEventIds": [
+        "EP01-U044"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "LAY-002",
+      "sourceHeading": "记忆的层次结构",
+      "sourceAnchor": "chapter3.md#L78",
+      "importance": "P0",
+      "learningOutcome": "定义轨迹 Trajectory 为一次运行的完整历史（用户消息+模型回复+工具结果）",
+      "narrationUnitIds": [
+        "EP01-U045",
+        "EP01-U046"
+      ],
+      "visualEventIds": [
+        "EP01-U045",
+        "EP01-U046"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "LAY-003",
+      "sourceHeading": "记忆的层次结构",
+      "sourceAnchor": "chapter3.md#L78",
+      "importance": "P0",
+      "learningOutcome": "解释轨迹按时间追加、只增不改（append-only）",
+      "narrationUnitIds": [
+        "EP01-U047"
+      ],
+      "visualEventIds": [
+        "EP01-U047"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "LAY-004",
+      "sourceHeading": "记忆的层次结构",
+      "sourceAnchor": "chapter3.md#L78",
+      "importance": "P0",
+      "learningOutcome": "区分用于审计的原始事件记录与可压缩重组的运行时上下文，保留策略取决于系统要求",
+      "narrationUnitIds": [
+        "EP01-U048",
+        "EP01-U049"
+      ],
+      "visualEventIds": [
+        "EP01-U048",
+        "EP01-U049"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "LAY-005",
+      "sourceHeading": "记忆的层次结构",
+      "sourceAnchor": "chapter3.md#L78",
+      "importance": "P1",
+      "learningOutcome": "说明轨迹为决策提供即时上下文（我说了什么/用户如何回应/工具返回什么）",
+      "narrationUnitIds": [
+        "EP01-U050"
+      ],
+      "visualEventIds": [
+        "EP01-U050"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "LAY-006",
+      "sourceHeading": "记忆的层次结构",
+      "sourceAnchor": "chapter3.md#L82",
+      "importance": "P0",
+      "learningOutcome": "定义用户长期记忆为跨会话跨实例持久化存储，键值对绑定用户 ID",
+      "narrationUnitIds": [
+        "EP01-U052"
+      ],
+      "visualEventIds": [
+        "EP01-U052"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "LAY-007",
+      "sourceHeading": "记忆的层次结构",
+      "sourceAnchor": "chapter3.md#L82",
+      "importance": "P1",
+      "learningOutcome": "列举长期记忆的三类内容：偏好设置、历史交互摘要、提取的知识点",
+      "narrationUnitIds": [
+        "EP01-U053"
+      ],
+      "visualEventIds": [
+        "EP01-U053"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "LAY-008",
+      "sourceHeading": "记忆的层次结构",
+      "sourceAnchor": "chapter3.md#L82",
+      "importance": "P0",
+      "learningOutcome": "说明 Agent 通过特定工具调用显式读写长期记忆",
+      "narrationUnitIds": [
+        "EP01-U054"
+      ],
+      "visualEventIds": [
+        "EP01-U054"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "LAY-009",
+      "sourceHeading": "记忆的层次结构",
+      "sourceAnchor": "chapter3.md#L80",
+      "importance": "P0",
+      "learningOutcome": "对比轨迹（流水账、只增不改）与长期记忆（档案、可改写合并淘汰）",
+      "narrationUnitIds": [
+        "EP01-U051"
+      ],
+      "visualEventIds": [
+        "EP01-U051"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "LAY-010",
+      "sourceHeading": "记忆的层次结构",
+      "sourceAnchor": "chapter3.md#L84",
+      "importance": "P1",
+      "learningOutcome": "定义业务状态为开发者定义的高层状态抽象并列举四个阶段示例",
+      "narrationUnitIds": [
+        "EP01-U055"
+      ],
+      "visualEventIds": [
+        "EP01-U055"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "LAY-011",
+      "sourceHeading": "记忆的层次结构",
+      "sourceAnchor": "chapter3.md#L84",
+      "importance": "P2",
+      "learningOutcome": "指出业务状态在事件驱动架构中重要，第六章展开",
+      "narrationUnitIds": [
+        "EP01-U056"
+      ],
+      "visualEventIds": [
+        "EP01-U056"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "LAY-012",
+      "sourceHeading": "记忆的层次结构",
+      "sourceAnchor": "chapter3.md#L86",
+      "importance": "P1",
+      "learningOutcome": "说明本章聚焦轨迹与长期记忆两个层次及其分工",
+      "narrationUnitIds": [
+        "EP01-U057"
+      ],
+      "visualEventIds": [
+        "EP01-U057"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-001",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L90",
+      "importance": "P0",
+      "learningOutcome": "说明同一条信息可用不同粒度与结构表示，四格式代表递进",
+      "narrationUnitIds": [
+        "EP01-U058"
+      ],
+      "visualEventIds": [
+        "EP01-U058"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-002",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L95",
+      "importance": "P0",
+      "learningOutcome": "定义 Simple Notes 为最小不可再分事实并说明其 O(1) 优势",
+      "narrationUnitIds": [
+        "EP01-U059",
+        "EP01-U060"
+      ],
+      "visualEventIds": [
+        "EP01-U059",
+        "EP01-U060"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-003",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L95",
+      "importance": "P0",
+      "learningOutcome": "用 TechCorp 例子说明 Simple Notes 导致信息关联性丢失",
+      "narrationUnitIds": [
+        "EP01-U061"
+      ],
+      "visualEventIds": [
+        "EP01-U061"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-004",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L95",
+      "importance": "P1",
+      "learningOutcome": "说明综合多信息查询时系统需重新拼凑碎片",
+      "narrationUnitIds": [
+        "EP01-U062"
+      ],
+      "visualEventIds": [
+        "EP01-U062"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-005",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L97",
+      "importance": "P0",
+      "learningOutcome": "定义 Enhanced Notes 为完整上下文段落并说明其叙事结构优势",
+      "narrationUnitIds": [
+        "EP01-U063",
+        "EP01-U064"
+      ],
+      "visualEventIds": [
+        "EP01-U063",
+        "EP01-U064"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-006",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L97",
+      "importance": "P0",
+      "learningOutcome": "说明 Enhanced Notes 的存储冗余代价",
+      "narrationUnitIds": [
+        "EP01-U065"
+      ],
+      "visualEventIds": [
+        "EP01-U065"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-007",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L97",
+      "importance": "P0",
+      "learningOutcome": "说明 Enhanced Notes 的更新复杂代价",
+      "narrationUnitIds": [
+        "EP01-U066"
+      ],
+      "visualEventIds": [
+        "EP01-U066"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-008",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L99",
+      "importance": "P0",
+      "learningOutcome": "定义 JSON Cards 的三层嵌套结构与路径示例",
+      "narrationUnitIds": [
+        "EP01-U067"
+      ],
+      "visualEventIds": [
+        "EP01-U067"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-009",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L99",
+      "importance": "P0",
+      "learningOutcome": "说明 JSON Cards 支持部分更新、可预测可扩展",
+      "narrationUnitIds": [
+        "EP01-U068"
+      ],
+      "visualEventIds": [
+        "EP01-U068"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-010",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L99",
+      "importance": "P0",
+      "learningOutcome": "用周末用 Python 的例子说明刚性分类丢失多维性",
+      "narrationUnitIds": [
+        "EP01-U069"
+      ],
+      "visualEventIds": [
+        "EP01-U069"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-011",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L101",
+      "importance": "P0",
+      "learningOutcome": "列举 Advanced JSON Cards 新增的 backstory、person、relationship、时间戳",
+      "narrationUnitIds": [
+        "EP01-U070"
+      ],
+      "visualEventIds": [
+        "EP01-U070"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-012",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L101",
+      "importance": "P0",
+      "learningOutcome": "用张医生的例子说明情境决定信息含义",
+      "narrationUnitIds": [
+        "EP01-U071"
+      ],
+      "visualEventIds": [
+        "EP01-U071"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-013",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L103",
+      "importance": "P0",
+      "learningOutcome": "说明多身份（自己/父母/子女）导致的消歧需求",
+      "narrationUnitIds": [
+        "EP01-U072"
+      ],
+      "visualEventIds": [
+        "EP01-U072"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-014",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L103",
+      "importance": "P0",
+      "learningOutcome": "用家人年度体检例子说明 relationship 与 backstory 的作用",
+      "narrationUnitIds": [
+        "EP01-U073"
+      ],
+      "visualEventIds": [
+        "EP01-U073"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-015",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L103",
+      "importance": "P0",
+      "learningOutcome": "说明 Advanced JSON Cards 生成与维护成本较高",
+      "narrationUnitIds": [
+        "EP01-U074"
+      ],
+      "visualEventIds": [
+        "EP01-U074"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-016",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L105",
+      "importance": "P0",
+      "learningOutcome": "复述选择标准：关键且少量用 Advanced，大量且非关键用 Simple，多数系统混合",
+      "narrationUnitIds": [
+        "EP01-U075",
+        "EP01-U076"
+      ],
+      "visualEventIds": [
+        "EP01-U075",
+        "EP01-U076"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-017",
+      "sourceHeading": "实验 3-2 ★★",
+      "sourceAnchor": "chapter3.md#L109",
+      "importance": "P0",
+      "learningOutcome": "说明 user-memory 在统一接口下实现四模式及生成/检索两段实现",
+      "narrationUnitIds": [
+        "EP01-U077"
+      ],
+      "visualEventIds": [
+        "EP01-U077"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-018",
+      "sourceHeading": "实验 3-2 ★★",
+      "sourceAnchor": "chapter3.md#L109",
+      "importance": "P0",
+      "learningOutcome": "说明通过配置切换模式在三层次评估集上逐一测试",
+      "narrationUnitIds": [
+        "EP01-U078"
+      ],
+      "visualEventIds": [
+        "EP01-U078"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-019",
+      "sourceHeading": "实验 3-2 ★★",
+      "sourceAnchor": "chapter3.md#L111",
+      "importance": "P0",
+      "learningOutcome": "复述 Simple Notes 的观察：低成本过第一层，二三层频繁失分",
+      "narrationUnitIds": [
+        "EP01-U079"
+      ],
+      "visualEventIds": [
+        "EP01-U079"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-020",
+      "sourceHeading": "实验 3-2 ★★",
+      "sourceAnchor": "chapter3.md#L111",
+      "importance": "P0",
+      "learningOutcome": "复述 Advanced JSON Cards 的观察：消歧与跨会话最好，维护更贵更慢",
+      "narrationUnitIds": [
+        "EP01-U080"
+      ],
+      "visualEventIds": [
+        "EP01-U080"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-021",
+      "sourceHeading": "实验 3-2 ★★",
+      "sourceAnchor": "chapter3.md#L111",
+      "importance": "P1",
+      "learningOutcome": "转述建议：亲手切换四模式对比同一用例的记忆文件",
+      "narrationUnitIds": [
+        "EP01-U081"
+      ],
+      "visualEventIds": [
+        "EP01-U081"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FMT-022",
+      "sourceHeading": "用户记忆的四种存储格式",
+      "sourceAnchor": "chapter3.md#L93",
+      "importance": "P1",
+      "learningOutcome": "说明图 3-2 的横轴含义：简单性递减、表达力递增",
+      "narrationUnitIds": [
+        "EP01-U076"
+      ],
+      "visualEventIds": [
+        "EP01-U076"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "UAC-001",
+      "sourceHeading": "进阶知识表示形态：可执行代码",
+      "sourceAnchor": "chapter3.md#L115",
+      "importance": "P0",
+      "learningOutcome": "说明四种格式本质都是文本，聚合/冲突检测/约束执行需交给 LLM 心算",
+      "narrationUnitIds": [
+        "EP01-U082",
+        "EP01-U087"
+      ],
+      "visualEventIds": [
+        "EP01-U082",
+        "EP01-U087"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "UAC-002",
+      "sourceHeading": "进阶知识表示形态：可执行代码",
+      "sourceAnchor": "chapter3.md#L115",
+      "importance": "P0",
+      "learningOutcome": "说明 User as Code 把状态改为带类型可执行对象、规则写成普通函数",
+      "narrationUnitIds": [
+        "EP01-U083",
+        "EP01-U087"
+      ],
+      "visualEventIds": [
+        "EP01-U083",
+        "EP01-U087"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "UAC-003",
+      "sourceHeading": "进阶知识表示形态：可执行代码",
+      "sourceAnchor": "chapter3.md#L117",
+      "importance": "P0",
+      "learningOutcome": "说明借鉴预写日志+检查点：先追加到只增日志，再定期重建带类型状态",
+      "narrationUnitIds": [
+        "EP01-U084"
+      ],
+      "visualEventIds": [
+        "EP01-U084"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "UAC-004",
+      "sourceHeading": "进阶知识表示形态：可执行代码",
+      "sourceAnchor": "chapter3.md#L117",
+      "importance": "P0",
+      "learningOutcome": "说明收益：既保留原始证据又得到可查询可执行的派生状态",
+      "narrationUnitIds": [
+        "EP01-U085"
+      ],
+      "visualEventIds": [
+        "EP01-U085"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "UAC-005",
+      "sourceHeading": "进阶知识表示形态：可执行代码",
+      "sourceAnchor": "chapter3.md#L119-L134",
+      "importance": "P1",
+      "learningOutcome": "读懂示例中的 passport 与 trips 类型化状态片段",
+      "narrationUnitIds": [
+        "EP01-U086"
+      ],
+      "visualEventIds": [
+        "EP01-U086"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "UAC-006",
+      "sourceHeading": "进阶知识表示形态：可执行代码",
+      "sourceAnchor": "chapter3.md#L136-L144",
+      "importance": "P0",
+      "learningOutcome": "说明聚合统计由确定性函数实现（示例结果为 2）",
+      "narrationUnitIds": [
+        "EP01-U088"
+      ],
+      "visualEventIds": [
+        "EP01-U088"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "UAC-007",
+      "sourceHeading": "进阶知识表示形态：可执行代码",
+      "sourceAnchor": "chapter3.md#L146-L154",
+      "importance": "P0",
+      "learningOutcome": "说明冲突发现用当前用药与过敏史交叉比对实现",
+      "narrationUnitIds": [
+        "EP01-U089"
+      ],
+      "visualEventIds": [
+        "EP01-U089"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "UAC-008",
+      "sourceHeading": "进阶知识表示形态：可执行代码",
+      "sourceAnchor": "chapter3.md#L156-L166",
+      "importance": "P0",
+      "learningOutcome": "说明约束执行在状态更新后自动检查护照有效期（180 天阈值）",
+      "narrationUnitIds": [
+        "EP01-U090"
+      ],
+      "visualEventIds": [
+        "EP01-U090"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "UAC-009",
+      "sourceHeading": "进阶知识表示形态：可执行代码",
+      "sourceAnchor": "chapter3.md#L156",
+      "importance": "P1",
+      "learningOutcome": "说明约束检查无需等用户再次检索，是主动性的工程来源",
+      "narrationUnitIds": [
+        "EP01-U091"
+      ],
+      "visualEventIds": [
+        "EP01-U091"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "UAC-010",
+      "sourceHeading": "进阶知识表示形态：可执行代码",
+      "sourceAnchor": "chapter3.md#L168",
+      "importance": "P1",
+      "learningOutcome": "指出 User as Code 论文出处 arXiv:2606.16707 (2026)",
+      "narrationUnitIds": [
+        "EP01-U092"
+      ],
+      "visualEventIds": [
+        "EP01-U092"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "COG-001",
+      "sourceHeading": "用户记忆的认知科学基础",
+      "sourceAnchor": "chapter3.md#L174",
+      "importance": "P0",
+      "learningOutcome": "说明工作记忆对应 Agent 的上下文窗口",
+      "narrationUnitIds": [
+        "EP01-U093"
+      ],
+      "visualEventIds": [
+        "EP01-U093"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "COG-002",
+      "sourceHeading": "用户记忆的认知科学基础",
+      "sourceAnchor": "chapter3.md#L174",
+      "importance": "P0",
+      "learningOutcome": "说明轨迹是工作记忆核心内容，工作记忆也可含激活加载的长期记忆",
+      "narrationUnitIds": [
+        "EP01-U094"
+      ],
+      "visualEventIds": [
+        "EP01-U094"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "COG-003",
+      "sourceHeading": "用户记忆的认知科学基础",
+      "sourceAnchor": "chapter3.md#L176",
+      "importance": "P0",
+      "learningOutcome": "定义情景记忆并给出人类与 Agent 两组对应例子",
+      "narrationUnitIds": [
+        "EP01-U095",
+        "EP01-U096"
+      ],
+      "visualEventIds": [
+        "EP01-U095",
+        "EP01-U096"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "COG-004",
+      "sourceHeading": "用户记忆的认知科学基础",
+      "sourceAnchor": "chapter3.md#L177",
+      "importance": "P0",
+      "learningOutcome": "定义语义记忆并给出人类与 Agent 两组对应例子",
+      "narrationUnitIds": [
+        "EP01-U097",
+        "EP01-U098"
+      ],
+      "visualEventIds": [
+        "EP01-U097",
+        "EP01-U098"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "COG-005",
+      "sourceHeading": "用户记忆的认知科学基础",
+      "sourceAnchor": "chapter3.md#L178",
+      "importance": "P0",
+      "learningOutcome": "定义程序记忆并给出人类与 Agent 两组对应例子",
+      "narrationUnitIds": [
+        "EP01-U099",
+        "EP01-U100"
+      ],
+      "visualEventIds": [
+        "EP01-U099",
+        "EP01-U100"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "COG-006",
+      "sourceHeading": "用户记忆的认知科学基础",
+      "sourceAnchor": "chapter3.md#L180-L188",
+      "importance": "P0",
+      "learningOutcome": "说明三套分类体系相互正交",
+      "narrationUnitIds": [
+        "EP01-U101"
+      ],
+      "visualEventIds": [
+        "EP01-U101"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "COG-007",
+      "sourceHeading": "用户记忆的认知科学基础",
+      "sourceAnchor": "chapter3.md#L182-L188",
+      "importance": "P1",
+      "learningOutcome": "复述表 3-1：三套体系各自回答的问题与类别",
+      "narrationUnitIds": [
+        "EP01-U102"
+      ],
+      "visualEventIds": [
+        "EP01-U102"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "COG-008",
+      "sourceHeading": "用户记忆的认知科学基础",
+      "sourceAnchor": "chapter3.md#L190",
+      "importance": "P0",
+      "learningOutcome": "举出跨维度自由组合的两个具体例子",
+      "narrationUnitIds": [
+        "EP01-U103",
+        "EP01-U104"
+      ],
+      "visualEventIds": [
+        "EP01-U103",
+        "EP01-U104"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "COG-009",
+      "sourceHeading": "用户记忆的认知科学基础",
+      "sourceAnchor": "chapter3.md#L190",
+      "importance": "P1",
+      "learningOutcome": "说明选格式看工程需求、选类型看业务场景",
+      "narrationUnitIds": [
+        "EP01-U105"
+      ],
+      "visualEventIds": [
+        "EP01-U105"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-001",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L196",
+      "importance": "P0",
+      "learningOutcome": "说明 Mem0 把冲突处理从写入阶段（2025 论文/v2）移到检索阶段（v3, 2026.04）",
+      "narrationUnitIds": [
+        "EP01-U106",
+        "EP01-U107"
+      ],
+      "visualEventIds": [
+        "EP01-U106",
+        "EP01-U107"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-002",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L202",
+      "importance": "P0",
+      "learningOutcome": "复述 v2 三步流程：抽取候选事实→向量检索→LLM 决策",
+      "narrationUnitIds": [
+        "EP01-U108"
+      ],
+      "visualEventIds": [
+        "EP01-U108"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-003",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L202",
+      "importance": "P0",
+      "learningOutcome": "用北京到上海的例子说明 v2 在写入时 UPDATE 消歧",
+      "narrationUnitIds": [
+        "EP01-U109"
+      ],
+      "visualEventIds": [
+        "EP01-U109"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-004",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L202",
+      "importance": "P1",
+      "learningOutcome": "说明 Mem0-g 用实体—关系图支持多跳与时序问题",
+      "narrationUnitIds": [
+        "EP01-U110"
+      ],
+      "visualEventIds": [
+        "EP01-U110"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-005",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L202",
+      "importance": "P0",
+      "learningOutcome": "说明 v2 的优势：记忆库始终简洁一致",
+      "narrationUnitIds": [
+        "EP01-U111"
+      ],
+      "visualEventIds": [
+        "EP01-U111"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-006",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L202",
+      "importance": "P0",
+      "learningOutcome": "说明 v2 的风险：错误 UPDATE/DELETE 不可逆丢失历史",
+      "narrationUnitIds": [
+        "EP01-U112"
+      ],
+      "visualEventIds": [
+        "EP01-U112"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-007",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L202",
+      "importance": "P0",
+      "learningOutcome": "说明 v2 的风险：每条候选事实都要检索+第二次 LLM 判断",
+      "narrationUnitIds": [
+        "EP01-U113"
+      ],
+      "visualEventIds": [
+        "EP01-U113"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-008",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L204",
+      "importance": "P0",
+      "learningOutcome": "说明 v3 仅追加写入，两条带时间的事实并存",
+      "narrationUnitIds": [
+        "EP01-U114"
+      ],
+      "visualEventIds": [
+        "EP01-U114"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-009",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L204",
+      "importance": "P0",
+      "learningOutcome": "说明 v3 查询时融合语义、BM25、实体匹配并结合时间排序",
+      "narrationUnitIds": [
+        "EP01-U115"
+      ],
+      "visualEventIds": [
+        "EP01-U115"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-010",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L204",
+      "importance": "P0",
+      "learningOutcome": "说明 v3 的三项收益：不丢历史、减少调用、多信号+时间排序",
+      "narrationUnitIds": [
+        "EP01-U116"
+      ],
+      "visualEventIds": [
+        "EP01-U116"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-011",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L204",
+      "importance": "P0",
+      "learningOutcome": "复述 Mem0 报告的 LoCoMo 71.4→92.5 与 LongMemEval 67.8→94.4",
+      "narrationUnitIds": [
+        "EP01-U117"
+      ],
+      "visualEventIds": [
+        "EP01-U117"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-012",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L204",
+      "importance": "P0",
+      "learningOutcome": "说明当前 OSS 已移除外部图存储与 relations，Mem0-g 属历史设计",
+      "narrationUnitIds": [
+        "EP01-U118"
+      ],
+      "visualEventIds": [
+        "EP01-U118"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-013",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L206",
+      "importance": "P0",
+      "learningOutcome": "说明 Memobase 聚焦用户画像而非通用流水线",
+      "narrationUnitIds": [
+        "EP01-U119"
+      ],
+      "visualEventIds": [
+        "EP01-U119"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-014",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L206",
+      "importance": "P0",
+      "learningOutcome": "说明用户画像按主题—子主题两级可配置槽位组织",
+      "narrationUnitIds": [
+        "EP01-U120"
+      ],
+      "visualEventIds": [
+        "EP01-U120"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-015",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L206",
+      "importance": "P0",
+      "learningOutcome": "说明事件记忆按时间线记录事件以回答时间相关问题",
+      "narrationUnitIds": [
+        "EP01-U121"
+      ],
+      "visualEventIds": [
+        "EP01-U121"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-016",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L206",
+      "importance": "P0",
+      "learningOutcome": "说明缓冲批处理策略：累积后统一提取以摊薄成本并保证查询低延迟",
+      "narrationUnitIds": [
+        "EP01-U122"
+      ],
+      "visualEventIds": [
+        "EP01-U122"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-017",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L208",
+      "importance": "P1",
+      "learningOutcome": "说明两框架各自只覆盖设计空间一部分及与认知类型的近似关系",
+      "narrationUnitIds": [
+        "EP01-U123"
+      ],
+      "visualEventIds": [
+        "EP01-U123"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-018",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L208",
+      "importance": "P1",
+      "learningOutcome": "声明图 3-4 是对设计空间的概括而非具体项目实现",
+      "narrationUnitIds": [
+        "EP01-U124"
+      ],
+      "visualEventIds": [
+        "EP01-U124"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-019",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L214",
+      "importance": "P0",
+      "learningOutcome": "说明情景记忆的多维元数据检索（时间戳、情感标记、任务标识）",
+      "narrationUnitIds": [
+        "EP01-U125"
+      ],
+      "visualEventIds": [
+        "EP01-U125"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-020",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L215",
+      "importance": "P0",
+      "learningOutcome": "说明工作记忆层与长期记忆的双向动态交互",
+      "narrationUnitIds": [
+        "EP01-U126"
+      ],
+      "visualEventIds": [
+        "EP01-U126"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-021",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L217",
+      "importance": "P0",
+      "learningOutcome": "对比工作记忆（动态子集、按相关性裁剪）与轨迹（不可变、按时间追加）",
+      "narrationUnitIds": [
+        "EP01-U127"
+      ],
+      "visualEventIds": [
+        "EP01-U127"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "FRM-022",
+      "sourceHeading": "记忆框架案例",
+      "sourceAnchor": "chapter3.md#L219",
+      "importance": "P1",
+      "learningOutcome": "说明按业务需要取舍比追求大而全更符合工程现实",
+      "narrationUnitIds": [
+        "EP01-U128"
+      ],
+      "visualEventIds": [
+        "EP01-U128"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "CMP-001",
+      "sourceHeading": "记忆压缩与整理机制",
+      "sourceAnchor": "chapter3.md#L223",
+      "importance": "P0",
+      "learningOutcome": "说明累积式存储导致记忆爆炸，并损害存储与检索准确性",
+      "narrationUnitIds": [
+        "EP01-U129",
+        "EP01-U130"
+      ],
+      "visualEventIds": [
+        "EP01-U129",
+        "EP01-U130"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "CMP-002",
+      "sourceHeading": "记忆压缩与整理机制",
+      "sourceAnchor": "chapter3.md#L227",
+      "importance": "P0",
+      "learningOutcome": "列举重要性评分的四个因素：访问频率、时间衰减、情感强度、信息独特性",
+      "narrationUnitIds": [
+        "EP01-U131",
+        "EP01-U132"
+      ],
+      "visualEventIds": [
+        "EP01-U131",
+        "EP01-U132"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "CMP-003",
+      "sourceHeading": "记忆压缩与整理机制",
+      "sourceAnchor": "chapter3.md#L227",
+      "importance": "P0",
+      "learningOutcome": "说明低于阈值的记忆被标记为可压缩或可删除",
+      "narrationUnitIds": [
+        "EP01-U133"
+      ],
+      "visualEventIds": [
+        "EP01-U133"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "CMP-004",
+      "sourceHeading": "记忆压缩与整理机制",
+      "sourceAnchor": "chapter3.md#L227",
+      "importance": "P0",
+      "learningOutcome": "复述高分与低分记忆的两个具体评分例子",
+      "narrationUnitIds": [
+        "EP01-U134",
+        "EP01-U135"
+      ],
+      "visualEventIds": [
+        "EP01-U134",
+        "EP01-U135"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "CMP-005",
+      "sourceHeading": "记忆压缩与整理机制",
+      "sourceAnchor": "chapter3.md#L228",
+      "importance": "P0",
+      "learningOutcome": "说明第二层聚类与代表性摘要（天气对话例子）",
+      "narrationUnitIds": [
+        "EP01-U136"
+      ],
+      "visualEventIds": [
+        "EP01-U136"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "CMP-006",
+      "sourceHeading": "记忆压缩与整理机制",
+      "sourceAnchor": "chapter3.md#L228",
+      "importance": "P1",
+      "learningOutcome": "说明原始详细记忆可存档到二级存储",
+      "narrationUnitIds": [
+        "EP01-U137"
+      ],
+      "visualEventIds": [
+        "EP01-U137"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "CMP-007",
+      "sourceHeading": "记忆压缩与整理机制",
+      "sourceAnchor": "chapter3.md#L229",
+      "importance": "P0",
+      "learningOutcome": "说明第三层抽象泛化：情景记忆转化为语义或程序记忆",
+      "narrationUnitIds": [
+        "EP01-U138"
+      ],
+      "visualEventIds": [
+        "EP01-U138"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "PRV-001",
+      "sourceHeading": "隐私保护：日志脱敏",
+      "sourceAnchor": "chapter3.md#L233",
+      "importance": "P0",
+      "learningOutcome": "说明隐私挑战是个性化与不暴露敏感数据之间的张力",
+      "narrationUnitIds": [
+        "EP01-U139"
+      ],
+      "visualEventIds": [
+        "EP01-U139"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "PRV-002",
+      "sourceHeading": "实验 3-3 ★★",
+      "sourceAnchor": "chapter3.md#L237",
+      "importance": "P0",
+      "learningOutcome": "说明 log-sanitization 用 Ollama 本地 Qwen3 0.6B，可切更大规格",
+      "narrationUnitIds": [
+        "EP01-U140",
+        "EP01-U141"
+      ],
+      "visualEventIds": [
+        "EP01-U140",
+        "EP01-U141"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "PRV-003",
+      "sourceHeading": "实验 3-3 ★★",
+      "sourceAnchor": "chapter3.md#L237",
+      "importance": "P0",
+      "learningOutcome": "解释为什么必须本地部署而非云端 API",
+      "narrationUnitIds": [
+        "EP01-U142"
+      ],
+      "visualEventIds": [
+        "EP01-U142"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "PRV-004",
+      "sourceHeading": "实验 3-3 ★★",
+      "sourceAnchor": "chapter3.md#L239",
+      "importance": "P0",
+      "learningOutcome": "列举三类可识别信息：结构化、半结构化、自然语言表达",
+      "narrationUnitIds": [
+        "EP01-U143",
+        "EP01-U144"
+      ],
+      "visualEventIds": [
+        "EP01-U143",
+        "EP01-U144"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "PRV-005",
+      "sourceHeading": "实验 3-3 ★★",
+      "sourceAnchor": "chapter3.md#L239",
+      "importance": "P0",
+      "learningOutcome": "说明识别结果以 JSON Schema 输出类型、位置、置信度",
+      "narrationUnitIds": [
+        "EP01-U145"
+      ],
+      "visualEventIds": [
+        "EP01-U145"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "PRV-006",
+      "sourceHeading": "实验 3-3 ★★",
+      "sourceAnchor": "chapter3.md#L239",
+      "importance": "P0",
+      "learningOutcome": "复述原文数据：LLM 脱敏召回率 95% 以上且假阳性显著降低",
+      "narrationUnitIds": [
+        "EP01-U146"
+      ],
+      "visualEventIds": [
+        "EP01-U146"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "PRV-007",
+      "sourceHeading": "实验 3-3 ★★",
+      "sourceAnchor": "chapter3.md#L239",
+      "importance": "P0",
+      "learningOutcome": "说明超高吞吐场景的正则+LLM 混合策略",
+      "narrationUnitIds": [
+        "EP01-U147"
+      ],
+      "visualEventIds": [
+        "EP01-U147"
+      ],
+      "status": "covered"
+    },
+    {
+      "id": "PRV-008",
+      "sourceHeading": "隐私保护：日志脱敏",
+      "sourceAnchor": "chapter3.md#L241",
+      "importance": "P1",
+      "learningOutcome": "说明收尾过渡：记忆检索问题引出 RAG",
+      "narrationUnitIds": [
+        "EP01-U148"
+      ],
+      "visualEventIds": [
+        "EP01-U148"
+      ],
+      "status": "covered"
+    }
+  ]
+}

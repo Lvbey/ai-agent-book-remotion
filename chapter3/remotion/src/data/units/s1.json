@@ -1,0 +1,119 @@
+[
+  {
+    "id": "EP01-U009",
+    "scene": "ExtractDemo",
+    "title": "持久记忆层的作用",
+    "kp": ["MEM-001"],
+    "text": "要让 Agent 跨会话提供个性化服务，就需要一层持久的用户记忆。注意它并不保存每句对话，而是用额外的 LLM 调用，去提取、压缩并审查对未来有用的事实。",
+    "steps": [
+      {"kind": "pipe", "label": "原始对话"},
+      {"kind": "pipe", "label": "额外 LLM 调用"},
+      {"kind": "pipe", "label": "提取 · 压缩 · 审查"}
+    ]
+  },
+  {
+    "id": "EP01-U010",
+    "scene": "ExtractDemo",
+    "title": "与上下文学习的区别",
+    "kp": ["MEM-002"],
+    "text": "这和上下文学习完全不同：上下文学习只在当前窗口里生效，窗口一关，那些信息就消失了，下次对话还得从零开始。",
+    "steps": [
+      {"kind": "drop", "label": "上下文窗口关闭"},
+      {"kind": "note", "label": "上下文学习：窗口内有效"}
+    ]
+  },
+  {
+    "id": "EP01-U011",
+    "scene": "ExtractDemo",
+    "title": "示例对话：用户提出需求",
+    "kp": ["MEM-003"],
+    "text": "我们用一个具体例子。用户说：帮我订下周五去东京的机票，我偏好靠窗座位；另外我吃素，所以航班上需要一份特殊餐食。",
+    "steps": [
+      {"kind": "dialog", "who": "user", "label": "Help me book a flight to Tokyo next Friday"},
+      {"kind": "dialog", "who": "user", "label": "I prefer window seats"},
+      {"kind": "dialog", "who": "user", "label": "I'm vegetarian, need a special meal"}
+    ]
+  },
+  {
+    "id": "EP01-U012",
+    "scene": "ExtractDemo",
+    "title": "示例对话：工具调用与回复",
+    "kp": ["MEM-003"],
+    "text": "Agent 调用了机票搜索工具，返回三个选项。它根据用户偏好过滤出有靠窗座位的航班，并推荐了 ANA 的直飞。",
+    "steps": [
+      {"kind": "dialog", "who": "tool", "label": "flight_search → 3 options"},
+      {"kind": "dialog", "who": "agent", "label": "已按靠窗偏好过滤"},
+      {"kind": "dialog", "who": "agent", "label": "推荐 ANA 直飞，是否预订？"}
+    ]
+  },
+  {
+    "id": "EP01-U013",
+    "scene": "ExtractDemo",
+    "title": "示例对话：补充会员号",
+    "kp": ["MEM-003"],
+    "text": "用户回复：就订这个，另外用我的美联航 MileagePlus 会员号 12345678。这句话里藏着一条关键的长期信息。",
+    "steps": [
+      {"kind": "dialog", "who": "user", "label": "Yes, book it"},
+      {"kind": "dialog", "who": "user", "label": "United MileagePlus 12345678"}
+    ]
+  },
+  {
+    "id": "EP01-U014",
+    "scene": "ExtractDemo",
+    "title": "额外的提取调用",
+    "kp": ["MEM-004"],
+    "text": "对话结束后，框架会再调用一次专门的 LLM，让它分析整段对话，把值得长期记住的信息提取出来。这一步是独立于对话本身的。",
+    "steps": [
+      {"kind": "pipe", "label": "会话结束"},
+      {"kind": "pipe", "label": "专门 LLM 分析整段对话"}
+    ]
+  },
+  {
+    "id": "EP01-U015",
+    "scene": "ExtractDemo",
+    "title": "提取出的四条记忆",
+    "kp": ["MEM-004"],
+    "text": "它提取出四条：偏好靠窗座位；素食者，航班需要特殊餐；美联航会员号 12345678；近期有东京出行计划。每条都带了类别标签。",
+    "steps": [
+      {"kind": "extract", "label": "偏好靠窗座位", "v": "preference"},
+      {"kind": "extract", "label": "素食 · 特殊餐", "v": "dietary"},
+      {"kind": "extract", "label": "MileagePlus 12345678", "v": "loyalty"},
+      {"kind": "extract", "label": "东京出行计划", "v": "activity"}
+    ]
+  },
+  {
+    "id": "EP01-U016",
+    "scene": "ExtractDemo",
+    "title": "规则一：选择性",
+    "kp": ["MEM-005"],
+    "text": "第一条规则是选择性。像搜索返回了三个选项这种短期细节会被直接丢弃，它对未来没有任何用处，留下来只会污染记忆库。",
+    "steps": [
+      {"kind": "drop", "label": "搜索返回 3 个选项"},
+      {"kind": "drop", "label": "本次搜索的航班时刻"},
+      {"kind": "note", "label": "选择性：丢弃短期细节"}
+    ]
+  },
+  {
+    "id": "EP01-U017",
+    "scene": "ExtractDemo",
+    "title": "规则二：抽象化",
+    "kp": ["MEM-006"],
+    "text": "第二条是抽象化。这次订了靠窗，要归纳成用户长期偏好靠窗，而不是记成某年某月某日订过一次靠窗座位。",
+    "steps": [
+      {"kind": "abstract", "label": "本次订了靠窗座位"},
+      {"kind": "abstract", "label": "用户偏好靠窗座位（长期）"}
+    ]
+  },
+  {
+    "id": "EP01-U018",
+    "scene": "ExtractDemo",
+    "title": "规则三：结构化",
+    "kp": ["MEM-007"],
+    "text": "第三条是结构化。事实要用可检索的字段来保存：类别是偏好，键是座位，值是靠窗。这样后面才能被准确、快速地取回。",
+    "steps": [
+      {"kind": "struct", "label": "category = 偏好"},
+      {"kind": "struct", "label": "key = 座位"},
+      {"kind": "struct", "label": "value = 靠窗"}
+    ]
+  }
+]

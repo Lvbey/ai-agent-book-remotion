@@ -1,0 +1,119 @@
+[
+  {
+    "id": "EP01-U139",
+    "scene": "Privacy",
+    "title": "隐私的核心挑战",
+    "kp": ["PRV-001"],
+    "text": "构建用户记忆系统时，还有一个核心挑战：让 Agent 既能利用用户信息提供个性化服务，又不让敏感数据暴露在 LLM 上下文和系统日志里。",
+    "steps": [
+      {"kind": "goal", "label": "个性化服务 ← 需要用户信息"},
+      {"kind": "goal", "label": "敏感数据 → 不能进上下文和日志"}
+    ]
+  },
+  {
+    "id": "EP01-U140",
+    "scene": "Privacy",
+    "title": "本地小模型方案",
+    "kp": ["PRV-002"],
+    "text": "实验 3-3 给出的方案是：log-sanitization 项目通过 Ollama 调用本地的 Qwen3 0.6B 小模型，来实现 PII 检测与脱敏。这个规格足够小，可以在 CPU 和消费级设备上运行。",
+    "steps": [
+      {"kind": "local", "label": "Ollama · 本地部署"},
+      {"kind": "local", "label": "Qwen3 0.6B 小模型"},
+      {"kind": "note", "label": "可在 CPU / 消费级设备运行"}
+    ]
+  },
+  {
+    "id": "EP01-U141",
+    "scene": "Privacy",
+    "title": "按需切换更大规格",
+    "kp": ["PRV-002"],
+    "text": "如果对精度有更高要求，也可以按需切换到 qwen3:1.7b 或者 qwen3:4b 这些更大的规格。代价是算力，收益是识别能力。",
+    "steps": [
+      {"kind": "local", "label": "qwen3:1.7b"},
+      {"kind": "local", "label": "qwen3:4b"},
+      {"kind": "note", "label": "更大规格 → 更强识别，更高算力"}
+    ]
+  },
+  {
+    "id": "EP01-U142",
+    "scene": "Privacy",
+    "title": "为什么必须本地",
+    "kp": ["PRV-003"],
+    "text": "为什么要本地部署，而不调用云端 API？原因很明确：日志本身就可能包含敏感信息，把它发送到云端去脱敏，这件事本身就违背了隐私保护的初衷。",
+    "steps": [
+      {"kind": "local", "label": "日志含敏感信息"},
+      {"kind": "local", "label": "发往云端 → 违背隐私初衷"},
+      {"kind": "local", "label": "本地闭环处理"}
+    ]
+  },
+  {
+    "id": "EP01-U143",
+    "scene": "Privacy",
+    "title": "结构化敏感信息",
+    "kp": ["PRV-004"],
+    "text": "系统能识别三类信息。第一类是结构化信息，比如身份证号、银行卡号，它们有固定格式，相对容易识别。",
+    "steps": [
+      {"kind": "detect", "label": "身份证号", "v": "structured"},
+      {"kind": "detect", "label": "银行卡号", "v": "structured"}
+    ]
+  },
+  {
+    "id": "EP01-U144",
+    "scene": "Privacy",
+    "title": "半结构化与自然语言",
+    "kp": ["PRV-004"],
+    "text": "第二类是有一定模式的半结构化信息，比如地址。第三类是自然语言表达的敏感内容，比如用户随口说的我的密码是 abc123，没有任何固定格式。",
+    "steps": [
+      {"kind": "detect", "label": "地址（半结构化）", "v": "semi"},
+      {"kind": "detect", "label": "我的密码是 abc123（自然语言）", "v": "natural"}
+    ]
+  },
+  {
+    "id": "EP01-U145",
+    "scene": "Privacy",
+    "title": "结构化输出",
+    "kp": ["PRV-005"],
+    "text": "识别结果通过 JSON Schema 结构化输出，包含三个字段：敏感信息的类型、位置和置信度。下游程序可以直接消费，不需要再做解析。",
+    "steps": [
+      {"kind": "schema", "label": "type · 敏感信息类型"},
+      {"kind": "schema", "label": "position · 位置"},
+      {"kind": "schema", "label": "confidence · 置信度"}
+    ]
+  },
+  {
+    "id": "EP01-U146",
+    "scene": "Privacy",
+    "title": "与正则的对比",
+    "kp": ["PRV-006"],
+    "text": "相比传统正则表达式，基于 LLM 的脱敏召回率能达到百分之九十五以上，同时显著降低了假阳性。这是原书给出的实测数据。",
+    "steps": [
+      {"kind": "cmp", "label": "正则 · 基线"},
+      {"kind": "cmp", "label": "LLM 脱敏 · 召回率 95%+"},
+      {"kind": "cmp", "label": "假阳性显著降低"}
+    ]
+  },
+  {
+    "id": "EP01-U147",
+    "scene": "Privacy",
+    "title": "混合策略",
+    "kp": ["PRV-007"],
+    "text": "对于超高吞吐量的场景，可以采用混合策略：先用正则快速过滤掉明显的模式，再让 LLM 深度分析剩下的文本，兼顾速度与召回。",
+    "steps": [
+      {"kind": "hybrid", "label": "正则快速过滤明显模式"},
+      {"kind": "hybrid", "label": "LLM 深度分析剩余文本"},
+      {"kind": "note", "label": "速度 + 召回兼顾"}
+    ]
+  },
+  {
+    "id": "EP01-U148",
+    "scene": "Privacy",
+    "title": "本节收尾与下集预告",
+    "kp": ["PRV-008"],
+    "text": "到这里，用户记忆的表示和管理就讲完了。接下来要解决的是检索问题：当记忆量增长到成千上万条时，怎么快速找到相关的那几条？这正是 RAG 要解决的核心问题。",
+    "steps": [
+      {"kind": "note", "label": "已解决：表示与管理"},
+      {"kind": "note", "label": "待解决：海量记忆的检索"},
+      {"kind": "note", "label": "下一集：RAG 基础"}
+    ]
+  }
+]

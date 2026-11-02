@@ -1,0 +1,131 @@
+[
+  {
+    "id": "EP01-U082",
+    "scene": "CodeState",
+    "title": "文本表示的边界",
+    "kp": ["UAC-001"],
+    "text": "前面四种格式本质上都是文本。它们擅长召回单条事实，但聚合、冲突检测、约束执行这些操作，只能交给 LLM 去心算。",
+    "steps": [
+      {"kind": "textvs", "label": "召回单条事实 · 擅长"},
+      {"kind": "textvs", "label": "聚合 · 冲突检测 · 约束执行"},
+      {"kind": "textvs", "label": "交给 LLM 心算 → 不可验证"}
+    ]
+  },
+  {
+    "id": "EP01-U083",
+    "scene": "CodeState",
+    "title": "User as Code 的思路",
+    "kp": ["UAC-002"],
+    "text": "User as Code 换了个思路：把用户状态改成带类型的可执行对象，并把规则写成普通函数，让表示和推理使用同一种可验证的介质。",
+    "steps": [
+      {"kind": "state", "label": "用户状态 → 带类型可执行对象"},
+      {"kind": "rule", "label": "规则 → 普通函数", "v": "aggregation"},
+      {"kind": "note", "label": "表示与推理：同一种可验证介质"}
+    ]
+  },
+  {
+    "id": "EP01-U084",
+    "scene": "CodeState",
+    "title": "预写日志加检查点",
+    "kp": ["UAC-003"],
+    "text": "它借鉴了预写日志加检查点的机制：会话结束后，先把事实追加到只增日志里，再定期从完整日志重建出带类型的状态。",
+    "steps": [
+      {"kind": "wal", "label": "会话结束 → 追加事实到只增日志"},
+      {"kind": "wal", "label": "定期从完整日志重建状态"}
+    ]
+  },
+  {
+    "id": "EP01-U085",
+    "scene": "CodeState",
+    "title": "两头都占",
+    "kp": ["UAC-004"],
+    "text": "这样做的好处是两头都占：原始证据一条不丢，同时又能得到一份可查询、可执行的派生状态。日志负责真相，状态负责效率。",
+    "steps": [
+      {"kind": "wal", "label": "只增日志 = 原始证据"},
+      {"kind": "state", "label": "重建状态 = 可查询可执行"}
+    ]
+  },
+  {
+    "id": "EP01-U086",
+    "scene": "CodeState",
+    "title": "带类型的状态片段",
+    "kp": ["UAC-005"],
+    "text": "看一个简化的状态片段：passport 是一个 PassportInfo 对象，包含号码、国家和到期日；trips 是一个 Trip 列表，每趟行程有目的地、出发日期和是否国际航班。",
+    "steps": [
+      {"kind": "state", "label": "passport: PassportInfo"},
+      {"kind": "state", "label": "number · country · expiry_date"},
+      {"kind": "state", "label": "trips: [Trip]"},
+      {"kind": "state", "label": "destination · departure_date · is_international"}
+    ]
+  },
+  {
+    "id": "EP01-U087",
+    "scene": "CodeState",
+    "title": "从心算到确定性函数",
+    "kp": ["UAC-001", "UAC-002"],
+    "text": "一旦状态带上了类型，原本需要 LLM 读一遍再心算的操作，就可以交给确定性函数。结果可复现、可测试，而不是每次都可能不一样。",
+    "steps": [
+      {"kind": "textvs", "label": "LLM 心算：结果不稳定"},
+      {"kind": "textvs", "label": "确定性函数：可复现可测试"}
+    ]
+  },
+  {
+    "id": "EP01-U088",
+    "scene": "CodeState",
+    "title": "聚合统计",
+    "kp": ["UAC-006"],
+    "text": "比如聚合统计：直接遍历 trips，筛出是国际航班、并且出发年份是 2025 的行程，然后计数。代码里这个例子的结果是 2。",
+    "steps": [
+      {"kind": "rule", "label": "count(trip for trip in state.trips ...)", "v": "aggregation"},
+      {"kind": "exec", "label": "if trip.is_international and year == 2025"},
+      {"kind": "result", "label": "=> 2"}
+    ]
+  },
+  {
+    "id": "EP01-U089",
+    "scene": "CodeState",
+    "title": "冲突发现",
+    "kp": ["UAC-007"],
+    "text": "再比如冲突发现：把当前用药和过敏史做交叉比对。如果某个药物的药物类别和某个过敏原的类别相同，就发出冲突告警。这是一个纯函数，不靠模型猜。",
+    "steps": [
+      {"kind": "rule", "label": "def check_drug_allergy(profile)", "v": "conflict"},
+      {"kind": "exec", "label": "medication.drug_class == allergy.drug_class"},
+      {"kind": "result", "label": "emit_conflict(medication, allergy)"}
+    ]
+  },
+  {
+    "id": "EP01-U090",
+    "scene": "CodeState",
+    "title": "约束执行",
+    "kp": ["UAC-008"],
+    "text": "第三种是约束执行：状态更新后自动检查护照有效期，如果距出发日不足一百八十天就告警，提示护照过期太近，并带上具体行程和天数。",
+    "steps": [
+      {"kind": "rule", "label": "for trip in state.trips: if international", "v": "constraint"},
+      {"kind": "exec", "label": "days = expiry_date - departure_date"},
+      {"kind": "exec", "label": "if days < 180"},
+      {"kind": "result", "label": "alert(passport expires too soon)"}
+    ]
+  },
+  {
+    "id": "EP01-U091",
+    "scene": "CodeState",
+    "title": "主动性的工程来源",
+    "kp": ["UAC-009"],
+    "text": "关键在于，这个检查不需要等用户再次检索。状态一变就会自动触发，这正是前面三层次框架里主动服务能力的工程来源。",
+    "steps": [
+      {"kind": "note", "label": "状态变更 → 自动触发检查"},
+      {"kind": "note", "label": "对应第三层：主动服务"}
+    ]
+  },
+  {
+    "id": "EP01-U092",
+    "scene": "CodeState",
+    "title": "出处",
+    "kp": ["UAC-010"],
+    "text": "User as Code 的完整设计与评测，见 Li, Bojie 的论文 User as Code: Executable Memory for Personalized Agents，arXiv 编号 2606.16707，发表于 2026 年。",
+    "steps": [
+      {"kind": "note", "label": "arXiv:2606.16707 (2026)"},
+      {"kind": "note", "label": "Li, Bojie · User as Code"}
+    ]
+  }
+]

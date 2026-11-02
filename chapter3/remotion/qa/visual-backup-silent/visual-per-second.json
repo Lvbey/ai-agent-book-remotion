@@ -1,0 +1,86 @@
+{
+  "source": "out\\EP01-silent-review.mp4",
+  "fps": 30,
+  "sampleFps": 10,
+  "sampleFrames": 16522,
+  "seconds": 1652,
+  "totalSecondsExpected": 1652,
+  "thresholds": {
+    "MOTION_DEAD": 0.1,
+    "MOTION_LOW": 0.3,
+    "MAX_STATIC_RUN": 3,
+    "MAX_LOW_RUN": 8
+  },
+  "stats": {
+    "mean": 1.441,
+    "p05": 0.153,
+    "p25": 0.44,
+    "median": 0.931,
+    "p95": 3.409,
+    "deadSeconds": 40
+  },
+  "byScene": {
+    "IntroMap": {
+      "seconds": 86,
+      "avgMotion": 1.577,
+      "minMotion": 0.455,
+      "deadSeconds": 0
+    },
+    "ExtractDemo": {
+      "seconds": 101,
+      "avgMotion": 1.406,
+      "minMotion": 0.257,
+      "deadSeconds": 0
+    },
+    "EvalFrame": {
+      "seconds": 265,
+      "avgMotion": 1.478,
+      "minMotion": 0.063,
+      "deadSeconds": 2
+    },
+    "Layers": {
+      "seconds": 160,
+      "avgMotion": 1.795,
+      "minMotion": 0.701,
+      "deadSeconds": 0
+    },
+    "Formats": {
+      "seconds": 291,
+      "avgMotion": 1.252,
+      "minMotion": 0.089,
+      "deadSeconds": 1
+    },
+    "CodeState": {
+      "seconds": 120,
+      "avgMotion": 1.269,
+      "minMotion": 0.039,
+      "deadSeconds": 24
+    },
+    "Cognition": {
+      "seconds": 145,
+      "avgMotion": 1.54,
+      "minMotion": 0.365,
+      "deadSeconds": 0
+    },
+    "Frameworks": {
+      "seconds": 271,
+      "avgMotion": 1.329,
+      "minMotion": 0.015,
+      "deadSeconds": 13
+    },
+    "Compress": {
+      "seconds": 101,
+      "avgMotion": 1.576,
+      "minMotion": 0.116,
+      "deadSeconds": 0
+    },
+    "Privacy": {
+      "seconds": 112,
+      "avgMotion": 1.465,
+      "minMotion": 0.295,
+      "deadSeconds": 0
+    }
+  },
+  "deadRuns": [],
+  "lowRuns": []
+}

@@ -1,0 +1,97 @@
+[
+  {
+    "id": "EP01-U001",
+    "scene": "IntroMap",
+    "title": "章节定位：从单次会话到跨会话",
+    "kp": ["INTRO-001"],
+    "text": "上一章我们解决的是单次交互里的上下文管理。这一章要处理一个更难的问题：对话结束之后，Agent 还能不能记住你、记住知识。",
+    "steps": [
+      {"kind": "focus", "label": "第二章：单次会话", "v": "上下文窗口"},
+      {"kind": "flow", "label": "窗口关闭即失效"},
+      {"kind": "focus", "label": "第三章：跨会话", "v": "持久化记忆"}
+    ]
+  },
+  {
+    "id": "EP01-U002",
+    "scene": "IntroMap",
+    "title": "尺度一：用户记忆",
+    "kp": ["INTRO-002"],
+    "text": "这种持久化的记忆体系，可以拆成两个尺度来看。第一个尺度是用户记忆，它面向单个用户，在与这位用户的交互中逐渐了解他的偏好、习惯和需求。",
+    "steps": [
+      {"kind": "branch", "label": "用户记忆", "v": "个体尺度"},
+      {"kind": "list", "label": "偏好"},
+      {"kind": "list", "label": "习惯"},
+      {"kind": "list", "label": "需求"}
+    ]
+  },
+  {
+    "id": "EP01-U003",
+    "scene": "IntroMap",
+    "title": "尺度二：知识库",
+    "kp": ["INTRO-003"],
+    "text": "第二个尺度是知识库，它面向所有用户共享的集体知识。比如一个行业的法规体系、一家公司内部的操作流程、一个技术领域的专业文档。",
+    "steps": [
+      {"kind": "branch", "label": "知识库", "v": "群体尺度"},
+      {"kind": "list", "label": "行业法规"},
+      {"kind": "list", "label": "公司流程"},
+      {"kind": "list", "label": "专业文档"}
+    ]
+  },
+  {
+    "id": "EP01-U004",
+    "scene": "IntroMap",
+    "title": "一句话区分两个尺度",
+    "kp": ["INTRO-004"],
+    "text": "一句话区分：用户记忆让 Agent 成为懂你的助手，知识库让 Agent 成为某个领域的专家。前者个性化，后者专业化。",
+    "steps": [
+      {"kind": "focus", "label": "懂你的助手", "v": "用户记忆"},
+      {"kind": "focus", "label": "领域专家", "v": "知识库"}
+    ]
+  },
+  {
+    "id": "EP01-U005",
+    "scene": "IntroMap",
+    "title": "共用的底层技术",
+    "kp": ["INTRO-005"],
+    "text": "有意思的是，这两个尺度解决的其实是同一个问题，只是对象不同。所以它们共用同一批底层技术，最典型的就是向量检索和知识压缩。",
+    "steps": [
+      {"kind": "shared", "label": "向量检索"},
+      {"kind": "shared", "label": "知识压缩"}
+    ]
+  },
+  {
+    "id": "EP01-U006",
+    "scene": "IntroMap",
+    "title": "共同的三个麻烦",
+    "kp": ["INTRO-005"],
+    "text": "也面临同样的三个麻烦：信息冲突、知识过期、检索不准。这三个词会贯穿整章，后面每一节其实都是在和它们打交道。",
+    "steps": [
+      {"kind": "trouble", "label": "信息冲突"},
+      {"kind": "trouble", "label": "知识过期"},
+      {"kind": "trouble", "label": "检索不准"}
+    ]
+  },
+  {
+    "id": "EP01-U007",
+    "scene": "IntroMap",
+    "title": "本章路线",
+    "kp": ["INTRO-006"],
+    "text": "本章的路线很清晰：从单次会话的上下文管理，扩展到跨会话的持久化知识体系。先构建用户记忆系统，再深入知识库的检索增强生成技术。",
+    "steps": [
+      {"kind": "route", "label": "用户记忆系统", "v": "EP01"},
+      {"kind": "route", "label": "RAG 基础", "v": "EP02"},
+      {"kind": "route", "label": "知识的组织与检索", "v": "EP03"}
+    ]
+  },
+  {
+    "id": "EP01-U008",
+    "scene": "IntroMap",
+    "title": "EP01 的范围",
+    "kp": ["INTRO-006"],
+    "text": "这一集只讲第一部分：用户记忆系统。图 3-1 就是整章的知识脉络，我们会把左边这条线从头到尾完整走通。",
+    "steps": [
+      {"kind": "focus", "label": "EP01 · 用户记忆系统", "v": "本集范围"},
+      {"kind": "note", "label": "图 3-1 本章知识脉络"}
+    ]
+  }
+]

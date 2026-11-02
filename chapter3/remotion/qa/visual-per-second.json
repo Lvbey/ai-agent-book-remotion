@@ -1,0 +1,86 @@
+{
+  "source": "out\\EP01-voiced.mp4",
+  "fps": 30,
+  "sampleFps": 10,
+  "sampleFrames": 17876,
+  "seconds": 1787,
+  "totalSecondsExpected": 1787,
+  "thresholds": {
+    "MOTION_DEAD": 0.1,
+    "MOTION_LOW": 0.3,
+    "MAX_STATIC_RUN": 3,
+    "MAX_LOW_RUN": 8
+  },
+  "stats": {
+    "mean": 1.389,
+    "p05": 0.161,
+    "p25": 0.408,
+    "median": 0.784,
+    "p95": 3.485,
+    "deadSeconds": 28
+  },
+  "byScene": {
+    "IntroMap": {
+      "seconds": 89,
+      "avgMotion": 1.56,
+      "minMotion": 0.456,
+      "deadSeconds": 0
+    },
+    "ExtractDemo": {
+      "seconds": 109,
+      "avgMotion": 1.146,
+      "minMotion": 0.054,
+      "deadSeconds": 1
+    },
+    "EvalFrame": {
+      "seconds": 279,
+      "avgMotion": 1.376,
+      "minMotion": 0.061,
+      "deadSeconds": 5
+    },
+    "Layers": {
+      "seconds": 170,
+      "avgMotion": 1.848,
+      "minMotion": 0.686,
+      "deadSeconds": 0
+    },
+    "Formats": {
+      "seconds": 315,
+      "avgMotion": 1.179,
+      "minMotion": 0.087,
+      "deadSeconds": 4
+    },
+    "CodeState": {
+      "seconds": 135,
+      "avgMotion": 1.697,
+      "minMotion": 0.253,
+      "deadSeconds": 0
+    },
+    "Cognition": {
+      "seconds": 156,
+      "avgMotion": 1.486,
+      "minMotion": 0.353,
+      "deadSeconds": 0
+    },
+    "Frameworks": {
+      "seconds": 303,
+      "avgMotion": 1.184,
+      "minMotion": 0.015,
+      "deadSeconds": 18
+    },
+    "Compress": {
+      "seconds": 107,
+      "avgMotion": 1.531,
+      "minMotion": 0.115,
+      "deadSeconds": 0
+    },
+    "Privacy": {
+      "seconds": 124,
+      "avgMotion": 1.339,
+      "minMotion": 0.332,
+      "deadSeconds": 0
+    }
+  },
+  "deadRuns": [],
+  "lowRuns": []
+}

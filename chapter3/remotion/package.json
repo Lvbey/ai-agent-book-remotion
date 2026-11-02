@@ -1,0 +1,42 @@
+{
+  "name": "chapter3-user-memory-animation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "深入理解 AI Agent 第三章《用户记忆和知识库》EP01《用户记忆系统》",
+  "scripts": {
+    "dev": "remotion studio src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "render": "remotion render src/index.ts EP01UserMemory out/EP01.mp4",
+    "render:voiced": "remotion render src/index.ts EP01UserMemory out/EP01-voiced.mp4",
+    "render:segment": "remotion render src/index.ts EP01UserMemory out/ep01-segment.mp4",
+    "still": "remotion still src/index.ts EP01UserMemory out/still.png",
+    "check:timeline": "node scripts/check-timeline.mjs",
+    "check:subtitles": "node scripts/check-subtitles.mjs",
+    "check:coverage": "node scripts/check-coverage.mjs",
+    "check:layout": "node scripts/check-layout.mjs",
+    "check:narration": "node scripts/check-narration.mjs",
+    "build:subtitles": "node scripts/build-subtitles.mjs",
+    "build:docs": "node scripts/build-docs.mjs",
+    "build:coverage": "node scripts/build-coverage-map.mjs",
+    "narration:list": "python scripts/tts-synthesize.py --list",
+    "narration:audition": "python scripts/tts-synthesize.py --audition",
+    "narration:synth": "python scripts/tts-synthesize.py --all --jobs 3",
+    "narration:track": "node scripts/build-narration-track.mjs",
+    "narration:test": "python scripts/tts-selftest.py && node --test scripts/narration-align.test.mjs",
+    "narration:build": "node scripts/build-subtitles.mjs && node scripts/build-narration-track.mjs && node scripts/build-docs.mjs && node scripts/check-narration.mjs",
+    "qa:all": "npm run typecheck && npm run check:timeline && npm run check:subtitles && npm run check:coverage && npm run check:layout",
+    "qa:voiced": "npm run qa:all && npm run check:narration"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.332",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "remotion": "^4.0.332"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.7",
+    "ffmpeg-static": "^5.3.0",
+    "typescript": "^5.9.2"
+  }
+}
