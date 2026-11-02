@@ -9,7 +9,11 @@
     "render": "remotion render src/index.ts ContextEngineering out/context-engineering.mp4",
     "render:preview": "remotion render src/index.ts ContextEngineering out/preview.mp4 --frames=0-719",
     "still": "remotion still src/index.ts ContextEngineering out/still.png --frame=1800",
-    "check:timing": "node scripts/check-scene-timing.mjs"
+    "check:timing": "node scripts/check-scene-timing.mjs",
+    "voice:generate": "python scripts/build-chapter-voice.py",
+    "check:voice": "node scripts/check-voice-sync.mjs",
+    "render:voiced": "node scripts/render-voiced.mjs",
+    "check:semantic": "node scripts/check-semantic-clock.cjs"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.332",

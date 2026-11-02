@@ -1,5 +1,7 @@
 import React from 'react';
-import {AbsoluteFill, Sequence} from 'remotion';
+import {AbsoluteFill, Sequence, Audio, staticFile} from 'remotion';
+import voiceTimeline from './voice-timeline.json';
+import {NarrationCaptions} from './components/NarrationCaptions';
 import {Intro} from './scenes/Intro';
 import {ContextMap} from './scenes/ContextMap';
 import {ApiStructure, ChatTemplate, PromptEngineering, StateBar, CompressionStrategies, SubAgentIsolation} from './scenes/ChapterDeepDive';
@@ -9,22 +11,23 @@ import {Cache} from './scenes/Cache';
 import {StateAndCompress} from './scenes/StateAndCompress';
 import {Conclusion} from './scenes/Conclusion';
 import {COLORS} from './theme';
+import {VisualStage} from './components/VisualStage';
 import {SCENE_TIMING} from './sceneTiming';
 
 const sceneSpecs = [
-  {name:'01 开场：信息缺失', duration:SCENE_TIMING.Intro.duration, component:Intro},
-  {name:'02 上下文是什么', duration:SCENE_TIMING.ContextMap.duration, component:ContextMap},
-  {name:'03 API 消息结构', duration:SCENE_TIMING.ApiStructure.duration, component:ApiStructure},
-  {name:'04 Agent 工具循环', duration:SCENE_TIMING.AgentLoop.duration, component:AgentLoop},
-  {name:'05 Chat Template：消息到 Token', duration:SCENE_TIMING.ChatTemplate.duration, component:ChatTemplate},
-  {name:'06 KV Cache 与稳定前缀', duration:SCENE_TIMING.Cache.duration, component:Cache},
-  {name:'07 提示工程与 Few-shot', duration:SCENE_TIMING.PromptEngineering.duration, component:PromptEngineering},
-  {name:'08 Skills、提示注入与安全', duration:SCENE_TIMING.PromptAndSafety.duration, component:PromptAndSafety},
-  {name:'09 Agent 状态栏', duration:SCENE_TIMING.StateBar.duration, component:StateBar},
-  {name:'10 上下文压缩：状态与噪声', duration:SCENE_TIMING.StateAndCompress.duration, component:StateAndCompress},
-  {name:'11 六类压缩策略与生产分层', duration:SCENE_TIMING.CompressionStrategies.duration, component:CompressionStrategies},
-  {name:'12 子 Agent 上下文隔离', duration:SCENE_TIMING.SubAgentIsolation.duration, component:SubAgentIsolation},
-  {name:'13 总结：设计上下文', duration:SCENE_TIMING.Conclusion.duration, component:Conclusion},
+  {key:'Intro', name:'01 开场：信息缺失', duration:SCENE_TIMING.Intro.duration, component:Intro},
+  {key:'ContextMap', name:'02 上下文是什么', duration:SCENE_TIMING.ContextMap.duration, component:ContextMap},
+  {key:'ApiStructure', name:'03 API 消息结构', duration:SCENE_TIMING.ApiStructure.duration, component:ApiStructure},
+  {key:'AgentLoop', name:'04 Agent 工具循环', duration:SCENE_TIMING.AgentLoop.duration, component:AgentLoop},
+  {key:'ChatTemplate', name:'05 Chat Template：消息到 Token', duration:SCENE_TIMING.ChatTemplate.duration, component:ChatTemplate},
+  {key:'Cache', name:'06 KV Cache 与稳定前缀', duration:SCENE_TIMING.Cache.duration, component:Cache},
+  {key:'PromptEngineering', name:'07 提示工程与 Few-shot', duration:SCENE_TIMING.PromptEngineering.duration, component:PromptEngineering},
+  {key:'PromptAndSafety', name:'08 Skills、提示注入与安全', duration:SCENE_TIMING.PromptAndSafety.duration, component:PromptAndSafety},
+  {key:'StateBar', name:'09 Agent 状态栏', duration:SCENE_TIMING.StateBar.duration, component:StateBar},
+  {key:'StateAndCompress', name:'10 上下文压缩：状态与噪声', duration:SCENE_TIMING.StateAndCompress.duration, component:StateAndCompress},
+  {key:'CompressionStrategies', name:'11 六类压缩策略与生产分层', duration:SCENE_TIMING.CompressionStrategies.duration, component:CompressionStrategies},
+  {key:'SubAgentIsolation', name:'12 子 Agent 上下文隔离', duration:SCENE_TIMING.SubAgentIsolation.duration, component:SubAgentIsolation},
+  {key:'Conclusion', name:'13 总结：设计上下文', duration:SCENE_TIMING.Conclusion.duration, component:Conclusion},
 ] as const;
 
 let cursor = 0;
@@ -39,7 +42,9 @@ export const MainVideo: React.FC = () => (
     {scenes.map((scene) => {
       const Component = scene.component;
       return <Sequence key={scene.name} from={scene.from} durationInFrames={scene.duration} name={scene.name}>
-        <Component />
+        <VisualStage sceneKey={scene.key}><Component /></VisualStage>
+        <Audio src={staticFile(voiceTimeline[scene.key].audio)} />
+        <NarrationCaptions sceneKey={scene.key} />
       </Sequence>;
     })}
   </AbsoluteFill>

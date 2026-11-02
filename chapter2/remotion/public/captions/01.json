@@ -1,0 +1,93 @@
+[
+  {
+    "text": "假设你让一个编程 Agent 修复支付回调 Bug。",
+    "startMs": 0,
+    "endMs": 3925,
+    "timestampMs": 1962.5,
+    "confidence": null
+  },
+  {
+    "text": "它很快改完代码，",
+    "startMs": 4320,
+    "endMs": 5625,
+    "timestampMs": 4972.5,
+    "confidence": null
+  },
+  {
+    "text": "却没读项目规范，",
+    "startMs": 5855,
+    "endMs": 7245,
+    "timestampMs": 6550.0,
+    "confidence": null
+  },
+  {
+    "text": "也没检查重试逻辑。",
+    "startMs": 7495,
+    "endMs": 9015,
+    "timestampMs": 8255.0,
+    "confidence": null
+  },
+  {
+    "text": "测试发现，",
+    "startMs": 9460,
+    "endMs": 10285,
+    "timestampMs": 9872.5,
+    "confidence": null
+  },
+  {
+    "text": "同一笔支付可能被处理两次。",
+    "startMs": 10455,
+    "endMs": 12035,
+    "timestampMs": 11245.0,
+    "confidence": null
+  },
+  {
+    "text": "模型不会自动知道散落在代码库和团队约定里的背",
+    "startMs": 13115,
+    "endMs": 17135,
+    "timestampMs": 15125.0,
+    "confidence": null
+  },
+  {
+    "text": "景。",
+    "startMs": 17135,
+    "endMs": 17365,
+    "timestampMs": 17250.0,
+    "confidence": null
+  },
+  {
+    "text": "问题可能不是它不会写代码，",
+    "startMs": 17820,
+    "endMs": 19665,
+    "timestampMs": 18742.5,
+    "confidence": null
+  },
+  {
+    "text": "而是缺少完成任务所需的上下文。",
+    "startMs": 19935,
+    "endMs": 22425,
+    "timestampMs": 21180.0,
+    "confidence": null
+  },
+  {
+    "text": "因此，",
+    "startMs": 22800,
+    "endMs": 23215,
+    "timestampMs": 23007.5,
+    "confidence": null
+  },
+  {
+    "text": "团队还需要把隐性经验整理成可检索的项目文档，",
+    "startMs": 23365,
+    "endMs": 27465,
+    "timestampMs": 25415.0,
+    "confidence": null
+  },
+  {
+    "text": "让人和智能体都能找到相同的规则。",
+    "startMs": 27835,
+    "endMs": 30655,
+    "timestampMs": 29245.0,
+    "confidence": null
+  }
+]

@@ -1,0 +1,142 @@
+[
+  {
+    "text": "模型返回工具调用请求，",
+    "startMs": 45,
+    "endMs": 1935,
+    "timestampMs": 990.0,
+    "confidence": null
+  },
+  {
+    "text": "不代表工具已经执行。",
+    "startMs": 2115,
+    "endMs": 3775,
+    "timestampMs": 2945.0,
+    "confidence": null
+  },
+  {
+    "text": "框架读取参数、",
+    "startMs": 4180,
+    "endMs": 5105,
+    "timestampMs": 4642.5,
+    "confidence": null
+  },
+  {
+    "text": "执行工具、",
+    "startMs": 5505,
+    "endMs": 6025,
+    "timestampMs": 5765.0,
+    "confidence": null
+  },
+  {
+    "text": "把结果通过对应 ID 回填到消息历史，",
+    "startMs": 6580,
+    "endMs": 9855,
+    "timestampMs": 8217.5,
+    "confidence": null
+  },
+  {
+    "text": "再次调用模型。",
+    "startMs": 10135,
+    "endMs": 11155,
+    "timestampMs": 10645.0,
+    "confidence": null
+  },
+  {
+    "text": "时间和天气的参数彼此独立时可以并行；",
+    "startMs": 11635,
+    "endMs": 14895,
+    "timestampMs": 13265.0,
+    "confidence": null
+  },
+  {
+    "text": "如果第二个工具需要第一个工具的结果，",
+    "startMs": 15240,
+    "endMs": 18195,
+    "timestampMs": 16717.5,
+    "confidence": null
+  },
+  {
+    "text": "就必须串行。",
+    "startMs": 18385,
+    "endMs": 19425,
+    "timestampMs": 18905.0,
+    "confidence": null
+  },
+  {
+    "text": "每次 API 调用通常都是无状态的，",
+    "startMs": 19825,
+    "endMs": 22505,
+    "timestampMs": 21165.0,
+    "confidence": null
+  },
+  {
+    "text": "框架必须重新构造足够历史，",
+    "startMs": 22815,
+    "endMs": 24975,
+    "timestampMs": 23895.0,
+    "confidence": null
+  },
+  {
+    "text": "并设置迭代上限，",
+    "startMs": 25345,
+    "endMs": 26745,
+    "timestampMs": 26045.0,
+    "confidence": null
+  },
+  {
+    "text": "防止重复调用。",
+    "startMs": 26895,
+    "endMs": 28045,
+    "timestampMs": 27470.0,
+    "confidence": null
+  },
+  {
+    "text": "以查天气为例，",
+    "startMs": 28610,
+    "endMs": 29635,
+    "timestampMs": 29122.5,
+    "confidence": null
+  },
+  {
+    "text": "第一次调用模型得到工具请求，",
+    "startMs": 29905,
+    "endMs": 32355,
+    "timestampMs": 31130.0,
+    "confidence": null
+  },
+  {
+    "text": "框架执行后，",
+    "startMs": 32635,
+    "endMs": 33605,
+    "timestampMs": 33120.0,
+    "confidence": null
+  },
+  {
+    "text": "第二次调用才根据真实天气作答。",
+    "startMs": 33795,
+    "endMs": 36295,
+    "timestampMs": 35045.0,
+    "confidence": null
+  },
+  {
+    "text": "查时间和查天气如果没有参数依赖，",
+    "startMs": 36748,
+    "endMs": 39643,
+    "timestampMs": 38195.5,
+    "confidence": null
+  },
+  {
+    "text": "可以并行，",
+    "startMs": 39793,
+    "endMs": 40603,
+    "timestampMs": 40198.0,
+    "confidence": null
+  },
+  {
+    "text": "不能把并行当作所有工具的默认顺序。",
+    "startMs": 40963,
+    "endMs": 43363,
+    "timestampMs": 42163.0,
+    "confidence": null
+  }
+]

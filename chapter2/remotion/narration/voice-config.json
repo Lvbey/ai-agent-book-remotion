@@ -1,0 +1,7 @@
+{
+  "resource": "seed-tts-2.0",
+  "speaker": "zh_female_zhixingnv_uranus_bigtts",
+  "sample_rate": 48000,
+  "speech_rate": 0,
+  "instruction": "请用知性、清晰、亲切而略带活泼的普通话女声讲解，像 B 站知识区 UP 主在和观众聊天。提问带好奇，重点自然强调，不要播音腔，不要刻意卖萌。"
+}

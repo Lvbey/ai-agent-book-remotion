@@ -1,0 +1,107 @@
+[
+  {
+    "text": "多轮执行后，",
+    "startMs": 0,
+    "endMs": 1055,
+    "timestampMs": 527.5,
+    "confidence": null
+  },
+  {
+    "text": "模型可能需要从长历史里重新推断目标、",
+    "startMs": 1215,
+    "endMs": 5115,
+    "timestampMs": 3165.0,
+    "confidence": null
+  },
+  {
+    "text": "计数、",
+    "startMs": 5120,
+    "endMs": 5225,
+    "timestampMs": 5172.5,
+    "confidence": null
+  },
+  {
+    "text": "已完成工作和下一步。",
+    "startMs": 5665,
+    "endMs": 7195,
+    "timestampMs": 6430.0,
+    "confidence": null
+  },
+  {
+    "text": "状态栏把这些信息显式记录下来。",
+    "startMs": 7540,
+    "endMs": 9955,
+    "timestampMs": 8747.5,
+    "confidence": null
+  },
+  {
+    "text": "它可以由代码确定性更新，",
+    "startMs": 10255,
+    "endMs": 12325,
+    "timestampMs": 11290.0,
+    "confidence": null
+  },
+  {
+    "text": "也可以由模型整理；",
+    "startMs": 12565,
+    "endMs": 13395,
+    "timestampMs": 12980.0,
+    "confidence": null
+  },
+  {
+    "text": "无论哪种方式，",
+    "startMs": 14225,
+    "endMs": 15305,
+    "timestampMs": 14765.0,
+    "confidence": null
+  },
+  {
+    "text": "关键状态都应验证，",
+    "startMs": 15465,
+    "endMs": 16995,
+    "timestampMs": 16230.0,
+    "confidence": null
+  },
+  {
+    "text": "因为错误状态会误导后续决策。",
+    "startMs": 17355,
+    "endMs": 19685,
+    "timestampMs": 18520.0,
+    "confidence": null
+  },
+  {
+    "text": "位置也是工程取舍：把不断变化的状态放在稳定前缀",
+    "startMs": 20120,
+    "endMs": 24585,
+    "timestampMs": 22352.5,
+    "confidence": null
+  },
+  {
+    "text": "前面，",
+    "startMs": 24585,
+    "endMs": 25085,
+    "timestampMs": 24835.0,
+    "confidence": null
+  },
+  {
+    "text": "可能影响缓存；",
+    "startMs": 25255,
+    "endMs": 26325,
+    "timestampMs": 25790.0,
+    "confidence": null
+  },
+  {
+    "text": "追加到后面更利于保留前缀，",
+    "startMs": 26780,
+    "endMs": 29095,
+    "timestampMs": 27937.5,
+    "confidence": null
+  },
+  {
+    "text": "但仍要确保模型能读到最新状态。",
+    "startMs": 29445,
+    "endMs": 31925,
+    "timestampMs": 30685.0,
+    "confidence": null
+  }
+]

@@ -1,0 +1,79 @@
+[
+  {
+    "text": "消息对象还不是模型内部处理的普通 JSON。",
+    "startMs": 0,
+    "endMs": 3735,
+    "timestampMs": 1867.5,
+    "confidence": null
+  },
+  {
+    "text": "Chat Template 会把角色、",
+    "startMs": 3785,
+    "endMs": 5615,
+    "timestampMs": 4700.0,
+    "confidence": null
+  },
+  {
+    "text": "内容、",
+    "startMs": 5925,
+    "endMs": 6225,
+    "timestampMs": 6075.0,
+    "confidence": null
+  },
+  {
+    "text": "边界和工具调用序列化为 token。",
+    "startMs": 6735,
+    "endMs": 9655,
+    "timestampMs": 8195.0,
+    "confidence": null
+  },
+  {
+    "text": "不同模型的模板和思考内容协议可能不同，",
+    "startMs": 10015,
+    "endMs": 13275,
+    "timestampMs": 11645.0,
+    "confidence": null
+  },
+  {
+    "text": "不能随意拼接或删除结构标记。",
+    "startMs": 13630,
+    "endMs": 16305,
+    "timestampMs": 14967.5,
+    "confidence": null
+  },
+  {
+    "text": "角色边界、",
+    "startMs": 16690,
+    "endMs": 17155,
+    "timestampMs": 16922.5,
+    "confidence": null
+  },
+  {
+    "text": "结束标记和工具格式都是结构的一部分。",
+    "startMs": 17155,
+    "endMs": 20005,
+    "timestampMs": 18580.0,
+    "confidence": null
+  },
+  {
+    "text": "看起来相同的文字，",
+    "startMs": 21495,
+    "endMs": 22865,
+    "timestampMs": 22180.0,
+    "confidence": null
+  },
+  {
+    "text": "换一种模板，",
+    "startMs": 23055,
+    "endMs": 23985,
+    "timestampMs": 23520.0,
+    "confidence": null
+  },
+  {
+    "text": "可能变成不同的输入序列。",
+    "startMs": 24165,
+    "endMs": 26055,
+    "timestampMs": 25110.0,
+    "confidence": null
+  }
+]

@@ -1,0 +1,114 @@
+[
+  {
+    "text": "系统提示词需要组织目标、",
+    "startMs": 0,
+    "endMs": 1835,
+    "timestampMs": 917.5,
+    "confidence": null
+  },
+  {
+    "text": "流程、",
+    "startMs": 2640,
+    "endMs": 3225,
+    "timestampMs": 2932.5,
+    "confidence": null
+  },
+  {
+    "text": "业务规则、",
+    "startMs": 3225,
+    "endMs": 3955,
+    "timestampMs": 3590.0,
+    "confidence": null
+  },
+  {
+    "text": "输出格式和边界，",
+    "startMs": 4155,
+    "endMs": 5645,
+    "timestampMs": 4900.0,
+    "confidence": null
+  },
+  {
+    "text": "而不是不断追加互相冲突的要求。",
+    "startMs": 5940,
+    "endMs": 8545,
+    "timestampMs": 7242.5,
+    "confidence": null
+  },
+  {
+    "text": "抽象规则难以说明时，",
+    "startMs": 8985,
+    "endMs": 10695,
+    "timestampMs": 9840.0,
+    "confidence": null
+  },
+  {
+    "text": "可以给出输入和理想输出作为 Few-shot 示例；",
+    "startMs": 10865,
+    "endMs": 14595,
+    "timestampMs": 12730.0,
+    "confidence": null
+  },
+  {
+    "text": "工具描述也要准确表达用途、",
+    "startMs": 14975,
+    "endMs": 16965,
+    "timestampMs": 15970.0,
+    "confidence": null
+  },
+  {
+    "text": "参数和限制。",
+    "startMs": 17455,
+    "endMs": 18515,
+    "timestampMs": 17985.0,
+    "confidence": null
+  },
+  {
+    "text": "原文消融实验说明组织质量会影响任务表现，",
+    "startMs": 18995,
+    "endMs": 22405,
+    "timestampMs": 20700.0,
+    "confidence": null
+  },
+  {
+    "text": "但特定实验结果不是所有系统的固定保证。",
+    "startMs": 22685,
+    "endMs": 25535,
+    "timestampMs": 24110.0,
+    "confidence": null
+  },
+  {
+    "text": "例如，",
+    "startMs": 26455,
+    "endMs": 26895,
+    "timestampMs": 26675.0,
+    "confidence": null
+  },
+  {
+    "text": "同一段提示同时要求解释所有细节又绝对简短，",
+    "startMs": 27045,
+    "endMs": 31135,
+    "timestampMs": 29090.0,
+    "confidence": null
+  },
+  {
+    "text": "就需要明确优先级。",
+    "startMs": 31305,
+    "endMs": 32785,
+    "timestampMs": 32045.0,
+    "confidence": null
+  },
+  {
+    "text": "示例应覆盖有代表性的输入，",
+    "startMs": 33280,
+    "endMs": 35255,
+    "timestampMs": 34267.5,
+    "confidence": null
+  },
+  {
+    "text": "而不是越堆越多。",
+    "startMs": 35425,
+    "endMs": 36475,
+    "timestampMs": 35950.0,
+    "confidence": null
+  }
+]

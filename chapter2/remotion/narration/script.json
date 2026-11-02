@@ -1,0 +1,883 @@
+{
+  "source": "chapter2/storyboard.md",
+  "status": "approved-voice-production",
+  "scenes": [
+    {
+      "sceneKey": "Intro",
+      "reviewStatus": "implementation-reviewed",
+      "units": [
+        {
+          "id": "01-01",
+          "text": "假设你让一个编程 Agent 修复支付回调 Bug。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "01-02",
+          "text": "它很快改完代码，却没读项目规范，也没检查重试逻辑。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "01-03",
+          "text": "测试发现，同一笔支付可能被处理两次。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "01-04",
+          "text": "模型不会自动知道散落在代码库和团队约定里的背景。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "01-05",
+          "text": "问题可能不是它不会写代码，而是缺少完成任务所需的上下文。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "01-06",
+          "text": "因此，团队还需要把隐性经验整理成可检索的项目文档，让人和智能体都能找到相同的规则。",
+          "delivery": "explain",
+          "visualCues": []
+        }
+      ],
+      "anchors": [
+        {
+          "phrase": "假设",
+          "frame": 0
+        },
+        {
+          "phrase": "它很快",
+          "frame": 105
+        },
+        {
+          "phrase": "测试发现",
+          "frame": 155
+        },
+        {
+          "phrase": "模型不会",
+          "frame": 300
+        },
+        {
+          "phrase": "问题可能",
+          "frame": 460
+        },
+        {
+          "phrase": "因此",
+          "frame": 675
+        }
+      ]
+    },
+    {
+      "sceneKey": "ContextMap",
+      "reviewStatus": "implementation-reviewed",
+      "units": [
+        {
+          "id": "02-01",
+          "text": "上下文，就是模型在这一次决策时实际收到的信息。",
+          "delivery": "explain",
+          "visualCues": [
+            {
+              "phrase": "上下文，就是模型",
+              "action": "对应机制推进，待真实时间戳绑定"
+            }
+          ]
+        },
+        {
+          "id": "02-02",
+          "text": "它不只有聊天记录，还包括开发者规则、当前任务、此前的助手行动、工具说明和工具返回的观察。",
+          "delivery": "explain",
+          "visualCues": [
+            {
+              "phrase": "它不只有聊天记录",
+              "action": "对应机制推进，待真实时间戳绑定"
+            }
+          ]
+        },
+        {
+          "id": "02-03",
+          "text": "模型提供通用能力，上下文负责提供地图、路况和任务约束。",
+          "delivery": "explain",
+          "visualCues": [
+            {
+              "phrase": "模型提供通用能力",
+              "action": "对应机制推进，待真实时间戳绑定"
+            }
+          ]
+        },
+        {
+          "id": "02-04",
+          "text": "资料多并不自动代表更好，关键是相关信息是否完整、可信、容易找到。",
+          "delivery": "explain",
+          "visualCues": [
+            {
+              "phrase": "资料多并不自动代",
+              "action": "对应机制推进，待真实时间戳绑定"
+            }
+          ]
+        }
+      ],
+      "anchors": [
+        {
+          "phrase": "上下文",
+          "frame": 0
+        },
+        {
+          "phrase": "开发者规则",
+          "frame": 145
+        },
+        {
+          "phrase": "当前任务",
+          "frame": 295
+        },
+        {
+          "phrase": "此前的助手行动",
+          "frame": 445
+        },
+        {
+          "phrase": "工具说明",
+          "frame": 595
+        },
+        {
+          "phrase": "工具返回",
+          "frame": 645
+        },
+        {
+          "phrase": "模型提供",
+          "frame": 670
+        },
+        {
+          "phrase": "资料多",
+          "frame": 700
+        }
+      ]
+    },
+    {
+      "sceneKey": "ApiStructure",
+      "reviewStatus": "implementation-reviewed",
+      "units": [
+        {
+          "id": "03-01",
+          "text": "常见聊天 API 中，system 放开发者规则，user 放用户任务，assistant 是模型此前的回复或工具调用请求，tool 是框架执行工具后返回的结果。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "03-02",
+          "text": "工具定义通常单独放在 tools 字段，并不是第五种消息角色。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "03-03",
+          "text": "例如，天气工具需要城市和温度单位；模型依据名称、描述和参数约束构造调用。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "03-04",
+          "text": "收到调用请求之后，真正访问外部服务的是框架，而不是模型自己。",
+          "delivery": "explain",
+          "visualCues": []
+        }
+      ],
+      "anchors": [
+        {
+          "phrase": "常见",
+          "frame": 0
+        },
+        {
+          "phrase": "system",
+          "frame": 25
+        },
+        {
+          "phrase": "user",
+          "frame": 50
+        },
+        {
+          "phrase": "工具定义",
+          "frame": 80
+        },
+        {
+          "phrase": "例如",
+          "frame": 125
+        },
+        {
+          "phrase": "收到调用请求",
+          "frame": 170
+        },
+        {
+          "phrase": "而不是模型自己",
+          "frame": 230
+        }
+      ]
+    },
+    {
+      "sceneKey": "AgentLoop",
+      "reviewStatus": "implementation-reviewed",
+      "units": [
+        {
+          "id": "04-01",
+          "text": "模型返回工具调用请求，不代表工具已经执行。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "04-02",
+          "text": "框架读取参数、执行工具、把结果通过对应 ID 回填到消息历史，再次调用模型。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "04-03",
+          "text": "时间和天气的参数彼此独立时可以并行；如果第二个工具需要第一个工具的结果，就必须串行。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "04-04",
+          "text": "每次 API 调用通常都是无状态的，框架必须重新构造足够历史，并设置迭代上限，防止重复调用。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "04-05",
+          "text": "以查天气为例，第一次调用模型得到工具请求，框架执行后，第二次调用才根据真实天气作答。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "04-06",
+          "text": "查时间和查天气如果没有参数依赖，可以并行，不能把并行当作所有工具的默认顺序。",
+          "delivery": "explain",
+          "visualCues": []
+        }
+      ],
+      "anchors": [
+        {
+          "phrase": "模型返回",
+          "frame": 0
+        },
+        {
+          "phrase": "框架读取参数",
+          "frame": 105
+        },
+        {
+          "phrase": "执行工具",
+          "frame": 225
+        },
+        {
+          "phrase": "把结果",
+          "frame": 345
+        },
+        {
+          "phrase": "再次调用模型",
+          "frame": 465
+        },
+        {
+          "phrase": "时间和天气",
+          "frame": 520
+        },
+        {
+          "phrase": "每次",
+          "frame": 585
+        }
+      ]
+    },
+    {
+      "sceneKey": "ChatTemplate",
+      "reviewStatus": "implementation-reviewed",
+      "units": [
+        {
+          "id": "05-01",
+          "text": "消息对象还不是模型内部处理的普通 JSON。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "05-02",
+          "text": "Chat Template 会把角色、内容、边界和工具调用序列化为 token。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "05-03",
+          "text": "不同模型的模板和思考内容协议可能不同，不能随意拼接或删除结构标记。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "05-04",
+          "text": "角色边界、结束标记和工具格式都是结构的一部分。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "05-05",
+          "text": "看起来相同的文字，换一种模板，可能变成不同的输入序列。",
+          "delivery": "explain",
+          "visualCues": []
+        }
+      ],
+      "anchors": [
+        {
+          "phrase": "消息对象",
+          "frame": 0
+        },
+        {
+          "phrase": "Chat Template",
+          "frame": 90
+        },
+        {
+          "phrase": "序列化",
+          "frame": 125
+        },
+        {
+          "phrase": "不同模型",
+          "frame": 210
+        },
+        {
+          "phrase": "角色边界",
+          "frame": 245
+        }
+      ]
+    },
+    {
+      "sceneKey": "Cache",
+      "reviewStatus": "implementation-reviewed",
+      "units": [
+        {
+          "id": "06-01",
+          "text": "模型处理序列时，会为已经处理的 token 计算并保存注意力所需的 Key 和 Value。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "06-02",
+          "text": "满足条件时，新增内容可以复用已有计算。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "06-03",
+          "text": "单次生成过程中的 KV Cache，与跨请求复用相同前缀的 Prompt Cache 并非完全相同。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "06-04",
+          "text": "把每次变化的时间戳放在系统规则最前面，可能使变化点之后的缓存无法复用。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "06-05",
+          "text": "常见做法是保持稳定前缀，把动态状态放到后续消息里，但实际行为取决于具体服务。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "06-06",
+          "text": "缓存不是永久聊天记忆。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "06-07",
+          "text": "某些研究系统探索编辑和组合缓存，但不能由此推断所有商业接口都支持这些能力。",
+          "delivery": "explain",
+          "visualCues": []
+        }
+      ],
+      "anchors": [
+        {
+          "phrase": "模型处理",
+          "frame": 0
+        },
+        {
+          "phrase": "满足条件",
+          "frame": 80
+        },
+        {
+          "phrase": "单次生成",
+          "frame": 100
+        },
+        {
+          "phrase": "把每次变化",
+          "frame": 210
+        },
+        {
+          "phrase": "常见做法",
+          "frame": 320
+        },
+        {
+          "phrase": "实际行为",
+          "frame": 430
+        }
+      ]
+    },
+    {
+      "sceneKey": "PromptEngineering",
+      "reviewStatus": "implementation-reviewed",
+      "units": [
+        {
+          "id": "07-01",
+          "text": "系统提示词需要组织目标、流程、业务规则、输出格式和边界，而不是不断追加互相冲突的要求。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "07-02",
+          "text": "抽象规则难以说明时，可以给出输入和理想输出作为 Few-shot 示例；工具描述也要准确表达用途、参数和限制。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "07-03",
+          "text": "原文消融实验说明组织质量会影响任务表现，但特定实验结果不是所有系统的固定保证。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "07-04",
+          "text": "例如，同一段提示同时要求解释所有细节又绝对简短，就需要明确优先级。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "07-05",
+          "text": "示例应覆盖有代表性的输入，而不是越堆越多。",
+          "delivery": "explain",
+          "visualCues": []
+        }
+      ],
+      "anchors": [
+        {
+          "phrase": "系统提示词",
+          "frame": 0
+        },
+        {
+          "phrase": "而不是",
+          "frame": 60
+        },
+        {
+          "phrase": "抽象规则",
+          "frame": 130
+        },
+        {
+          "phrase": "Few-shot",
+          "frame": 235
+        },
+        {
+          "phrase": "工具描述",
+          "frame": 265
+        }
+      ]
+    },
+    {
+      "sceneKey": "PromptAndSafety",
+      "reviewStatus": "implementation-reviewed",
+      "units": [
+        {
+          "id": "08-01",
+          "text": "Skill 把领域流程写成按需加载的说明：先看目录，需要时再打开细节。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "08-02",
+          "text": "Skill 不等于工具，也不会自动授予权限。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "08-03",
+          "text": "网页或文件可能包含伪装成命令的提示注入，应作为不可信数据处理。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "08-04",
+          "text": "安全还依赖最小权限、参数校验、危险操作确认和结果审计。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "08-05",
+          "text": "编写技能时，应写清适用条件、操作步骤、验证和失败处理。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "08-06",
+          "text": "目录只提供发现入口，具体流程在触发后加载，执行仍要依赖真实工具和权限。",
+          "delivery": "explain",
+          "visualCues": []
+        }
+      ],
+      "anchors": [
+        {
+          "phrase": "Skill",
+          "frame": 0
+        },
+        {
+          "phrase": "先看目录",
+          "frame": 55
+        },
+        {
+          "phrase": "需要时",
+          "frame": 105
+        },
+        {
+          "phrase": "网页或文件",
+          "frame": 250
+        },
+        {
+          "phrase": "不可信数据",
+          "frame": 310
+        },
+        {
+          "phrase": "安全还依赖",
+          "frame": 440
+        },
+        {
+          "phrase": "编写技能",
+          "frame": 500
+        }
+      ]
+    },
+    {
+      "sceneKey": "StateBar",
+      "reviewStatus": "implementation-reviewed",
+      "units": [
+        {
+          "id": "09-01",
+          "text": "多轮执行后，模型可能需要从长历史里重新推断目标、计数、已完成工作和下一步。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "09-02",
+          "text": "状态栏把这些信息显式记录下来。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "09-03",
+          "text": "它可以由代码确定性更新，也可以由模型整理；无论哪种方式，关键状态都应验证，因为错误状态会误导后续决策。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "09-04",
+          "text": "位置也是工程取舍：把不断变化的状态放在稳定前缀前面，可能影响缓存；追加到后面更利于保留前缀，但仍要确保模型能读到最新状态。",
+          "delivery": "explain",
+          "visualCues": []
+        }
+      ],
+      "anchors": [
+        {
+          "phrase": "多轮执行",
+          "frame": 0
+        },
+        {
+          "phrase": "状态栏",
+          "frame": 130
+        },
+        {
+          "phrase": "显式记录",
+          "frame": 170
+        },
+        {
+          "phrase": "它可以",
+          "frame": 230
+        },
+        {
+          "phrase": "关键状态",
+          "frame": 250
+        },
+        {
+          "phrase": "位置也是",
+          "frame": 280
+        }
+      ]
+    },
+    {
+      "sceneKey": "StateAndCompress",
+      "reviewStatus": "implementation-reviewed",
+      "units": [
+        {
+          "id": "10-01",
+          "text": "压缩有三个动机：控制窗口和成本；把原始记录中的结论整理成容易检索的知识；降低模型因上下文将满而提前收尾的风险。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "10-02",
+          "text": "上下文溢出是装不下；Context Rot 是装得下，却因内容过长、过杂而难以找到重点。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "10-03",
+          "text": "摘要是有损投影，必须保留后续决策需要的事实、约束、失败路径、时间和来源。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "10-04",
+          "text": "例如，把去年的测试结论压缩成系统已经安全，就丢掉了时间和证据范围。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "10-05",
+          "text": "摘要需要保留什么时候、在哪个环境、用什么证据得出的结论。",
+          "delivery": "explain",
+          "visualCues": []
+        }
+      ],
+      "anchors": [
+        {
+          "phrase": "压缩有三个",
+          "frame": 0
+        },
+        {
+          "phrase": "把原始记录",
+          "frame": 110
+        },
+        {
+          "phrase": "上下文溢出",
+          "frame": 170
+        },
+        {
+          "phrase": "Context Rot",
+          "frame": 220
+        },
+        {
+          "phrase": "摘要是有损",
+          "frame": 350
+        },
+        {
+          "phrase": "例如",
+          "frame": 470
+        }
+      ]
+    },
+    {
+      "sceneKey": "CompressionStrategies",
+      "reviewStatus": "implementation-reviewed",
+      "units": [
+        {
+          "id": "11-01",
+          "text": "原文比较了六种压缩策略：完全不压缩会保留细节，却可能耗尽窗口；逐页摘要容易重复和碎片化；综合摘要能合并信息，但输入过长时可能截断；任务感知压缩结合当前查询和已有信息；带引用摘要为事实保留来源；自适应窗口则在接近阈值后批量压缩。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "11-02",
+          "text": "原文特定实验中，任务感知策略显著降低了 token 使用量，但不能将该结果视为普遍保证。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "11-03",
+          "text": "生产系统通常组合多层策略：先限制大工具输出，再删除噪声、微压缩、归档摘要，最后才全量压缩；连续失败时要熔断。",
+          "delivery": "explain",
+          "visualCues": []
+        }
+      ],
+      "anchors": [
+        {
+          "phrase": "原文比较",
+          "frame": 0
+        },
+        {
+          "phrase": "完全不压缩",
+          "frame": 20
+        },
+        {
+          "phrase": "逐页摘要",
+          "frame": 42
+        },
+        {
+          "phrase": "综合摘要",
+          "frame": 64
+        },
+        {
+          "phrase": "任务感知压缩",
+          "frame": 86
+        },
+        {
+          "phrase": "带引用摘要",
+          "frame": 108
+        },
+        {
+          "phrase": "自适应窗口",
+          "frame": 130
+        },
+        {
+          "phrase": "生产系统",
+          "frame": 160
+        },
+        {
+          "phrase": "先限制",
+          "frame": 170
+        },
+        {
+          "phrase": "再删除",
+          "frame": 185
+        },
+        {
+          "phrase": "最后才",
+          "frame": 200
+        },
+        {
+          "phrase": "连续失败",
+          "frame": 210
+        }
+      ]
+    },
+    {
+      "sceneKey": "SubAgentIsolation",
+      "reviewStatus": "implementation-reviewed",
+      "units": [
+        {
+          "id": "12-01",
+          "text": "另一个办法是让子 Agent 在独立上下文中完成大量探索，只回传路径、结论和证据。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "12-02",
+          "text": "隔离可以避免噪声进入主上下文，但子 Agent 不会自动拥有主 Agent 的所有背景，所以委派任务必须自包含、目标明确。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "12-03",
+          "text": "交接时还要说明允许修改的范围、完成标准和不确定性。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "12-04",
+          "text": "主智能体收到结果后，应回查关键证据，而不是把子智能体的结论直接当成事实。",
+          "delivery": "explain",
+          "visualCues": []
+        }
+      ],
+      "anchors": [
+        {
+          "phrase": "另一个办法",
+          "frame": 0
+        },
+        {
+          "phrase": "独立上下文",
+          "frame": 35
+        },
+        {
+          "phrase": "大量探索",
+          "frame": 90
+        },
+        {
+          "phrase": "只回传",
+          "frame": 145
+        },
+        {
+          "phrase": "隔离可以",
+          "frame": 180
+        },
+        {
+          "phrase": "但子",
+          "frame": 220
+        },
+        {
+          "phrase": "交接时",
+          "frame": 260
+        }
+      ]
+    },
+    {
+      "sceneKey": "Conclusion",
+      "reviewStatus": "implementation-reviewed",
+      "units": [
+        {
+          "id": "13-01",
+          "text": "上下文工程的主线是显式管理信息：组织请求结构，保持稳定前缀，清楚表达规则，按需加载技能，显式维护状态，并通过压缩或隔离控制噪声。",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "13-02",
+          "text": "每次模型做决定前都可以问：它知道规则吗？",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "13-03",
+          "text": "知道当前状态吗？",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "13-04",
+          "text": "有相关证据吗？",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "13-05",
+          "text": "信息是否可信？",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "13-06",
+          "text": "历史是否已经过长？",
+          "delivery": "explain",
+          "visualCues": []
+        },
+        {
+          "id": "13-07",
+          "text": "让有用的信息，出现在正确的时刻。",
+          "delivery": "explain",
+          "visualCues": []
+        }
+      ],
+      "anchors": [
+        {
+          "phrase": "上下文工程",
+          "frame": 0
+        },
+        {
+          "phrase": "组织请求",
+          "frame": 35
+        },
+        {
+          "phrase": "按需加载",
+          "frame": 150
+        },
+        {
+          "phrase": "显式维护",
+          "frame": 240
+        },
+        {
+          "phrase": "压缩或隔离",
+          "frame": 330
+        },
+        {
+          "phrase": "每次模型",
+          "frame": 420
+        },
+        {
+          "phrase": "让有用",
+          "frame": 500
+        }
+      ]
+    }
+  ],
+  "coverageNotes": "Corrected initial 11–13 split; restored conclusion and production layering; added documentation, cache limitations, state placement, skills authoring and evidence boundaries."
+}

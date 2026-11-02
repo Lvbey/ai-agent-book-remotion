@@ -1,0 +1,114 @@
+[
+  {
+    "text": "模型处理序列时，",
+    "startMs": 0,
+    "endMs": 1245,
+    "timestampMs": 622.5,
+    "confidence": null
+  },
+  {
+    "text": "会为已经处理的 token 计算并保存注意力所需",
+    "startMs": 1760,
+    "endMs": 5255,
+    "timestampMs": 3507.5,
+    "confidence": null
+  },
+  {
+    "text": "的 Key 和 Value。",
+    "startMs": 5255,
+    "endMs": 6525,
+    "timestampMs": 5890.0,
+    "confidence": null
+  },
+  {
+    "text": "满足条件时，",
+    "startMs": 6900,
+    "endMs": 7885,
+    "timestampMs": 7392.5,
+    "confidence": null
+  },
+  {
+    "text": "新增内容可以复用已有计算。",
+    "startMs": 7985,
+    "endMs": 10165,
+    "timestampMs": 9075.0,
+    "confidence": null
+  },
+  {
+    "text": "单次生成过程中的 KV Cache，",
+    "startMs": 10615,
+    "endMs": 12905,
+    "timestampMs": 11760.0,
+    "confidence": null
+  },
+  {
+    "text": "与跨请求复用相同前缀的 Prompt Cache ",
+    "startMs": 13930,
+    "endMs": 16265,
+    "timestampMs": 15097.5,
+    "confidence": null
+  },
+  {
+    "text": "并非完全相同。",
+    "startMs": 16525,
+    "endMs": 17705,
+    "timestampMs": 17115.0,
+    "confidence": null
+  },
+  {
+    "text": "把每次变化的时间戳放在系统规则最前面，",
+    "startMs": 18155,
+    "endMs": 21545,
+    "timestampMs": 19850.0,
+    "confidence": null
+  },
+  {
+    "text": "可能使变化点之后的缓存无法复用。",
+    "startMs": 21805,
+    "endMs": 23985,
+    "timestampMs": 22895.0,
+    "confidence": null
+  },
+  {
+    "text": "常见做法是保持稳定前缀，",
+    "startMs": 24795,
+    "endMs": 26895,
+    "timestampMs": 25845.0,
+    "confidence": null
+  },
+  {
+    "text": "把动态状态放到后续消息里，",
+    "startMs": 27165,
+    "endMs": 29285,
+    "timestampMs": 28225.0,
+    "confidence": null
+  },
+  {
+    "text": "但实际行为取决于具体服务。",
+    "startMs": 29665,
+    "endMs": 31775,
+    "timestampMs": 30720.0,
+    "confidence": null
+  },
+  {
+    "text": "缓存不是永久聊天记忆。",
+    "startMs": 32265,
+    "endMs": 33880,
+    "timestampMs": 33072.5,
+    "confidence": null
+  },
+  {
+    "text": "某些研究系统探索编辑和组合缓存，",
+    "startMs": 34285,
+    "endMs": 37290,
+    "timestampMs": 35787.5,
+    "confidence": null
+  },
+  {
+    "text": "但不能由此推断所有商业接口都支持这些能力。",
+    "startMs": 37620,
+    "endMs": 40700,
+    "timestampMs": 39160.0,
+    "confidence": null
+  }
+]

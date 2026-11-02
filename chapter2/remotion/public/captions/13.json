@@ -1,0 +1,93 @@
+[
+  {
+    "text": "上下文工程的主线是显式管理信息：组织请求结构，",
+    "startMs": 0,
+    "endMs": 4835,
+    "timestampMs": 2417.5,
+    "confidence": null
+  },
+  {
+    "text": "保持稳定前缀，",
+    "startMs": 5200,
+    "endMs": 6355,
+    "timestampMs": 5777.5,
+    "confidence": null
+  },
+  {
+    "text": "清楚表达规则，",
+    "startMs": 6615,
+    "endMs": 7875,
+    "timestampMs": 7245.0,
+    "confidence": null
+  },
+  {
+    "text": "按需加载技能，",
+    "startMs": 8220,
+    "endMs": 9365,
+    "timestampMs": 8792.5,
+    "confidence": null
+  },
+  {
+    "text": "显式维护状态，",
+    "startMs": 9625,
+    "endMs": 10905,
+    "timestampMs": 10265.0,
+    "confidence": null
+  },
+  {
+    "text": "并通过压缩或隔离控制噪声。",
+    "startMs": 11180,
+    "endMs": 13155,
+    "timestampMs": 12167.5,
+    "confidence": null
+  },
+  {
+    "text": "每次模型做决定前都可以问：它知道规则吗？",
+    "startMs": 13995,
+    "endMs": 17625,
+    "timestampMs": 15810.0,
+    "confidence": null
+  },
+  {
+    "text": "知道当前状态吗？",
+    "startMs": 18080,
+    "endMs": 19375,
+    "timestampMs": 18727.5,
+    "confidence": null
+  },
+  {
+    "text": "有相关证据吗？",
+    "startMs": 19780,
+    "endMs": 20885,
+    "timestampMs": 20332.5,
+    "confidence": null
+  },
+  {
+    "text": "信息是否可信？",
+    "startMs": 21320,
+    "endMs": 22415,
+    "timestampMs": 21867.5,
+    "confidence": null
+  },
+  {
+    "text": "历史是否已经过长？",
+    "startMs": 22940,
+    "endMs": 24385,
+    "timestampMs": 23662.5,
+    "confidence": null
+  },
+  {
+    "text": "让有用的信息，",
+    "startMs": 24735,
+    "endMs": 25775,
+    "timestampMs": 25255.0,
+    "confidence": null
+  },
+  {
+    "text": "出现在正确的时刻。",
+    "startMs": 25925,
+    "endMs": 26875,
+    "timestampMs": 26400.0,
+    "confidence": null
+  }
+]

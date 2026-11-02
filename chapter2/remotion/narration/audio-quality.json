@@ -1,0 +1,80 @@
+[
+  {
+    "file": "01.wav",
+    "peakDbfs": -8.34,
+    "rmsDbfs": -23.87,
+    "clippedSamples": 0
+  },
+  {
+    "file": "02.wav",
+    "peakDbfs": -8.32,
+    "rmsDbfs": -25.09,
+    "clippedSamples": 0
+  },
+  {
+    "file": "03.wav",
+    "peakDbfs": -7.36,
+    "rmsDbfs": -23.61,
+    "clippedSamples": 0
+  },
+  {
+    "file": "04.wav",
+    "peakDbfs": -7.12,
+    "rmsDbfs": -23.82,
+    "clippedSamples": 0
+  },
+  {
+    "file": "05.wav",
+    "peakDbfs": -8.0,
+    "rmsDbfs": -24.03,
+    "clippedSamples": 0
+  },
+  {
+    "file": "06.wav",
+    "peakDbfs": -5.88,
+    "rmsDbfs": -23.43,
+    "clippedSamples": 0
+  },
+  {
+    "file": "07.wav",
+    "peakDbfs": -7.68,
+    "rmsDbfs": -23.17,
+    "clippedSamples": 0
+  },
+  {
+    "file": "08.wav",
+    "peakDbfs": -9.41,
+    "rmsDbfs": -24.74,
+    "clippedSamples": 0
+  },
+  {
+    "file": "09.wav",
+    "peakDbfs": -3.32,
+    "rmsDbfs": -23.6,
+    "clippedSamples": 0
+  },
+  {
+    "file": "10.wav",
+    "peakDbfs": -7.18,
+    "rmsDbfs": -23.29,
+    "clippedSamples": 0
+  },
+  {
+    "file": "11.wav",
+    "peakDbfs": -5.35,
+    "rmsDbfs": -24.24,
+    "clippedSamples": 0
+  },
+  {
+    "file": "12.wav",
+    "peakDbfs": -5.76,
+    "rmsDbfs": -22.12,
+    "clippedSamples": 0
+  },
+  {
+    "file": "13.wav",
+    "peakDbfs": -5.96,
+    "rmsDbfs": -23.61,
+    "clippedSamples": 0
+  }
+]

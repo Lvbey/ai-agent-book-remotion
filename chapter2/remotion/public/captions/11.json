@@ -1,0 +1,121 @@
+[
+  {
+    "text": "原文比较了六种压缩策略：完全不压缩会保留细节，",
+    "startMs": 45,
+    "endMs": 4225,
+    "timestampMs": 2135.0,
+    "confidence": null
+  },
+  {
+    "text": "却可能耗尽窗口；",
+    "startMs": 4445,
+    "endMs": 5825,
+    "timestampMs": 5135.0,
+    "confidence": null
+  },
+  {
+    "text": "逐页摘要容易重复和碎片化；",
+    "startMs": 6240,
+    "endMs": 8655,
+    "timestampMs": 7447.5,
+    "confidence": null
+  },
+  {
+    "text": "综合摘要能合并信息，",
+    "startMs": 9060,
+    "endMs": 10785,
+    "timestampMs": 9922.5,
+    "confidence": null
+  },
+  {
+    "text": "但输入过长时可能截断；",
+    "startMs": 11035,
+    "endMs": 12635,
+    "timestampMs": 11835.0,
+    "confidence": null
+  },
+  {
+    "text": "任务感知压缩结合当前查询和已有信息；",
+    "startMs": 13445,
+    "endMs": 16535,
+    "timestampMs": 14990.0,
+    "confidence": null
+  },
+  {
+    "text": "带引用摘要为事实保留来源；",
+    "startMs": 17020,
+    "endMs": 19335,
+    "timestampMs": 18177.5,
+    "confidence": null
+  },
+  {
+    "text": "自适应窗口则在接近阈值后批量压缩。",
+    "startMs": 19740,
+    "endMs": 22495,
+    "timestampMs": 21117.5,
+    "confidence": null
+  },
+  {
+    "text": "原文特定实验中，",
+    "startMs": 23095,
+    "endMs": 24225,
+    "timestampMs": 23660.0,
+    "confidence": null
+  },
+  {
+    "text": "任务感知策略显著降低了 token 使用量，",
+    "startMs": 24445,
+    "endMs": 27185,
+    "timestampMs": 25815.0,
+    "confidence": null
+  },
+  {
+    "text": "但不能将该结果视为普遍保证。",
+    "startMs": 27515,
+    "endMs": 29815,
+    "timestampMs": 28665.0,
+    "confidence": null
+  },
+  {
+    "text": "生产系统通常组合多层策略：先限制大工具输出，",
+    "startMs": 30232,
+    "endMs": 34222,
+    "timestampMs": 32227.0,
+    "confidence": null
+  },
+  {
+    "text": "再删除噪声、",
+    "startMs": 34412,
+    "endMs": 35162,
+    "timestampMs": 34787.0,
+    "confidence": null
+  },
+  {
+    "text": "微压缩、",
+    "startMs": 35712,
+    "endMs": 36052,
+    "timestampMs": 35882.0,
+    "confidence": null
+  },
+  {
+    "text": "归档摘要，",
+    "startMs": 36492,
+    "endMs": 37242,
+    "timestampMs": 36867.0,
+    "confidence": null
+  },
+  {
+    "text": "最后才全量压缩；",
+    "startMs": 37362,
+    "endMs": 38632,
+    "timestampMs": 37997.0,
+    "confidence": null
+  },
+  {
+    "text": "连续失败时要熔断。",
+    "startMs": 39067,
+    "endMs": 40432,
+    "timestampMs": 39749.5,
+    "confidence": null
+  }
+]

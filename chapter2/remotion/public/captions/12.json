@@ -1,0 +1,100 @@
+[
+  {
+    "text": "另一个办法是让子 Agent 在独立上下文中完成",
+    "startMs": 0,
+    "endMs": 4195,
+    "timestampMs": 2097.5,
+    "confidence": null
+  },
+  {
+    "text": "大量探索，",
+    "startMs": 4195,
+    "endMs": 5025,
+    "timestampMs": 4610.0,
+    "confidence": null
+  },
+  {
+    "text": "只回传路径、",
+    "startMs": 5440,
+    "endMs": 6165,
+    "timestampMs": 5802.5,
+    "confidence": null
+  },
+  {
+    "text": "结论和证据。",
+    "startMs": 6585,
+    "endMs": 7725,
+    "timestampMs": 7155.0,
+    "confidence": null
+  },
+  {
+    "text": "隔离可以避免噪声进入主上下文，",
+    "startMs": 8140,
+    "endMs": 10725,
+    "timestampMs": 9432.5,
+    "confidence": null
+  },
+  {
+    "text": "但子 Agent 不会自动拥有主 Agent 的所有",
+    "startMs": 11120,
+    "endMs": 14635,
+    "timestampMs": 12877.5,
+    "confidence": null
+  },
+  {
+    "text": "背景，",
+    "startMs": 14635,
+    "endMs": 14835,
+    "timestampMs": 14735.0,
+    "confidence": null
+  },
+  {
+    "text": "所以委派任务必须自包含、",
+    "startMs": 15385,
+    "endMs": 17925,
+    "timestampMs": 16655.0,
+    "confidence": null
+  },
+  {
+    "text": "目标明确。",
+    "startMs": 18165,
+    "endMs": 18965,
+    "timestampMs": 18565.0,
+    "confidence": null
+  },
+  {
+    "text": "交接时还要说明允许修改的范围、",
+    "startMs": 19540,
+    "endMs": 21965,
+    "timestampMs": 20752.5,
+    "confidence": null
+  },
+  {
+    "text": "完成标准和不确定性。",
+    "startMs": 22525,
+    "endMs": 24155,
+    "timestampMs": 23340.0,
+    "confidence": null
+  },
+  {
+    "text": "主智能体收到结果后，",
+    "startMs": 24620,
+    "endMs": 26275,
+    "timestampMs": 25447.5,
+    "confidence": null
+  },
+  {
+    "text": "应回查关键证据，",
+    "startMs": 26525,
+    "endMs": 27935,
+    "timestampMs": 27230.0,
+    "confidence": null
+  },
+  {
+    "text": "而不是把子智能体的结论直接当成事实。",
+    "startMs": 28255,
+    "endMs": 31455,
+    "timestampMs": 29855.0,
+    "confidence": null
+  }
+]

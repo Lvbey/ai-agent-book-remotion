@@ -1,0 +1,128 @@
+[
+  {
+    "text": "压缩有三个动机：控制窗口和成本；",
+    "startMs": 55,
+    "endMs": 3015,
+    "timestampMs": 1535.0,
+    "confidence": null
+  },
+  {
+    "text": "把原始记录中的结论整理成容易检索的知识；",
+    "startMs": 3440,
+    "endMs": 6825,
+    "timestampMs": 5132.5,
+    "confidence": null
+  },
+  {
+    "text": "降低模型因上下文将满而提前收尾的风险。",
+    "startMs": 7220,
+    "endMs": 10885,
+    "timestampMs": 9052.5,
+    "confidence": null
+  },
+  {
+    "text": "上下文溢出是装不下；",
+    "startMs": 11345,
+    "endMs": 13005,
+    "timestampMs": 12175.0,
+    "confidence": null
+  },
+  {
+    "text": "Context Rot 是装得下，",
+    "startMs": 13610,
+    "endMs": 15075,
+    "timestampMs": 14342.5,
+    "confidence": null
+  },
+  {
+    "text": "却因内容过长、",
+    "startMs": 15275,
+    "endMs": 16155,
+    "timestampMs": 15715.0,
+    "confidence": null
+  },
+  {
+    "text": "过杂而难以找到重点。",
+    "startMs": 16675,
+    "endMs": 18555,
+    "timestampMs": 17615.0,
+    "confidence": null
+  },
+  {
+    "text": "摘要是有损投影，",
+    "startMs": 19050,
+    "endMs": 20305,
+    "timestampMs": 19677.5,
+    "confidence": null
+  },
+  {
+    "text": "必须保留后续决策需要的事实、",
+    "startMs": 20625,
+    "endMs": 23355,
+    "timestampMs": 21990.0,
+    "confidence": null
+  },
+  {
+    "text": "约束、",
+    "startMs": 23355,
+    "endMs": 23495,
+    "timestampMs": 23425.0,
+    "confidence": null
+  },
+  {
+    "text": "失败路径、",
+    "startMs": 23985,
+    "endMs": 24565,
+    "timestampMs": 24275.0,
+    "confidence": null
+  },
+  {
+    "text": "时间和来源。",
+    "startMs": 25015,
+    "endMs": 25605,
+    "timestampMs": 25310.0,
+    "confidence": null
+  },
+  {
+    "text": "例如，",
+    "startMs": 26615,
+    "endMs": 27045,
+    "timestampMs": 26830.0,
+    "confidence": null
+  },
+  {
+    "text": "把去年的测试结论压缩成系统已经安全，",
+    "startMs": 27205,
+    "endMs": 30415,
+    "timestampMs": 28810.0,
+    "confidence": null
+  },
+  {
+    "text": "就丢掉了时间和证据范围。",
+    "startMs": 30655,
+    "endMs": 32765,
+    "timestampMs": 31710.0,
+    "confidence": null
+  },
+  {
+    "text": "摘要需要保留什么时候、",
+    "startMs": 33352,
+    "endMs": 34917,
+    "timestampMs": 34134.5,
+    "confidence": null
+  },
+  {
+    "text": "在哪个环境、",
+    "startMs": 35127,
+    "endMs": 35987,
+    "timestampMs": 35557.0,
+    "confidence": null
+  },
+  {
+    "text": "用什么证据得出的结论。",
+    "startMs": 36287,
+    "endMs": 37897,
+    "timestampMs": 37092.0,
+    "confidence": null
+  }
+]

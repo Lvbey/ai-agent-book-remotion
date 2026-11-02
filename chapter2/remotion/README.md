@@ -66,3 +66,20 @@ npx remotion still src/index.ts ContextEngineering out/still.png --frame=18000
 当前尚未嵌入录制或生成的旁白音轨。完整旁白稿位于 storyboard.md；正式成片应将旁白录音、字幕和镜头动作按帧同步。动画中的支付代码、日志和状态为教学示例；原文实验数据必须标注实验条件，不能作为普遍性能承诺。
 
 KV Cache 与 Prompt Cache 的命名及缓存行为依模型服务和推理系统而异。上下文压缩是有损提炼，来源引用只能帮助回查，不能保证摘要无损。
+
+
+## 正式配音与语义同步（2026-10-29）
+
+已生成 13 段豆包 2.0 配音（知性女声，默认语速），共 455.380 秒；视频使用累计绝对时间取整，共 13,661 帧、30 fps。每场结束包含真实的一秒静音。正文按实际旁白时长编排，旧版 11:20 已不再是视频时长。
+
+`narration/script.json` 保存校对后的 13 场景稿及 89 个语义触发点。修正了最初 11–13 场景拆稿错位和总结遗漏，并补充知识清单中的文档化、状态位置、缓存能力边界和证据限定。模型和风格配置在 `narration/voice-config.json`。
+
+`npm run voice:generate` 使用 DOUBAO_TTS_API_KEY，按内容哈希缓存，已经完成的片段不会重复付费。每次合成必须获得真实字词时间戳；文本标准化校验不一致会停止并生成复查记录，不能把推测时间冒充对齐结果。正式 WAV 在 public/audio/narration/01.wav 至 13.wav，逐场字幕在 public/captions/，整章字幕为 public/captions/chapter2.srt。
+
+`src/voice-timeline.json` 是渲染用的实际时长、字幕和语义锚点数据。sceneTiming.ts 在真实发音锚点之间推进原有分镜逻辑帧，不再按整场比例匀速拉长。MainVideo.tsx 为每场接入音频和字幕，画面缩放至上部以避免字幕遮挡。
+
+验证命令：`npm run typecheck`、`npm run check:voice`、`npm run check:timing`。已通过 13 段 WAV 格式及样本时长、字幕文本与接口字词一致、字幕边界、语义锚点顺序和累计帧误差检查。完整渲染：`npm run render:voiced`，输出 out/chapter2-voiced.mp4。
+
+自动检查不能替代人工听感与逐镜头验收；术语发音、声音一致性和所有动画的教学表达仍应以观看成片为准。当前没有加入背景音乐。
+
+整章渲染脚本会先检查 13 场景的开头、中间、结尾（39 张图），再输出视频，并用 ffprobe 核对音视频流与成片时长。`npm run check:semantic` 额外验证 89 个发音锚点精确映射，及全片每一帧的分镜时钟没有倒退。音频采样检查报告位于 narration/audio-quality.json：13 段均无削波，未声称完成 LUFS 测量。音频与成片默认保留在本机，不自动上传。

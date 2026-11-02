@@ -2,3 +2,12 @@ node_modules/
 out/
 .DS_Store
 npm-debug.log*
+
+.env
+.env.*
+!.env.example
+narration/segments/
+__pycache__/
+
+public/audio/narration/*.wav
+public/audio/audition.wav

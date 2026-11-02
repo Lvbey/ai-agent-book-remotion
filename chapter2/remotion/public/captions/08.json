@@ -1,0 +1,121 @@
+[
+  {
+    "text": "Skill 把领域流程写成按需加载的说明：先看目",
+    "startMs": 0,
+    "endMs": 4275,
+    "timestampMs": 2137.5,
+    "confidence": null
+  },
+  {
+    "text": "录，",
+    "startMs": 4275,
+    "endMs": 4595,
+    "timestampMs": 4435.0,
+    "confidence": null
+  },
+  {
+    "text": "需要时再打开细节。",
+    "startMs": 4705,
+    "endMs": 6195,
+    "timestampMs": 5450.0,
+    "confidence": null
+  },
+  {
+    "text": "Skill 不等于工具，",
+    "startMs": 6740,
+    "endMs": 8165,
+    "timestampMs": 7452.5,
+    "confidence": null
+  },
+  {
+    "text": "也不会自动授予权限。",
+    "startMs": 8395,
+    "endMs": 10035,
+    "timestampMs": 9215.0,
+    "confidence": null
+  },
+  {
+    "text": "网页或文件可能包含伪装成命令的提示注入，",
+    "startMs": 10515,
+    "endMs": 14385,
+    "timestampMs": 12450.0,
+    "confidence": null
+  },
+  {
+    "text": "应作为不可信数据处理。",
+    "startMs": 14695,
+    "endMs": 16455,
+    "timestampMs": 15575.0,
+    "confidence": null
+  },
+  {
+    "text": "安全还依赖最小权限、",
+    "startMs": 16900,
+    "endMs": 18715,
+    "timestampMs": 17807.5,
+    "confidence": null
+  },
+  {
+    "text": "参数校验、",
+    "startMs": 19085,
+    "endMs": 19755,
+    "timestampMs": 19420.0,
+    "confidence": null
+  },
+  {
+    "text": "危险操作确认和结果审计。",
+    "startMs": 20295,
+    "endMs": 22115,
+    "timestampMs": 21205.0,
+    "confidence": null
+  },
+  {
+    "text": "编写技能时，",
+    "startMs": 22885,
+    "endMs": 23865,
+    "timestampMs": 23375.0,
+    "confidence": null
+  },
+  {
+    "text": "应写清适用条件、",
+    "startMs": 24065,
+    "endMs": 25245,
+    "timestampMs": 24655.0,
+    "confidence": null
+  },
+  {
+    "text": "操作步骤、",
+    "startMs": 25735,
+    "endMs": 26255,
+    "timestampMs": 25995.0,
+    "confidence": null
+  },
+  {
+    "text": "验证和失败处理。",
+    "startMs": 26845,
+    "endMs": 28155,
+    "timestampMs": 27500.0,
+    "confidence": null
+  },
+  {
+    "text": "目录只提供发现入口，",
+    "startMs": 28640,
+    "endMs": 30205,
+    "timestampMs": 29422.5,
+    "confidence": null
+  },
+  {
+    "text": "具体流程在触发后加载，",
+    "startMs": 30455,
+    "endMs": 32415,
+    "timestampMs": 31435.0,
+    "confidence": null
+  },
+  {
+    "text": "执行仍要依赖真实工具和权限。",
+    "startMs": 32745,
+    "endMs": 35075,
+    "timestampMs": 33910.0,
+    "confidence": null
+  }
+]

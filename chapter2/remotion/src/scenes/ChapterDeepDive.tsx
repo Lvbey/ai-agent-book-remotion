@@ -82,7 +82,7 @@ export const StateBar:React.FC=()=>{
 
 export const CompressionStrategies:React.FC=()=>{
  const f=useStoryFrame('CompressionStrategies');
- const layered=p(f,140,158);
+ const layered=p(f,160,178);
  const layers=['大结果限量','删除重复噪声','微压缩新历史','归档阶段摘要','阈值触发全局压缩'];
  const strategies=[
   {name:'无压缩',desc:'原始结果全部保留',cost:'窗口很快溢出',c:COLORS.coral},
@@ -100,19 +100,19 @@ export const CompressionStrategies:React.FC=()=>{
    <g opacity={layered}>
     <rect {...rect(120,235,1670,620,'#FFFEF9',COLORS.green)}/>
     <text x="155" y="300" fontSize="32" fill={COLORS.green} fontWeight="800">生产系统不只选一种，而是逐层减小噪声</text>
-    {layers.map((name,i)=><g key={name} opacity={p(f,148+i*9,155+i*9)}>
+    {layers.map((name,i)=><g key={name} opacity={p(f,165+i*8,172+i*8)}>
       <rect {...rect(150+i*325,385,300,150,i%2===0?'#E4EEE5':'#E3EBF3',i%2===0?COLORS.green:COLORS.blue)}/>
       <text x={170+i*325} y="435" fontSize="20" fill={COLORS.inkSoft}>第 {i+1} 层</text>
       <text x={170+i*325} y="480" fontSize="23" fill={COLORS.ink} fontWeight="800">{name}</text>
       {i<4&&<path d={'M '+(455+i*325)+' 460 l 16 0 l -9 -7 m 9 7 l -9 7'} fill="none" stroke={COLORS.green} strokeWidth="3"/>}
     </g>)}
-    <g opacity={p(f,190,210)}>
+    <g opacity={p(f,210,225)}>
       <rect {...rect(200,610,1500,125,'#F8E3DC',COLORS.coral)}/>
       <text x="245" y="660" fontSize="25" fill={COLORS.coral} fontWeight="800">连续失败时：熔断，而不是无限追加错误日志</text>
       <text x="245" y="704" fontSize="21" fill={COLORS.ink}>超出预算 → 停止重试 → 保留失败原因、关键状态与证据</text>
     </g>
    </g>
-   <g opacity={p(f,200,218)}><rect {...rect(120,900,1670,75,'#E4EEE5',COLORS.green)}/><text x="155" y="947" fontSize="23" fill={COLORS.green} fontWeight="800">原文特定实验：任务感知策略显著降低了该任务的 token 使用量；数字不是普遍保证。</text></g>
+   <g opacity={p(f,150,158)}><rect {...rect(120,900,1670,75,'#E4EEE5',COLORS.green)}/><text x="155" y="947" fontSize="23" fill={COLORS.green} fontWeight="800">原文特定实验：任务感知策略显著降低了该任务的 token 使用量；数字不是普遍保证。</text></g>
   </svg>
  </AbsoluteFill>;
 };

@@ -1,0 +1,100 @@
+[
+  {
+    "text": "上下文，",
+    "startMs": 0,
+    "endMs": 755,
+    "timestampMs": 377.5,
+    "confidence": null
+  },
+  {
+    "text": "就是模型在这一次决策时实际收到的信息。",
+    "startMs": 965,
+    "endMs": 4525,
+    "timestampMs": 2745.0,
+    "confidence": null
+  },
+  {
+    "text": "它不只有聊天记录，",
+    "startMs": 4860,
+    "endMs": 6225,
+    "timestampMs": 5542.5,
+    "confidence": null
+  },
+  {
+    "text": "还包括开发者规则、",
+    "startMs": 6415,
+    "endMs": 7805,
+    "timestampMs": 7110.0,
+    "confidence": null
+  },
+  {
+    "text": "当前任务、",
+    "startMs": 8360,
+    "endMs": 8995,
+    "timestampMs": 8677.5,
+    "confidence": null
+  },
+  {
+    "text": "此前的助手行动、",
+    "startMs": 9385,
+    "endMs": 11135,
+    "timestampMs": 10260.0,
+    "confidence": null
+  },
+  {
+    "text": "工具说明和工具返回的观察。",
+    "startMs": 11140,
+    "endMs": 12995,
+    "timestampMs": 12067.5,
+    "confidence": null
+  },
+  {
+    "text": "模型提供通用能力，",
+    "startMs": 13815,
+    "endMs": 15425,
+    "timestampMs": 14620.0,
+    "confidence": null
+  },
+  {
+    "text": "上下文负责提供地图、",
+    "startMs": 15605,
+    "endMs": 17555,
+    "timestampMs": 16580.0,
+    "confidence": null
+  },
+  {
+    "text": "路况和任务约束。",
+    "startMs": 17725,
+    "endMs": 19295,
+    "timestampMs": 18510.0,
+    "confidence": null
+  },
+  {
+    "text": "资料多并不自动代表更好，",
+    "startMs": 19750,
+    "endMs": 21705,
+    "timestampMs": 20727.5,
+    "confidence": null
+  },
+  {
+    "text": "关键是相关信息是否完整、",
+    "startMs": 21915,
+    "endMs": 23805,
+    "timestampMs": 22860.0,
+    "confidence": null
+  },
+  {
+    "text": "可信、",
+    "startMs": 24255,
+    "endMs": 24645,
+    "timestampMs": 24450.0,
+    "confidence": null
+  },
+  {
+    "text": "容易找到。",
+    "startMs": 24645,
+    "endMs": 25145,
+    "timestampMs": 24895.0,
+    "confidence": null
+  }
+]
