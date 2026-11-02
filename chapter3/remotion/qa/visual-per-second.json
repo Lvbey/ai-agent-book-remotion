@@ -2,9 +2,9 @@
   "source": "out\\EP01-voiced.mp4",
   "fps": 30,
   "sampleFps": 10,
-  "sampleFrames": 17876,
-  "seconds": 1787,
-  "totalSecondsExpected": 1787,
+  "sampleFrames": 18214,
+  "seconds": 1821,
+  "totalSecondsExpected": 1821,
   "thresholds": {
     "MOTION_DEAD": 0.1,
     "MOTION_LOW": 0.3,
@@ -12,72 +12,72 @@
     "MAX_LOW_RUN": 8
   },
   "stats": {
-    "mean": 1.389,
-    "p05": 0.161,
-    "p25": 0.408,
-    "median": 0.784,
-    "p95": 3.485,
-    "deadSeconds": 28
+    "mean": 1.372,
+    "p05": 0.159,
+    "p25": 0.402,
+    "median": 0.762,
+    "p95": 3.425,
+    "deadSeconds": 23
   },
   "byScene": {
     "IntroMap": {
-      "seconds": 89,
-      "avgMotion": 1.56,
-      "minMotion": 0.456,
+      "seconds": 90,
+      "avgMotion": 1.369,
+      "minMotion": 0.458,
       "deadSeconds": 0
     },
     "ExtractDemo": {
-      "seconds": 109,
-      "avgMotion": 1.146,
-      "minMotion": 0.054,
-      "deadSeconds": 1
+      "seconds": 113,
+      "avgMotion": 1.383,
+      "minMotion": 0.232,
+      "deadSeconds": 0
     },
     "EvalFrame": {
-      "seconds": 279,
-      "avgMotion": 1.376,
-      "minMotion": 0.061,
-      "deadSeconds": 5
+      "seconds": 285,
+      "avgMotion": 1.395,
+      "minMotion": 0.057,
+      "deadSeconds": 6
     },
     "Layers": {
-      "seconds": 170,
-      "avgMotion": 1.848,
-      "minMotion": 0.686,
+      "seconds": 172,
+      "avgMotion": 1.669,
+      "minMotion": 0.691,
       "deadSeconds": 0
     },
     "Formats": {
-      "seconds": 315,
-      "avgMotion": 1.179,
-      "minMotion": 0.087,
-      "deadSeconds": 4
+      "seconds": 320,
+      "avgMotion": 1.209,
+      "minMotion": 0.096,
+      "deadSeconds": 1
     },
     "CodeState": {
-      "seconds": 135,
-      "avgMotion": 1.697,
-      "minMotion": 0.253,
+      "seconds": 137,
+      "avgMotion": 1.634,
+      "minMotion": 0.28,
       "deadSeconds": 0
     },
     "Cognition": {
-      "seconds": 156,
-      "avgMotion": 1.486,
-      "minMotion": 0.353,
+      "seconds": 159,
+      "avgMotion": 1.45,
+      "minMotion": 0.342,
       "deadSeconds": 0
     },
     "Frameworks": {
-      "seconds": 303,
-      "avgMotion": 1.184,
-      "minMotion": 0.015,
-      "deadSeconds": 18
+      "seconds": 310,
+      "avgMotion": 1.141,
+      "minMotion": 0.022,
+      "deadSeconds": 16
     },
     "Compress": {
-      "seconds": 107,
-      "avgMotion": 1.531,
-      "minMotion": 0.115,
+      "seconds": 109,
+      "avgMotion": 1.567,
+      "minMotion": 0.239,
       "deadSeconds": 0
     },
     "Privacy": {
-      "seconds": 124,
+      "seconds": 126,
       "avgMotion": 1.339,
-      "minMotion": 0.332,
+      "minMotion": 0.273,
       "deadSeconds": 0
     }
   },
