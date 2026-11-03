@@ -12,12 +12,12 @@
     "MAX_LOW_RUN": 8
   },
   "stats": {
-    "mean": 1.372,
-    "p05": 0.159,
-    "p25": 0.402,
-    "median": 0.762,
+    "mean": 1.37,
+    "p05": 0.157,
+    "p25": 0.399,
+    "median": 0.761,
     "p95": 3.425,
-    "deadSeconds": 23
+    "deadSeconds": 25
   },
   "byScene": {
     "IntroMap": {
@@ -28,8 +28,8 @@
     },
     "ExtractDemo": {
       "seconds": 113,
-      "avgMotion": 1.383,
-      "minMotion": 0.232,
+      "avgMotion": 1.378,
+      "minMotion": 0.242,
       "deadSeconds": 0
     },
     "EvalFrame": {
@@ -40,43 +40,43 @@
     },
     "Layers": {
       "seconds": 172,
-      "avgMotion": 1.669,
+      "avgMotion": 1.662,
       "minMotion": 0.691,
       "deadSeconds": 0
     },
     "Formats": {
       "seconds": 320,
-      "avgMotion": 1.209,
+      "avgMotion": 1.205,
       "minMotion": 0.096,
       "deadSeconds": 1
     },
     "CodeState": {
       "seconds": 137,
-      "avgMotion": 1.634,
-      "minMotion": 0.28,
+      "avgMotion": 1.628,
+      "minMotion": 0.278,
       "deadSeconds": 0
     },
     "Cognition": {
       "seconds": 159,
-      "avgMotion": 1.45,
+      "avgMotion": 1.451,
       "minMotion": 0.342,
       "deadSeconds": 0
     },
     "Frameworks": {
       "seconds": 310,
-      "avgMotion": 1.141,
+      "avgMotion": 1.135,
       "minMotion": 0.022,
-      "deadSeconds": 16
+      "deadSeconds": 18
     },
     "Compress": {
       "seconds": 109,
-      "avgMotion": 1.567,
+      "avgMotion": 1.578,
       "minMotion": 0.239,
       "deadSeconds": 0
     },
     "Privacy": {
       "seconds": 126,
-      "avgMotion": 1.339,
+      "avgMotion": 1.341,
       "minMotion": 0.273,
       "deadSeconds": 0
     }

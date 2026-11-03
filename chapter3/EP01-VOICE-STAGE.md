@@ -38,7 +38,7 @@ src/data/units/s0~s9.json            口播稿（148 语义单元，唯一文案
 | 时间轴总时长 | **1,821.2 s（30.35 min）／54,637 帧 @30fps** |
 | 单元间隙 | 0.2 s／单元，间隙占比 1.6% |
 | 实测语速 | 5.40 字/秒（含标点；加权汉字当量约 4.53/秒） |
-| 字幕条 | 725 条，**全部为 provider 字级时码**，`timestampMs`/`confidence` 均非空 |
+| 字幕条 | 717 条，**全部为 provider 字级时码**，`timestampMs`/`confidence` 均非空 |
 | 缺失字级时间戳的单元 | 0 |
 | 整轨电平 | 归一化后 **-18.2 LUFS**、真峰值 **-4.7 dBFS**（归一化前峰值 -2.3 dBFS、RMS -23.2 dBFS） |
 | 交付音轨 | `public/narration/ep01-narration.mp3`（48 kHz **立体声** 192 kbps，43.7 MB，30:21.26） |
@@ -74,7 +74,7 @@ npm run render:voiced         # 渲染带配音成片 out/EP01-voiced.mp4
 | --- | --- |
 | `tsc --noEmit` | PASS（0 错误） |
 | `check-timeline` | PASS（148 单元首尾相接，总帧数一致；7 条字幕 <500ms 告警） |
-| `check-subtitles` | PASS（725 条，拼接文本与口播稿一致） |
+| `check-subtitles` | PASS（717 条，拼接文本与口播稿一致） |
 | `check-coverage` | PASS（116/116 = 100%，P0 88/88） |
 | `check-layout` | PASS |
 | `check-narration` | **PASS**（分段 WAV 格式/时长、时间轴帧长、master 时长、MP3 全解码、字级时码完整性） |
@@ -163,7 +163,7 @@ ffmpeg -i out/EP01-voiced.renderonly.mp4 -i public/narration/ep01-narration.mp3 
 
 ### 7.4 QA
 
-`npm run qa:voiced` 全绿：typecheck、`check-timeline`（148 单元 / 725 条 / 29.79 min）、`check-subtitles`（725 条 SRT 块）、`check-coverage`（原子点 116/116、P0 88/88）、`check-layout`、`check-narration`（PASS）。
+`npm run qa:voiced` 全绿：typecheck、`check-timeline`（148 单元 / 717 条 / 29.79 min）、`check-subtitles`（717 条 SRT 块）、`check-coverage`（原子点 116/116、P0 88/88）、`check-layout`、`check-narration`（PASS）。
 
 `check-visual out/EP01-voiced.mp4`：**PASS** — 停滞段 0、弱变化段 0；静止秒数由修复前的 69/1787 降至 28/1787，`CodeState` 最低运动量由 0.015 提升到 0.253。报告见 `remotion/qa/visual-qa-ep01.md`，阶段 A 结果已备份至 `qa/visual-backup-silent/`。
 
@@ -249,20 +249,20 @@ ffmpeg -ss <起点> -t 3.4 -i public/narration/ep01-narration.mp3 -c:a libmp3lam
 
 | 项 | 值 |
 | --- | --- |
-| 成片 | `remotion/out/EP01-voiced.mp4`（136,867,658 B / 130.5 MiB，已 faststart） |
-| 时长 | **00:30:21.23**（54,637 帧 @ 30fps，与 `ep01-meta.generated.json` 一致） |
+| 成片 | `remotion/out/EP01-voiced.mp4`（154,517,313 B / 147.3 MiB，已 faststart） |
+| 时长 | **00:30:21.25**（54,637 帧 @ 30fps，与 `ep01-meta.generated.json` 一致） |
 | 视频 | H.264 High / yuvj420p / 1920×1080 / 30fps / 352 kb/s |
-| 音频 | AAC-LC / 48 kHz / 立体声 / 239 kb/s |
-| 响度 | 集成 **-18.2 LUFS**，真峰值 **-4.6 dBFS**，LRA 2.7 LU |
+| 音频 | AAC-LC / 48 kHz / 立体声 / 317 kb/s |
+| 响度 | 集成 **-18.29 LUFS**，真峰值 **-4.72 dBFS**，LRA 2.70 LU |
 | 解码 | 全片 `ffmpeg -v error -f null` 零错误 |
-| 渲染耗时 | 约 42 分钟（6 并发，54,637 帧） |
+| 渲染耗时 | **2,411 s（40.2 min）**，8 并发 + ANGLE 硬件光栅；性能基准见 `EP01-RENDER-PERF.md` |
 
 ### 9.2 校验
 
 | 检查 | 结果 |
 | --- | --- |
-| `qa:voiced` | 全绿：typecheck、timeline（148 单元 / 725 条 / 30.35 min）、subtitles（725 块）、coverage（原子点 116/116、P0 88/88）、layout、narration |
-| `check-visual out/EP01-voiced.mp4` | **PASS** — 采样 18,214 帧聚合到 1,821 秒，停滞段 0、弱变化段 0；`deadSeconds` 23（首次成片为 28），最低分位 p05 = 0.159（判定线 0.1） |
+| `qa:voiced` | 全绿：typecheck、timeline（148 单元 / 717 条 / 30.35 min）、subtitles（717 块）、coverage（原子点 116/116、P0 88/88）、layout、narration |
+| `check-visual out/EP01-voiced.mp4` | **PASS** — 采样 18,214 帧聚合到 1,821 秒，平均运动量 1.37、中位 0.761，停滞段 0、弱变化段 0；`deadSeconds` 25，最低分位 p05 = 0.157（判定线 0.1） |
 | 音轨一致性 | `check-narration` PASS，分段/帧长/整轨/MP3 解码/时码完整性/切口残留全部通过 |
 
 ### 9.3 三处尾音问题点的实测复核
@@ -276,3 +276,29 @@ ffmpeg -ss <起点> -t 3.4 -i public/narration/ep01-narration.mp3 -c:a libmp3lam
 | `EP01-U013` | 长期信息 | 135.30 → 145.70 s | 145.27 s | 0.429 s |
 
 三处收声后静音均为 0.42–0.43 s，正好等于 `TAIL_PAD_SEC(0.22)` + 单元间隙 `0.2`，说明切口落在统一的收尾位置，而不是像修复前那样把最后一段语音切掉。对照音频已导出到 `out/audio-check/`（`01-记住知识.mp3`、`02-需求.mp3`、`03-信息.mp3`，各 3.4 s，取自成片音轨）。
+
+### 9.4 字幕切分器重写（725 → 717 条）
+
+真实语音时码把两个此前被估算掩盖的断句缺陷暴露了出来，本轮一并修掉：
+
+| 缺陷 | 现象 | 处理 |
+| --- | --- | --- |
+| 纯标点字幕条 | 切分把 `、`/`，` 单独切成一屏，一闪而过 | 纯标点尾片并回前一条；切分按「CJK 单字 / ASCII 整词 / 标点」原子进行，标点跟随前一个原子 |
+| 英文词被拆断 | `Agent` 被切成 `Age` + `nt` | ASCII 连续字母数字视为不可分原子，超宽时只在原子边界折行 |
+| 短条一闪 | 单条 < 0.9 s，来不及读 | `MIN_CUE_SEC = 0.9` 作为可读性下限，不足时向同单元上一段借时间 |
+
+结果：717 条（净减 8 条纯标点/合并条），**纯标点条 0、以标点开头的条 0、英文断词 0、宽度 > 20 字当量 0**。
+仍有 5 条短于 0.9 s（均为单元首条 3 字过渡语，如「于是，」「此外，」0.63–0.83 s），是单元总时长本身就装不下两个下限所致，3 字在 0.6 s 内可读。
+
+配套单测：`scripts/split-cues.test.mjs`（20 项）+ `scripts/narration-align.test.mjs`（8 项）+ `scripts/tts-selftest.py`（19 项）全通过。
+
+### 9.5 渲染性能
+
+`angle`（D3D11 硬件光栅）+ 8 并发，全片 **2,411 s（40.2 min）**。
+相比 SwiftShader 纯软光栅的 155 s/600 帧基线，单位帧耗时降到约 1/3.8。完整基准、GPU 采样数据与「为什么不用 NVENC」见 `EP01-RENDER-PERF.md`。
+
+### 9.6 成片抽帧复核
+
+从成片按字幕中点抽 7 帧（覆盖开场、5 条短过渡条、含英文与冒号的条、结尾）逐一目视确认：
+字幕均为完整语义单元、居中单行、无截断、无孤立标点、英文单词与标点原样保留。
+抽帧留在 `remotion/qa/final-spot/`。

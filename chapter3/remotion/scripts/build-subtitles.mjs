@@ -9,6 +9,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {alignCues, spokenChars} from './lib/align-cues.mjs';
+import {splitCues} from './lib/split-cues.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -22,7 +23,6 @@ const FPS = 30;
 const CHARS_PER_SEC = 5.0; // 无音频时的口播速率基准（汉字当量/秒）
 const UNIT_GAP_SEC = 0.2; // 语义单元间呼吸停顿
 const MIN_UNIT_SEC = 4.0; // 无音频时的单元最短时长
-const MAX_CUE_WIDTH = 18; // 单行字幕最大宽度（汉字当量）
 const MIN_CUE_SEC = 0.9; // 无音频时单条字幕最短显示时长
 const MIN_CUE_FRAMES = 12; // 有音频时单条字幕最少显示帧数（0.4s）
 const CUE_TAIL_FRAMES = 8; // 末条字幕在语音结束后的停留帧数
@@ -41,61 +41,7 @@ const speechWeight = (text) => {
   return w;
 };
 
-/** 显示宽度：CJK 计 1，其余计 0.55。用于字幕折行。 */
-const displayWidth = (text) => {
-  let w = 0;
-  for (const ch of text) {
-    if (/[一-鿿぀-ヿ：，。、；！？（）]/.test(ch)) w += 1;
-    else w += 0.55;
-  }
-  return w;
-};
-
-/** 按标点把口播稿切成自然语义字幕条；对无标点的长片按宽度强制折断。 */
-const forceSplit = (cue) => {
-  if (displayWidth(cue) <= MAX_CUE_WIDTH) return [cue];
-  const out = [];
-  let cur = '';
-  for (const ch of cue) {
-    if (cur && displayWidth(cur + ch) > MAX_CUE_WIDTH) {
-      out.push(cur);
-      cur = ch;
-    } else {
-      cur += ch;
-    }
-  }
-  if (cur.trim()) out.push(cur);
-  return out;
-};
-
-const splitCues = (text) => {
-  const pieces = text.match(/[^，。！？；：、]+[，。！？；：、]?/g) || [text];
-  const merged = [];
-  let cur = '';
-  for (const piece of pieces) {
-    if (cur && displayWidth(cur + piece) > MAX_CUE_WIDTH) {
-      merged.push(cur);
-      cur = piece;
-    } else {
-      cur += piece;
-    }
-  }
-  if (cur.trim()) merged.push(cur);
-  // 1) 强制折断超宽条
-  let cues = merged.flatMap(forceSplit).filter((c) => c.trim().length > 0);
-  // 2) 合并过短的尾条（避免 <1s 的碎字幕），前提是不超宽
-  const finalCues = [];
-  for (const c of cues) {
-    const prev = finalCues[finalCues.length - 1];
-    if (prev && displayWidth(c) < 5 && displayWidth(prev + c) <= MAX_CUE_WIDTH) {
-      finalCues[finalCues.length - 1] = prev + c;
-    } else {
-      finalCues.push(c);
-    }
-  }
-  return finalCues;
-};
-
+/** 显示宽度由 scripts/lib/split-cues.mjs 统一提供，避免切分与校验口径分叉。 */
 const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
 
 // ---------- 音频索引（可选） ----------
@@ -181,12 +127,24 @@ const unitsWithCues = units.map((u) => {
     }
     // 最末条不得越过单元末尾
     boundaries[boundaries.length - 1].to = Math.min(boundaries[boundaries.length - 1].to, u.end);
-    // 保证最短 0.4s 显示：在不越过下一条起点的前提下前移起点
+    // 可读性下限：短条先前移起点；前移不够时向上一段借时间（上一段保留同一下限）。
+    // 下限取 MIN_CUE_SEC(0.9s) 而非 MIN_CUE_FRAMES(0.4s)：provider 偶尔把英文整词压成几十毫秒
+    // （如 U047 的 append-only。只有 30ms），按字级时码算出来的条会短到看不清。
+    const cueFloor = Math.max(MIN_CUE_FRAMES, Math.round(MIN_CUE_SEC * FPS));
     for (let i = boundaries.length - 1; i >= 0; i--) {
       const b = boundaries[i];
-      if (b.to - b.from < MIN_CUE_FRAMES) {
-        const lower = i === 0 ? u.start : boundaries[i - 1].to;
-        b.from = Math.max(lower, b.to - MIN_CUE_FRAMES);
+      let need = cueFloor - (b.to - b.from);
+      if (need <= 0) continue;
+      const lower = i === 0 ? u.start : boundaries[i - 1].to;
+      const shift = Math.min(need, b.from - lower);
+      b.from -= shift;
+      need -= shift;
+      if (need > 0 && i > 0) {
+        const prev = boundaries[i - 1];
+        const slack = Math.max(0, prev.to - prev.from - cueFloor);
+        const take = Math.min(need, slack);
+        prev.to -= take;
+        b.from -= take;
       }
     }
   }

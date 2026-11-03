@@ -38,17 +38,17 @@
         "unitId": "EP01-U001",
         "text": "上一章我们解决的是单次交互里的上下文",
         "startMs": 0,
-        "endMs": 3333,
-        "timestampMs": 1667,
+        "endMs": 3267,
+        "timestampMs": 1633,
         "confidence": 0.9378
       },
       {
         "id": "EP01-U001-C02",
         "unitId": "EP01-U001",
         "text": "管理。",
-        "startMs": 3333,
+        "startMs": 3267,
         "endMs": 4167,
-        "timestampMs": 3750,
+        "timestampMs": 3717,
         "confidence": 0.8964
       },
       {
@@ -122,62 +122,53 @@
         "unitId": "EP01-U002",
         "text": "这种持久化的记忆体系，",
         "startMs": 10800,
-        "endMs": 12600,
-        "timestampMs": 11700,
-        "confidence": 0.9272
+        "endMs": 12800,
+        "timestampMs": 11800,
+        "confidence": 0.9166
       },
       {
         "id": "EP01-U002-C02",
         "unitId": "EP01-U002",
         "text": "可以拆成两个尺度来看。",
-        "startMs": 12600,
-        "endMs": 14433,
-        "timestampMs": 13517,
-        "confidence": 0.9077
+        "startMs": 12800,
+        "endMs": 14933,
+        "timestampMs": 13867,
+        "confidence": 0.9044
       },
       {
         "id": "EP01-U002-C03",
         "unitId": "EP01-U002",
         "text": "第一个尺度是用户记忆，",
-        "startMs": 14433,
-        "endMs": 16600,
-        "timestampMs": 15517,
-        "confidence": 0.9124
+        "startMs": 14933,
+        "endMs": 17000,
+        "timestampMs": 15967,
+        "confidence": 0.9095
       },
       {
         "id": "EP01-U002-C04",
         "unitId": "EP01-U002",
         "text": "它面向单个用户，",
-        "startMs": 16600,
-        "endMs": 18233,
-        "timestampMs": 17417,
-        "confidence": 0.9192
+        "startMs": 17000,
+        "endMs": 18667,
+        "timestampMs": 17833,
+        "confidence": 0.9266
       },
       {
         "id": "EP01-U002-C05",
         "unitId": "EP01-U002",
-        "text": "在与这位用户的交互中逐渐了解他的偏好",
-        "startMs": 18233,
-        "endMs": 21800,
-        "timestampMs": 20017,
-        "confidence": 0.8546
+        "text": "在与这位用户的交互中逐渐了解他的偏好、",
+        "startMs": 18667,
+        "endMs": 22233,
+        "timestampMs": 20450,
+        "confidence": 0.8504
       },
       {
         "id": "EP01-U002-C06",
         "unitId": "EP01-U002",
-        "text": "、",
-        "startMs": 21800,
-        "endMs": 22267,
-        "timestampMs": 22033,
-        "confidence": 0.5639
-      },
-      {
-        "id": "EP01-U002-C07",
-        "unitId": "EP01-U002",
         "text": "习惯和需求。",
-        "startMs": 22267,
+        "startMs": 22233,
         "endMs": 23800,
-        "timestampMs": 23033,
+        "timestampMs": 23017,
         "confidence": 0.4856
       }
     ]
@@ -877,44 +868,35 @@
         "unitId": "EP01-U012",
         "text": "Agent 调用了机票搜索工具，",
         "startMs": 125533,
-        "endMs": 127633,
-        "timestampMs": 126583,
-        "confidence": 0.9231
+        "endMs": 127867,
+        "timestampMs": 126700,
+        "confidence": 0.9257
       },
       {
         "id": "EP01-U012-C02",
         "unitId": "EP01-U012",
         "text": "返回三个选项。",
-        "startMs": 127633,
-        "endMs": 128900,
-        "timestampMs": 128267,
-        "confidence": 0.9595
+        "startMs": 127867,
+        "endMs": 129400,
+        "timestampMs": 128633,
+        "confidence": 0.9418
       },
       {
         "id": "EP01-U012-C03",
         "unitId": "EP01-U012",
-        "text": "它根据用户偏好过滤出有靠窗座位的航班",
-        "startMs": 128900,
-        "endMs": 132467,
-        "timestampMs": 130683,
-        "confidence": 0.9091
+        "text": "它根据用户偏好过滤出有靠窗座位的航班，",
+        "startMs": 129400,
+        "endMs": 133000,
+        "timestampMs": 131200,
+        "confidence": 0.9071
       },
       {
         "id": "EP01-U012-C04",
         "unitId": "EP01-U012",
-        "text": "，",
-        "startMs": 132467,
-        "endMs": 133033,
-        "timestampMs": 132750,
-        "confidence": 0.9448
-      },
-      {
-        "id": "EP01-U012-C05",
-        "unitId": "EP01-U012",
         "text": "并推荐了 ANA 的直飞。",
-        "startMs": 133033,
+        "startMs": 133000,
         "endMs": 135233,
-        "timestampMs": 134133,
+        "timestampMs": 134117,
         "confidence": 0.8001
       }
     ]
@@ -1279,17 +1261,17 @@
         "unitId": "EP01-U017",
         "text": "而不是记成某年某月某日订过一次靠窗座",
         "startMs": 187333,
-        "endMs": 190367,
-        "timestampMs": 188850,
+        "endMs": 190000,
+        "timestampMs": 188667,
         "confidence": 0.8727
       },
       {
         "id": "EP01-U017-C04",
         "unitId": "EP01-U017",
         "text": "位。",
-        "startMs": 190367,
+        "startMs": 190000,
         "endMs": 190900,
-        "timestampMs": 190633,
+        "timestampMs": 190450,
         "confidence": 0.8728
       }
     ]
@@ -2776,17 +2758,17 @@
         "unitId": "EP01-U037",
         "text": "都会用它来衡量检索技术对记忆能力的提",
         "startMs": 413000,
-        "endMs": 416167,
-        "timestampMs": 414583,
+        "endMs": 415933,
+        "timestampMs": 414467,
         "confidence": 0.888
       },
       {
         "id": "EP01-U037-C04",
         "unitId": "EP01-U037",
         "text": "升。",
-        "startMs": 416167,
+        "startMs": 415933,
         "endMs": 416833,
-        "timestampMs": 416500,
+        "timestampMs": 416383,
         "confidence": 0.7104
       }
     ]
@@ -3257,44 +3239,35 @@
         "unitId": "EP01-U044",
         "text": "有了评估标准，就可以进入具体设计。",
         "startMs": 487267,
-        "endMs": 489867,
-        "timestampMs": 488567,
-        "confidence": 0.935
+        "endMs": 490400,
+        "timestampMs": 488833,
+        "confidence": 0.9173
       },
       {
         "id": "EP01-U044-C02",
         "unitId": "EP01-U044",
-        "text": "记忆系统的设计可以拆成三个独立的维度",
-        "startMs": 489867,
-        "endMs": 493000,
-        "timestampMs": 491433,
-        "confidence": 0.8459
+        "text": "记忆系统的设计可以拆成三个独立的维度：",
+        "startMs": 490400,
+        "endMs": 493533,
+        "timestampMs": 491967,
+        "confidence": 0.8442
       },
       {
         "id": "EP01-U044-C03",
         "unitId": "EP01-U044",
-        "text": "：",
-        "startMs": 493000,
-        "endMs": 493600,
-        "timestampMs": 493300,
-        "confidence": 0.5925
+        "text": "放哪里、怎么存、存什么。",
+        "startMs": 493533,
+        "endMs": 496133,
+        "timestampMs": 494833,
+        "confidence": 0.6973
       },
       {
         "id": "EP01-U044-C04",
         "unitId": "EP01-U044",
-        "text": "放哪里、怎么存、存什么。",
-        "startMs": 493600,
-        "endMs": 496167,
-        "timestampMs": 494883,
-        "confidence": 0.6973
-      },
-      {
-        "id": "EP01-U044-C05",
-        "unitId": "EP01-U044",
         "text": "这一节先回答放哪里。",
-        "startMs": 496167,
+        "startMs": 496133,
         "endMs": 498133,
-        "timestampMs": 497150,
+        "timestampMs": 497133,
         "confidence": 0.6747
       }
     ]
@@ -3429,17 +3402,17 @@
         "unitId": "EP01-U046",
         "text": "它是一次 Agent 运行过程中的完整历史",
         "startMs": 513933,
-        "endMs": 517000,
-        "timestampMs": 515467,
+        "endMs": 516867,
+        "timestampMs": 515400,
         "confidence": 0.91
       },
       {
         "id": "EP01-U046-C04",
         "unitId": "EP01-U046",
         "text": "记录，",
-        "startMs": 517000,
+        "startMs": 516867,
         "endMs": 517767,
-        "timestampMs": 517383,
+        "timestampMs": 517317,
         "confidence": 0.8994
       },
       {
@@ -3524,19 +3497,19 @@
       {
         "id": "EP01-U047-C04",
         "unitId": "EP01-U047",
-        "text": "这种模式在计算机领域叫做 append-on",
+        "text": "这种模式在计算机领域叫做",
         "startMs": 533500,
-        "endMs": 536967,
-        "timestampMs": 535233,
+        "endMs": 536333,
+        "timestampMs": 534917,
         "confidence": 0.8891
       },
       {
         "id": "EP01-U047-C05",
         "unitId": "EP01-U047",
-        "text": "ly。",
-        "startMs": 536967,
+        "text": "append-only。",
+        "startMs": 536333,
         "endMs": 537233,
-        "timestampMs": 537100,
+        "timestampMs": 536783,
         "confidence": 0.3391
       }
     ]
@@ -4282,17 +4255,17 @@
         "unitId": "EP01-U057",
         "text": "分层设计既保证 Agent 高效处理当前任",
         "startMs": 650900,
-        "endMs": 654400,
-        "timestampMs": 652650,
+        "endMs": 654000,
+        "timestampMs": 652450,
         "confidence": 0.9068
       },
       {
         "id": "EP01-U057-C04",
         "unitId": "EP01-U057",
         "text": "务，",
-        "startMs": 654400,
+        "startMs": 654000,
         "endMs": 654900,
-        "timestampMs": 654650,
+        "timestampMs": 654450,
         "confidence": 0.8835
       },
       {
@@ -4666,9 +4639,9 @@
         "id": "EP01-U062-C01",
         "unitId": "EP01-U062",
         "text": "于是，",
-        "startMs": 710100,
+        "startMs": 710033,
         "endMs": 710667,
-        "timestampMs": 710383,
+        "timestampMs": 710350,
         "confidence": 0.8315
       },
       {
@@ -4676,17 +4649,17 @@
         "unitId": "EP01-U062",
         "text": "当遇到需要综合多条信息才能回答的查询",
         "startMs": 710667,
-        "endMs": 713833,
-        "timestampMs": 712250,
+        "endMs": 713667,
+        "timestampMs": 712167,
         "confidence": 0.9398
       },
       {
         "id": "EP01-U062-C03",
         "unitId": "EP01-U062",
         "text": "时，",
-        "startMs": 713833,
+        "startMs": 713667,
         "endMs": 714567,
-        "timestampMs": 714200,
+        "timestampMs": 714117,
         "confidence": 0.8541
       },
       {
@@ -4743,71 +4716,62 @@
         "unitId": "EP01-U063",
         "text": "第二种是 Enhanced Notes，",
         "startMs": 720867,
-        "endMs": 722733,
-        "timestampMs": 721800,
-        "confidence": 0.9171
+        "endMs": 723000,
+        "timestampMs": 721933,
+        "confidence": 0.9144
       },
       {
         "id": "EP01-U063-C02",
         "unitId": "EP01-U063",
         "text": "采用整体视角。",
-        "startMs": 722733,
-        "endMs": 724133,
-        "timestampMs": 723433,
-        "confidence": 0.9281
+        "startMs": 723000,
+        "endMs": 724667,
+        "timestampMs": 723833,
+        "confidence": 0.8612
       },
       {
         "id": "EP01-U063-C03",
         "unitId": "EP01-U063",
         "text": "每条记忆保存为一段包含完整上下文的段",
-        "startMs": 724133,
-        "endMs": 727867,
-        "timestampMs": 726000,
-        "confidence": 0.8775
+        "startMs": 724667,
+        "endMs": 727967,
+        "timestampMs": 726317,
+        "confidence": 0.8829
       },
       {
         "id": "EP01-U063-C04",
         "unitId": "EP01-U063",
         "text": "落。比如：",
-        "startMs": 727867,
-        "endMs": 729033,
-        "timestampMs": 728450,
-        "confidence": 0.6503
+        "startMs": 727967,
+        "endMs": 729300,
+        "timestampMs": 728633,
+        "confidence": 0.6871
       },
       {
         "id": "EP01-U063-C05",
         "unitId": "EP01-U063",
-        "text": "用户在 TechCorp 担任高级软件工程师",
-        "startMs": 729033,
-        "endMs": 732267,
-        "timestampMs": 730650,
-        "confidence": 0.8156
+        "text": "用户在 TechCorp 担任高级软件工程师，",
+        "startMs": 729300,
+        "endMs": 732900,
+        "timestampMs": 731100,
+        "confidence": 0.8537
       },
       {
         "id": "EP01-U063-C06",
         "unitId": "EP01-U063",
-        "text": "，",
-        "startMs": 732267,
-        "endMs": 732933,
-        "timestampMs": 732600,
-        "confidence": 0.7899
+        "text": "专注机器学习已有三年，",
+        "startMs": 732900,
+        "endMs": 735133,
+        "timestampMs": 734017,
+        "confidence": 0.881
       },
       {
         "id": "EP01-U063-C07",
         "unitId": "EP01-U063",
-        "text": "专注机器学习已有三年，",
-        "startMs": 732933,
-        "endMs": 735167,
-        "timestampMs": 734050,
-        "confidence": 0.881
-      },
-      {
-        "id": "EP01-U063-C08",
-        "unitId": "EP01-U063",
         "text": "目前领导一个推荐系统项目，团队五人。",
-        "startMs": 735167,
+        "startMs": 735133,
         "endMs": 738567,
-        "timestampMs": 736867,
+        "timestampMs": 736850,
         "confidence": 0.9242
       }
     ]
@@ -5215,17 +5179,17 @@
         "unitId": "EP01-U069",
         "text": "缺陷在于刚性结构假设信息可以被清晰分",
         "startMs": 795600,
-        "endMs": 799167,
-        "timestampMs": 797383,
+        "endMs": 798933,
+        "timestampMs": 797267,
         "confidence": 0.9306
       },
       {
         "id": "EP01-U069-C02",
         "unitId": "EP01-U069",
         "text": "类。",
-        "startMs": 799167,
+        "startMs": 798933,
         "endMs": 799833,
-        "timestampMs": 799500,
+        "timestampMs": 799383,
         "confidence": 0.9214
       },
       {
@@ -5312,66 +5276,57 @@
         "unitId": "EP01-U070",
         "text": "第四种是 Advanced JSON Cards，",
         "startMs": 809967,
-        "endMs": 813067,
-        "timestampMs": 811517,
-        "confidence": 0.8165
+        "endMs": 813433,
+        "timestampMs": 811700,
+        "confidence": 0.8354
       },
       {
         "id": "EP01-U070-C02",
         "unitId": "EP01-U070",
         "text": "它代表了从信息存储到知识管理的范式转",
-        "startMs": 813067,
-        "endMs": 816967,
-        "timestampMs": 815017,
-        "confidence": 0.9392
+        "startMs": 813433,
+        "endMs": 816833,
+        "timestampMs": 815133,
+        "confidence": 0.9382
       },
       {
         "id": "EP01-U070-C03",
         "unitId": "EP01-U070",
         "text": "变。",
-        "startMs": 816967,
-        "endMs": 817233,
-        "timestampMs": 817100,
-        "confidence": 0.9148
+        "startMs": 816833,
+        "endMs": 817733,
+        "timestampMs": 817283,
+        "confidence": 0.925
       },
       {
         "id": "EP01-U070-C04",
         "unitId": "EP01-U070",
         "text": "每张卡片除了事实，",
-        "startMs": 817233,
-        "endMs": 819133,
-        "timestampMs": 818183,
-        "confidence": 0.9528
+        "startMs": 817733,
+        "endMs": 819533,
+        "timestampMs": 818633,
+        "confidence": 0.9563
       },
       {
         "id": "EP01-U070-C05",
         "unitId": "EP01-U070",
-        "text": "还加入信息来源的叙事背景 backstory",
-        "startMs": 819133,
-        "endMs": 822733,
-        "timestampMs": 820933,
-        "confidence": 0.8726
+        "text": "还加入信息来源的叙事背景 backstory、",
+        "startMs": 819533,
+        "endMs": 823033,
+        "timestampMs": 821283,
+        "confidence": 0.8712
       },
       {
         "id": "EP01-U070-C06",
         "unitId": "EP01-U070",
-        "text": "、",
-        "startMs": 822733,
-        "endMs": 823067,
-        "timestampMs": 822900,
-        "confidence": 0.5557
-      },
-      {
-        "id": "EP01-U070-C07",
-        "unitId": "EP01-U070",
         "text": "主体身份 person、",
-        "startMs": 823067,
+        "startMs": 823033,
         "endMs": 824800,
-        "timestampMs": 823933,
+        "timestampMs": 823917,
         "confidence": 0.7848
       },
       {
-        "id": "EP01-U070-C08",
+        "id": "EP01-U070-C07",
         "unitId": "EP01-U070",
         "text": "与用户的关系 relationship，",
         "startMs": 824800,
@@ -5380,7 +5335,7 @@
         "confidence": 0.9157
       },
       {
-        "id": "EP01-U070-C09",
+        "id": "EP01-U070-C08",
         "unitId": "EP01-U070",
         "text": "以及时间戳。",
         "startMs": 826900,
@@ -5555,17 +5510,17 @@
         "unitId": "EP01-U072",
         "text": "person 和 relationship 解释为谁而",
         "startMs": 854800,
-        "endMs": 857200,
-        "timestampMs": 856000,
+        "endMs": 857033,
+        "timestampMs": 855917,
         "confidence": 0.7931
       },
       {
         "id": "EP01-U072-C06",
         "unitId": "EP01-U072",
         "text": "存。",
-        "startMs": 857200,
+        "startMs": 857033,
         "endMs": 857933,
-        "timestampMs": 857567,
+        "timestampMs": 857483,
         "confidence": 0.4734
       }
     ]
@@ -5634,17 +5589,17 @@
         "unitId": "EP01-U073",
         "text": "再通过 backstory 了解每个人的健康",
         "startMs": 865400,
-        "endMs": 868333,
-        "timestampMs": 866867,
+        "endMs": 868133,
+        "timestampMs": 866767,
         "confidence": 0.8797
       },
       {
         "id": "EP01-U073-C05",
         "unitId": "EP01-U073",
         "text": "历史，",
-        "startMs": 868333,
+        "startMs": 868133,
         "endMs": 869033,
-        "timestampMs": 868683,
+        "timestampMs": 868583,
         "confidence": 0.8502
       },
       {
@@ -5786,17 +5741,17 @@
         "unitId": "EP01-U075",
         "text": "用 Advanced JSON Cards 保证可检索",
         "startMs": 888133,
-        "endMs": 891333,
-        "timestampMs": 889733,
+        "endMs": 891200,
+        "timestampMs": 889667,
         "confidence": 0.7648
       },
       {
         "id": "EP01-U075-C05",
         "unitId": "EP01-U075",
         "text": "性；",
-        "startMs": 891333,
+        "startMs": 891200,
         "endMs": 892100,
-        "timestampMs": 891717,
+        "timestampMs": 891650,
         "confidence": 0.7054
       },
       {
@@ -6633,57 +6588,48 @@
         "unitId": "EP01-U086",
         "text": "看一个简化的状态片段：",
         "startMs": 1025600,
-        "endMs": 1027233,
-        "timestampMs": 1026417,
-        "confidence": 0.8706
+        "endMs": 1027800,
+        "timestampMs": 1026700,
+        "confidence": 0.8531
       },
       {
         "id": "EP01-U086-C02",
         "unitId": "EP01-U086",
-        "text": "passport 是一个 PassportInfo 对象",
-        "startMs": 1027233,
-        "endMs": 1030467,
-        "timestampMs": 1028850,
-        "confidence": 0.6879
+        "text": "passport 是一个 PassportInfo 对象，",
+        "startMs": 1027800,
+        "endMs": 1031000,
+        "timestampMs": 1029400,
+        "confidence": 0.732
       },
       {
         "id": "EP01-U086-C03",
         "unitId": "EP01-U086",
-        "text": "，",
-        "startMs": 1030467,
-        "endMs": 1031033,
-        "timestampMs": 1030750,
-        "confidence": 0.7418
+        "text": "包含号码、国家和到期日；",
+        "startMs": 1031000,
+        "endMs": 1033567,
+        "timestampMs": 1032283,
+        "confidence": 0.771
       },
       {
         "id": "EP01-U086-C04",
         "unitId": "EP01-U086",
-        "text": "包含号码、国家和到期日；",
-        "startMs": 1031033,
-        "endMs": 1033600,
-        "timestampMs": 1032317,
-        "confidence": 0.771
+        "text": "trips 是一个 Trip 列表，",
+        "startMs": 1033567,
+        "endMs": 1035500,
+        "timestampMs": 1034533,
+        "confidence": 0.7989
       },
       {
         "id": "EP01-U086-C05",
         "unitId": "EP01-U086",
-        "text": "trips 是一个 Trip 列表，",
-        "startMs": 1033600,
-        "endMs": 1035533,
-        "timestampMs": 1034567,
-        "confidence": 0.7989
-      },
-      {
-        "id": "EP01-U086-C06",
-        "unitId": "EP01-U086",
         "text": "每趟行程有目的地、",
-        "startMs": 1035533,
+        "startMs": 1035500,
         "endMs": 1037300,
-        "timestampMs": 1036417,
+        "timestampMs": 1036400,
         "confidence": 0.8326
       },
       {
-        "id": "EP01-U086-C07",
+        "id": "EP01-U086-C06",
         "unitId": "EP01-U086",
         "text": "出发日期和是否国际航班。",
         "startMs": 1037300,
@@ -7137,20 +7083,20 @@
       {
         "id": "EP01-U092-C03",
         "unitId": "EP01-U092",
-        "text": " Executable Memory for Personali",
+        "text": "Executable Memory for",
         "startMs": 1106700,
-        "endMs": 1109267,
-        "timestampMs": 1107983,
+        "endMs": 1108600,
+        "timestampMs": 1107650,
         "confidence": 0.879
       },
       {
         "id": "EP01-U092-C04",
         "unitId": "EP01-U092",
-        "text": "zed Agents，",
-        "startMs": 1109267,
+        "text": "Personalized Agents，",
+        "startMs": 1108600,
         "endMs": 1110400,
-        "timestampMs": 1109833,
-        "confidence": 0.7836
+        "timestampMs": 1109500,
+        "confidence": 0.8313
       },
       {
         "id": "EP01-U092-C05",
@@ -8060,17 +8006,17 @@
         "unitId": "EP01-U104",
         "text": "也可以用 Advanced JSON Cards 格式",
         "startMs": 1254733,
-        "endMs": 1257633,
-        "timestampMs": 1256183,
+        "endMs": 1257567,
+        "timestampMs": 1256150,
         "confidence": 0.7782
       },
       {
         "id": "EP01-U104-C04",
         "unitId": "EP01-U104",
         "text": "存储。",
-        "startMs": 1257633,
+        "startMs": 1257567,
         "endMs": 1258467,
-        "timestampMs": 1258050,
+        "timestampMs": 1258017,
         "confidence": 0.9022
       },
       {
@@ -8210,17 +8156,17 @@
         "unitId": "EP01-U106",
         "text": "开源社区已经出现多个专门的记忆管理框",
         "startMs": 1280667,
-        "endMs": 1283700,
-        "timestampMs": 1282183,
+        "endMs": 1283433,
+        "timestampMs": 1282050,
         "confidence": 0.8938
       },
       {
         "id": "EP01-U106-C04",
         "unitId": "EP01-U106",
         "text": "架，",
-        "startMs": 1283700,
+        "startMs": 1283433,
         "endMs": 1284333,
-        "timestampMs": 1284017,
+        "timestampMs": 1283883,
         "confidence": 0.8558
       },
       {
@@ -8963,7 +8909,7 @@
       {
         "id": "EP01-U116-C01",
         "unitId": "EP01-U116",
-        "text": "这样既避免了错误 UPDATE 或 DELETE ",
+        "text": "这样既避免了错误 UPDATE 或 DELETE",
         "startMs": 1398867,
         "endMs": 1401733,
         "timestampMs": 1400300,
@@ -9137,7 +9083,7 @@
       {
         "id": "EP01-U118-C03",
         "unitId": "EP01-U118",
-        "text": " relations 返回值，",
+        "text": "relations 返回值，",
         "startMs": 1431633,
         "endMs": 1436233,
         "timestampMs": 1433933,
@@ -9869,57 +9815,48 @@
         "unitId": "EP01-U127",
         "text": "这里要特别说明工作记忆与轨迹的关系：",
         "startMs": 1557667,
-        "endMs": 1560533,
-        "timestampMs": 1559100,
-        "confidence": 0.8514
+        "endMs": 1561233,
+        "timestampMs": 1559450,
+        "confidence": 0.8443
       },
       {
         "id": "EP01-U127-C02",
         "unitId": "EP01-U127",
         "text": "两者都为当前决策提供即时上下文，",
-        "startMs": 1560533,
-        "endMs": 1564033,
-        "timestampMs": 1562283,
-        "confidence": 0.8764
+        "startMs": 1561233,
+        "endMs": 1564533,
+        "timestampMs": 1562883,
+        "confidence": 0.9208
       },
       {
         "id": "EP01-U127-C03",
         "unitId": "EP01-U127",
         "text": "但轨迹是不可变的完整事件序列，",
-        "startMs": 1564033,
-        "endMs": 1567100,
-        "timestampMs": 1565567,
-        "confidence": 0.9199
+        "startMs": 1564533,
+        "endMs": 1567567,
+        "timestampMs": 1566050,
+        "confidence": 0.9104
       },
       {
         "id": "EP01-U127-C04",
         "unitId": "EP01-U127",
         "text": "按时间追加；",
-        "startMs": 1567100,
-        "endMs": 1568300,
-        "timestampMs": 1567700,
-        "confidence": 0.9275
+        "startMs": 1567567,
+        "endMs": 1568833,
+        "timestampMs": 1568200,
+        "confidence": 0.905
       },
       {
         "id": "EP01-U127-C05",
         "unitId": "EP01-U127",
-        "text": "工作记忆则是经过筛选和激活的动态子集",
-        "startMs": 1568300,
-        "endMs": 1571867,
-        "timestampMs": 1570083,
-        "confidence": 0.8963
+        "text": "工作记忆则是经过筛选和激活的动态子集，",
+        "startMs": 1568833,
+        "endMs": 1572500,
+        "timestampMs": 1570667,
+        "confidence": 0.8799
       },
       {
         "id": "EP01-U127-C06",
-        "unitId": "EP01-U127",
-        "text": "，",
-        "startMs": 1571867,
-        "endMs": 1572500,
-        "timestampMs": 1572183,
-        "confidence": 0.7193
-      },
-      {
-        "id": "EP01-U127-C07",
         "unitId": "EP01-U127",
         "text": "按相关性裁剪。",
         "startMs": 1572500,
@@ -9962,45 +9899,36 @@
         "unitId": "EP01-U128",
         "text": "实际框架往往只实现其中一两种类型。",
         "startMs": 1574033,
-        "endMs": 1577000,
-        "timestampMs": 1575517,
-        "confidence": 0.9132
+        "endMs": 1577567,
+        "timestampMs": 1575800,
+        "confidence": 0.9007
       },
       {
         "id": "EP01-U128-C02",
         "unitId": "EP01-U128",
         "text": "按业务需要取舍，",
-        "startMs": 1577000,
-        "endMs": 1578667,
-        "timestampMs": 1577833,
-        "confidence": 0.8603
+        "startMs": 1577567,
+        "endMs": 1579100,
+        "timestampMs": 1578333,
+        "confidence": 0.8577
       },
       {
         "id": "EP01-U128-C03",
         "unitId": "EP01-U128",
         "text": "比追求大而全更符合工程现实。",
-        "startMs": 1578667,
-        "endMs": 1581567,
-        "timestampMs": 1580117,
-        "confidence": 0.9243
+        "startMs": 1579100,
+        "endMs": 1582133,
+        "timestampMs": 1580617,
+        "confidence": 0.9311
       },
       {
         "id": "EP01-U128-C04",
         "unitId": "EP01-U128",
-        "text": "这也是评价任何记忆框架时最实用的标准",
-        "startMs": 1581567,
-        "endMs": 1584967,
-        "timestampMs": 1583267,
-        "confidence": 0.7468
-      },
-      {
-        "id": "EP01-U128-C05",
-        "unitId": "EP01-U128",
-        "text": "。",
-        "startMs": 1584967,
+        "text": "这也是评价任何记忆框架时最实用的标准。",
+        "startMs": 1582133,
         "endMs": 1585867,
-        "timestampMs": 1585417,
-        "confidence": 0.1574
+        "timestampMs": 1584000,
+        "confidence": 0.7353
       }
     ]
   },
@@ -10777,17 +10705,17 @@
         "unitId": "EP01-U139",
         "text": "让 Agent 既能利用用户信息提供个性化",
         "startMs": 1698233,
-        "endMs": 1701600,
-        "timestampMs": 1699917,
+        "endMs": 1701467,
+        "timestampMs": 1699850,
         "confidence": 0.9056
       },
       {
         "id": "EP01-U139-C04",
         "unitId": "EP01-U139",
         "text": "服务，",
-        "startMs": 1701600,
+        "startMs": 1701467,
         "endMs": 1702367,
-        "timestampMs": 1701983,
+        "timestampMs": 1701917,
         "confidence": 0.9023
       },
       {
@@ -10854,7 +10782,7 @@
       {
         "id": "EP01-U140-C02",
         "unitId": "EP01-U140",
-        "text": "log-sanitization 项目通过 Ollama ",
+        "text": "log-sanitization 项目通过 Ollama",
         "startMs": 1711067,
         "endMs": 1712967,
         "timestampMs": 1712017,
@@ -10942,7 +10870,7 @@
       {
         "id": "EP01-U141-C02",
         "unitId": "EP01-U141",
-        "text": "也可以按需切换到 qwen3:1.7b 或者 q",
+        "text": "也可以按需切换到 qwen3:1.7b 或者",
         "startMs": 1725633,
         "endMs": 1730133,
         "timestampMs": 1727883,
@@ -10951,11 +10879,11 @@
       {
         "id": "EP01-U141-C03",
         "unitId": "EP01-U141",
-        "text": "wen3:4b 这些更大的规格。",
+        "text": "qwen3:4b 这些更大的规格。",
         "startMs": 1730133,
         "endMs": 1733667,
         "timestampMs": 1731900,
-        "confidence": 0.7617
+        "confidence": 0.7798
       },
       {
         "id": "EP01-U141-C04",
@@ -11229,17 +11157,17 @@
         "unitId": "EP01-U145",
         "text": "识别结果通过 JSON Schema 结构化输",
         "startMs": 1771700,
-        "endMs": 1774900,
-        "timestampMs": 1773300,
+        "endMs": 1774767,
+        "timestampMs": 1773233,
         "confidence": 0.885
       },
       {
         "id": "EP01-U145-C02",
         "unitId": "EP01-U145",
         "text": "出，",
-        "startMs": 1774900,
+        "startMs": 1774767,
         "endMs": 1775667,
-        "timestampMs": 1775283,
+        "timestampMs": 1775217,
         "confidence": 0.7468
       },
       {
