@@ -8,6 +8,9 @@ desktop.ini
 work/**/shots*/
 work/**/*.png
 
+# 临时调试产物
+work/tmp-*
+
 # 本机会话记忆：会随机器不同而分叉，不跨机器同步
 .workbuddy/memory/
 
