@@ -1,0 +1,10 @@
+# 统一换行，避免跨机器 clone 后 shell 脚本带 CRLF 打不开
+* text=auto
+
+*.sh   text eol=lf
+*.py   text eol=lf
+
+# 成品与素材按二进制处理，不做换行转换
+*.png  binary
+*.jpg  binary
+*.epub binary

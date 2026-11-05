@@ -1,0 +1,331 @@
+  <!-- ========== 5.1.5-1 本节要回答的三个问题 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 故障与错误恢复<span class="sep">/</span><span class="tag">三个问题，一条线索</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">故障恢复，<em>才是真正的分水岭</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        上一节给的是原则与组件；这一节把它们放进真实故障里跑一遍。
+        三个问题，顺序不能换：<strong>先分类，再检测，最后才谈恢复与终止</strong>。
+      </p>
+
+      <div class="cards c3" style="margin-top:30px">
+        <div class="card reveal" style="--d:.2s;padding:22px 20px 20px">
+          <div class="k"><span>Q1</span><b>分类</b></div>
+          <h3>会遇到哪些故障</h3>
+          <p>API、工具、上下文、控制流四层。<b>层不同，处置手段完全不同</b>——不能都用一句「重试一下」打发。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:22px 20px 20px">
+          <div class="k"><span>Q2</span><b>检测</b></div>
+          <h3>怎么发现它坏了</h3>
+          <p>单次错误只看类型；真正该盯的是<b>重复调用指纹与连续失败次数</b>——那是行为出了问题。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s;padding:22px 20px 20px">
+          <div class="k"><span>Q3</span><b>终止</b></div>
+          <h3>什么时候必须放手</h3>
+          <p>恢复机制自己也会失效。每条恢复路径都要有上限，<b>「什么时候停」和「怎么救」同样重要</b>。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>问题的严重性，第一章已经演示过：</b>仅仅缺失一条工具结果反馈，就足以让 Agent 陷入无限循环。
+        真实生产里的故障只会更多样，所以这一节从分类讲起。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.5-2 四层故障总览 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 故障分类学<span class="sep">/</span><span class="tag">先分类，再谈处置</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">按发生的位置，<em>把故障切成四层</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        这是系统应对的第一步。分类不是为了归档，而是为了选手段——同一句「重试一下」，在四层里的含义完全不同。
+      </p>
+
+      <div class="cards c4" style="margin-top:30px">
+        <div class="card reveal" style="--d:.2s;padding:22px 18px 20px">
+          <div class="k"><span>L1</span><b>基础设施</b></div>
+          <h3>API 层<small>API LAYER</small></h3>
+          <p>限流、过载、超时、断连、输出截断。任务可能完全正确，<b>是基础设施在报错</b>。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:22px 18px 20px">
+          <div class="k"><span>L2</span><b>手脚</b></div>
+          <h3>工具层<small>TOOL LAYER</small></h3>
+          <p>幻觉调用、参数畸形、执行抛异常。错在<b>Agent 伸出去的那只手</b>。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s;padding:22px 18px 20px">
+          <div class="k"><span>L3</span><b>记忆</b></div>
+          <h3>上下文层<small>CONTEXT LAYER</small></h3>
+          <p>窗口溢出、压缩失败、轨迹结构损坏。错在<b>喂给模型的那段历史</b>。</p>
+        </div>
+        <div class="card reveal" style="--d:.38s;padding:22px 18px 20px">
+          <div class="k"><span>L4</span><b>循环</b></div>
+          <h3>控制流层<small>CONTROL LAYER</small></h3>
+          <p>死循环与死亡螺旋。错在<b>Agent 自己的下一步</b>，外部环境其实正常。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>分层的用处很直接：</b>前两层多半靠「等」或「改输入」，后两层必须靠「打断」。
+        把四层混成一类，就只能一律重试——而重试恰恰救不了后两层。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.5-3 API 层 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · API 层<span class="sep">/</span><span class="tag">与任务内容无关</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">API 层的故障，<em>不说明任务做错了什么</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        它只说明「这一次请求没被服务好」。所以在这一层里改任务、改提示词，都是无效动作。
+      </p>
+
+      <div class="split" style="margin-top:22px;grid-template-columns:1.02fr .98fr;align-items:center">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>API LAYER · 五种噪声</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="y">429</span>  Too Many Requests    <span class="c">← 配额用尽</span>
+<span class="y">503</span>  Service Unavailable  <span class="c">← 上游过载</span>
+<span class="y">—</span>    request timeout      <span class="c">← 链路太慢</span>
+<span class="y">—</span>    connection reset     <span class="c">← 连接被掐断</span>
+<span class="y">—</span>    finish_reason=length <span class="c">← 输出触顶</span>
+
+<span class="c"># 任务没变、提示词没变，重发还是同样的结果</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.28s">
+            <li><b>共同点：与任务内容无关。</b>换一个任务、换一句提示词，这些错误照样出现。</li>
+            <li><b>所以有效的动作只有两个：</b>等（退避之后再来），或者改请求（上限、模型、区域）。</li>
+            <li><b>但「可重试」不等于「原样重试」。</b>输出触顶也能再发，前提是先把上限提高，或从断点接续。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.4s">
+        <b>把它当噪声，还有个隐性好处：</b>不用去怀疑模型的判断——在错误的地方调提示词，是最常见的排查浪费。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.5-4 工具层 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 工具层<span class="sep">/</span><span class="tag">三种畸形，一种循环</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">三种单次事故，<em>和一种行为模式</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        前三种错在「这一次调用」，装成工具结果喂回去，模型下一轮就能自己改；
+        最后一种错在「反复做同一件事」。
+      </p>
+
+      <div class="cards c4" style="margin-top:30px">
+        <div class="card reveal" style="--d:.2s;padding:22px 18px 20px">
+          <div class="k"><span>01</span><b>幻觉</b></div>
+          <h3>幻觉调用<small>HALLUCINATED CALL</small></h3>
+          <p>调用了不存在的工具。错不在参数，在它<b>以为这个工具存在</b>。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:22px 18px 20px">
+          <div class="k"><span>02</span><b>约束</b></div>
+          <h3>参数畸形<small>MALFORMED ARGS</small></h3>
+          <p>不符合输入约束——<b>该给对象，却给了字符串</b>。模型知道要做什么，只是写错了。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s;padding:22px 18px 20px">
+          <div class="k"><span>03</span><b>运行</b></div>
+          <h3>执行抛异常<small>EXECUTION ERROR</small></h3>
+          <p>工具真的跑了，但中途失败。以上三种，<b>都可以装成一条工具结果返回</b>。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.38s;padding:22px 18px 20px">
+          <div class="k"><span>04</span><b>最危险</b></div>
+          <h3>同错重试<small>RETRY LOOP</small></h3>
+          <p>工具反复返回同一个错误，模型<b>不加改变地反复重试</b>。这不是事故，是行为模式。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>两类故障，两种治法：</b>单次事故靠「更具体的错误信息」就能治；
+        行为模式不行——错误早就返回了，模型只是没改，它需要的是计数器，而不是再重试一次。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.5-5 上下文层与控制流层 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 后两层<span class="sep">/</span><span class="tag">错在 Agent 自己</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">后两层不是环境坏了，<em>是 Agent 自己坏了</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        请求发得出去，工具也跑得动。坏的是它对历史的记忆，和对下一步的选择——外部一切正常，对话却已经走不下去。
+      </p>
+
+      <div class="cards c2" style="margin-top:30px">
+        <div class="card reveal" style="--d:.2s;padding:24px 22px 22px">
+          <div class="k"><span>L3</span><b>记忆</b></div>
+          <h3>上下文层<small>CONTEXT LAYER</small></h3>
+          <p>窗口溢出、压缩失败、轨迹结构损坏——比如工具调用<b>缺少配对的结果消息</b>。错在「模型看到的历史」，不在模型本身。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:24px 22px 22px">
+          <div class="k"><span>L4</span><b>循环</b></div>
+          <h3>控制流层<small>CONTROL LAYER</small></h3>
+          <p><b>死循环</b>是反复执行相同操作却毫无进展；<b>死亡螺旋</b>是恢复逻辑自己又调 LLM、再次出错、连锁反应。错在「Agent 的下一步」。</p>
+        </div>
+      </div>
+
+      <div class="card sum reveal" style="--d:.34s;margin-top:13px;padding:18px 22px 16px">
+        <div class="k"><span>COMMON</span><b>处置方式</b></div>
+        <h3 style="font-size:15px;margin-bottom:2px">共同点：越「努力」越糟——所以不能等，只能打断</h3>
+        <p>前两层还能换一种输入来修；后两层继续跑下去，只会烧掉更多 token，把错误固化成更大的错误。</p>
+      </div>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>这就是分类的价值：</b>同样是「失败了」，L1 该退避、L2 该改参数、L3 该压缩或修复轨迹、L4 该直接终止这条路径。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.5-6 值不值得重试 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 检测<span class="sep">/</span><span class="tag">先判断值不值得</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">先问「值不值得」，<em>再决定怎么重试</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        捕获故障后的第一个判断，不是「要不要重试」，而是「原样重发，会不会得到不同结果」。
+      </p>
+
+      <table class="tbl reveal" style="--d:.2s">
+        <thead>
+          <tr><th style="width:420px">捕获到的故障</th><th style="width:190px">可重试？</th><th>该做什么</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>限流 429 · 服务过载 · 网络抖动</td>
+            <td class="cy">可重试</td>
+            <td>同一个请求，退避之后再发——退避要叠加随机抖动。</td>
+          </tr>
+          <tr>
+            <td>输出触顶被截断</td>
+            <td class="cy">可重试，但请求要变</td>
+            <td>先提高输出上限；仍不够，就在末尾追加元指令从断点接续。</td>
+          </tr>
+          <tr>
+            <td>参数不合法 · 参数畸形</td>
+            <td class="am">不可重试</td>
+            <td>原样重发多少次都是同样结果，必须改输入。</td>
+          </tr>
+          <tr>
+            <td>权限不足 · 工具不存在</td>
+            <td class="am">不可重试</td>
+            <td>改策略：升级人工，或把结构化错误喂回给模型。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note reveal" style="--d:.36s">
+        <b>所以生产级 Harness 维护的是一张「错误 → 恢复策略」映射表，</b>而不是一句笼统的「出错就重试」。
+        可重试与不可重试的分界线，就是「重发会不会有信息增量」。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.5-7 检测模式 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 检测模式<span class="sep">/</span><span class="tag">单次之外看模式</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">比单次错误更该盯的，<em>是重复出现的模式</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        单次错误告诉你「哪里坏了」；重复出现的模式才告诉你「它已经修不好了」。
+        两个计数器，盯的都是后者。
+      </p>
+
+      <div class="cards c3" style="margin-top:30px">
+        <div class="card reveal" style="--d:.2s;padding:22px 20px 20px">
+          <div class="k"><span>01</span><b>指纹</b></div>
+          <h3>重复调用指纹<small>CALL FINGERPRINT</small></h3>
+          <p>对「工具名 + 参数」算指纹。同一指纹反复出现，说明它在原地打转——第一章消融实验里反复调同一工具，正是这个模式。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:22px 20px 20px">
+          <div class="k"><span>02</span><b>计数</b></div>
+          <h3>连续失败计数<small>FAILURE COUNTER</small></h3>
+          <p>每条恢复路径各记一本账：压缩、权限询问、输出接续分别计数。混在一起，一条路径的问题会污染另一条的判断。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.32s;padding:22px 20px 20px">
+          <div class="k"><span>03</span><b>去处</b></div>
+          <h3>为熔断提供依据<small>CIRCUIT BREAKER</small></h3>
+          <p>计数不是为了统计，是为了在「再试也没用」那一刻之前停手。阈值一到就掐断这条路径，把配额留给别的办法。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>这两个机制都不需要模型参与：</b>它们跑在 Harness 里——所以模型「觉得自己还在努力」的时候，外面已经能判定它卡住了。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.5-8 静默卡死与看门狗 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 活性监控<span class="sep">/</span><span class="tag">连接在，数据不来</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">最危险的失败不是断开，<em>是静默卡死</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        断开至少会立刻报错；静默卡死不会——连接建立成功，数据流却停了，像水管通着但不出水。
+      </p>
+
+      <div class="split" style="margin-top:20px;grid-template-columns:1.04fr .96fr;align-items:center">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>STREAM · 连接正常，数据停了</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="g">[00:00]</span> connect      200 OK        <span class="g">✓</span>
+<span class="g">[00:01]</span> chunk        「分析这个…」  <span class="g">✓</span>
+<span class="g">[00:02]</span> chunk        「仓库的…」    <span class="g">✓</span>
+<span class="y">[00:47]</span> —            无新字节       <span class="y">?</span>
+<span class="y">[00:48]</span> sdk timeout  —             <span class="v">✗ 不触发</span>
+<span class="g">[00:49]</span> watchdog     idle &gt; 20s    <span class="g">✓ 判定卡死</span>
+<span class="g">[00:50]</span> kill stream                <span class="c">→ 触发重试</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.28s">
+            <li><b>SDK 的超时往往只管建连。</b>连上之后就不再计时，传输停住它也不会报错。</li>
+            <li><b>所以要独立的空闲看门狗</b>（watchdog timer，超过设定时间没有新输出就判定卡死），而不是复用连接超时。</li>
+            <li><b>超时之后要主动杀死挂起的流，再触发重试。</b>挂着的流不释放，重试只会让并发越叠越高。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.4s">
+        <b>可推广成一条原则：</b>每个长连接都需要活性信号，而不能只依赖连接超时。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.5-9 完整性监控与双重标准 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 完整性监控<span class="sep">/</span><span class="tag">结构坏了，先修再喂</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">轨迹缺了配对，<em>要在注入之前补好</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        工具调用必须有配对的结果消息；缺了，模型看到的就是一段自相矛盾的历史。
+        修复发生在注入上下文之前，而不是把结构异常抛给模型或用户。
+      </p>
+
+      <div class="cards c2" style="margin-top:32px">
+        <div class="card reveal" style="--d:.22s;padding:26px 24px 24px">
+          <div class="k"><span>MODE 01</span><b>产品</b></div>
+          <h3>产品模式<small>PRODUCT · 宽容</small></h3>
+          <p>缺哪条结果，就补一条<b>占位消息</b>，让轨迹保持结构完整。用户不该因为一个内部结构问题被打断。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.28s;padding:26px 24px 24px">
+          <div class="k"><span>MODE 02</span><b>训练</b></div>
+          <h3>训练数据收集<small>TRAINING · 严格</small></h3>
+          <p><b>拒绝修复</b>：合成占位符会污染训练数据——模型会学到「结果可以是编的」。宁可丢弃这条样本。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.38s">
+        <b>「产品模式宽容、训练模式严格」：</b>同一个修复动作，在产品里是兜底，在训练里是污染。
+        这条双重标准，体现的是 Harness 与模型训练的深度耦合。
+      </div>
+    </div>
+  </section>

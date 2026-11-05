@@ -1,0 +1,41 @@
+  <!-- ========== 90 阶段小结 5.1.1 — 5.1.6 ========== -->
+  <section class="slide" data-sec="SUMMARY" data-tier="c">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.1 — 5.1.6<span class="sep">/</span><span class="tag">阶段小结</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">这六节讲完，<em>只剩三句话</em></h2>
+
+      <div class="cards c3" style="margin-top:30px">
+        <div class="card reveal" style="--d:.18s;padding:22px">
+          <div class="k"><span>ANCHOR 01</span><b>能力</b></div>
+          <h3 style="font-size:19px">工具箱极小，能力边界极大</h3>
+          <p style="margin-top:8px">
+            五个动作、七个工具就能支撑开放任务；而代码是元能力——缺什么能力，当场造一个。
+            产物与记忆都落在文件系统里，可读、可改、可回滚。
+          </p>
+        </div>
+        <div class="card on reveal" style="--d:.26s;padding:22px">
+          <div class="k"><span>ANCHOR 02</span><b>流程</b></div>
+          <h3 style="font-size:19px">先理解，再动手，用测试收口</h3>
+          <p style="margin-top:8px">
+            六个阶段里前三个一行代码都不写：补文档、澄清边界、写一页可被审的设计。
+            完成的标准不是「代码写完」，是「测试通过」——这条线守住了，它才从生成器变成工程助手。
+          </p>
+        </div>
+        <div class="card reveal" style="--d:.34s;padding:22px">
+          <div class="k"><span>ANCHOR 03</span><b>基建</b></div>
+          <h3 style="font-size:19px">稳定不靠模型，靠模型外面那圈</h3>
+          <p style="margin-top:8px">
+            验收基线、执行边界、反馈信号、回退手段——四件组件没有一件属于模型。
+            故障按层分类、按值得与否决定重试、按透明度分级恢复，每条路径都要有熔断上限。
+          </p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>下一节 5.1.7 · 搜索工具 →</b> 前面一直默认「Agent 知道该读哪个文件」。
+        在几十万行的仓库里这个前提立刻失效——第一步不是写代码，是<b>在正确的 50 行上停住</b>。
+        5.1.6 的按行号读取只解决了「读多少」，没解决「读哪里」。
+      </div>
+    </div>
+  </section>
+

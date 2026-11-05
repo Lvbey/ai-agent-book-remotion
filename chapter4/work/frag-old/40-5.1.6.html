@@ -1,0 +1,206 @@
+<!-- ========== 5.1.6 · 01 流式执行与级联中止 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 执行机制<span class="sep">/</span><span class="tag">不等整轮生成完</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">第一个调用的参数一完整，<em>就开始跑</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        5.1.4 只定了原则——一个失败不该拖垮整批。这一页讲机制：等待怎么重叠，中止怎么划边界。
+      </p>
+
+      <div class="reveal" style="--d:.2s;margin-top:14px">
+        <svg viewBox="0 0 1124 236" style="width:100%;height:auto;overflow:visible">
+          <defs>
+            <marker id="f16a-ar" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+              <path d="M0 0L8 4L0 8z" fill="#4fe3ff"/></marker>
+          </defs>
+
+          <!-- 重叠时间窗 -->
+          <rect x="248" y="0" width="150" height="170" fill="rgba(139,123,255,.07)"/>
+          <rect x="398" y="0" width="160" height="170" fill="rgba(139,123,255,.07)"/>
+
+          <!-- 泳道 1：模型生成 -->
+          <rect x="110" y="0" width="1006" height="50" rx="8" fill="rgba(255,255,255,.02)" stroke="rgba(140,170,220,.12)"/>
+          <text class="node-label" x="0" y="30" fill="#a9b8d6">模型 · 生成</text>
+          <rect x="118" y="10" width="130" height="30" rx="5" fill="rgba(79,227,255,.10)" stroke="rgba(79,227,255,.40)"/>
+          <text class="node-sub" style="font-size:12px" x="183" y="29" fill="#4fe3ff" text-anchor="middle">① 搜代码</text>
+          <rect x="248" y="10" width="150" height="30" rx="5" fill="rgba(79,227,255,.10)" stroke="rgba(79,227,255,.40)"/>
+          <text class="node-sub" style="font-size:12px" x="323" y="29" fill="#4fe3ff" text-anchor="middle">② 查配置文件</text>
+          <rect x="398" y="10" width="160" height="30" rx="5" fill="rgba(79,227,255,.10)" stroke="rgba(79,227,255,.40)"/>
+          <text class="node-sub" style="font-size:12px" x="478" y="29" fill="#4fe3ff" text-anchor="middle">③ 读日志</text>
+
+          <!-- 泳道 2：工具执行 -->
+          <rect x="110" y="60" width="1006" height="50" rx="8" fill="rgba(255,255,255,.02)" stroke="rgba(140,170,220,.12)"/>
+          <text class="node-label" x="0" y="90" fill="#a9b8d6">工具 · 执行</text>
+          <rect x="248" y="70" width="150" height="30" rx="5" fill="rgba(139,123,255,.16)" stroke="rgba(139,123,255,.55)"/>
+          <text class="node-sub" style="font-size:12px" x="323" y="89" fill="#a89bff" text-anchor="middle">跑 ①</text>
+          <rect x="398" y="70" width="160" height="30" rx="5" fill="rgba(139,123,255,.16)" stroke="rgba(139,123,255,.55)"/>
+          <text class="node-sub" style="font-size:12px" x="478" y="89" fill="#a89bff" text-anchor="middle">跑 ②</text>
+          <rect x="558" y="70" width="170" height="30" rx="5" fill="rgba(139,123,255,.16)" stroke="rgba(139,123,255,.55)"/>
+          <text class="node-sub" style="font-size:12px" x="643" y="89" fill="#a89bff" text-anchor="middle">跑 ③</text>
+
+          <!-- 触发点 -->
+          <path d="M248 42 L248 66" stroke="#4fe3ff" stroke-width="1.3" marker-end="url(#f16a-ar)" fill="none"/>
+          <text class="node-sub" style="font-size:12px" x="118" y="89" fill="#4fe3ff">参数完整 → 开跑</text>
+
+          <!-- 重叠标注 -->
+          <path d="M248 176 V184 H558 V176" stroke="#8b7bff" stroke-width="1.2" fill="none"/>
+          <text class="node-sub" style="font-size:11.5px" x="568" y="188" fill="#9b8fff">两段执行压在生成过程中间</text>
+
+          <!-- 流式收尾标记 -->
+          <path d="M728 2 V110" stroke="rgba(79,227,255,.32)" stroke-width="1" stroke-dasharray="3 4" fill="none"/>
+          <text class="node-sub" style="font-size:11.5px" x="738" y="30" fill="#6a7a9a">流式在此收尾</text>
+
+          <!-- 泳道 3：串行对照 -->
+          <rect x="110" y="120" width="1006" height="50" rx="8" fill="rgba(255,255,255,.012)" stroke="rgba(140,170,220,.18)" stroke-dasharray="5 5"/>
+          <text class="node-label" x="0" y="150" fill="#6a7a9a">串行 · 对照</text>
+          <rect x="118" y="128" width="130" height="30" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text class="node-sub" style="font-size:11.5px" x="183" y="147" fill="#7d8fae" text-anchor="middle">① 生成</text>
+          <rect x="248" y="128" width="150" height="30" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text class="node-sub" style="font-size:11.5px" x="323" y="147" fill="#7d8fae" text-anchor="middle">① 执行</text>
+          <rect x="398" y="128" width="150" height="30" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text class="node-sub" style="font-size:11.5px" x="473" y="147" fill="#7d8fae" text-anchor="middle">② 生成</text>
+          <rect x="548" y="128" width="160" height="30" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text class="node-sub" style="font-size:11.5px" x="628" y="147" fill="#7d8fae" text-anchor="middle">② 执行</text>
+          <rect x="708" y="128" width="160" height="30" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text class="node-sub" style="font-size:11.5px" x="788" y="147" fill="#7d8fae" text-anchor="middle">③ 生成</text>
+          <rect x="868" y="128" width="170" height="30" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text class="node-sub" style="font-size:11.5px" x="953" y="147" fill="#7d8fae" text-anchor="middle">③ 执行</text>
+
+          <text class="node-sub" style="font-size:11.5px" x="110" y="216" fill="#8fa2c4">串行下六段首尾相接；流式把「等结果」这段时间填进了生成里。</text>
+        </svg>
+      </div>
+
+      <div class="cards c3" style="margin-top:16px">
+        <div class="card reveal" style="--d:.26s">
+          <div class="k"><span>01</span><b>等待</b></div>
+          <h3>串行在排队</h3>
+          <p>生成 → 执行 → 拿结果 → 再决定下一步，每一步都在等上一步跑完。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s">
+          <div class="k"><span>02</span><b>重叠</b></div>
+          <h3>流式让等待重叠</h3>
+          <p>第一个参数一完整、通过校验就开跑，与后两个调用的生成过程同时进行。</p>
+        </div>
+        <div class="card reveal" style="--d:.38s">
+          <div class="k"><span>03</span><b>边界</b></div>
+          <h3>失败要级联中止</h3>
+          <p>每个工具声明是否支持并发（默认否）；只中止同批依赖失败结果的调用，不波及独立调用与父级。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 02 上下文精细化管理 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 上下文管理<span class="sep">/</span><span class="tag">按行号读，不读全文</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">代码库比上下文大得多，<em>所以读也要分页</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        百万级窗口听起来够用，把整个仓库塞进去却既不经济也没必要。上下文管理的第一步，是让「读」本身带上粒度。
+      </p>
+
+      <div class="split" style="margin-top:18px;align-items:start">
+        <div class="spec reveal" style="--d:.22s">
+          <div class="spec-h"><span class="b"></span>READ · 按行号范围取，返回带行号</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="g">Agent →</span> read(<span class="y">"src/main.py"</span>, <span class="y">100..150</span>)
+
+<span class="v">工具返回</span>：
+<span class="c">100|</span> def handle_request(req):
+<span class="c">101|</span>     token = req.headers[<span class="y">"auth"</span>]
+<span class="c">102|</span>     user = verify(token, cfg)
+   <span class="c">…（中间 39 行省略）</span>
+<span class="c">142|</span>     return jsonify(resp)
+
+<span class="c"># 3,842 行的文件，只进来 51 行</span>
+<span class="g">Agent →</span> edit(<span class="y">"src/main.py:142"</span>, …)</div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.32s">
+            <li><b>不要总读全文。</b>大型文件按行号范围取片段——几千行的仓库文件，一次只加载真正要看的那一段。</li>
+            <li><b>行号前缀换精度。</b>每行以实际行号打头，模型才能说「第 142 行」；引用没有歧义，后续编辑才落得准。</li>
+            <li><b>终端输出要掐头去尾。</b>保留前若干行（错误上下文）与后若干行（错误总结），中间一行提示替代，并说明完整输出已存到临时文件。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>不是新机制：</b>这几条都是第四章「长输出截断 + 持久化」在编程场景的落地——上下文里只留判断所需的部分，其余留在文件里按需取。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 03 环境信息动态注入 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 环境感知<span class="sep">/</span><span class="tag">状态栏的编程版</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">模型缺的不是更长的提示词，<em>是当前状态的快照</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        第二章讲过的 Agent 状态栏，在 Coding Agent 里不是装饰——它决定每个决策基于现状，还是基于一个过时的假设。
+      </p>
+
+      <div class="split" style="margin-top:16px;align-items:start">
+        <div class="spec reveal" style="--d:.22s">
+          <div class="spec-h"><span class="b"></span>STATUS BAR · 每轮推理前追加在上下文末尾</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c">cwd</span>     ~/proj/agent-core
+<span class="c">branch</span>  feat/stream-tools   ahead 2
+<span class="c">commit</span>  3f2a1c9 校验 stream 参数完整
+        b71d0e4 拆分 tool 定义
+        9c4a882 标记工具的并发能力
+<span class="c">dirty</span>   M core/stream.py   <span class="g">+42</span> <span class="y">-7</span>
+        M core/tools.py    <span class="g">+18</span> <span class="y">-3</span>
+        <span class="y">??</span> tests/test_stream.py</div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.32s">
+            <li><b>四项，各堵一个错。</b>cwd 防路径引用错；分支防「以为自己在 main」；最近提交给出演化脉络；变更概览说明已经改了什么。</li>
+            <li><b>不能硬编码。</b>把这些写进静态系统提示词，前缀一变 KV Cache 整体失效——等于每轮重算一遍。</li>
+            <li><b>所以要追加，不要前置。</b>每轮推理前现取一份快照，追加在末尾：前缀稳定，增量便宜。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>状态栏要够短：</b>它是快照不是日志——写「未暂存 +42 −7」有用，把完整 git log 塞进来，每轮都在为用不上的信息付上下文费。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 04 状态持久化 + 即时反馈 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 工作方式<span class="sep">/</span><span class="tag">把五个技巧收成一种习惯</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">像开发者一样工作：<em>终端一直开着，红线立刻画</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        前三条压的是延迟和上下文，后两条改的是工作方式——它们决定 Agent 是在「提交作业」，还是在「持续开发」。
+      </p>
+
+      <div class="cards c2" style="margin-top:28px">
+        <div class="card reveal" style="--d:.22s;padding:24px 24px">
+          <div class="k"><span>04</span><b>状态不丢</b></div>
+          <h3>持久化终端会话</h3>
+          <p>启动时创建一个终端并全程保持。否则 cd 过的目录、激活的虚拟环境、设的环境变量、起的后台服务，下一条命令全部丢失。仍应保留隔离终端以支持并行任务，但<b>持久化是默认</b>。</p>
+        </div>
+        <div class="card reveal" style="--d:.28s;padding:24px 24px">
+          <div class="k"><span>05</span><b>错误即现</b></div>
+          <h3>即时语法反馈</h3>
+          <p>文件写入一完成就自动跑 linter 或语法检查，结果作为工具返回值的一部分回到模型——下一轮推理立刻看到，像 IDE 里打错一个括号就画红线。</p>
+        </div>
+      </div>
+
+      <div class="card sum reveal" style="--d:.34s;margin-top:16px;padding:20px 24px">
+        <div class="k"><span>SUM</span><b>五个技巧，一个目标</b></div>
+        <h3 style="font-size:15px">并行与流式 · 上下文管理 · 环境感知 · 状态持久化 · 即时反馈</h3>
+        <p>它们不是五个孤立的优化点，而是相互配合的设计决策——指向同一件事：<b>让 Agent 像经验丰富的开发者那样流畅地工作</b>。</p>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>为什么即时反馈值钱：</b>错误在引入的那一刻就被修正，而不是等到跑测试才发现——这正是它「显著降低修复成本」的原因。
+      </div>
+    </div>
+  </section>

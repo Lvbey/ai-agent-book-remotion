@@ -1,0 +1,513 @@
+<!-- ========== 5.1.6 · 01 五个技巧，两个靶子 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 实现技巧<span class="sep">/</span><span class="tag">五个技巧，两个靶子</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">五个技巧，只打<em>两个靶子</em>：慢和贵</h2>
+      <p class="lede reveal" style="--d:.14s">
+        前面几节描述的工作流程是理想状态。真让它跑起来还要做到三件事——思考质量不降、响应更快、上下文更省。
+        下面五条就是落地手段，全部来自第二章与第四章的通用技术。
+      </p>
+
+      <table class="tbl reveal" style="--d:.2s;margin-top:18px">
+        <thead>
+          <tr><th style="width:250px">技巧</th><th style="width:132px">打哪个靶</th><th>怎么打</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>并行与流式执行</td>
+            <td class="cy">延迟</td>
+            <td>参数一完整就开跑，等待被藏进后续的生成过程里。</td>
+          </tr>
+          <tr>
+            <td>上下文精细化管理</td>
+            <td class="vi">上下文</td>
+            <td>文件按行号取片段，命令输出掐头去尾。</td>
+          </tr>
+          <tr>
+            <td>环境信息动态注入</td>
+            <td class="vi">上下文</td>
+            <td>每轮追加一份状态快照，替换掉过时的假设。</td>
+          </tr>
+          <tr>
+            <td>终端会话持久化</td>
+            <td class="cy">延迟</td>
+            <td>不重复 cd、不重复激活虚拟环境。</td>
+          </tr>
+          <tr>
+            <td>即时语法反馈</td>
+            <td class="cy">延迟</td>
+            <td>错误在写入那一刻暴露，省掉一整轮返工。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>别当成五个独立开关：</b>第一条改的是<b>执行时序</b>，中间三条改的是<b>上下文里放什么</b>，最后一条改的是<b>反馈回路</b>——它们互相咬合。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 02 串行在排队等自己 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 串行模式<span class="sep">/</span><span class="tag">严格的排队</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">串行的瓶颈不是算得慢，<em>是排队等自己</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        传统 Agent 是「生成一个工具调用 → 执行完 → 拿结果 → 再决定下一步」。同一条链路上，模型和工具
+        <strong>轮流上班</strong>，任何时刻只有一个在干活。
+      </p>
+
+      <div class="reveal" style="--d:.22s;margin-top:12px">
+        <svg viewBox="0 0 1124 176" style="width:100%;height:auto;overflow:visible">
+          <defs>
+            <pattern id="p16a-hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="7" stroke="rgba(255,180,107,.30)" stroke-width="1.2"/>
+            </pattern>
+          </defs>
+
+          <text x="12" y="22" class="node-label" font-size="11.5" fill="#6a7a9a">一次推理里的三个工具调用 · 严格串行</text>
+
+          <!-- 生成 ① -->
+          <rect x="12" y="34" width="176" height="46" rx="6" fill="rgba(79,227,255,.09)" stroke="rgba(79,227,255,.38)"/>
+          <text x="100" y="62" class="node-sub" font-size="11.5" fill="#4fe3ff" text-anchor="middle">① 生成 · 模型在跑</text>
+          <!-- 执行 ① -->
+          <rect x="188" y="34" width="196" height="46" rx="6" fill="rgba(255,180,107,.10)" stroke="rgba(255,180,107,.42)"/>
+          <rect x="188" y="34" width="196" height="46" rx="6" fill="url(#p16a-hatch)"/>
+          <text x="286" y="62" class="node-sub" font-size="11.5" fill="#ffb46b" text-anchor="middle">① 执行 · 模型空转</text>
+
+          <rect x="384" y="34" width="186" height="46" rx="6" fill="rgba(79,227,255,.09)" stroke="rgba(79,227,255,.38)"/>
+          <text x="477" y="62" class="node-sub" font-size="11.5" fill="#4fe3ff" text-anchor="middle">② 生成 · 模型在跑</text>
+          <rect x="570" y="34" width="206" height="46" rx="6" fill="rgba(255,180,107,.10)" stroke="rgba(255,180,107,.42)"/>
+          <rect x="570" y="34" width="206" height="46" rx="6" fill="url(#p16a-hatch)"/>
+          <text x="673" y="62" class="node-sub" font-size="11.5" fill="#ffb46b" text-anchor="middle">② 执行 · 模型空转</text>
+
+          <rect x="776" y="34" width="166" height="46" rx="6" fill="rgba(79,227,255,.09)" stroke="rgba(79,227,255,.38)"/>
+          <text x="859" y="62" class="node-sub" font-size="11.5" fill="#4fe3ff" text-anchor="middle">③ 生成 · 模型在跑</text>
+          <rect x="942" y="34" width="170" height="46" rx="6" fill="rgba(255,180,107,.10)" stroke="rgba(255,180,107,.42)"/>
+          <rect x="942" y="34" width="170" height="46" rx="6" fill="url(#p16a-hatch)"/>
+          <text x="1027" y="62" class="node-sub" font-size="11.5" fill="#ffb46b" text-anchor="middle">③ 执行 · 模型空转</text>
+
+          <!-- 三段执行的括注 -->
+          <path d="M188 84 V96 H384 V84" stroke="rgba(255,180,107,.45)" stroke-width="1" fill="none"/>
+          <path d="M570 84 V96 H776 V84" stroke="rgba(255,180,107,.45)" stroke-width="1" fill="none"/>
+          <path d="M942 84 V96 H1112 V84" stroke="rgba(255,180,107,.45)" stroke-width="1" fill="none"/>
+
+          <text x="12" y="126" class="node-sub" font-size="12" fill="#8fa2c4">三段执行合计约占 52% 的墙钟时间：这段时间模型一个字都不生成，只是在等一个早就该跑起来的调用。</text>
+          <text x="12" y="152" class="node-sub" font-size="12" fill="#6a7a9a">如果下一个调用的参数依赖这个结果，它连参数都还写不出来——只能干等。</text>
+        </svg>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>问题留在这里：</b>如果把执行挪进生成的过程里去，这条长条能被压短多少？
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 03 流式执行时间轴 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 流式执行<span class="sep">/</span><span class="tag">参数完整即启动</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">第一个调用的参数一完整，<em>就开始跑</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        不必等整轮生成结束。第一个工具调用的参数一经完整生成并<b>通过校验</b>，立刻启动，与后两个调用的生成过程重叠进行。
+      </p>
+
+      <div class="reveal" style="--d:.22s;margin-top:10px">
+        <svg viewBox="0 0 1124 288" style="width:100%;height:auto;overflow:visible">
+          <defs>
+            <marker id="f16b-ar" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+              <path d="M0 0L8 4L0 8z" fill="#4fe3ff"/></marker>
+          </defs>
+
+          <!-- 泳道 1 模型生成 -->
+          <rect x="104" y="14" width="1016" height="46" rx="8" fill="rgba(255,255,255,.02)" stroke="rgba(140,170,220,.12)"/>
+          <text x="0" y="43" class="node-label" fill="#a9b8d6">模型 · 生成</text>
+          <rect x="112" y="24" width="228" height="26" rx="5" fill="rgba(79,227,255,.11)" stroke="rgba(79,227,255,.42)"/>
+          <text x="226" y="41" class="node-sub" font-size="12" fill="#4fe3ff" text-anchor="middle">① 搜代码</text>
+          <rect x="340" y="24" width="260" height="26" rx="5" fill="rgba(79,227,255,.11)" stroke="rgba(79,227,255,.42)"/>
+          <text x="470" y="41" class="node-sub" font-size="12" fill="#4fe3ff" text-anchor="middle">② 查配置文件</text>
+          <rect x="600" y="24" width="180" height="26" rx="5" fill="rgba(79,227,255,.11)" stroke="rgba(79,227,255,.42)"/>
+          <text x="690" y="41" class="node-sub" font-size="12" fill="#4fe3ff" text-anchor="middle">③ 读日志</text>
+
+          <!-- 参数完整 → 启动 -->
+          <path d="M340 60 L340 74" stroke="#4fe3ff" stroke-width="1.3" fill="none" marker-end="url(#f16b-ar)"/>
+          <text x="332" y="72" class="node-sub" font-size="11" fill="#4fe3ff" text-anchor="end">参数完整</text>
+
+          <!-- 泳道 2 工具执行 -->
+          <rect x="104" y="76" width="1016" height="76" rx="8" fill="rgba(255,255,255,.02)" stroke="rgba(140,170,220,.12)"/>
+          <text x="0" y="120" class="node-label" fill="#a9b8d6">工具 · 执行</text>
+          <rect x="340" y="84" width="260" height="26" rx="5" fill="rgba(139,123,255,.16)" stroke="rgba(139,123,255,.55)"/>
+          <text x="470" y="101" class="node-sub" font-size="12" fill="#a89bff" text-anchor="middle">跑 ①</text>
+          <rect x="600" y="84" width="260" height="26" rx="5" fill="rgba(139,123,255,.16)" stroke="rgba(139,123,255,.55)"/>
+          <text x="730" y="101" class="node-sub" font-size="12" fill="#a89bff" text-anchor="middle">跑 ②</text>
+          <rect x="780" y="118" width="180" height="26" rx="5" fill="rgba(139,123,255,.16)" stroke="rgba(139,123,255,.55)"/>
+          <text x="870" y="135" class="node-sub" font-size="12" fill="#a89bff" text-anchor="middle">跑 ③</text>
+
+          <!-- ②③ 并行窗口 -->
+          <rect x="780" y="84" width="80" height="60" fill="rgba(139,123,255,.10)"/>
+          <text x="972" y="101" class="node-sub" font-size="11.5" fill="#9b8fff">② ③ 同时在跑</text>
+          <text x="972" y="118" class="node-sub" font-size="11" fill="#6a7a9a">同一时刻两条执行</text>
+
+          <!-- 重叠区括号 -->
+          <path d="M340 158 V172 H780 V158" stroke="#8b7bff" stroke-width="1.2" fill="none"/>
+          <text x="792" y="170" class="node-sub" font-size="11.5" fill="#9b8fff">生成 ② ③ 的同时，执行 ① 已经在跑</text>
+
+          <!-- 泳道 3 串行对照 -->
+          <rect x="104" y="186" width="1016" height="44" rx="8" fill="rgba(255,255,255,.012)" stroke="rgba(140,170,220,.18)" stroke-dasharray="5 5"/>
+          <text x="0" y="213" class="node-label" fill="#6a7a9a">串行 · 对照</text>
+          <rect x="112" y="194" width="155" height="28" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text x="189" y="213" class="node-sub" font-size="11" fill="#7d8fae" text-anchor="middle">① 生成</text>
+          <rect x="267" y="194" width="177" height="28" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text x="355" y="213" class="node-sub" font-size="11" fill="#7d8fae" text-anchor="middle">① 执行</text>
+          <rect x="444" y="194" width="177" height="28" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text x="532" y="213" class="node-sub" font-size="11" fill="#7d8fae" text-anchor="middle">② 生成</text>
+          <rect x="621" y="194" width="177" height="28" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text x="709" y="213" class="node-sub" font-size="11" fill="#7d8fae" text-anchor="middle">② 执行</text>
+          <rect x="798" y="194" width="122" height="28" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text x="859" y="213" class="node-sub" font-size="11" fill="#7d8fae" text-anchor="middle">③ 生成</text>
+          <rect x="920" y="194" width="150" height="28" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text x="995" y="213" class="node-sub" font-size="11" fill="#7d8fae" text-anchor="middle">③ 执行</text>
+
+          <text x="0" y="256" class="node-sub" font-size="12" fill="#8fa2c4">串行是六段首尾相接；流式把「等结果」这段时间填进了生成里，总长只由最长的那条链决定。</text>
+          <text x="0" y="278" class="node-sub" font-size="11.5" fill="#6a7a9a">下方对照按比例压缩绘制——同尺度下，串行总长约为流式的 1.6 倍，会溢出画布。</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 04 并行的另一面：故障边界 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 并发与故障<span class="sep">/</span><span class="tag">默认不并发</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">并行省下的时间，<em>要用边界守住</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        并发把失败的影响面放大了：一批调用同时在跑，一个炸了，其余的怎么办。答案写进工具定义里。
+      </p>
+
+      <div class="cards c3" style="margin-top:24px">
+        <div class="card reveal" style="--d:.22s">
+          <div class="k"><span>01</span><b>声明</b></div>
+          <h3>并发是一个字段<small>parallel: false</small></h3>
+          <p>每个工具定义都应写明自己能否并发执行。<b>默认是否</b>——不声明就不并行，这是失败安全的默认值。</p>
+        </div>
+        <div class="card reveal" style="--d:.28s">
+          <div class="k"><span>02</span><b>传播</b></div>
+          <h3>失败沿依赖中止<small>cascade abort</small></h3>
+          <p>某个调用失败时，级联中止<b>同一批并行启动、且依赖该结果</b>的其他调用，不浪费算力。</p>
+        </div>
+        <div class="card reveal" style="--d:.34s">
+          <div class="k"><span>03</span><b>边界</b></div>
+          <h3>独立调用不连坐</h3>
+          <p>与失败无关的调用照常跑完，发起它们的<b>父级操作也不被终止</b>——中止只沿依赖边传播。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>接得上 5.1.4：</b>那一节讲的是「一个失败不该拖垮整批」这条原则，这里看到它的实现形态——一个布尔字段，加一次沿依赖边的传播。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 05 上下文的第一笔账 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 上下文<span class="sep">/</span><span class="tag">先算一笔账</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">窗口有百万 token，<em>也不该把仓库塞进去</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        Coding Agent 的根本矛盾很朴素：代码库通常很大，上下文窗口有限。即使模型号称支持百万级 token，
+        把整个代码库一股脑塞进去，<strong>既不经济，也没必要</strong>。
+      </p>
+
+      <div class="cards c3" style="margin-top:24px">
+        <div class="card reveal" style="--d:.2s">
+          <div class="k"><span>01</span><b>一个文件</b></div>
+          <h3>5,000 行 ≈ 6 万 token<small>按每行约 12 token 估算</small></h3>
+          <p>一个中等大小的源码文件全文读进来，就已经是一次小型对话的量级。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s">
+          <div class="k"><span>02</span><b>一个任务</b></div>
+          <h3>读十来个文件，就是几十万</h3>
+          <p>改一个功能，看十几个文件是常态。还没动第一行代码，窗口先去了一大半。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s">
+          <div class="k"><span>03</span><b>一笔账</b></div>
+          <h3>读进来的每一行，之后每轮都跟着走</h3>
+          <p>一次贪心的全文读取，会在后续每一轮推理里重复计费，直到它被挤出窗口。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>所以上下文管理要在多个层面展开：</b>读文件、跑命令、看环境——下面三页，一层一层看。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 06 文件读取：按行号取片段 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 文件读取<span class="sep">/</span><span class="tag">按行号取，不读全文</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">读文件也要有<em>粒度</em>：只要那五十行</h2>
+      <p class="lede reveal" style="--d:.14s">
+        对大型文件，工具应支持按行号范围读取；返回时每行以<b>真实行号</b>作前缀。这个设计小到几乎看不见，价值却很大。
+      </p>
+
+      <div class="split" style="margin-top:16px;align-items:start">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>READ · 按行号范围取，带行号返回</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="g">Agent →</span> read(<span class="y">"src/main.py"</span>, <span class="y">100..150</span>)
+
+<span class="v">工具返回</span>：
+<span class="c">100|</span> def handle_request(req):
+<span class="c">101|</span>     token = req.headers[<span class="y">"auth"</span>]
+<span class="c">102|</span>     user = verify(token, cfg)
+   <span class="c">| … （103–141 行省略）</span>
+<span class="c">142|</span>     return jsonify(resp)
+
+<span class="c"># 3,842 行的文件，这次只进来 51 行</span>
+<span class="g">Agent →</span> edit(<span class="y">"src/main.py:142"</span>, …)</div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.3s">
+            <li><b>只加载要看的那一段。</b>三千多行的文件，没必要为了改一行而整体读进来。</li>
+            <li><b>行号是坐标。</b>模型因此能说「src/main.py 第 142 行」——引用没有歧义，后续 edit 才落得准。</li>
+            <li><b>省略处要标出来。</b>让模型知道手上是片段，不会误以为文件到此为止。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 07 命令输出：掐头去尾 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 命令输出<span class="sep">/</span><span class="tag">前因后果留下，中间不留</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">终端输出要<em>掐头去尾</em>，全量落到磁盘上</h2>
+      <p class="lede reveal" style="--d:.14s">
+        编译或测试可能吐几千行。错误通常在两头：开头是<b>出错的上下文</b>，结尾是<b>总结和退出码</b>。
+      </p>
+
+      <div class="split" style="margin-top:16px;align-items:start">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>BASH · 一次失败的测试运行</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="g">$</span> pytest -q tests/        <span class="c"># 1,284 行</span>
+
+<span class="y">FAILED</span> tests/test_api.py::test_rate_limit
+  assert resp.status == <span class="y">429</span>
+  <span class="y">AssertionError: 200 != 429</span>
+
+<span class="c">… 中间 1,204 行已省略 …</span>
+<span class="c">（完整输出 → /tmp/agent/pytest-7f3a.log）</span>
+
+=============================
+<span class="y">1 failed</span>, 212 passed in 8.4s</div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.3s">
+            <li><b>头留上下文。</b>失败发生在哪个用例、断言什么、期望与实际差在哪——这些都在前面。</li>
+            <li><b>尾留总结。</b>失败总数、通过总数、耗时，一行就够判断「这次改动是变好还是变坏」。</li>
+            <li><b>中间换一行提示。</b>省略多少行、去哪找全文，都写清楚，模型就知道还有后手。</li>
+            <li><b>全量落盘，按需再读。</b>真要细节，用上一页的按行号读取，把一小段取回来。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>不是新机制：</b>这就是第四章的长输出截断与持久化，在编程场景里最频繁的一次应用。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 08 环境信息：状态栏快照 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 环境感知<span class="sep">/</span><span class="tag">每轮一份快照</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">模型缺的不是更长的提示词，<em>是当前的现场</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        这是第二章的 Agent 状态栏在编程场景里的集中体现：每次推理前，把环境状态追加在上下文末尾。
+      </p>
+
+      <div class="spec reveal" style="--d:.2s;margin-top:16px">
+        <div class="spec-h"><span class="b"></span>AGENT STATUS · 每轮推理前注入</div>
+        <div class="spec-body" style="padding:12px 16px 14px">
+          <div class="spec-code"><span class="c">cwd</span>     ~/proj/agent-core
+<span class="c">branch</span>  <span class="y">feat/stream-tools</span>          <span class="c">↑2 未推送</span>
+<span class="c">commit</span>  3f2a1c9  校验流式参数是否完整
+        b71d0e4  拆分 tool 定义
+        9c4a882  给工具加并发标记
+<span class="c">dirty</span>   M core/stream.py    <span class="g">+42</span> <span class="y">−7</span>
+        M core/tools.py     <span class="g">+18</span> <span class="y">−3</span></div>
+        </div>
+      </div>
+
+      <div class="cards c4" style="margin-top:13px">
+        <div class="card reveal" style="--d:.28s;padding:13px 15px 12px">
+          <div class="k"><span>01</span><b>cwd</b></div>
+          <h3 style="font-size:14px">路径不写错</h3>
+          <p>相对路径、模块名、测试路径，全都相对它。</p>
+        </div>
+        <div class="card reveal" style="--d:.33s;padding:13px 15px 12px">
+          <div class="k"><span>02</span><b>branch</b></div>
+          <h3 style="font-size:14px">不以为在 main</h3>
+          <p>分支错了，提交和回滚都会落在错的地方。</p>
+        </div>
+        <div class="card reveal" style="--d:.38s;padding:13px 15px 12px">
+          <div class="k"><span>03</span><b>log</b></div>
+          <h3 style="font-size:14px">知道演化脉络</h3>
+          <p>最近几条提交说明这块代码刚被谁动过、为什么。</p>
+        </div>
+        <div class="card reveal" style="--d:.43s;padding:13px 15px 12px">
+          <div class="k"><span>04</span><b>diff</b></div>
+          <h3 style="font-size:14px">知道改了什么</h3>
+          <p>未暂存与已暂存的差异，决定「改完」还是「还要改」。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.48s">
+        <b>四项各堵一个错。</b>这份快照每轮都会变，所以它不能写死在系统提示词里——下一页算这笔账。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 09 为什么不能硬编码：KV Cache ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · KV Cache<span class="sep">/</span><span class="tag">位置决定成本</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">改一个分支名，<em>整段缓存全废</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        静态系统提示词是一段<b>稳定前缀</b>。一旦为了塞进「当前分支」去改写它，前缀就变了——缓存整体失效，每轮从头重算。
+      </p>
+
+      <div class="reveal" style="--d:.2s;margin-top:10px">
+        <svg viewBox="0 0 1124 168" style="width:100%;height:auto;overflow:visible">
+          <defs>
+            <pattern id="p16c-hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="7" stroke="rgba(255,180,107,.30)" stroke-width="1.2"/>
+            </pattern>
+          </defs>
+
+          <!-- 写法 A：追加 -->
+          <text x="0" y="44" class="node-label" fill="#4fe3ff">追加式</text>
+          <rect x="118" y="24" width="580" height="32" rx="5" fill="rgba(79,227,255,.09)" stroke="rgba(79,227,255,.34)"/>
+          <text x="408" y="45" class="node-sub" font-size="11.5" fill="#9fd8ea" text-anchor="middle">系统提示词 + 工具定义 + 历史消息 · 约 100k，命中缓存</text>
+          <rect x="698" y="24" width="46" height="32" rx="5" fill="rgba(79,227,255,.30)" stroke="rgba(79,227,255,.6)"/>
+          <text x="754" y="45" class="node-sub" font-size="11.5" fill="#4fe3ff">只算新增的几千 token</text>
+
+          <!-- 写法 B：改写前缀 -->
+          <text x="0" y="120" class="node-label" fill="#ffb46b">硬编码</text>
+          <rect x="118" y="100" width="626" height="32" rx="5" fill="rgba(255,180,107,.10)" stroke="rgba(255,180,107,.42)"/>
+          <rect x="118" y="100" width="626" height="32" rx="5" fill="url(#p16c-hatch)"/>
+          <text x="431" y="121" class="node-sub" font-size="11.5" fill="#ffb46b" text-anchor="middle">前缀被改写 → 10 万 token 全部重算</text>
+          <text x="754" y="121" class="node-sub" font-size="11.5" fill="#ffb46b">每轮多付 60 倍以上</text>
+
+          <text x="0" y="158" class="node-sub" font-size="11.5" fill="#6a7a9a">同样的信息量，只因为位置不同，逐轮的算力账单差一个数量级。</text>
+        </svg>
+      </div>
+
+      <div class="cards c2" style="margin-top:13px">
+        <div class="card reveal" style="--d:.28s;padding:14px 16px 13px">
+          <div class="k"><span>写法 A</span><b>追加在末尾</b></div>
+          <h3 style="font-size:15px">前缀不动，只算增量</h3>
+          <p>状态栏挂在历史消息之后，每轮只为新增的几千 token 付费，前缀始终命中缓存。</p>
+        </div>
+        <div class="card reveal" style="--d:.33s;padding:14px 16px 13px">
+          <div class="k"><span>写法 B</span><b>写进系统提示词</b></div>
+          <h3 style="font-size:15px">前缀一变，全量重算</h3>
+          <p>省了「在哪注入」这点设计，代价是每轮都把十万 token 重新 prefill 一遍。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>收一条判断：</b>上下文的结构——什么在前、什么在后——<b>本身就是性能设计</b>，不只是内容设计。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 10 终端会话持久化 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 状态持久化<span class="sep">/</span><span class="tag">终端要一直开着</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">每条命令一个全新 shell，<em>状态就全丢了</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        与代码交互的许多操作都依赖环境状态：切换目录、激活虚拟环境、设置环境变量、启动后台服务。
+        这些东西<b>住在 shell 里</b>，不在文件里。
+      </p>
+
+      <div class="split" style="margin-top:16px;align-items:start">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>SHELL · 每次都从零开始</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 会话 A</span>
+<span class="g">$</span> cd ~/proj/agent && source .venv/bin/activate
+<span class="g">$</span> python -V
+<span class="w">Python 3.12.4</span>
+
+<span class="c"># 会话 B · 下一条命令，全新 shell</span>
+<span class="g">$</span> pwd
+<span class="w">/home/dev</span>          <span class="y">← 目录回去了</span>
+<span class="g">$</span> python -V
+<span class="w">Python 3.9.1</span>       <span class="y">← 虚拟环境没了</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.3s">
+            <li><b>状态只在当前会话有效。</b>激活虚拟环境这类操作，效果无法跨会话传递——不是权限问题，是进程边界。</li>
+            <li><b>重复劳动还在其次。</b>更贵的是每次都要重新确认「我在哪、用哪个解释器」，而这些信息本来不该重复消耗推理。</li>
+            <li><b>所以启动时开一个终端，全程复用。</b>工作目录、环境变量、后台进程都留在里面。</li>
+            <li><b>但保留隔离终端。</b>并行任务需要互不干扰的会话——<b>持久化是默认，隔离是能力</b>，不是二选一。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>这更符合人的习惯：</b>我们本来就长期开着一个终端窗口，而不是每条命令都新开一个。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 11 即时语法反馈 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 即时反馈<span class="sep">/</span><span class="tag">把 IDE 的红线搬到工具层</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">写完就检查，<em>别等用户说「跑一下」</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        文件写入操作一完成，工具层就自动运行对应的 linter 或语法检查器，把结果作为<b>工具返回值的一部分</b>交回去。
+      </p>
+
+      <div class="split" style="margin-top:16px;align-items:start">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>WRITE · 返回值里带检查结果</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="g">Agent →</span> write(<span class="y">"core/stream.py"</span>, patch)
+
+<span class="v">工具返回</span>：
+  已写入 core/stream.py       <span class="g">+42</span> <span class="y">−7</span>
+  <span class="y">lint · E999 IndentationError</span>
+    line 88   unexpected indent
+  <span class="y">lint · 1 error, 0 warning</span>
+
+<span class="c"># 下一轮推理，第一眼就是第 88 行</span>
+<span class="g">Agent →</span> edit(<span class="y">"core/stream.py:88"</span>, …)</div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.3s">
+            <li><b>不等测试。</b>等到跑测试才发现语法错，中间已经白跑了一整轮推理。</li>
+            <li><b>错误带坐标。</b>文件名、行号、错误类型一起回去，模型下一步就能直接改那一行。</li>
+            <li><b>就像 IDE 的红线。</b>打错一个括号，编辑器立刻标出来——Agent 也该有同样的即时性。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>五条收在一起：</b>并行与流式、上下文管理、环境感知、状态持久化、即时反馈——它们不是孤立的优化点，而是相互配合的设计决策，指向同一件事：<b>让 Agent 像经验丰富的开发者那样流畅地工作</b>。
+      </div>
+    </div>
+  </section>

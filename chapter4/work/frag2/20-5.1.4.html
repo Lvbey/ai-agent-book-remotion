@@ -1,0 +1,573 @@
+  <!-- ========== 20 5.1.4 Harness 到底是什么 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · Harness 工程<span class="sep">/</span><span class="tag">先把定义对齐</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">Harness 不是模型外面的一圈，<em>它就是公式的另一半</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        第一章给过 Agent = Model + Harness。这里的 Harness 不止上下文和工具，还包含约束、验证、纠正——<strong>五样凑齐，才是一套完整的 Harness</strong>。
+      </p>
+
+      <div class="reveal" style="--d:.2s;margin-top:10px">
+        <svg viewBox="0 0 1124 264" style="width:100%;height:auto;overflow:visible">
+          <rect x="0" y="0" width="1124" height="42" rx="9" fill="rgba(255,255,255,.03)" stroke="rgba(140,170,220,.14)"/>
+          <text x="20" y="27" class="node-label" font-size="13" fill="#cfe0ff">Agent = Model + Harness</text>
+          <text x="1104" y="27" text-anchor="end" font-size="11" fill="#6a7a9a">第一章 · 公式</text>
+
+          <rect x="0" y="58" width="380" height="206" rx="12" fill="rgba(79,227,255,.05)" stroke="rgba(79,227,255,.3)"/>
+          <text x="22" y="86" class="node-label" font-size="11.5" fill="#4fe3ff">第一层 · 让 Agent 能做事</text>
+          <text x="22" y="116" font-size="15" fill="#e9f0ff">上下文 + 工具</text>
+          <rect x="22" y="132" width="336" height="34" rx="7" fill="rgba(255,255,255,.04)" stroke="rgba(140,170,220,.1)"/>
+          <text x="38" y="154" class="node-sub" font-size="11.5" fill="#a9b8d6">上下文　提示词、记忆、检索到的文件</text>
+          <rect x="22" y="176" width="336" height="34" rx="7" fill="rgba(255,255,255,.04)" stroke="rgba(140,170,220,.1)"/>
+          <text x="38" y="198" class="node-sub" font-size="11.5" fill="#a9b8d6">工具　　七个工具、沙盒、外部 API</text>
+          <text x="22" y="244" class="node-sub" font-size="11" fill="#7d8fae">这一层决定它「能做什么」</text>
+
+          <rect x="404" y="58" width="720" height="206" rx="12" fill="rgba(139,123,255,.05)" stroke="rgba(139,123,255,.3)"/>
+          <text x="426" y="86" class="node-label" font-size="11.5" fill="#a89bff">第二层 · 让 Agent 不做错事</text>
+          <text x="426" y="116" font-size="15" fill="#e9f0ff">约束 + 验证 + 纠正</text>
+
+          <rect x="426" y="132" width="208" height="84" rx="8" fill="rgba(255,255,255,.03)" stroke="rgba(140,170,220,.12)"/>
+          <text x="440" y="160" font-size="13" fill="#e9f0ff">约束</text>
+          <text x="440" y="184" class="node-sub" font-size="11.5" fill="#a9b8d6">不许碰的目录与接口</text>
+          <text x="440" y="202" class="node-sub" font-size="11.5" fill="#a9b8d6">不许用的依赖</text>
+
+          <rect x="656" y="132" width="208" height="84" rx="8" fill="rgba(255,255,255,.03)" stroke="rgba(140,170,220,.12)"/>
+          <text x="670" y="160" font-size="13" fill="#e9f0ff">验证</text>
+          <text x="670" y="184" class="node-sub" font-size="11.5" fill="#a9b8d6">测试、Linter、类型检查</text>
+          <text x="670" y="202" class="node-sub" font-size="11.5" fill="#a9b8d6">自动判对错</text>
+
+          <rect x="886" y="132" width="208" height="84" rx="8" fill="rgba(255,255,255,.03)" stroke="rgba(140,170,220,.12)"/>
+          <text x="900" y="160" font-size="13" fill="#e9f0ff">纠正</text>
+          <text x="900" y="184" class="node-sub" font-size="11.5" fill="#a9b8d6">读报错、改、重跑</text>
+          <text x="900" y="202" class="node-sub" font-size="11.5" fill="#a9b8d6">错了能退回上一个版本</text>
+
+          <text x="426" y="244" class="node-sub" font-size="11" fill="#7d8fae">这一层决定它「不做什么」</text>
+        </svg>
+      </div>
+
+      <div class="note reveal" style="--d:.3s;margin-top:14px">
+        <b>为什么先讲 Coding：</b>代码任务的可验证性在所有 Agent 任务里最高，约束、验证、纠正三样都有现成基础设施可以依托——
+        这是 Harness 红利最大的一个领域。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 21 四件组件 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 四件组件<span class="sep">/</span><span class="tag">缺一件就漏水</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">稳定不稳定，看的不是模型，<em>是这四件东西</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        第一章的第二层，落到 Coding 场景就是四件可以逐条检查的工程组件——<strong>没有一件属于模型</strong>。
+      </p>
+
+      <div class="cards c4" style="margin-top:30px">
+        <div class="card reveal" style="--d:.22s;padding:20px 18px 18px">
+          <div class="k"><span>01</span><b>验收基线</b></div>
+          <h3>什么算做完了</h3>
+          <p>测试套件、CI 管道、代码审查标准。把「做完了」从一个感觉，变成一次跑得出结果的检查。</p>
+        </div>
+        <div class="card reveal" style="--d:.28s;padding:20px 18px 18px">
+          <div class="k"><span>02</span><b>执行边界</b></div>
+          <h3>能碰什么、不能碰什么</h3>
+          <p>模块边界、依赖规则、权限控制。哪些目录、哪些接口不在可写范围里，写清楚。</p>
+        </div>
+        <div class="card reveal" style="--d:.34s;padding:20px 18px 18px">
+          <div class="k"><span>03</span><b>反馈信号</b></div>
+          <h3>自动化的对错判断</h3>
+          <p>Linter 输出、测试结果、类型检查错误。对错当场由机器判，不等人类说一句「不太对」。</p>
+        </div>
+        <div class="card reveal" style="--d:.4s;padding:20px 18px 18px">
+          <div class="k"><span>04</span><b>回退手段</b></div>
+          <h3>出了问题怎么恢复</h3>
+          <p>Git、沙盒隔离、快照回滚。做错了能一步退回去，它才敢试错。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.48s;margin-top:28px">
+        <b>分工：</b>验收基线和执行边界负责「说清楚」——什么算对、什么不许碰；
+        反馈信号和回退手段负责「拉回来」——跑偏了当场发现，砸了能退回上一个好状态。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 22 表 5-1 四象限 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 表 5-1<span class="sep">/</span><span class="tag">任务清晰度 × 验证自动化</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">Coding 天生站在<em>最好的那个象限</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        两个维度切一刀：目标清不清晰、结果能不能自动验。四块地的瓶颈<strong>完全不同</strong>。
+      </p>
+
+      <table class="tbl reveal" style="--d:.22s;font-size:13.4px">
+        <thead>
+          <tr>
+            <th style="padding-right:24px">目标清晰度</th>
+            <th style="padding-right:36px">结果可自动验证</th>
+            <th>结果需人工验证</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:18px 24px 18px 0">目标明确</td>
+            <td class="cy" style="padding:18px 36px 18px 0"><b>最佳区域</b><br>修复有测试用例的 bug。测试一跑，就知道对不对。</td>
+            <td class="mu" style="padding:18px 0"><b>吞吐量受限</b><br>代码重构需人工审查。天花板是人的审查速度。</td>
+          </tr>
+          <tr>
+            <td style="padding:18px 24px 18px 0">目标模糊</td>
+            <td class="mu" style="padding:18px 36px 18px 0"><b>高效地跑偏</b><br>用 linter 优化「代码质量」。越努力，离目标越远。</td>
+            <td class="mu" style="padding:18px 0"><b>难以启动</b><br>「让 UI 更好看」。连验收标准都写不出来。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note cy reveal" style="--d:.34s;margin-top:28px">
+        <b>代码为什么天生在这个象限的核心：</b>测试套件给验收标准，Linter 和类型检查给即时验证，Git 给回退——
+        四件组件在这里全都有现货。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 23 往左上角推 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 往哪推<span class="sep">/</span><span class="tag">四个瓶颈不一样</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">Harness 唯一的目标，<em>是把任务往左上角推</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        四个格子的瓶颈不一样，所以「换一个更强的模型」只对其中一格有效。
+      </p>
+
+      <div class="reveal" style="--d:.2s;margin-top:12px">
+        <svg viewBox="0 0 1124 322" style="width:100%;height:auto;overflow:visible">
+          <defs>
+            <marker id="q514a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+              <path d="M0 0L8 4L0 8z" fill="#4fe3ff"/></marker>
+          </defs>
+
+          <path d="M1100 22 L340 22" stroke="rgba(79,227,255,.45)" stroke-width="1.2" stroke-dasharray="5 7" fill="none" marker-end="url(#q514a)"/>
+          <text x="1104" y="42" text-anchor="end" font-size="11" fill="#6a7a9a">Harness 在做的事</text>
+          <text x="430" y="42" text-anchor="middle" font-size="11" fill="#6a7a9a">结果可自动验证</text>
+          <text x="902" y="42" text-anchor="middle" font-size="11" fill="#6a7a9a">结果需人工验证</text>
+
+          <text x="188" y="122" text-anchor="end" font-size="11" fill="#6a7a9a">目标明确</text>
+          <text x="188" y="258" text-anchor="end" font-size="11" fill="#6a7a9a">目标模糊</text>
+
+          <rect x="200" y="56" width="460" height="126" rx="10" fill="rgba(79,227,255,.08)" stroke="rgba(79,227,255,.45)"/>
+          <text x="220" y="84" font-size="15" fill="#4fe3ff">最佳区域</text>
+          <text x="220" y="110" class="node-sub" font-size="11.5" fill="#cfe0ff">修复有测试用例的 bug</text>
+          <text x="220" y="134" class="node-sub" font-size="11" fill="#7d8fae">瓶颈：等测试跑完（几秒）</text>
+          <text x="220" y="160" class="node-sub" font-size="11" fill="#4fe3ff">← 目标是这里</text>
+
+          <rect x="680" y="56" width="444" height="126" rx="10" fill="rgba(255,255,255,.02)" stroke="rgba(140,170,220,.14)"/>
+          <text x="700" y="84" font-size="15" fill="#a9b8d6">吞吐量受限</text>
+          <text x="700" y="110" class="node-sub" font-size="11.5" fill="#a9b8d6">代码重构需人工审查</text>
+          <text x="700" y="134" class="node-sub" font-size="11" fill="#7d8fae">瓶颈：等人审完</text>
+          <text x="700" y="160" class="node-sub" font-size="11" fill="#7d8fae">加模型没用，要加审查吞吐</text>
+
+          <rect x="200" y="192" width="460" height="126" rx="10" fill="rgba(255,255,255,.02)" stroke="rgba(140,170,220,.14)"/>
+          <text x="220" y="220" font-size="15" fill="#a9b8d6">高效地跑偏</text>
+          <text x="220" y="246" class="node-sub" font-size="11.5" fill="#a9b8d6">用 linter 优化「代码质量」</text>
+          <text x="220" y="270" class="node-sub" font-size="11" fill="#7d8fae">瓶颈：越努力，越偏</text>
+          <text x="220" y="296" class="node-sub" font-size="11" fill="#7d8fae">先补目标，再谈自动化</text>
+
+          <rect x="680" y="192" width="444" height="126" rx="10" fill="rgba(255,255,255,.02)" stroke="rgba(140,170,220,.14)"/>
+          <text x="700" y="220" font-size="15" fill="#a9b8d6">难以启动</text>
+          <text x="700" y="246" class="node-sub" font-size="11.5" fill="#a9b8d6">「让 UI 更好看」</text>
+          <text x="700" y="270" class="node-sub" font-size="11" fill="#7d8fae">瓶颈：验收标准都写不出</text>
+          <text x="700" y="296" class="node-sub" font-size="11" fill="#7d8fae">先派人，别派 Agent</text>
+        </svg>
+      </div>
+
+      <div class="note reveal" style="--d:.3s;margin-top:14px">
+        <b>一句话记住：</b>加模型只解第一格；剩下三格要靠补验收标准、补人工吞吐、补目标定义——这些全是 Harness 的活。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 24 成熟度不是模型给的 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 成熟度的来源<span class="sep">/</span><span class="tag">不是代码模型特别强</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">Coding 成熟度最高，<em>不是因为代码模型特别强</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        而是因为软件工程几十年攒下的基础设施，<strong>天然就是一套强大的 Harness</strong>——它们本来不是为 Agent 造的。
+      </p>
+
+      <table class="tbl reveal" style="--d:.22s;font-size:13.4px">
+        <thead>
+          <tr>
+            <th style="padding-right:34px">早就存在的设施</th>
+            <th style="padding-right:34px">在 Harness 里担任</th>
+            <th>它本来是为谁造的</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:16px 34px 16px 0">测试套件 · CI</td>
+            <td class="cy" style="padding:16px 34px 16px 0">验收基线 + 反馈信号</td>
+            <td style="padding:16px 0">为「改代码别改坏」</td>
+          </tr>
+          <tr>
+            <td style="padding:16px 34px 16px 0">Linter · 类型检查</td>
+            <td class="cy" style="padding:16px 34px 16px 0">反馈信号</td>
+            <td style="padding:16px 0">为把规范写成可执行的规则</td>
+          </tr>
+          <tr>
+            <td style="padding:16px 34px 16px 0">Git 分支 · 回滚</td>
+            <td class="cy" style="padding:16px 34px 16px 0">回退手段</td>
+            <td style="padding:16px 0">为多人协作与合并</td>
+          </tr>
+          <tr>
+            <td style="padding:16px 34px 16px 0">权限 · 模块边界</td>
+            <td class="mu" style="padding:16px 34px 16px 0">执行边界</td>
+            <td class="mu" style="padding:16px 0">为团队分工与隔离</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note cy reveal" style="--d:.32s;margin-top:26px">
+        <b>可以迁移的判断：</b>一个领域能被 Agent 自动化的程度，取决于它的「错」能不能被机器判定。
+        判得了，就能交给 Agent；判不了，模型再强也只能等人。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 25 案例一 大规模迁移 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 案例一<span class="sep">/</span><span class="tag">大规模代码迁移</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">大规模迁移赢在 Harness，<em>不在模型</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        一家大型科技公司公开分享的迁移实践：任务量以万计，人不可能逐个看。真正的杠杆是三件 Harness 上的事。
+      </p>
+
+      <div class="cards c3" style="margin-top:30px">
+        <div class="card reveal" style="--d:.22s;padding:22px 20px 20px">
+          <div class="k"><span>01</span><b>知识</b></div>
+          <h3>知识必须活在代码库里</h3>
+          <p>迁移规则、目标写法、历史先例都写进仓库里的文件。<b>Agent 看不到的，等于不存在</b>——开会讲一遍不算。</p>
+        </div>
+        <div class="card reveal" style="--d:.28s;padding:22px 20px 20px">
+          <div class="k"><span>02</span><b>约束</b></div>
+          <h3>约束编进 Linter 和 CI</h3>
+          <p>不写成文档等人自觉。规则一旦进了流水线，写法不对就提交不上去——不需要谁记得住。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.34s;padding:22px 20px 20px">
+          <div class="k"><span>03</span><b>闭环</b></div>
+          <h3>验证与纠正全链路自动</h3>
+          <p>改完自动跑测试，报错自动回改，直到整条链路转绿。人只在最后抽样，不在中间守。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s;margin-top:32px">
+        <b>换个说法：</b>知识若只存在于某个人嘴里，Agent 的规模上限就是那个人的时间。
+        把知识搬进仓库，才是「一万个文件」和「一百个文件」的区别。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 26 案例二 LangChain ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 案例二<span class="sep">/</span><span class="tag">LangChain</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">一行模型都没换，<em>基准分数照样涨</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        只优化 Harness 的三个面——系统提示词、工具中间件、自验证循环——基准任务表现就显著提升。
+      </p>
+
+      <div class="cards c3" style="margin-top:28px">
+        <div class="card reveal" style="--d:.2s;padding:22px 20px 20px">
+          <div class="k"><span>01</span><b>说清怎么干</b></div>
+          <h3>系统提示词</h3>
+          <p>任务边界、输出格式、什么时候该停下来问人。<b>把默认做法写死</b>，不让模型每次自由发挥。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:22px 20px 20px">
+          <div class="k"><span>02</span><b>工具护栏</b></div>
+          <h3>工具中间件</h3>
+          <p>参数校验、失败重试、结果裁剪。脏数据在进上下文之前就被挡住，模型看不到，也就不会被它带偏。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s;padding:22px 20px 20px">
+          <div class="k"><span>03</span><b>交卷前自查</b></div>
+          <h3>自验证循环</h3>
+          <p>交卷之前先跑一遍检查，不合格就自己重来。把「发现问题」提前到<strong>还没交出去</strong>的时候。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.42s;margin-top:30px">
+        <b>更值得抄的是方法论：</b>用 Agent 去分析失败轨迹，再从轨迹里改 Harness。
+        这一步让 Harness 工程从「老师傅凭经验」，变成「看数据改配置」。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 27 案例三 Anthropic ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 案例三<span class="sep">/</span><span class="tag">Anthropic 的长任务</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">长任务的两个老毛病，<em>用两个角色治</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        一次想做太多、过早声称完成——这是长时运行 Agent 最常见的两种失败，也都不是模型能力问题。
+      </p>
+
+      <div class="split" style="margin-top:16px">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>TASKS.md · 跨轮次传递的中间成果</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 初始化 Agent 产出，执行 Agent 维护</span>
+<span class="g">[x]</span> 01 抽出公共鉴权模块
+<span class="g">[x]</span> 02 迁移 user 服务
+<span class="y">[ ]</span> 03 迁移 order 服务   <span class="c">← 下一轮从这里继续</span>
+<span class="y">[ ]</span> 04 补集成测试
+<span class="c">[ ]</span> 05 删除旧鉴权代码
+
+<span class="c"># 已完成的代码文件也在仓库里</span>
+<span class="v">services/order/</span> 已改 4 个文件</div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.3s">
+            <li><b>初始化 Agent 只管拆。</b>把大任务分解成一份可勾选的清单，先想清楚再动手。</li>
+            <li><b>执行 Agent 只管推。</b>一次只做清单上的一行，做完打勾，接着下一行。</li>
+            <li><b>中间成果留在文件里。</b>已改的代码、更新后的清单，下一轮直接接着用——不靠上下文记。</li>
+          </ul>
+          <div class="note reveal" style="--d:.4s">
+            <b>两个毛病各有一味药：</b>拆清单治「一次想做太多」，清单上没打勾就不算完治「过早声称完成」。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 28 三个案例的同一个动作 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 收束<span class="sep">/</span><span class="tag">三个案例对位</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">三个案例，<em>改的是同一个位置</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        都不是让模型更聪明，而是把「对不对」的判断权，从模型手里挪到基础设施手里。
+      </p>
+
+      <table class="tbl reveal" style="--d:.22s;font-size:13.4px">
+        <thead>
+          <tr>
+            <th style="padding-right:34px">案例</th>
+            <th style="padding-right:34px">主要动了哪件组件</th>
+            <th>挪走了什么判断</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:18px 34px 18px 0">大规模迁移</td>
+            <td class="cy" style="padding:18px 34px 18px 0">执行边界 + 反馈信号</td>
+            <td style="padding:18px 0">规则从文档挪进 Linter 与 CI，写错就提交不上</td>
+          </tr>
+          <tr>
+            <td style="padding:18px 34px 18px 0">LangChain</td>
+            <td class="cy" style="padding:18px 34px 18px 0">反馈信号 + 纠正</td>
+            <td style="padding:18px 0">「哪里错了」改由失败轨迹来说，人只看轨迹</td>
+          </tr>
+          <tr>
+            <td style="padding:18px 34px 18px 0">Anthropic</td>
+            <td class="cy" style="padding:18px 34px 18px 0">验收基线 + 纠正</td>
+            <td style="padding:18px 0">「做完了」改由清单和文件说，模型无权宣布</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note reveal" style="--d:.32s;margin-top:26px">
+        <b>一个可检验的推论：</b>判断权一旦交出去，换不换模型就没那么要命了。
+        这也解释了为什么三个案例的收益，都不来自换一个更强的模型。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 29 原则一 约束优先于指导 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 原则一<span class="sep">/</span><span class="tag">约束优先于指导</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">能强制的就别只建议，<em>差别是「做不了」</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        能用代码强制的规则，就不要写成文档建议。前者是「做不了」，后者只是「建议别做」——中间隔着一整次模型自觉。
+      </p>
+
+      <div class="split" style="margin-top:14px">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>把一条口头规范改成一条检查</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 改造前：写在文档里，靠人看 PR</span>
+「禁止直接 import requests，
+  统一走 http/client.py」
+
+<span class="c"># 改造后：写成一条会失败的检查</span>
+<span class="y">ci/lint.sh</span>
+  grep -rn <span class="y">"^import requests"</span> src/ \
+    &amp;&amp; exit 1
+  <span class="c"># PR 直接红，Agent 也读得到这行报错</span>
+
+<span class="c"># 附带效果：改完当场知道，不用等人说</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.3s">
+            <li><b>最小可执行的改造动作：</b>翻出团队规范里最常被违反的一条，把它写成一条 lint 规则或一个 CI 检查。</li>
+            <li><b>差别在长任务里会被放大。</b>「做不了」一次生效；「建议别做」每一步都要重新赌一次模型的自觉。</li>
+            <li><b>提示词该留给别的事：</b>什么时候该停下来问人、输出成什么形状——这些本来就写不成检查。</li>
+          </ul>
+          <div class="note reveal" style="--d:.4s">
+            <b>判断标准很简单：</b>这条规则，能不能写成一条会失败的检查？能，就别只写进文档。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 30 原则二、三 验证与反馈 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 原则二、三<span class="sep">/</span><span class="tag">验证与反馈</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">人工审查是瓶颈，<em>而且反馈太慢</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        验证要自动化，因为人工审查不可扩展；反馈要快、要结构化，因为越接近出错时刻，纠正越省事。
+      </p>
+
+      <table class="tbl reveal" style="--d:.22s;font-size:13.4px">
+        <thead>
+          <tr>
+            <th style="padding-right:30px">维度</th>
+            <th style="padding-right:34px">人工审查</th>
+            <th>自动化验证</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:15px 30px 15px 0">吞吐</td>
+            <td class="mu" style="padding:15px 34px 15px 0">天花板是审查者的时间</td>
+            <td class="cy" style="padding:15px 0">与任务量无关，可以并行</td>
+          </tr>
+          <tr>
+            <td style="padding:15px 30px 15px 0">延迟</td>
+            <td class="mu" style="padding:15px 34px 15px 0">几小时到几天</td>
+            <td class="cy" style="padding:15px 0">秒级，改完立刻出结果</td>
+          </tr>
+          <tr>
+            <td style="padding:15px 30px 15px 0">判法</td>
+            <td class="mu" style="padding:15px 34px 15px 0">换个 reviewer 换一套标准</td>
+            <td class="cy" style="padding:15px 0">同一条规则，每次同一种判法</td>
+          </tr>
+          <tr>
+            <td style="padding:15px 30px 15px 0">信息量</td>
+            <td class="mu" style="padding:15px 34px 15px 0">一句「这里不太对」</td>
+            <td class="cy" style="padding:15px 0">文件:行号 + 错误码 + 期望值</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note reveal" style="--d:.32s;margin-top:26px">
+        <b>第二章的 Agent 状态栏就是这条原则的界面化：</b>详细错误信息、工具调用计数器——
+        把「哪里错了、错了几次」直接摆在模型面前，而不是让它自己猜。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 31 原则四 + 过程性错误 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 原则四<span class="sep">/</span><span class="tag">回退与过程性错误</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">结果对不算完，<em>过程错也是失败</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        回退要可靠——错误可逆，Agent 才敢大胆试错。而验收基线管结果，执行边界管过程：用错方法达成，同样是失败。
+      </p>
+
+      <div class="split" style="margin-top:14px">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>两条破坏性捷径 · 验收指标全绿</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 反例 1 · 修数据库连接故障</span>
+Agent → <span class="y">把库删了，重新建</span>
+        <span class="g">服务恢复 ✓</span>　<span class="y">数据没了 ✗</span>
+
+<span class="c"># 反例 2 · 修编译错误</span>
+Agent → <span class="y">删掉整个文件，重写</span>
+        <span class="g">编译通过 ✓</span>　<span class="y">实现没了 ✗</span>
+
+<span class="c"># 两单任务，验收指标都是绿的</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.3s">
+            <li><b>回退是试错的前提。</b>Git 分支、沙盒环境、快照回滚——任何错误都可逆，它才敢动手。</li>
+            <li><b>但指标挡不住捷径。</b>把限制写进最终评估指标，Agent 也常能找到绕过去的办法，这就是 reward hacking 的日常形态。</li>
+            <li><b>所以对动作设闸门。</b><i>rm -rf</i>、删生产数据、覆盖未读文件，执行前审批——约束的是动作，不只是结果。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.42s;margin-top:16px">
+        <b>一句话：</b>结果指标是事后审计，动作审批是事前闸门。前者挡不住有意绕路，后者能——
+        本章安全一节的语义解析、第四章的 Sidecar 复核，做的都是这道闸门。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 32 工具编排 故障边界 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 工具编排<span class="sep">/</span><span class="tag">故障边界控制</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">一个工具挂了，<em>不该带走整批任务</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        并行调用下，Harness 要回答一个模型不会回答的问题：一个失败，要不要连坐？
+      </p>
+
+      <div class="reveal" style="--d:.2s;margin-top:12px">
+        <svg viewBox="0 0 1124 292" style="width:100%;height:auto;overflow:visible">
+          <defs>
+            <marker id="t514a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#4fe3ff"/></marker>
+            <marker id="t514b" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#ffb46b"/></marker>
+          </defs>
+
+          <rect x="372" y="0" width="380" height="56" rx="10" fill="rgba(255,255,255,.04)" stroke="rgba(140,170,220,.22)"/>
+          <text x="392" y="24" class="node-label" font-size="11.5" fill="#cfe0ff">父任务 · 核对三份配置</text>
+          <text x="392" y="44" class="node-sub" font-size="11" fill="#7d8fae">同一批并行读，缺一份就不能开工</text>
+
+          <path d="M430 58 L246 94" stroke="rgba(79,227,255,.4)" stroke-width="1.1" fill="none" marker-end="url(#t514a)"/>
+          <path d="M562 58 L562 94" stroke="rgba(79,227,255,.4)" stroke-width="1.1" fill="none" marker-end="url(#t514a)"/>
+          <path d="M694 58 L878 94" stroke="rgba(79,227,255,.4)" stroke-width="1.1" fill="none" marker-end="url(#t514a)"/>
+
+          <rect x="46" y="100" width="300" height="76" rx="9" fill="rgba(79,227,255,.05)" stroke="rgba(79,227,255,.28)"/>
+          <text x="66" y="126" class="node-label" font-size="11.5" fill="#cfe0ff">read config/a.yml</text>
+          <text x="66" y="148" class="node-sub" font-size="11" fill="#4fe3ff">✓ 1.2 KB</text>
+          <text x="66" y="166" class="node-sub" font-size="11" fill="#7d8fae">正常返回，进上下文</text>
+
+          <rect x="412" y="100" width="300" height="76" rx="9" fill="rgba(255,180,107,.06)" stroke="rgba(255,180,107,.4)"/>
+          <text x="432" y="126" class="node-label" font-size="11.5" fill="#cfe0ff">read config/b.yml</text>
+          <text x="432" y="148" class="node-sub" font-size="11" fill="#ffb46b">✗ ENOENT 文件不存在</text>
+          <text x="432" y="166" class="node-sub" font-size="11" fill="#7d8fae">只报这一个失败</text>
+          <text x="726" y="92" font-size="11" fill="#ffb46b">故障止于此</text>
+
+          <rect x="778" y="100" width="300" height="76" rx="9" fill="rgba(79,227,255,.05)" stroke="rgba(79,227,255,.28)"/>
+          <text x="798" y="126" class="node-label" font-size="11.5" fill="#cfe0ff">read config/c.yml</text>
+          <text x="798" y="148" class="node-sub" font-size="11" fill="#4fe3ff">✓ 0.8 KB</text>
+          <text x="798" y="166" class="node-sub" font-size="11" fill="#7d8fae">不受兄弟失败影响</text>
+
+          <path d="M196 178 L196 210" stroke="rgba(79,227,255,.4)" stroke-width="1.1" fill="none" marker-end="url(#t514a)"/>
+          <path d="M562 178 L562 210" stroke="rgba(255,180,107,.45)" stroke-width="1.1" fill="none" marker-end="url(#t514b)"/>
+          <path d="M928 178 L928 210" stroke="rgba(79,227,255,.4)" stroke-width="1.1" fill="none" marker-end="url(#t514a)"/>
+
+          <rect x="46" y="216" width="1032" height="72" rx="10" fill="rgba(79,227,255,.06)" stroke="rgba(79,227,255,.3)"/>
+          <text x="70" y="244" class="node-label" font-size="12" fill="#4fe3ff">父任务继续：两份已到，只有 b.yml 报失败</text>
+          <text x="70" y="268" class="node-sub" font-size="11.5" fill="#a9b8d6">故障只在同一批并行调用内传播，不上升到父级操作</text>
+        </svg>
+      </div>
+
+      <div class="note reveal" style="--d:.3s;margin-top:14px">
+        <b>这就是反面教材的镜像：</b>「一个命令失败，整个任务中止」是最脆的那种 Harness。
+        边界划对了，局部失败只是数据；划错了，一次网络抖动就能报废整轮工作。
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,575 @@
+  <!-- ========== 10 恢复三级总览 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 恢复<span class="sep">/</span><span class="tag">按对用户透明的程度分级</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">能用低一级的手段，<em>就不要升级</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        分完类、计完数，才轮到「怎么救」。三级手段按<strong>对用户透明的程度</strong>排列，
+        判断标准只有一条：这一级能不能自己把问题吃掉。
+      </p>
+
+      <div class="split" style="margin-top:24px">
+        <div class="steps">
+          <div class="step reveal" style="--d:.2s">
+            <div class="no">01</div>
+            <div><h4>静默重试</h4><p>同一个请求，退避之后再发，对用户完全不可见。<b>升级条件：重试用尽仍失败。</b></p></div>
+          </div>
+          <div class="step reveal" style="--d:.26s">
+            <div class="no">02</div>
+            <div><h4>降级与接续</h4><p>改变请求本身再试：提上限、换模型、换模式。<b>升级条件：怎么改都不通。</b></p></div>
+          </div>
+          <div class="step reveal" style="--d:.32s">
+            <div class="no">03</div>
+            <div><h4>暴露给用户</h4><p>所有自动手段用尽，才呈现错误并附上已尝试的动作。<b>这里没有下一级。</b></p></div>
+          </div>
+        </div>
+
+        <div class="spec reveal" style="--d:.34s">
+          <div class="spec-h"><span class="b"></span>VISIBILITY · 用户视角</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 用户能感知到哪一层</span>
+<span class="y">L1</span>  静默重试      <span class="c">（看不见）</span>
+<span class="y">L2</span>  降级 · 接续   <span class="c">（看不见）</span>
+<span class="v">—— 以上都在扣留错误 ——</span>
+<span class="y">L3</span>  暴露错误      <span class="w">一条完整说明</span>
+
+<span class="c"># 越往下，代价越高</span>
+<span class="c"># 时间 → 请求 → 用户重新理解</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card sum reveal" style="--d:.44s;margin-top:6px">
+        <div class="k"><span>SUMMARY</span><b>分级的意义</b></div>
+        <h3 style="font-size:15.5px;margin-bottom:4px">大多数故障停在第一级，第二级是例外，第三级是兜底</h3>
+        <p>每升一级，代价就翻一倍：第一级只花时间，第二级要改请求，第三级要用户重新理解任务。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 11 静默重试的两个细节 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 静默重试<span class="sep">/</span><span class="tag">两个细节决定成败</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">「失败就重试」有<em>两个坑</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        同样是重试，退避策略没做对会<strong>制造二次拥塞</strong>；调用优先级没分清，
+        后台重试会<strong>挤占主链路的配额</strong>。
+      </p>
+
+      <div class="split" style="margin-top:22px">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>RETRY POLICY · 退避与抖动</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 两个细节都在这几行里</span>
+<span class="w">for</span> attempt <span class="w">in</span> 1..N:
+    <span class="w">if not</span> retryable(err): <span class="w">break</span>
+
+    wait = min(cap, base * 2 ** attempt)
+    wait += random(0, jitter)   <span class="c"># 抖动</span>
+
+    <span class="w">if</span> err.retry_after:        <span class="c"># 服务端提示</span>
+        wait = max(wait, err.retry_after)
+
+    sleep(wait)</div>
+          </div>
+        </div>
+
+        <ul class="list reveal" style="--d:.3s">
+          <li><b>抖动不是装饰。</b>纯指数退避会让所有客户端在同一毫秒发起第 N 次重试；随机抖动把这一批打散，否则重试本身就是一次小型 DDoS。</li>
+          <li><b>服务端说了算。</b>返回里带等待时长时，就按它来——那是对方最清楚自己什么时候能缓过来的时刻。</li>
+          <li><b>前台重试，后台放弃。</b>主循环的请求失败要重试；标题生成、输入建议这类辅助调用失败直接丢掉。后台重试挤占的是主链路的配额，这叫重试放大。</li>
+        </ul>
+      </div>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>重试放大的可怕之处：</b>它不报错。用户只会觉得「今天这个 Agent 有点慢」，
+        而账单和限流额度已经在后台被一堆没人看的标题消耗掉了。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 12 降级与接续 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 降级与接续<span class="sep">/</span><span class="tag">改请求本身再试</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">重试无效，说明问题<em>不在「什么时候发」</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        而在「发什么」。这一级的动作是改变请求的形状：改上限、改模型、改模式——三个最常见的场景。
+      </p>
+
+      <div class="cards c3" style="margin-top:28px">
+        <div class="card reveal" style="--d:.2s;padding:20px 18px">
+          <div class="k"><span>01</span><b>输出触顶</b></div>
+          <h3>被长度限制截断<small>OUTPUT TRUNCATED</small></h3>
+          <p>先<b>静默提高输出上限</b>重发；仍不够，就在消息末尾追加一条元指令，让模型从断点接着往下写。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:20px 18px">
+          <div class="k"><span>02</span><b>主模型过载</b></div>
+          <h3>降级到备用模型<small>FAILOVER</small></h3>
+          <p>但<b>先剥离旧模型私有的格式块</b>——否则新模型解析不了历史消息，降级当场失败。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s;padding:20px 18px">
+          <div class="k"><span>03</span><b>成本模式</b></div>
+          <h3>高成本模式被限流<small>RATE LIMITED</small></h3>
+          <p>暂时回落到标准模式。先用可接受的答案把这一轮跑完，质量优化留到配额恢复之后。</p>
+        </div>
+      </div>
+
+      <p class="lede reveal" style="--d:.38s;margin-top:26px;max-width:1000px">
+        三件事的共同点：<span class="hl">改的不是重试次数，是请求本身。</span>
+        所以这一级必须知道「这次失败到底缺什么」——只看到 429 就降模型，等于用更大的代价换一个不相干的答案。
+      </p>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>顺序不能反：</b>先提上限再谈接续，先剥格式再谈换模型。
+        跳过前置条件直接降级，是把一次可恢复的失败变成一次不可解析的失败。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 13 暴露给用户 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 最后一级<span class="sep">/</span><span class="tag">所有自动手段用尽之后</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">最后一步，才是<em>让用户看见</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        不是一句「出错了」，而是一份交接单：我试过什么、走到哪一步、你接手时能从哪儿继续。
+      </p>
+
+      <div class="split" style="margin-top:18px">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>ERROR · 呈现给用户的样子</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="y">任务未完成</span>：修改 src/db.py 时连接超时
+
+<span class="c"># 已尝试的恢复（按顺序）</span>
+1. 静默重试 3 次 · 指数退避
+2. 降级到备用模型
+3. 压缩上下文后重发        <span class="g">✓</span>
+4. 跨厂商接管              <span class="c">✗</span>
+
+<span class="c"># 建议的下一步</span>
+- 文件较大，可拆成两次编辑
+- 或先只读，产出一份补丁</div>
+          </div>
+        </div>
+
+        <ul class="list reveal" style="--d:.3s">
+          <li><b>位置。</b>明确停在第几步，而不是笼统的「失败了」——用户才知道该从哪儿重来。</li>
+          <li><b>动作。</b>列出已经试过的恢复路径，避免用户重复你已经做过的事，也避免他误以为你没试。</li>
+          <li><b>出口。</b>至少给一条可执行的下一步：拆小任务、换模式、只读产出补丁。</li>
+        </ul>
+      </div>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>前两级对用户完全不可见。</b>这不是体验打磨，而是「恢复期间扣留错误」这条工程纪律的直接结果——
+        下一页把它讲成一条通用原则。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 14 工具层错误 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 工具层<span class="sep">/</span><span class="tag">错误变成模型的输入</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">工具层错误<em>不终止会话</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        幻觉调用、参数不合法、执行抛异常——这些错误若抛给用户，任务就死在这里；
+        喂回给模型，下一轮还有机会自己改。
+      </p>
+
+      <div class="split" style="margin-top:16px">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>TOOL RESULT · 错误也是结果</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 模型幻觉调用了一个不存在的工具</span>
+<span class="v">工具返回</span> {
+  "ok": false,
+  "error": "tool_not_found",
+  "tool": "read_dir",
+  "available": ["read","write","edit",
+                "glob","grep","bash"]
+}
+
+<span class="c"># 它和正常结果没有区别</span>
+<span class="c"># 只是 content 里的一段 JSON</span></div>
+          </div>
+        </div>
+
+        <ul class="list reveal" style="--d:.3s">
+          <li><b>幻觉调用。</b>收到「工具不存在」的结构化结果，并附上真实可用的工具清单——它下一轮就知道该用哪个。</li>
+          <li><b>参数校验失败。</b>错误里带上输入约束：哪个字段、什么类型、取值范围。只说「参数错误」等于没说。</li>
+          <li><b>畸形参数。</b>本该是对象却给了字符串，这类在执行前先做程序化修复，修不好才作为错误返回。</li>
+        </ul>
+      </div>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>这是「反馈越结构化越好」的直接应用：</b>喂回的错误越具体，模型自我纠正的成功率越高；
+        一句「调用失败」，只会让它把同一个错误再犯一次。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 15 恢复循环时间轴 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 核心原则<span class="sep">/</span><span class="tag">边界是整个恢复循环</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">错误处理的边界<em>不是单次请求</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        是整个恢复循环。在确认无法恢复之前，中间错误不该让消费者看见——无论是用户，还是订阅事件的下游系统。
+      </p>
+
+      <div class="reveal" style="--d:.22s;margin-top:14px">
+        <svg viewBox="0 0 1124 272" style="width:100%;height:auto;overflow:visible">
+          <defs>
+            <marker id="rv5b1a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#4fe3ff"/></marker>
+            <marker id="rv5b1b" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#ffb46b"/></marker>
+          </defs>
+
+          <path d="M208 92 L208 50 L800 50 L800 92" fill="none"
+                stroke="rgba(79,227,255,.35)" stroke-width="1" stroke-dasharray="4 6"/>
+          <text x="504" y="40" class="node-sub" fill="#4fe3ff" font-size="11"
+                text-anchor="middle">恢复期间：错误全部扣留，不向上暴露</text>
+
+          <rect x="0" y="100" width="176" height="62" rx="10" fill="#0a1120" stroke="rgba(140,170,220,.25)"/>
+          <text x="18" y="126" class="node-label" fill="#cfe0ff" font-size="12">错误发生</text>
+          <text x="18" y="146" class="node-sub" font-size="11">429 / 超时 / 截断</text>
+
+          <rect x="208" y="100" width="176" height="62" rx="10" fill="#0a1120" stroke="rgba(79,227,255,.45)"/>
+          <text x="226" y="126" class="node-label" fill="#4fe3ff" font-size="12">静默重试</text>
+          <text x="226" y="146" class="node-sub" font-size="11">退避 + 抖动</text>
+
+          <rect x="416" y="100" width="176" height="62" rx="10" fill="#0a1120" stroke="rgba(79,227,255,.45)"/>
+          <text x="434" y="126" class="node-label" fill="#4fe3ff" font-size="12">降级 · 接续</text>
+          <text x="434" y="146" class="node-sub" font-size="11">改请求再试</text>
+
+          <rect x="624" y="100" width="176" height="62" rx="10" fill="#0a1120" stroke="rgba(79,227,255,.45)"/>
+          <text x="642" y="126" class="node-label" fill="#4fe3ff" font-size="12">跨厂商接管</text>
+          <text x="642" y="146" class="node-sub" font-size="11">换一家跑完</text>
+
+          <rect x="856" y="54" width="264" height="64" rx="10" fill="rgba(79,227,255,.07)" stroke="rgba(79,227,255,.45)"/>
+          <text x="874" y="80" class="node-label" fill="#4fe3ff" font-size="12">恢复成功</text>
+          <text x="874" y="100" class="node-sub" font-size="11">消费者毫无感知</text>
+
+          <rect x="856" y="170" width="264" height="64" rx="10" fill="rgba(255,180,107,.07)" stroke="rgba(255,180,107,.4)"/>
+          <text x="874" y="196" class="node-label" fill="#ffb46b" font-size="12">恢复失败</text>
+          <text x="874" y="216" class="node-sub" font-size="11">一次性呈现完整错误</text>
+
+          <path d="M176 131 L202 131" fill="none" stroke="#4fe3ff" stroke-width="1.1" marker-end="url(#rv5b1a)"/>
+          <path d="M384 131 L410 131" fill="none" stroke="#4fe3ff" stroke-width="1.1" marker-end="url(#rv5b1a)"/>
+          <path d="M592 131 L618 131" fill="none" stroke="#4fe3ff" stroke-width="1.1" marker-end="url(#rv5b1a)"/>
+          <path d="M800 131 C824 131 828 86 850 86" fill="none" stroke="#4fe3ff" stroke-width="1.1" marker-end="url(#rv5b1a)"/>
+          <path d="M800 131 C824 131 828 202 850 202" fill="none" stroke="#ffb46b" stroke-width="1.1" marker-end="url(#rv5b1b)"/>
+
+          <text x="0" y="256" class="node-sub" fill="#7d8fae" font-size="11">消费者只看见两端：要么什么都没有发生，要么一条说清楚了的错误。</text>
+        </svg>
+      </div>
+
+      <div class="note reveal" style="--d:.4s">
+        <b>这就是第一章那条纠正原则的工程化：</b>在确认无法恢复之前，不暴露中间态。
+        恢复成功，消费者毫无感知；全部失败，才统一呈现一次。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 16 接管：文字与凭证 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 跨厂商接管<span class="sep">/</span><span class="tag">把没跑完的轨迹交给另一家</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">能带走的是文字，<em>带不走的是凭证</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        主模型持续不可用时，要换一家把这条轨迹接着跑完。障碍不在接口地址，
+        而在轨迹里有一部分东西<strong>只属于原厂商</strong>。
+      </p>
+
+      <div class="split" style="margin-top:16px">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>THOUGHT · 一段思考的两个部分</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="y">[thought]</span>
+  text       「先读 package.json 看脚本」
+  signature   厂商签发的凭证   <span class="c">✗ 换家即失效</span>
+
+<span class="y">[tool_call]</span>
+  name       read
+  args       {"path": "package.json"}
+
+<span class="y">[tool_result]</span>
+  ref        call #1
+
+<span class="c"># 工具调用：结构不同，语义一致</span>
+<span class="c"># 按目标厂商重新渲染即可</span></div>
+          </div>
+        </div>
+
+        <ul class="list reveal" style="--d:.3s">
+          <li><b>工具调用好办。</b>各家字段名不同、嵌套不同，但「调了什么、参数是什么」的语义一致，重渲染就行。</li>
+          <li><b>难办的是思考。</b>它由可读的文字与厂商附上的凭证构成——凭证用来证明这段思考确实出自它自己。</li>
+          <li><b>换一家，文字照读，凭证作废。</b>这就是接管的可行边界：搬得动的是内容，搬不动的是身份。</li>
+        </ul>
+      </div>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>一句话记住：</b>跨厂商接管的边界，就是「可移植的文字」与「不可移植的凭证」之间那条线。
+        后面所有的工程动作，都是在这条线的两侧做取舍。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 17 凭证要求各家不同 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 凭证<span class="sep">/</span><span class="tag">三家三种态度</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">各家要求不同，<em>方案按最严的一端设计</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        从「根本不校验」到「拒绝一切非自己签发的」，中间还有把凭证挂在工具调用上的——同一份轨迹，三种反应。
+      </p>
+
+      <table class="tbl reveal" style="--d:.2s">
+        <thead>
+          <tr><th style="width:150px">接收端</th><th style="width:430px">对凭证的态度</th><th>你的对策</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cy">宽松</td>
+            <td>不做校验，思考与凭证都照收</td>
+            <td>直传能过，但别把它当成通用方案</td>
+          </tr>
+          <tr>
+            <td class="vi">中等</td>
+            <td>校验签发方，外来凭证一律不认</td>
+            <td>丢弃凭证，文字以普通内容身份带入</td>
+          </tr>
+          <tr>
+            <td class="am">严格</td>
+            <td>凭证还挂在工具调用上，删思考不管用</td>
+            <td>把历史调用改写成文字叙述，只求能接着跑</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="lede reveal" style="--d:.32s;margin-top:24px;max-width:1000px">
+        所以「把思考删干净就安全了」这条看似稳妥的策略，在严格的一端反而通不过——
+        <span class="hl">它删的是文字，凭证还在调用上。</span>
+      </p>
+
+      <div class="note reveal" style="--d:.4s">
+        <b>退路要提前想好：</b>历史工具调用改写成文字叙述后，模型不再把它当作真正调用过的工具，
+        但它至少能接着往下跑——这就是「降级到能跑」，而不是「保证无损」。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 18 中立轨迹 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 中立格式<span class="sep">/</span><span class="tag">可移植的留下，不可移植的标出来</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">轨迹不该按<em>任何一家的接口格式</em>存储</h2>
+      <p class="lede reveal" style="--d:.14s">
+        既然换厂商时必然要重写一遍，不如一开始就存成中立的——四种字段，一条原则。
+      </p>
+
+      <div class="split" style="margin-top:14px">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>NEUTRAL · 一条中立记录</div>
+          <div class="spec-body">
+            <div class="spec-code">{
+  "role": "assistant",
+  "thought": {
+    "text": "先读 package.json",
+    "sig":  null        <span class="c"># 切换时丢弃</span>
+  },
+  "calls": [
+    {"name": "read",
+     "args": {"path": "package.json"}}
+  ]
+}
+
+<span class="c"># 标识符在渲染成请求时才生成</span></div>
+          </div>
+        </div>
+
+        <ul class="list reveal" style="--d:.3s">
+          <li><b>思考拆两半。</b>文字是可移植的，凭证不是——存的时候分开，切换时只丢后半。</li>
+          <li><b>调用只记名称与参数。</b>不记厂商的 call id，标识符在渲染成具体请求时按目标厂商重新生成。</li>
+          <li><b>文字当普通内容带入。</b>不塞回目标厂商放思考的位置——那不是它的思考，它会拒绝。</li>
+          <li><b>摘要本来就是副本。</b>厂商返回的思考摘要，正是为这种场合准备的可移植版本，留着即可。</li>
+        </ul>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>它的价值不止故障切换：</b>第七章的评估重放、第八章的训练样本构造、第九章的经验提取，
+        依赖的都是同一份产物——中立格式是这套系统的公共底座。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 19 实验 5-1 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 实验 5-1<span class="sep">/</span><span class="tag">难度 ★★★</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">实验 5-1：<em>换一家，把没跑完的轨迹接着跑</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        目标：验证中立格式能否让跑到一半的 Agent 换一家接着跑完，并量化「原样直传」与「一刀切剥光」的代价。
+      </p>
+
+      <div class="cards c3" style="margin-top:26px">
+        <div class="card reveal" style="--d:.2s;padding:20px 18px">
+          <div class="k"><span>01</span><b>设置</b></div>
+          <h3>在哪儿切换<small>SETUP</small></h3>
+          <p>任务需多轮工具调用；中途注入连续的限流与过载，熔断后切换。选三家线上格式互不相同的厂商，两两切换。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:20px 18px">
+          <div class="k"><span>02</span><b>对照</b></div>
+          <h3>三种做法<small>METHODS</small></h3>
+          <p><b>直传</b>原样搬进新结构；<b>剥离</b>删掉全部思考与凭证；<b>中立</b>丢凭证、留文字，标识符按目标重渲染。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s;padding:20px 18px">
+          <div class="k"><span>03</span><b>验收</b></div>
+          <h3>拿什么比<small>METRICS</small></h3>
+          <p>首个请求留原始响应，失败必须是厂商真实报错。比完成率、切换后重复调用同一工具的次数、额外轮数与 token。</p>
+        </div>
+      </div>
+
+      <p class="lede reveal" style="--d:.38s;margin-top:24px;max-width:1010px">
+        三种做法的差别只在<b>「换手时丢掉什么」</b>：直传丢零样、剥离丢全部、中立只丢凭证。
+        其余变量——任务、断点位置、目标厂商——必须完全一致，否则数字没有意义。
+      </p>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>验收里有一条逆向要求：</b>若中立做法在「重复调用」上并未优于剥离，同样如实记录。
+        实验的职责是给数，不是证明观点。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 20 实验 5-2 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 实验 5-2<span class="sep">/</span><span class="tag">难度 ★★</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">实验 5-2：<em>输出断在一半，怎么接</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        目标：比较「整轮重发」与「以半截输出为前缀续写」，在成本、正确性与副作用上差多少。
+      </p>
+
+      <div class="cards c3" style="margin-top:26px">
+        <div class="card reveal" style="--d:.2s;padding:20px 18px">
+          <div class="k"><span>01</span><b>断点</b></div>
+          <h3>切在三个位置<small>BREAKPOINTS</small></h3>
+          <p>在流式响应上分别切断：思考中途、正文中途、工具调用参数中途。三个位置坏的形状完全不同。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:20px 18px">
+          <div class="k"><span>02</span><b>三种接法</b></div>
+          <h3>怎么续<small>RECOVERIES</small></h3>
+          <p>丢弃整轮重发；半截作为末尾 assistant 消息要求接着写；追加元指令说明从断点继续。半截调用要先转成文字再补完。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s;padding:20px 18px">
+          <div class="k"><span>03</span><b>验收</b></div>
+          <h3>记四个数<small>METRICS</small></h3>
+          <p>恢复成功率、相对整轮重发省下的输出 token、补完后参数的合法率与语义正确率、重复副作用次数。</p>
+        </div>
+      </div>
+
+      <p class="lede reveal" style="--d:.38s;margin-top:24px;max-width:1010px">
+        前三项是成本账，第四项是安全账：<span class="hl">省下来的 token 一旦换来一次重复执行，就是负收益。</span>
+      </p>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>判分点在最后两项：</b>合法不等于正确——拼接处常多出空白或重复字符；
+        而重复副作用，一次就够毁掉整轮结果。续写前按「工具名 + 参数」指纹去重。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 21 熔断阈值 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 熔断<span class="sep">/</span><span class="tag">每条恢复路径都要有上限</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">阈值从生产数据来，<em>不靠拍脑袋</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        恢复机制自己也会失效，所以每条路径都要封顶。上限设成几，不该由直觉决定。
+      </p>
+
+      <div class="cards c3" style="margin-top:24px">
+        <div class="card reveal" style="--d:.2s;padding:18px">
+          <div class="k"><span>01</span><b>上下文</b></div>
+          <h3>压缩封顶<small>COMPACTION</small></h3>
+          <p>连续失败若干次就<b>放弃压缩</b>，改用硬截断。继续压缩只会把上下文越压越坏。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:18px">
+          <div class="k"><span>02</span><b>权限</b></div>
+          <h3>分类封顶<small>PERMISSION</small></h3>
+          <p>权限分类连续失败，就<b>回退到人工询问</b>。分类器不确定时，问人比猜便宜。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s;padding:18px">
+          <div class="k"><span>03</span><b>输出</b></div>
+          <h3>接续封顶<small>CONTINUATION</small></h3>
+          <p>续写最多尝试<b>固定轮数</b>，到点停手，把半截结果交出去。续到第 N 轮还断，说明接续解不了。</p>
+        </div>
+      </div>
+
+      <div class="card sum reveal" style="--d:.38s;margin-top:13px;padding:16px 20px">
+        <div class="k"><span>THRESHOLD</span><b>这个「3」从哪来</b></div>
+        <h3 style="font-size:30px;margin-bottom:2px">连续 3 次<small style="display:inline;margin-left:10px">CLAUDE CODE · 上下文压缩熔断</small></h3>
+        <p>真实会话统计：曾有一个会话在这条路径上连续失败三千余次；这类无效重试每天在全球浪费约 <b>25 万次</b> API 调用，逾千个会话出现过 50 次以上连续失败。</p>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>3 次是拐点，不是最优解：</b>它落在「绝大多数故障在此之前已恢复」与「继续重试基本无望」之间——
+        有数据支撑的解，比拍脑袋的解更容易在下一次事故里被辩护。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 22 死亡螺旋与全局终止 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 终止<span class="sep">/</span><span class="tag">单点熔断之外，还有连锁</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">死亡螺旋：<em>恢复逻辑自己也会故障</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        单点熔断管一条路径的失败次数；死亡螺旋管的是路径之间——恢复动作触发的错误，又去触发同一个恢复动作。
+      </p>
+
+      <div class="split" style="margin-top:14px">
+        <div class="steps">
+          <div class="step reveal" style="--d:.2s">
+            <div class="no">01</div>
+            <div><h4>上下文溢出，Agent 停止</h4><p>这一轮已经跑不动了。</p></div>
+          </div>
+          <div class="step reveal" style="--d:.25s">
+            <div class="no">02</div>
+            <div><h4>停止钩子被触发</h4><p>「结束时自动提交代码」——结束时自动执行的清理逻辑。</p></div>
+          </div>
+          <div class="step reveal" style="--d:.3s">
+            <div class="no">03</div>
+            <div><h4>钩子调用 LLM 写 commit message</h4><p>本来只是补一句说明。</p></div>
+          </div>
+          <div class="step reveal" style="--d:.35s">
+            <div class="no">04</div>
+            <div><h4>又撑爆上下文，再次触发钩子</h4><p><b>回到第 01 步。</b>这一次没人叫停。</p></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card reveal" style="--d:.3s;padding:18px">
+            <div class="k"><span>01</span><b>切断源头</b></div>
+            <h3>错误路径上禁用副作用</h3>
+            <p>一切会再次调用模型的逻辑都停掉。宁可丢掉一次辅助功能，比如自动记忆提取——它不是这轮任务的一部分。</p>
+          </div>
+          <div class="card reveal" style="--d:.36s;padding:18px;margin-top:12px">
+            <div class="k"><span>02</span><b>打断残余</b></div>
+            <h3>递归深度计数器</h3>
+            <p>检测并打断残余的连锁：已经在恢复里了，就不要再进入恢复。深度是唯一不会说谎的信号。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>最后还有一层全局兜底：</b>最大迭代轮数、会话预算上限、连续失败超阈值时升级人工干预——
+        单点熔断管单条路径，全局条件管整个会话。
+      </div>
+    </div>
+  </section>

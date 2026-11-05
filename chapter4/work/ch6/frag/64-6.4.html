@@ -1,0 +1,347 @@
+  <!-- ========== 6.4 分隔页 ========== -->
+  <section class="slide part" data-sec="6.4" data-tier="b">
+    <div class="ghost">6.4</div>
+    <div class="slide-inner">
+      <div class="part-num reveal" style="--d:.04s">SECTION 06.4</div>
+      <h2 class="reveal" style="--d:.1s">Computer Use<br><em>把闭环搬上屏幕</em></h2>
+      <p class="sub reveal" style="--d:.16s">
+        语音把时机轴压到毫秒，观察仍是一维的声音流；屏幕是二维的——<br>
+        问题从「何时开口」变成「下一步<span style="white-space:nowrap">点哪里</span>」，以及点完之后现实是否还符合计划。
+      </p>
+
+      <div class="track reveal" style="--d:.24s;margin-top:52px;font-size:11px">
+        <span class="on">6.4.1 动作空间</span><span>·</span>
+        <span>6.4.2 视觉定位</span><span>·</span>
+        <span>6.4.3 观察接口</span><span>·</span>
+        <span>6.4.4 世界模型</span><span>·</span>
+        <span>6.4.5 移动端</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.4 · 循环四步 ========== -->
+  <section class="slide" data-sec="6.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.4 · 循环<span class="sep">/</span><span class="tag">看懂界面不等于完成任务</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">循环只有四步，<em>难在第四步之后</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        截图、思考、执行、再截图——四步都能用现成组件拼出来，没有一处需要新发明。<br>
+        <strong>难的是每一次点完，都要重新确认现实是否仍符合计划。</strong>
+      </p>
+
+      <div class="steps" style="margin-top:30px">
+        <div class="step reveal" style="--d:.2s">
+          <div class="no">01</div>
+          <div><h4>观察</h4><p>截取当前屏幕，整屏像素就是这一轮的输入。</p></div>
+        </div>
+        <div class="step reveal" style="--d:.26s">
+          <div class="no">02</div>
+          <div><h4>思考</h4><p>多模态模型接住截图和任务指令，输出一段思考和一个具体动作。</p></div>
+        </div>
+        <div class="step reveal" style="--d:.32s">
+          <div class="no">03</div>
+          <div><h4>执行</h4><p>执行层落到真实环境：移动鼠标、点击、输入文字。</p></div>
+        </div>
+        <div class="step reveal" style="--d:.38s">
+          <div class="no">04</div>
+          <div><h4>再观察</h4><p>等界面响应后重新截图进入下一轮——<b>这一步最容易被省掉，也最不能省。</b></p></div>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>看懂 ≠ 完成：</b>「看懂界面」可以用一次截图问答测出来；<br>
+        「完成任务」要求把理解和动作放进同一个闭环，处理页面加载、状态变化、误操作和不可逆后果。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.4 · 三个设计维度 ========== -->
+  <section class="slide" data-sec="6.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.4 · 设计维度<span class="sep">/</span><span class="tag">能做什么 · 点哪里 · 怎么想到</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">这个循环卡住的地方只有三处，<em>每一处都能单独换</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        动作空间回答「它能做什么」，视觉定位回答「它点哪里」，模型架构回答「它怎么想到」。<br>
+        <strong>前两个在 Harness 里改，换模型都不用动；第三个才是模型供应商的事。</strong>
+      </p>
+
+      <div class="cards c3">
+        <div class="card reveal" style="--d:.22s">
+          <div class="k"><span>01</span><b>动作空间</b></div>
+          <h3>它能做什么</h3>
+          <p>鼠标、键盘、终端、文件编辑——决定这只手伸到像素、系统还是文件这一层。少了终端，它只能在一个界面里打转。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.28s">
+          <div class="k"><span>02</span><b>视觉定位</b></div>
+          <h3>它点在哪里</h3>
+          <p>把「搜索框」这句话，落成一个可点击的编号或坐标。本节一半篇幅花在这里，因为绝大多数失败都发生在这一步。</p>
+        </div>
+        <div class="card reveal" style="--d:.34s">
+          <div class="k"><span>03</span><b>模型架构</b></div>
+          <h3>它怎么想到</h3>
+          <p>从截图直接生成动作，是训练出来的能力。工程只能约束输出格式，补不了那个「看一眼就知道点哪」的判断。</p>
+        </div>
+      </div>
+
+      <div class="note cy reveal" style="--d:.44s">
+        <b>阅读顺序：</b>6.4.1 动作 → 6.4.2 定位 → 6.4.3、6.4.4 回头改循环本身 → 6.4.5 换个战场。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.4.1 动作空间 ========== -->
+  <section class="slide" data-sec="6.4.1" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.4.1 · 动作空间<span class="sep">/</span><span class="tag">三类工具，一个循环</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">这三类工具是参考实现，<em>不是必须遵守的协议</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        只要 Harness 能把同样的截图、动作约束和执行结果，翻译成目标模型支持的消息与结构化输出，<br>
+        <strong>Claude、开放权重视觉模型、自托管端点都能驱动同一个循环。</strong>
+      </p>
+
+      <table class="tbl" style="margin-top:34px">
+        <tr><th>工具</th><th>作用面</th><th>具体能力</th><th>参数 / 边界</th></tr>
+        <tr><td>鼠标 · computer</td><td class="cy">像素</td><td>移动 mouse_move、左/右/中键、双击三击、拖拽 left_click_drag、按下与松开</td><td class="mu">坐标即截图坐标系，无中间抽象</td></tr>
+        <tr><td>键盘 · computer</td><td class="cy">像素</td><td>逐字输入 type、组合键 key（如 Ctrl+C）、长按 hold_key</td><td class="am">type 每字符间隔 12ms，模拟真实打字</td></tr>
+        <tr><td>滚动与感知 · computer</td><td class="cy">像素</td><td>四向 scroll（可配合修饰键）；screenshot、cursor_position、wait</td><td class="mu">wait 专门用来等页面加载完</td></tr>
+        <tr><td>终端 · bash</td><td class="vi">系统</td><td>持久的 bash 会话，多次调用之间保持环境状态</td><td class="am">120 秒超时；靠哨兵字符串判断命令是否结束</td></tr>
+        <tr><td>文件 · str_replace_editor</td><td class="vi">文件</td><td>view / create / str_replace / insert / undo，按字符串匹配定位</td><td class="mu">比整文件覆盖精确，不容易误改别处</td></tr>
+      </table>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>实验 6-8 两条路径：</b>Anthropic Computer Use Demo 把完整 Ubuntu 桌面打进容器；
+        本书示例用 Qwen3-VL 32B 驱动 browser-use，可走 OpenRouter 或自托管 vLLM/SGLang。同一个循环，两种驱动。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.4.2 三条定位路线 ========== -->
+  <section class="slide" data-sec="6.4.2" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.4.2 · Grounding<span class="sep">/</span><span class="tag">选择题比填空题好答</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">把定位变成选择题，<em>准确率先上一个台阶</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        开放式的那句<span style="white-space:nowrap">「在截图中找到按钮并预测坐标」</span>，被换成封闭式的一句「从已标注的元素里选一个」。<br>
+        <strong>代价是：选项必须先被列出来，而且全都要塞进上下文。</strong>
+      </p>
+
+      <table class="tbl" style="margin-top:34px">
+        <tr><th>路线</th><th>怎么定位</th><th>什么时候用</th><th>代价</th></tr>
+        <tr><td>视觉标注 · SoM</td><td>分割模型（SAM、SEEM）在像素上切出候选区域，叠编号，模型只报编号</td><td class="cy">原生桌面软件、游戏、Canvas/WebGL——拿不到任何结构</td><td class="am">分割会漏检误检；标注图更费 token</td></tr>
+        <tr><td>结构化元素索引</td><td>读 DOM 与 Accessibility Tree，枚举可交互元素并编号</td><td class="cy">网页优先；桌面应用有无障碍树时同样适用</td><td class="am">标注信息全量进上下文，并不省 token</td></tr>
+        <tr><td>纯坐标预测</td><td>模型直接看图报坐标，SeeClick 与 Claude computer use 走这条</td><td class="vi">模型做过 GUI 定位训练，想省掉标注这一步</td><td class="am">依赖训练分辨率，换尺寸就系统性偏移</td></tr>
+      </table>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>选择顺序：</b>结构化信息可得时先用 DOM 索引；不可得时，通用模型走视觉标注，做过 GUI 定位训练的走坐标预测。
+        两者在小元素和密集界面上，精度都仍有差距。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.4.2 SoM 与结构化索引 ========== -->
+  <section class="slide" data-sec="6.4.2" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.4.2 · 结构化索引<span class="sep">/</span><span class="tag">标注来源从像素换成结构</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">DOM 拿得到时，<em>别让它去猜坐标</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        SoM 用分割模型在像素上切区域；网页在渲染之前就已经有了元素树。<br>
+        <strong>同一套「标注—编号—选一个」的思想，只是不用再猜。</strong>
+      </p>
+
+      <div class="split" style="margin-top:28px">
+        <div class="steps" style="margin-top:0">
+          <div class="step reveal" style="--d:.2s">
+            <div class="no">01</div>
+            <div><h4>取结构</h4><p>通过 CDP 拿到网页的 DOM 树与无障碍信息。</p></div>
+          </div>
+          <div class="step reveal" style="--d:.26s">
+            <div class="no">02</div>
+            <div><h4>筛可交互</h4><p>自动挑出按钮、输入框、链接这些能点的元素。</p></div>
+          </div>
+          <div class="step reveal" style="--d:.32s">
+            <div class="no">03</div>
+            <div><h4>编号画框</h4><p>每个元素一个唯一 ID，并在截图上画出边界框。</p></div>
+          </div>
+          <div class="step reveal" style="--d:.38s">
+            <div class="no">04</div>
+            <div><h4>生成清单</h4><p>同时输出文本列表，说明每个 ID 对应哪个元素。</p></div>
+          </div>
+        </div>
+
+        <div class="spec reveal" style="--d:.3s">
+          <div class="spec-h"><span class="b"></span>prompt · browser-use</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c">Screenshot: 图上已标注 [1] [2] [3] [4]</span>
+
+<span class="w">Elements:</span>
+<span class="g">[1]</span> <span class="w">&lt;input</span> <span class="y">type</span>=<span class="c">"text"</span> <span class="y">placeholder</span>=<span class="c">"Search"</span> <span class="w">/&gt;</span>
+<span class="g">[2]</span> <span class="w">&lt;button</span> <span class="y">id</span>=<span class="c">"submit-btn"</span> <span class="y">aria-label</span>=<span class="c">"Submit form"</span> <span class="w">/&gt;</span>
+<span class="g">[3]</span> <span class="w">&lt;input</span> <span class="y">type</span>=<span class="c">"text"</span> <span class="y">placeholder</span>=<span class="c">"Enter your name"</span> <span class="w">/&gt;</span>
+<span class="g">[4]</span> <span class="w">&lt;a</span> <span class="y">href</span>=<span class="c">"/docs"</span> <span class="y">aria-label</span>=<span class="c">"Documentation"</span> <span class="w">/&gt;</span>
+
+<span class="c">→ 模型只回一个 [2]，系统取中心坐标点击</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>不省 token，但稳：</b>所有标注都要发进上下文；换来的是定位稳定，也免掉了分割模型那层漏检与误检。
+        实验 6-9 的 browser-use 就开这个模式，每次决策前存一张带框截图。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.4.2 坐标预测与分辨率 ========== -->
+  <section class="slide" data-sec="6.4.2" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.4.2 · 坐标预测<span class="sep">/</span><span class="tag">模型认的是分辨率，不是像素</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">坐标算错，<em>多半是尺子不一样</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        模型对坐标的理解，绑死在训练时用的那几档分辨率上。<br>
+        <strong>输入尺寸一变，它报的坐标就整体偏移——不是算错，是换算没做。</strong>
+      </p>
+
+      <div class="split" style="margin-top:28px">
+        <div class="spec reveal" style="--d:.22s">
+          <div class="spec-h"><span class="b"></span>coordinate mapping · 双向缩放</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># Claude 训练覆盖的三档</span>
+XGA <span class="y">1024×768</span> · WXGA <span class="y">1280×800</span> · FWXGA <span class="y">1366×768</span>
+
+<span class="c"># 真实屏幕 2560×1440，宽高比 16:9</span>
+screen <span class="w">2560×1440</span>
+  → 挑 FWXGA <span class="g">1366×768</span>（同为 16:9）
+  → 等比缩放后送入模型
+
+model <span class="g">click (683, 384)</span>
+  x: 683 × 2560 / 1366 <span class="v">≈ 1280</span>
+  y: 384 × 1440 / 768  <span class="v">= 720</span>
+real  <span class="v">click (1280, 720)</span></div>
+          </div>
+        </div>
+
+        <div class="list reveal" style="--d:.34s">
+          <li><b>按宽高比选档，不按面积。</b>2560×1440 选 FWXGA，是因为三者里只有它同样是 16:9，不是因为它最大或最小。</li>
+          <li><b>不能非等比拉伸。</b>把 16:9 硬塞进 4:3 的 1024×768，画面被横向压扁，坐标判断跟着一起偏。</li>
+          <li><b>双向缩放做在工具层。</b>进模型前缩、出模型后反算，模型自始至终只看见 1366×768。</li>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.4.3 AOI 观察接口 ========== -->
+  <section class="slide" data-sec="6.4.3" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.4.3 · 观察接口<span class="sep">/</span><span class="tag">AOI：Agent–电脑观察接口</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">屏幕不会静止，<em>该改的是观察接口</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        每 3–5 秒睁一次眼、而且没有耳朵的 Agent，对「两帧之间发生的事」既看不见也听不到。<br>
+        <strong>动作接口没有错——它还是点击和输入；错的是把连续观察压成了两张相隔很久的图。</strong>
+      </p>
+
+      <div class="cards c3">
+        <div class="card reveal" style="--d:.22s">
+          <div class="k"><span>01</span><b>关键帧</b></div>
+          <h3>只在有意义时截图</h3>
+          <p>用小模型判断屏幕是否发生了显著变化，变了才截。变化频繁时每秒 1 次，效果已经不错。</p>
+        </div>
+        <div class="card reveal" style="--d:.28s">
+          <div class="k"><span>02</span><b>音量门控</b></div>
+          <h3>有声音才转写</h3>
+          <p>检测到声音才调语音识别，把识别出的文字放进上下文——Agent 从此有耳朵。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.34s">
+          <div class="k"><span>03</span><b>文字压缩</b></div>
+          <h3>截图换成一句话</h3>
+          <p>让模型把截图描述成一句话。原图后来被清出上下文，这句还在，多模态历史就这样压成了文本。</p>
+        </div>
+      </div>
+
+      <div class="note cy reveal" style="--d:.44s">
+        <b>换的是哪一层：</b>核心思想是把连续的环境观察，切成模型便于处理的离散事件。
+        动作空间、坐标映射一个字没改，循环的输入端被重新设计了一遍。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.4.4 世界模型 ========== -->
+  <section class="slide" data-sec="6.4.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.4.4 · 世界模型<span class="sep">/</span><span class="tag">先预测，再点击</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">让它在点之前，<em>先猜一遍后果</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        观察接口解决的是「屏幕中间发生了什么」，它不解决串行循环本身的慢。<br>
+        <strong>人类点之前已经预判了后果；Agent 每点一次，都要重新看一遍。</strong>
+      </p>
+
+      <div class="split" style="margin-top:26px">
+        <div class="spec reveal" style="--d:.22s">
+          <div class="spec-h"><span class="b"></span>world model · 状态转移</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 桌面状态 ≠ 一张像素图</span>
+state = 窗口 · 焦点 · 滚动位置 · 输入框内容
+      · 加载状态 · 权限 · 网络返回
+act   = click | type | scroll | drag | wait
+
+state + act  ──&gt;  <span class="g">next_state</span>
+                 <span class="c">(表示，不是截图)</span>
+
+一致 → <span class="v">沿原计划继续</span>（推测执行）
+偏离 → <span class="y">停下，重新观察和规划</span></div>
+          </div>
+        </div>
+
+        <div class="list reveal" style="--d:.34s">
+          <li><b>推测执行：</b>预测与预期一致就继续走，只有偏离才停下来重看。省掉的是每一步的重新观察。</li>
+          <li><b>要的是可检查的差异：</b>「文件树多了一个文件、编辑器标题变了」，不是一张逼真的未来截图。</li>
+          <li><b>先预演不可逆动作：</b>删文件前在隔离的虚拟桌面里预测确认框，必要时先问人。</li>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>OSWorld-Human 的提醒：</b>任务即使最终成功，Agent 的操作步骤仍明显多于人类、等待也更长。
+        准确率达到人类水平，不等于已经足够实用。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.4.5 移动端 ========== -->
+  <section class="slide" data-sec="6.4.5" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.4.5 · 移动端<span class="sep">/</span><span class="tag">技术能解，生态不解</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">移动端难的不是手势，<em>是有人不想让它点</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        桌面上的对手是分辨率、加载和误操作；搬到手机上，对手换成了平台的收入结构。<br>
+        <strong>技术差异可以一个个填，商业冲突一个都填不了。</strong>
+      </p>
+
+      <div class="cards c2">
+        <div class="card reveal" style="--d:.2s">
+          <div class="k"><span>01</span><b>技术差异</b></div>
+          <h3>同一个 (x, y)，语义变了</h3>
+          <p>触摸没有「悬停」。它是单击、长按还是滑动的起点，得先用手势类型界定清楚，鼠标坐标那套语义在这里失效。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.26s">
+          <div class="k"><span>02</span><b>生态壁垒</b></div>
+          <h3>厂商试过，被封了</h3>
+          <p>手机厂商把 AI 助手接进消费级系统，让它代操作微信、淘宝、支付宝，很快遭遇平台限制。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s">
+          <div class="k"><span>03</span><b>技术差异</b></div>
+          <h3>读屏，而不是看图</h3>
+          <p>接 AccessibilityService 直接读界面元素、下发点击与输入，比截图识别稳。AndroidWorld 就在这个动作空间上评测。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.38s">
+          <div class="k"><span>04</span><b>生态壁垒</b></div>
+          <h3>变现链路被绕过</h3>
+          <p>AI 不看广告、不被推荐算法带走、也不冲动消费，直奔目标做完就走——每一次代操作都在侵蚀平台的收入根基。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>两种对抗：</b>CAPTCHA 是技术层面的，靠更好的模型可以一点点磨过去；
+        商业模式是结构性冲突，短期难以调和——这才是消费级落地真正卡住的地方。
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,16 @@
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+
+# 批量截图 / 调试截图产物：体积大，随时可用 shoot.sh 重新生成
+work/**/shots*/
+work/**/*.png
+
+# 本机会话记忆：会随机器不同而分叉，不跨机器同步
+.workbuddy/memory/
+
+# Python 缓存
+__pycache__/
+*.pyc

@@ -1,0 +1,3919 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第5章 Coding Agent 与通用 Agent · 5.1.1—5.1.6</title>
+<style>
+:root{
+  --bg:#05070c;
+  --ink:#e9f0ff;
+  --ink2:#a9b8d6;
+  --dim:#6a7a9a;
+  --cyan:#4fe3ff;
+  --violet:#8b7bff;
+  --amber:#ffb46b;
+  --rose:#ff7aa8;
+  --line:rgba(140,170,220,.14);
+  --line2:rgba(140,170,220,.07);
+  --mono:"Cascadia Code","SF Mono",ui-monospace,Consolas,"Roboto Mono",monospace;
+  --sans:"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:var(--bg)}
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  cursor:default;
+  user-select:none;
+}
+
+/* ---------- background layers ---------- */
+#bg{position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(1100px 700px at 74% 16%, rgba(79,227,255,.09), transparent 62%),
+    radial-gradient(900px 620px at 12% 86%, rgba(139,123,255,.11), transparent 62%),
+    radial-gradient(700px 500px at 50% 110%, rgba(255,180,107,.04), transparent 60%),
+    #05070c;
+}
+#grid{position:fixed;inset:0;z-index:0;opacity:.5;
+  background-image:
+    linear-gradient(rgba(120,160,220,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120,160,220,.05) 1px, transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(circle at 50% 42%, #000 20%, transparent 78%);
+  mask-image:radial-gradient(circle at 50% 42%, #000 20%, transparent 78%);
+}
+#vign{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(circle at 50% 50%, transparent 42%, rgba(0,0,0,.55) 100%);
+}
+
+/* ---------- stage ---------- */
+#stage{
+  position:fixed;left:50%;top:50%;
+  width:1280px;height:720px;
+  transform:translate(-50%,-50%) scale(var(--s,1));
+  transform-origin:center center;
+  z-index:2;
+  background:
+    radial-gradient(900px 520px at 62% 30%, rgba(30,50,90,.35), transparent 70%),
+    linear-gradient(160deg,#070b14 0%, #05070d 55%, #04060b 100%);
+  overflow:hidden;
+}
+#stage:before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(120,160,220,.032) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(120,160,220,.032) 1px,transparent 1px);
+  background-size:32px 32px;
+  -webkit-mask-image:radial-gradient(circle at 50% 40%,#000,transparent 88%);
+  mask-image:radial-gradient(circle at 50% 40%,#000,transparent 88%);
+}
+.frame{position:absolute;inset:14px;border:1px solid var(--line2);pointer-events:none;z-index:20}
+.frame:before,.frame:after,
+.frame i:before,.frame i:after{
+  content:"";position:absolute;width:14px;height:14px;border:1px solid rgba(79,227,255,.42);
+}
+.frame:before{left:-1px;top:-1px;border-right:0;border-bottom:0}
+.frame:after{right:-1px;top:-1px;border-left:0;border-bottom:0}
+.frame i:before{left:-1px;bottom:-1px;border-right:0;border-top:0}
+.frame i:after{right:-1px;bottom:-1px;border-left:0;border-top:0}
+
+.progress{position:absolute;top:0;left:0;height:2px;z-index:21;
+  background:linear-gradient(90deg,var(--cyan),var(--violet) 60%,var(--amber));
+  box-shadow:0 0 14px rgba(79,227,255,.6);
+  transition:width .5s cubic-bezier(.22,.61,.36,1);
+  width:3%;
+}
+
+/* ---------- slides ---------- */
+#slides{position:absolute;inset:0;z-index:5}
+.slide{
+  position:absolute;inset:0;
+  padding:58px 78px 106px 78px;
+  display:flex;flex-direction:column;justify-content:center;
+  opacity:0;transform:translateX(52px);
+  transition:opacity .5s ease, transform .62s cubic-bezier(.22,.61,.36,1);
+  pointer-events:none;
+}
+.slide.before{transform:translateX(-52px)}
+.slide.active{opacity:1;transform:none;pointer-events:auto;z-index:3}
+#slides.noanim .slide{transition:none!important}
+
+/* 左侧时间线脊 */
+.slide:before{
+  content:"";position:absolute;left:40px;top:58px;bottom:106px;width:1px;
+  background:linear-gradient(180deg,rgba(79,227,255,.45),rgba(139,123,255,.20) 40%,transparent 92%);
+  opacity:.65;
+}
+.slide:after{
+  content:"";position:absolute;left:37px;top:58px;width:7px;height:7px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 12px rgba(79,227,255,.9);
+}
+.s-cover:before,.s-cover:after,.s-end:before,.s-end:after{display:none}
+
+.reveal{opacity:0;transform:translateY(16px)}
+.slide.active .reveal{animation:rv .78s cubic-bezier(.16,.84,.44,1) forwards;animation-delay:var(--d,0s)}
+@keyframes rv{to{opacity:1;transform:none}}
+
+/* ---------- type ---------- */
+.chip{display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:18px}
+.chip .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);
+  box-shadow:0 0 10px var(--cyan),0 0 22px rgba(79,227,255,.6);
+  animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.8)}}
+.chip .sep{color:rgba(140,170,220,.4)}
+.chip .tag{color:var(--dim);letter-spacing:.1em}
+
+h2.h2{font-size:44px;line-height:1.2;font-weight:650;letter-spacing:-.012em;margin-bottom:14px;max-width:1050px}
+h2.h2 em{font-style:normal;
+  background:linear-gradient(100deg,var(--cyan),var(--violet) 76%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-size:15.5px;line-height:1.8;color:var(--ink2);max-width:840px;font-weight:350}
+.lede strong{color:var(--ink);font-weight:600}
+.lede .hl{color:var(--cyan);font-weight:500}
+.lede code,.mono-inline{font-family:var(--mono);font-size:.92em;color:var(--amber);
+  background:rgba(255,180,107,.08);padding:1px 6px;border-radius:4px}
+
+.slide-inner{width:100%}
+.split{display:grid;grid-template-columns:1.06fr .94fr;gap:46px;align-items:center;width:100%}
+.split.wide{grid-template-columns:1.28fr .72fr}
+
+/* ---------- cards ---------- */
+.cards{display:grid;gap:13px;margin-top:26px}
+.cards.c2{grid-template-columns:repeat(2,1fr)}
+.cards.c3{grid-template-columns:repeat(3,1fr)}
+.cards.c4{grid-template-columns:repeat(4,1fr)}
+.card{
+  position:relative;padding:17px 17px 15px;border-radius:12px;overflow:hidden;
+  border:1px solid var(--line);
+  background:linear-gradient(158deg,rgba(255,255,255,.05),rgba(255,255,255,.012) 62%);
+}
+.card:before{content:"";position:absolute;inset:0 0 auto 0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(79,227,255,.5),transparent);opacity:.85}
+.card .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--dim);
+  text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;gap:8px}
+.card .k b{color:var(--cyan);font-weight:500}
+.card h3{font-size:16px;font-weight:600;margin-bottom:6px;letter-spacing:.01em;line-height:1.35}
+.card h3 small{display:block;font-family:var(--mono);font-size:10.5px;font-weight:400;
+  color:var(--dim);letter-spacing:.08em;margin-top:3px}
+.card p{font-size:12.5px;line-height:1.62;color:var(--ink2);font-weight:350}
+.card p b{color:var(--ink);font-weight:600}
+.card .yr{font-family:var(--mono);font-size:10.5px;color:var(--amber);letter-spacing:.08em}
+.card.on{border-color:rgba(79,227,255,.32);background:linear-gradient(158deg,rgba(79,227,255,.09),rgba(255,255,255,.012) 65%)}
+.card.dim{opacity:.46}
+.card.sum{border-color:rgba(255,180,107,.3);background:linear-gradient(158deg,rgba(255,180,107,.09),rgba(255,255,255,.012) 65%)}
+.card.sum:before{background:linear-gradient(90deg,transparent,rgba(255,180,107,.55),transparent)}
+
+/* ---------- spec / terminal ---------- */
+.spec{border:1px solid var(--line);border-radius:13px;overflow:hidden;
+  background:linear-gradient(165deg,rgba(12,22,40,.9),rgba(6,10,20,.92));
+  box-shadow:0 24px 60px -30px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.05)}
+.spec-h{display:flex;align-items:center;gap:8px;padding:10px 15px;border-bottom:1px solid var(--line2);
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--dim);text-transform:uppercase}
+.spec-h .b{width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber)}
+.spec-body{padding:14px 16px 20px}
+.spec-code{font-family:var(--mono);font-size:11.5px;line-height:1.8;color:var(--ink2);white-space:pre}
+.spec-code .c{color:#5d6d8a}
+.spec-code .g{color:var(--cyan)}
+.spec-code .y{color:var(--amber)}
+.spec-code .v{color:#a89bff}
+.spec-code .w{color:var(--ink)}
+
+/* ---------- list ---------- */
+.list{list-style:none;display:flex;flex-direction:column;gap:11px}
+.list li{position:relative;padding-left:19px;font-size:13.6px;line-height:1.62;color:var(--ink2);font-weight:350}
+.list li:before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;
+  border:1px solid var(--cyan);transform:rotate(45deg);box-shadow:0 0 8px rgba(79,227,255,.45)}
+.list li b{color:var(--ink);font-weight:600}
+.list li i{font-style:normal;font-family:var(--mono);font-size:11.5px;color:var(--amber);letter-spacing:.04em}
+.list li em{font-style:normal;color:var(--cyan)}
+
+.note{margin-top:20px;padding:12px 16px;border-radius:9px;border-left:2px solid var(--amber);
+  background:linear-gradient(90deg,rgba(255,180,107,.10),rgba(255,180,107,.02));
+  font-size:13px;line-height:1.62;color:var(--ink2)}
+.note b{color:var(--amber);font-weight:600}
+.note.cy{border-left-color:var(--cyan);background:linear-gradient(90deg,rgba(79,227,255,.10),rgba(79,227,255,.02))}
+.note.cy b{color:var(--cyan)}
+
+/* ---------- table ---------- */
+.tbl{width:100%;border-collapse:collapse;margin-top:24px;font-size:13.2px}
+.tbl th{text-align:left;font-family:var(--mono);font-size:9.8px;letter-spacing:.14em;color:var(--dim);
+  font-weight:400;padding:0 14px 10px;border-bottom:1px solid var(--line);text-transform:uppercase}
+.tbl td{padding:11px 14px;border-bottom:1px solid rgba(140,170,220,.07);color:var(--ink2);line-height:1.55}
+.tbl td:first-child{color:var(--ink);font-weight:500}
+.tbl tr:last-child td{border-bottom:0}
+.tbl .cy{color:var(--cyan)}
+.tbl .vi{color:#a89bff}
+.tbl .am{color:var(--amber)}
+.tbl .mu{color:var(--dim)}
+
+/* ---------- timeline steps ---------- */
+.steps{display:flex;flex-direction:column;gap:9px;margin-top:24px}
+.step{display:grid;grid-template-columns:52px 1fr;gap:15px;align-items:start;
+  padding:11px 15px 11px 0;border-top:1px solid var(--line2)}
+.step:first-child{border-top:0}
+.step .no{font-family:var(--mono);font-size:12px;color:var(--cyan);letter-spacing:.08em;padding-top:1px}
+.step h4{font-size:14px;font-weight:600;margin-bottom:3px;color:var(--ink)}
+.step p{font-size:12.4px;line-height:1.55;color:var(--ink2)}
+.step p b{color:var(--amber);font-weight:500}
+
+/* ---------- cover ---------- */
+.s-cover{padding:0;justify-content:center}
+.cover-wrap{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 84px}
+.cover-orbit{position:absolute;right:-110px;top:50%;transform:translateY(-50%);width:760px;height:760px;opacity:.8;pointer-events:none}
+.cover-glow{position:absolute;width:660px;height:660px;right:-60px;top:50%;transform:translateY(-50%);
+  background:radial-gradient(circle,rgba(79,227,255,.15),transparent 62%);filter:blur(20px);pointer-events:none}
+.spin60{animation:spin 64s linear infinite;transform-box:fill-box;transform-origin:center}
+.spin90{animation:spin 96s linear infinite reverse;transform-box:fill-box;transform-origin:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+.kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.34em;color:var(--dim);text-transform:uppercase;margin-bottom:24px}
+.cover-en{font-size:112px;font-weight:800;letter-spacing:.1em;line-height:.94;
+  background:linear-gradient(100deg,#dff6ff 0%,var(--cyan) 34%,var(--violet) 82%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 40px rgba(79,227,255,.22));margin-left:-6px}
+.cover-rule{display:flex;align-items:center;gap:14px;margin:20px 0 18px}
+.cover-rule .ln{height:1px;width:120px;background:linear-gradient(90deg,var(--cyan),transparent)}
+.cover-rule .tx{font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;color:var(--cyan)}
+.cover-cn{font-size:40px;font-weight:600;letter-spacing:.1em;line-height:1.25}
+.cover-sub{font-size:15.5px;color:var(--ink2);margin-top:15px;letter-spacing:.01em;font-weight:300;max-width:640px;line-height:1.75}
+.cover-sub b{color:var(--ink);font-weight:600}
+.cover-sub .hl-k{color:#dff2ff;font-weight:500}
+.cover-foot{position:absolute;left:84px;right:84px;bottom:52px;display:flex;justify-content:space-between;align-items:flex-end;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase}
+.cover-foot .left span{color:var(--cyan)}
+.cover-foot .hint{display:flex;align-items:center;gap:8px;color:var(--ink2)}
+.cover-foot .hint i{width:22px;height:1px;background:var(--cyan);display:inline-block;animation:sweep 2.4s ease-in-out infinite}
+@keyframes sweep{0%,100%{opacity:.25;transform:scaleX(.6)}50%{opacity:1;transform:scaleX(1)}}
+
+/* ---------- part divider ---------- */
+.part .ghost{position:absolute;right:78px;top:5%;transform:none;
+  font-family:var(--mono);font-size:150px;font-weight:600;letter-spacing:-.03em;line-height:1;
+  color:transparent;-webkit-text-stroke:1px rgba(79,227,255,.14);pointer-events:none;z-index:0}
+.part .card{background:#0a1120}
+.part .slide-inner{position:relative;z-index:2}
+.part-num{font-family:var(--mono);font-size:13px;letter-spacing:.3em;color:var(--cyan);margin-bottom:14px}
+.part h2{font-size:58px;font-weight:650;letter-spacing:-.01em;line-height:1.14;margin-bottom:16px}
+.part h2 em{font-style:normal;background:linear-gradient(100deg,var(--cyan),var(--violet) 78%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.part .sub{font-size:15px;color:var(--ink2);line-height:1.75;max-width:680px;font-weight:350}
+.part .sub .nw{white-space:nowrap}
+.part-band .card{padding:22px 20px 20px}
+.part-band .card h3{font-size:17px;margin-bottom:8px}
+.part-band .card p{font-size:12.8px}
+.subgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:34px;max-width:1020px;position:relative;z-index:2}
+.subgrid div{display:flex;align-items:center;gap:9px;padding:9px 13px;border-radius:8px;
+  border:1px solid var(--line2);font-size:12px;color:var(--dim);background:#0a1120}
+.subgrid div b{font-family:var(--mono);font-size:10.5px;color:var(--dim);font-weight:400;letter-spacing:.06em}
+.subgrid div.on{border-color:rgba(79,227,255,.35);color:var(--ink);background:#0c1a2b}
+.subgrid div.on b{color:var(--cyan)}
+.subgrid div.on:after{content:"本次";margin-left:auto;font-family:var(--mono);font-size:9px;
+  color:var(--cyan);letter-spacing:.1em;border:1px solid rgba(79,227,255,.3);padding:1px 5px;border-radius:3px}
+
+/* ---------- map ---------- */
+.map{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:30px}
+.era{position:relative;padding:16px 15px 15px;border-radius:11px;border:1px solid var(--line);
+  background:linear-gradient(170deg,rgba(255,255,255,.045),rgba(255,255,255,.008));overflow:hidden}
+.era:after{content:"";position:absolute;left:0;bottom:0;width:100%;height:2px;background:var(--cyan);opacity:.45}
+.era:nth-child(2):after{background:var(--violet)}
+.era:nth-child(3):after{background:var(--dim);opacity:.3}
+.era:nth-child(4):after{background:var(--dim);opacity:.3}
+.era .no{font-family:var(--mono);font-size:9.5px;color:var(--dim);letter-spacing:.2em}
+.era .yr{font-family:var(--mono);font-size:12px;color:var(--ink);margin:9px 0 5px;letter-spacing:.06em}
+.era h4{font-size:14px;font-weight:600;margin-bottom:5px;letter-spacing:.02em;line-height:1.4}
+.era p{font-size:11.5px;line-height:1.55;color:var(--dim)}
+.era.off{opacity:.45}
+
+/* ---------- end ---------- */
+.s-end{padding:0 0 96px;justify-content:center;text-align:left}
+.end-wrap{position:relative;z-index:2;padding:0 84px;width:100%}
+.horizon{position:absolute;left:0;right:0;top:72%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(79,227,255,.95) 26%,rgba(160,150,255,.95) 50%,rgba(139,123,255,.92) 74%,transparent);
+  box-shadow:0 0 18px rgba(79,227,255,.55),0 0 60px rgba(139,123,255,.35),0 0 140px rgba(79,227,255,.18)}
+.horizon:after{content:"";position:absolute;left:50%;top:-180px;width:620px;height:200px;transform:translateX(-50%);
+  background:radial-gradient(ellipse at bottom,rgba(79,227,255,.20),transparent 72%);filter:blur(10px)}
+.end-floor{position:absolute;left:0;right:0;top:72%;bottom:0;overflow:hidden;z-index:1;pointer-events:none;
+  perspective:420px;perspective-origin:50% 0}
+.end-floor i{position:absolute;inset:-14% -70%;display:block;
+  background:
+    repeating-linear-gradient(90deg,rgba(79,227,255,.30) 0 1px,transparent 1px 58px),
+    repeating-linear-gradient(0deg,rgba(139,123,255,.26) 0 1px,transparent 1px 40px);
+  transform:rotateX(74deg);transform-origin:50% 0;
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.96),rgba(0,0,0,.45) 40%,rgba(0,0,0,.12) 72%,transparent 94%);
+  mask-image:linear-gradient(180deg,rgba(0,0,0,.96),rgba(0,0,0,.45) 40%,rgba(0,0,0,.12) 72%,transparent 94%)}
+.end-floor:after{content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0,rgba(79,227,255,.10),transparent 62%)}
+.end-h{font-size:46px;font-weight:600;line-height:1.34;letter-spacing:.01em;margin:14px 0 30px;max-width:940px}
+.end-h em{font-style:normal;background:linear-gradient(100deg,var(--cyan),var(--violet));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.take{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:980px}
+.take div{border-top:1px solid var(--line);padding-top:13px}
+.take .t{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--cyan);margin-bottom:7px}
+.take p{font-size:12.4px;line-height:1.62;color:var(--ink2)}
+.end-sign{margin-top:40px;font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;color:var(--dim);text-transform:uppercase}
+
+/* ---------- hud ---------- */
+.hud{position:absolute;left:40px;right:40px;bottom:22px;height:60px;z-index:22;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+  transition:opacity .4s ease, transform .4s ease}
+.hud.hide{opacity:0;transform:translateY(8px);pointer-events:none}
+.rail{position:relative;flex:1;height:42px;display:flex;align-items:flex-end;gap:3px;padding-bottom:13px}
+.rail:after{content:"";position:absolute;left:0;right:0;bottom:10px;height:1px;background:var(--line)}
+.tick{flex:1;height:22px;display:flex;align-items:flex-end;justify-content:center;background:none;border:0;cursor:pointer;padding:0}
+.tick .bar{width:100%;max-width:6px;height:6px;border-radius:1px;background:rgba(140,170,220,.22);transition:all .35s ease}
+.tick.a .bar{background:rgba(79,227,255,.30)}
+.tick.b .bar{background:rgba(139,123,255,.34)}
+.tick.c .bar{background:rgba(255,180,107,.30)}
+.tick:hover .bar{height:12px;background:rgba(233,240,255,.7)}
+.tick.active .bar{height:20px;background:linear-gradient(180deg,var(--cyan),var(--violet));box-shadow:0 0 12px rgba(79,227,255,.85)}
+.rail-tip{position:absolute;bottom:32px;transform:translateX(-50%);font-family:var(--mono);font-size:10px;
+  color:var(--cyan);letter-spacing:.1em;white-space:nowrap;transition:left .4s cubic-bezier(.22,.61,.36,1);opacity:.9}
+.rail-tip:after{content:"";position:absolute;left:50%;bottom:-8px;width:1px;height:6px;background:rgba(79,227,255,.4)}
+.pager{display:flex;align-items:center;gap:13px;font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.12em;padding-bottom:15px;white-space:nowrap}
+.pager b{color:var(--ink);font-weight:500}
+.nav{display:flex;gap:6px}
+.nav button{width:27px;height:27px;border-radius:50%;border:1px solid var(--line);
+  background:rgba(255,255,255,.03);color:var(--ink2);cursor:pointer;font-size:12px;
+  display:flex;align-items:center;justify-content:center;transition:.25s}
+.nav button:hover{border-color:rgba(79,227,255,.6);color:var(--cyan);box-shadow:0 0 14px rgba(79,227,255,.25)}
+
+/* svg helpers */
+.node-label{font-family:var(--mono);font-size:12px;fill:#cfe0ff;letter-spacing:.06em}
+.node-sub{font-family:var(--sans);font-size:10.5px;fill:#7d8fae}
+.dash{stroke-dasharray:4 8;animation:dashmove 24s linear infinite}
+@keyframes dashmove{to{stroke-dashoffset:-200}}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="grid"></div>
+<div id="vign"></div>
+
+<div id="stage">
+  <div class="progress" id="progress"></div>
+  <div class="frame"><i></i></div>
+  <div id="slides">
+
+  <!-- ========== 01 封面 ========== -->
+  <section class="slide s-cover active" data-sec="COVER">
+    <svg class="cover-orbit" viewBox="0 0 760 760" aria-hidden="true">
+      <g class="spin60" fill="none">
+        <circle cx="380" cy="380" r="300" stroke="rgba(79,227,255,.10)" stroke-width="1"/>
+        <circle cx="380" cy="380" r="300" stroke="rgba(79,227,255,.34)" stroke-width="1" stroke-dasharray="2 26"/>
+        <circle cx="380" cy="380" r="238" stroke="rgba(139,123,255,.12)" stroke-width="1"/>
+      </g>
+      <g class="spin90" fill="none">
+        <circle cx="380" cy="380" r="176" stroke="rgba(139,123,255,.35)" stroke-width="1" stroke-dasharray="90 240"/>
+        <circle cx="380" cy="380" r="120" stroke="rgba(79,227,255,.18)" stroke-width="1"/>
+      </g>
+      <circle cx="380" cy="380" r="62" fill="none" stroke="rgba(79,227,255,.5)" stroke-width="1"/>
+      <circle cx="380" cy="380" r="6" fill="#4fe3ff" opacity=".9"/>
+      <g stroke="rgba(140,170,220,.22)" stroke-width="1">
+        <line x1="380" y1="52" x2="380" y2="76"/><line x1="380" y1="684" x2="380" y2="708"/>
+        <line x1="52" y1="380" x2="76" y2="380"/><line x1="684" y1="380" x2="708" y2="380"/>
+      </g>
+      <g fill="#4fe3ff" opacity=".8">
+        <circle cx="380" cy="80" r="2.6"/><circle cx="380" cy="680" r="2.6"/>
+        <circle cx="680" cy="380" r="2.6"/><circle cx="80" cy="380" r="2.6"/>
+      </g>
+      <text x="380" y="384" text-anchor="middle" font-family="Consolas,monospace" font-size="11"
+            fill="#6a7a9a" letter-spacing="4">05</text>
+    </svg>
+    <div class="cover-glow"></div>
+
+    <div class="cover-wrap">
+      <div class="kicker reveal" style="--d:.05s">AI Agents in Depth · Chapter 05 · Part 1</div>
+      <div class="cover-en reveal" style="--d:.12s">CODING<br>AGENT</div>
+      <div class="cover-rule reveal" style="--d:.2s">
+        <span class="ln"></span>
+        <span class="tx">5.1.1 — 5.1.6</span>
+      </div>
+      <div class="cover-cn reveal" style="--d:.26s">Coding Agent 与通用 Agent</div>
+      <p class="cover-sub reveal" style="--d:.34s">
+        一个能处理任意任务的通用 Agent，它的架构长什么样？<br>
+        <span class="hl-k">答案是：一个 Coding Agent，加上一个文件系统。</span>
+      </p>
+    </div>
+
+    <div class="cover-foot">
+      <div class="left">READING DECK · <span>79 SLIDES</span> · 5.1.1 — 5.1.6</div>
+      <div class="hint"><i></i>← → 翻页 / 空格前进 / F 全屏</div>
+    </div>
+  </section>
+
+  <!-- ========== 02 本章地图 ========== -->
+  <section class="slide" data-sec="CHAPTER MAP">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>CHAPTER MAP<span class="sep">/</span><span class="tag">第 5 章 在全书中的位置</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">这一章只回答<em>一个问题</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        前面几章分别拆开了零件：上下文工程（第 2、3 章）、工具设计（第 4 章）。本章把它们装回去——
+        <strong>一个能处理开放任务的通用 Agent，架构到底长什么样。</strong>
+      </p>
+
+      <div class="note cy reveal" style="--d:.2s" >
+        <b>答案先给出来：</b>通用 Agent ≈ <b>Coding Agent</b>（能自主编写、修改、执行代码）+ <b>文件系统</b>（存代码、数据、记忆和中间结果的工作空间）。
+        就像程序员用文件夹管理项目——Agent 的整个「人生」也活在一个目录里。
+      </div>
+
+      <div class="map">
+        <div class="era reveal" style="--d:.26s">
+          <div class="no">SECTION 01</div>
+          <div class="yr">5.1</div>
+          <h4>Coding Agent</h4>
+          <p>基础能力、七个工具、整体流程、Harness 实践、故障恢复、安全</p>
+        </div>
+        <div class="era reveal" style="--d:.32s">
+          <div class="no">SECTION 02</div>
+          <div class="yr">5.2</div>
+          <h4>代码：通用 Agent 的元能力</h4>
+          <p>思考工具、业务规则、多媒体、系统适配器、生成式 UI、自举</p>
+        </div>
+        <div class="era off reveal" style="--d:.38s">
+          <div class="no">SECTION 03</div>
+          <div class="yr">5.3</div>
+          <h4>本章小结</h4>
+          <p>把两条线索收成一句结论</p>
+        </div>
+        <div class="era off reveal" style="--d:.44s">
+          <div class="no">SECTION 04</div>
+          <div class="yr">5.4</div>
+          <h4>思考题</h4>
+          <p>安全与能力的权衡、自举退化等 9 题</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.5s">
+        <b>本次范围：</b>5.1.1 基础能力 → 5.1.2 Coding 内核 → 5.1.3 整体流程 → 5.1.4 Harness 实践 → 5.1.5 故障恢复 → 5.1.6 实现技巧。
+        前两节回答「为什么是 Coding」，后四节回答「怎么把它跑稳」。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 03 5.1 章节页 ========== -->
+  <section class="slide part" data-sec="5.1">
+    <div class="ghost">5.1</div>
+    <div class="slide-inner">
+      <div class="part-num reveal" style="--d:.04s">SECTION 05.1</div>
+      <h2 class="reveal" style="--d:.1s">Coding Agent<br><em>能改代码的智能体</em></h2>
+      <p class="sub reveal" style="--d:.16s">
+        它能自己读代码库、改文件、跑命令、跑测试，并根据结果继续调整——
+        这是目前所有 Agent 类型里<strong style="color:#e9f0ff">成熟度最高</strong>的一类。
+      </p>
+
+      <div class="subgrid">
+        <div class="on reveal" style="--d:.22s"><b>5.1.1</b>Coding 是 Agent 的基础能力</div>
+        <div class="on reveal" style="--d:.25s"><b>5.1.2</b>从 Manus 到 OpenClaw</div>
+        <div class="on reveal" style="--d:.28s"><b>5.1.3</b>整体流程</div>
+        <div class="on reveal" style="--d:.31s"><b>5.1.4</b>Harness 工程实践</div>
+        <div class="on reveal" style="--d:.34s"><b>5.1.5</b>故障与错误恢复</div>
+        <div class="on reveal" style="--d:.37s"><b>5.1.6</b>实现技巧</div>
+        <div class="reveal" style="--d:.4s"><b>5.1.7</b>搜索工具</div>
+        <div class="reveal" style="--d:.43s"><b>5.1.8</b>文件编辑工具</div>
+        <div class="reveal" style="--d:.46s"><b>5.1.9</b>安全</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 04 5.1.1 一个典型任务 ========== -->
+  <section class="slide" data-sec="5.1.1">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.1 · 基础能力<span class="sep">/</span><span class="tag">从一个最普通的任务说起</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">先看一个<em>听起来不像编程</em>的任务</h2>
+      <p class="lede reveal" style="--d:.14s">
+        「整理仓库中所有遗留的 TODO 注释，按优先级分类并生成 issue。」
+        —— 这更像「文档整理」，但它把 Coding Agent 需要的动作<strong>全走了一遍</strong>。
+      </p>
+
+      <div class="cards c4" style="margin-top:24px">
+        <div class="card reveal" style="--d:.2s">
+          <div class="k"><span>T01</span><b>探索</b></div>
+          <h3>浏览目录<small>ls / glob</small></h3>
+          <p>先搞清楚仓库长什么样：有哪些模块、哪些目录该跳过。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s">
+          <div class="k"><span>T02</span><b>感知</b></div>
+          <h3>读取代码<small>read</small></h3>
+          <p>打开具体文件，看清上下文再判断，而不是凭文件名猜。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s">
+          <div class="k"><span>T03</span><b>定位</b></div>
+          <h3>查找模式<small>grep / search</small></h3>
+          <p>在成千上万个文件里一次定位所有 TODO 出现的行。</p>
+        </div>
+        <div class="card reveal" style="--d:.38s">
+          <div class="k"><span>T04</span><b>执行</b></div>
+          <h3>修改文件<small>edit / write</small></h3>
+          <p>把整理结果写成清单，或直接改代码加注释。</p>
+        </div>
+      </div>
+
+      <div class="cards c2" style="margin-top:13px;grid-template-columns:1fr 1.9fr">
+        <div class="card reveal" style="--d:.44s">
+          <div class="k"><span>T05</span><b>执行</b></div>
+          <h3>运行命令<small>bash</small></h3>
+          <p>跑脚本统计、跑测试验证。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.5s" >
+          <div class="k"><span>CONCLUSION</span><b>一句话</b></div>
+          <h3 style="margin-bottom:4px">这五类操作，覆盖了几乎所有 Coding Agent 的核心动作</h3>
+          <p>所以工具集可以很小，小到只有七个——这正是下一节要展开的。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 05 七个核心工具 ========== -->
+  <section class="slide" data-sec="5.1.1">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.1 · 工具集<span class="sep">/</span><span class="tag">最小可用配置</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">七个工具，就是一个<em>完整但极简</em>的工具箱</h2>
+      <p class="lede reveal" style="--d:.14s">
+        在当前 SOTA 模型的加持下，具备基本 coding 能力<strong>并不需要复杂架构</strong>。这七件东西，几乎任何 Agent 系统都能低成本集成。
+      </p>
+
+      <div class="cards c4" style="margin-top:22px">
+        <div class="card reveal" style="--d:.18s">
+          <div class="k"><span>01</span><b>沙盒</b></div>
+          <h3>Code Interpreter<small>代码解释器</small></h3>
+          <p>在隔离沙盒里安全执行 Python。代码跑崩了也伤不到宿主机。</p>
+        </div>
+        <div class="card reveal" style="--d:.23s">
+          <div class="k"><span>02</span><b>执行</b></div>
+          <h3>Bash Shell<small>命令行终端</small></h3>
+          <p>跑测试用例、处理特殊格式文件。一个几乎万能的执行入口。</p>
+        </div>
+        <div class="card reveal" style="--d:.28s">
+          <div class="k"><span>03</span><b>感知</b></div>
+          <h3>Read<small>读文件</small></h3>
+          <p>读取代码、配置、文档、日志。Agent 的「眼睛」。</p>
+        </div>
+        <div class="card reveal" style="--d:.33s">
+          <div class="k"><span>04</span><b>执行</b></div>
+          <h3>Write<small>写文件</small></h3>
+          <p>创建新文件，或把现有文件整体重写。</p>
+        </div>
+      </div>
+
+      <div class="cards c4" style="margin-top:12px">
+        <div class="card on reveal" style="--d:.38s">
+          <div class="k"><span>05</span><b>核心动作</b></div>
+          <h3>Edit<small>编辑文件</small></h3>
+          <p>只改局部。这是代码维护和迭代的核心操作。</p>
+        </div>
+        <div class="card reveal" style="--d:.43s">
+          <div class="k"><span>06</span><b>定位</b></div>
+          <h3>Glob<small>搜文件名</small></h3>
+          <p>按模式匹配路径，如 <code style="font-family:var(--mono);color:var(--amber)">**/*.py</code> 捞出所有 Python 文件。</p>
+        </div>
+        <div class="card reveal" style="--d:.48s">
+          <div class="k"><span>07</span><b>定位</b></div>
+          <h3>Grep<small>搜文件内容</small></h3>
+          <p>在内容里搜文本模式，比如「谁调用了这个函数」。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.53s">
+          <div class="k"><span>SUM</span><b>成本</b></div>
+          <h3 style="font-size:14px">七件套 ≈ 一天工作量</h3>
+          <p>没有隐藏依赖，没有专用平台，任何 Agent 系统都能接。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 06 走一遍最小任务 ========== -->
+  <section class="slide" data-sec="5.1.1">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.1 · 走一遍<span class="sep">/</span><span class="tag">七个工具只用了两个</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">两个工具，就完成了<em>第一个任务</em></h2>
+
+      <div class="split wide" style="margin-top:18px;align-items:start">
+        <div class="spec reveal" style="--d:.16s">
+          <div class="spec-h"><span class="b"></span>AGENT TRACE · TODO 清单整理</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 用户：帮我把项目里所有 TODO 注释整理成一个清单</span>
+
+<span class="w">Agent（思考）</span>：需要找到所有包含 TODO 的代码行。
+<span class="g">Agent →</span> Grep(<span class="y">「TODO」</span>, glob=<span class="y">「**/*.py」</span>)   <span class="c"># 搜索内容</span>
+<span class="v">工具返回</span>：
+  src/api.py:42: <span class="c"># TODO: add rate limiting</span>
+  src/db.py:15:  <span class="c"># TODO: migrate to PostgreSQL</span>
+  tests/test_api.py:8: <span class="c"># TODO: add edge case tests</span>
+
+<span class="w">Agent（思考）</span>：找到 3 个，整理成清单写入文件。
+<span class="g">Agent →</span> Write(<span class="y">「TODO_LIST.md」</span>, content=<span class="y">「...」</span>)  <span class="c"># 写文件</span>
+<span class="v">工具返回</span>：文件已创建
+
+<span class="w">Agent</span>：已整理完毕，共 3 项，清单保存在 TODO_LIST.md。</div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.3s">
+            <li><b>两步就收工。</b>只用了 7 个工具里的 2 个——Grep 定位，Write 落盘。没有规划器、没有多 Agent 编排。</li>
+            <li><b>任务一变，工具跟着变。</b>如果换成「统计每个模块的 TODO 数量并画柱状图」，Agent 会再加上 <i>Code Interpreter</i> 执行 Python 做统计和绘图。</li>
+            <li><b>组合爆炸才是关键。</b>七个原子动作，组合出来的任务空间几乎是无限的——这就是「极简工具箱」能撑起通用 Agent 的原因。</li>
+          </ul>
+          <div class="note reveal" style="--d:.42s">
+            <b>对传统开发者的类比：</b>这就是一套最小 CLI。<br>
+            <span style="font-family:var(--mono);font-size:11.5px;color:#8fa2c4">glob → ls -R ｜ grep → grep -rn ｜ read → cat ｜ edit → patch</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 07 为什么是七个不是六个 ========== -->
+  <section class="slide" data-sec="5.1.1">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.1 · 设计取舍<span class="sep">/</span><span class="tag">工具数量不是重点</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">一个 Bash 就能干完大半，<em>为什么还要七个？</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        这个问题原文自己回答了，而且答案比「多几个工具」更有意思——它暴露了不同厂商对
+        <strong>「编辑」这件事该不该被显式建模</strong>的分歧。
+      </p>
+
+      <div class="split" style="margin-top:22px;align-items:stretch">
+        <div class="card reveal" style="--d:.2s;padding:20px">
+          <div class="k"><span>路线 A</span><b>OpenAI Codex</b></div>
+          <h3 style="font-size:17px">极简：shell 唯一入口 + apply_patch</h3>
+          <p style="margin-top:8px">
+            用 shell 完成目录浏览、文件查找与读取；<b>文件修改</b>则交给一个语法受约束的
+            <code style="font-family:var(--mono);color:var(--amber)">apply_patch</code> 工具——
+            把编辑表达为<b>结构化补丁</b>，而不是自由文本命令。
+          </p>
+          <p style="margin-top:9px;color:var(--cyan)">好处：降低「改错文件」的概率。补丁要么对得上，要么直接失败。</p>
+        </div>
+
+        <div class="card reveal" style="--d:.28s;padding:20px">
+          <div class="k"><span>路线 B</span><b>本书 / 多数 Agent</b></div>
+          <h3 style="font-size:17px">显式：读写编辑各占一个工具</h3>
+          <p style="margin-top:8px">
+            保留单独的 <b>Read / Write / Edit</b>，工具边界清晰，模型一眼能看出「我现在是要读、要覆盖、还是只改一段」。
+          </p>
+          <p style="margin-top:9px;color:var(--cyan)">本书选七个，是为了让读者看清 Coding Agent 到底需要哪些基本能力。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.38s">
+        <b>结论：</b>七个不是标准答案，是一个「可读性优先」的教学切分。
+        真正的设计问题是——<b>哪几个原子动作必须被显式建模，才能让模型不犯错。</b>
+        一旦你的沙盒里能跑 bash，六个、七个、三个都能工作，区别只在出错时的可恢复性。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 08 与第四章五类工具的关系 ========== -->
+  <section class="slide" data-sec="5.1.1">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.1 · 与第四章对齐<span class="sep">/</span><span class="tag">别把两套分类搞混</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">七个工具，只覆盖了<em>五类通用工具里的两类</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        第四章按<strong>调用方向和作用性质</strong>把工具分成五类；这里的七个是 Coding Agent 的
+        <strong>特有基础配置</strong>。两套分类维度不同，不要混着记。
+      </p>
+
+      <table class="tbl reveal" style="--d:.2s">
+        <thead>
+          <tr><th style="width:150px">第四章的五类</th><th style="width:330px">七个工具中的对应</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cy">感知</td>
+            <td class="cy">Read · Glob · Grep</td>
+            <td>看文件、看路径、看内容。Agent 获取信息的全部入口。</td>
+          </tr>
+          <tr>
+            <td class="cy">执行</td>
+            <td class="cy">Bash · Code Interpreter · Write · Edit</td>
+            <td>跑命令、跑代码、改文件。Agent 改变世界的全部出口。</td>
+          </tr>
+          <tr>
+            <td class="mu">协作</td>
+            <td class="mu">—</td>
+            <td>多 Agent 之间的任务分派与结果汇总，本章不涉及（见第 10 章）。</td>
+          </tr>
+          <tr>
+            <td class="mu">事件触发</td>
+            <td class="mu">—</td>
+            <td>定时器、Webhook、异步回调（见第 6 章）。</td>
+          </tr>
+          <tr>
+            <td class="mu">用户沟通</td>
+            <td class="mu">—</td>
+            <td>提问、确认、展示产物。Coding Agent 通常直接对话，不需要专门工具。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note cy reveal" style="--d:.34s">
+        <b>一句话记住：</b>七件套 = 感知 + 执行。它解决的是「Agent 能不能动手」，
+        不解决「Agent 怎么跟别人协作、怎么被叫醒、怎么跟人确认」——那三类是叠加在之上的。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 09 四个场景 ========== -->
+  <section class="slide" data-sec="5.1.1">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.1 · 为什么值得做<span class="sep">/</span><span class="tag">四个真实场景</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">代码不是「写程序」，<em>是通用的问题解决手段</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        为什么每个通用 Agent 都该有 coding 能力？因为这四种情况，你迟早会撞上——
+        而它们<strong>都不在「编程」的语境里</strong>。
+      </p>
+
+      <div class="cards c4" style="margin-top:24px">
+        <div class="card reveal" style="--d:.2s">
+          <div class="k"><span>01</span><b>思考</b></div>
+          <h3>数学推理<small>算得准，不是算得像</small></h3>
+          <p>写段代码交给求解器，拿<b>精确答案</b>，而不是靠模型「心算」。模型的思考是概率性的，数学要的是确定性的。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s">
+          <div class="k"><span>02</span><b>约束</b></div>
+          <h3>固化业务规则<small>7 天到底是几天</small></h3>
+          <p>「购买后 7 天内可退款」——自然日还是工作日？下单时间还是发货时间？代码没有歧义。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s">
+          <div class="k"><span>03</span><b>扩展</b></div>
+          <h3>临时造工具<small>缺什么就写一个</small></h3>
+          <p>工具箱不必预先穷举。遇到没见过的需求，当场生成一个小脚本补上缺口。</p>
+        </div>
+        <div class="card reveal" style="--d:.38s">
+          <div class="k"><span>04</span><b>适应</b></div>
+          <h3>格式变了<small>动态生成解析逻辑</small></h3>
+          <p>上游接口字段漂移，等人改代码要排期；让 Agent 看着样本现场写解析，几分钟适配。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>这就是「元能力」的雏形：</b>工具箱里只有七个简单工具，但能力边界可以随时扩张——
+        因为它能<b>当场造出第八个、第九个工具</b>。下一节 5.2 会把这六个方向完整展开。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 10 5.1.2 章节页 ========== -->
+  <section class="slide part" data-sec="5.1.2">
+    <div class="ghost">5.1.2</div>
+    <div class="slide-inner">
+      <div class="part-num reveal" style="--d:.04s">SECTION 05.1.2</div>
+      <h2 class="reveal" style="--d:.1s">从 Manus 到 OpenClaw<br><em>通用 Agent 的 Coding 内核</em></h2>
+      <p class="sub reveal" style="--d:.16s">
+        这类产品把三种能力装进同一个系统：<br><strong style="color:#e9f0ff">Deep Research</strong>（深度调研）、<strong style="color:#e9f0ff">Computer Use</strong>（电脑操控）、<strong style="color:#e9f0ff">Coding</strong>（代码生成）。
+      </p>
+
+      <div class="cards c3 part-band" style="margin-top:58px">
+        <div class="card reveal" style="--d:.24s">
+          <div class="k"><span>CAP 01</span><b>输入</b></div>
+          <h3>Deep Research</h3>
+          <p>搜、读、核对、综合成结论。</p>
+        </div>
+        <div class="card reveal" style="--d:.3s">
+          <div class="k"><span>CAP 02</span><b>手脚</b></div>
+          <h3>Computer Use</h3>
+          <p>看屏幕、点鼠标、敲键盘。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.36s">
+          <div class="k"><span>CAP 03</span><b>内核</b></div>
+          <h3>Code Generation</h3>
+          <p>写代码、跑代码、改代码。</p>
+        </div>
+      </div>
+
+      <p class="lede reveal" style="--d:.44s;margin-top:36px">
+        问题来了：<span class="hl">为什么核心是 Coding，而不是另外两个？</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ========== 11 三种能力一个内核 ========== -->
+  <section class="slide" data-sec="5.1.2">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.2 · 架构判断<span class="sep">/</span><span class="tag">几乎一切产出最终都落到代码</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">三种能力，<em>一个内核</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        因为几乎所有高效的内容生成，<strong>最终都要落到代码上</strong>。
+        代码生成是效率最高、成本最低、可复用性最强的能力基座——另外两个能力，很多时候只是代码能力的「降级替代」。
+      </p>
+
+      <div class="split" style="margin-top:20px;grid-template-columns:.44fr .56fr;align-items:start">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>WHY CODE IS THE CORE</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c">// 三大能力各自的最优实现路径</span>
+
+<span class="y">Deep Research</span>
+  → 代码驱动的 Web 请求与解析   <span class="g">✓ 最优</span>
+  → 浏览器视觉操作              <span class="c">✗ 慢</span>
+
+<span class="y">Computer Use</span>
+  → 调用 API / 写脚本           <span class="g">✓ 最优</span>
+  → 点鼠标、找坐标              <span class="c">✗ 脆</span>
+
+<span class="y">Coding</span>
+  → 写代码                      <span class="g">✓ 唯一</span>
+
+<span class="c">// 结论：另外两个能力，最终都在调用它</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.3s">
+            <li><b>成本：</b>一次 API 调用是几分钱，一次 GUI 操作是几十秒的视觉推理。差两个数量级。</li>
+            <li><b>延迟：</b>代码执行毫秒级；Computer Use 要截图、要定位、要规划下一步。</li>
+            <li><b>稳定性：</b>接口签名稳定；界面改一版像素，鼠标坐标就全废。</li>
+            <li><b>可复用：</b>写下的脚本能存下来、能版本控制、能给别人用；一次成功的点击序列不能。</li>
+          </ul>
+          <div class="note reveal" style="--d:.42s">
+            <b>所以 Computer Use 不是不重要</b>，而是「没有别的路时才走的路」——
+            凡是能用代码或 API 完成的，都该用代码。用代码省下来的钱和时间，才是通用 Agent 能规模化服务的前提。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 12 产出物 → 代码形态 ========== -->
+  <section class="slide" data-sec="5.1.2">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.2 · 证据<span class="sep">/</span><span class="tag">你以为在生成内容，其实在生成代码</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">五种产物，<em>底层全是代码</em></h2>
+
+      <table class="tbl reveal" style="--d:.16s">
+        <thead>
+          <tr><th style="width:250px">你以为 Agent 在生成</th><th style="width:290px">它真正的代码形态</th><th>为什么这件事重要</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PPT / Word 文档</td>
+            <td class="cy">OOXML（Office Open XML）</td>
+            <td>本质是 zip 包里的一堆 XML。所以「改一页版式」= 改一段结构化代码，不需要视觉定位。</td>
+          </tr>
+          <tr>
+            <td>PDF 报告</td>
+            <td class="cy">Markdown / HTML / LaTeX</td>
+            <td>先写源码再编译。Agent 能精确控制分页、图表位置、字体层级。</td>
+          </tr>
+          <tr>
+            <td>数据分析与图表</td>
+            <td class="vi">Python 脚本</td>
+            <td>pandas 聚合 + matplotlib 绘图。数字由代码算，不经过模型「抄写」，所以不会抄错。</td>
+          </tr>
+          <tr>
+            <td>浏览器里的操作序列</td>
+            <td class="vi">可复用的 RPA 代码</td>
+            <td>一次成功的点击序列可以固化成脚本，下次直接跑，不必再付视觉推理的成本。</td>
+          </tr>
+          <tr>
+            <td>深度调研结论</td>
+            <td class="vi">Web 请求 + 解析代码</td>
+            <td>抓取、清洗、比对都由代码完成；模型只负责判断「哪些值得读」。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note reveal" style="--d:.32s">
+        <b>一句话：</b>内容生成的天花板，不是模型的文笔，而是它能不能<b>把意图翻译成一份可执行的、可验证的代码</b>。
+        翻译得了，就能自动化；翻译不了，就只能靠人。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 13 OpenClaw 架构图 ========== -->
+  <section class="slide" data-sec="5.1.2">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.2 · 图 5-1<span class="sep">/</span><span class="tag">OpenClaw 架构中的 Coding Agent 核心</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">把 Coding Agent 放回<em>整个系统</em>里看</h2>
+
+      <div style="margin-top:14px" class="reveal">
+        <svg viewBox="0 0 960 386" style="width:100%;height:auto;overflow:visible">
+          <defs>
+            <marker id="ar1" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#4fe3ff"/></marker>
+            <marker id="ar2" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#8b7bff"/></marker>
+            <marker id="ar3" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#ffb46b"/></marker>
+          </defs>
+
+          <!-- 左侧：记忆 + 工具 -->
+          <rect x="4" y="18" width="232" height="112" rx="10" fill="#0a1120" stroke="rgba(139,123,255,.45)"/>
+          <text x="22" y="44" class="node-label" fill="#a89bff">记忆层</text>
+          <text x="22" y="66" class="node-sub">MEMORY.md　高层事实 + 用户偏好</text>
+          <text x="22" y="86" class="node-sub">memory/YYYY-MM-DD.md　日志</text>
+          <text x="22" y="108" class="node-sub" fill="#7d8fae">→ 跨会话沉淀，可人读可人改</text>
+
+          <rect x="4" y="152" width="232" height="136" rx="10" fill="#0a1120" stroke="rgba(140,170,220,.25)"/>
+          <text x="22" y="178" class="node-label">工具层</text>
+          <text x="22" y="200" class="node-sub">· Web Search　网络检索</text>
+          <text x="22" y="220" class="node-sub">· Browser　页面操作</text>
+          <text x="22" y="240" class="node-sub">· Code Exec　沙盒执行</text>
+          <text x="22" y="266" class="node-sub" fill="#7d8fae">能力按需加载，不常驻上下文</text>
+
+          <!-- 中间：核心 -->
+          <rect x="300" y="18" width="330" height="270" rx="12" fill="#08141f" stroke="rgba(79,227,255,.6)" stroke-width="1.4"/>
+          <rect x="300" y="18" width="330" height="34" rx="12" fill="rgba(79,227,255,.10)"/>
+          <text x="322" y="41" class="node-label" fill="#4fe3ff">CORE · Coding Agent</text>
+          <text x="22" y="0" class="node-sub"></text>
+
+          <text x="322" y="80" class="node-sub" fill="#cfe0ff">读 / 写 / 编辑文件</text>
+          <text x="322" y="104" class="node-sub" fill="#cfe0ff">运行 shell 命令</text>
+          <text x="322" y="128" class="node-sub" fill="#cfe0ff">写并执行 Python 脚本</text>
+          <text x="322" y="152" class="node-sub" fill="#cfe0ff">失败 → 读报错 → 改代码 → 重跑</text>
+
+          <text x="322" y="186" class="node-sub" fill="#6a7a9a">↑ 这一圈自我纠错，就是它</text>
+          <text x="322" y="204" class="node-sub" fill="#6a7a9a">　 区别于「一次性代码生成」的地方</text>
+
+          <rect x="318" y="222" width="294" height="48" rx="7" fill="rgba(255,180,107,.08)" stroke="rgba(255,180,107,.3)"/>
+          <text x="334" y="243" class="node-sub" fill="#ffb46b">Harness：测试 / 类型 / Lint / Git</text>
+          <text x="334" y="260" class="node-sub" fill="#8fa2c4">验收基线 · 执行边界 · 反馈 · 回退</text>
+
+          <!-- 右侧：产物 -->
+          <rect x="700" y="18" width="256" height="270" rx="10" fill="#0a1120" stroke="rgba(255,180,107,.35)"/>
+          <text x="718" y="44" class="node-label" fill="#ffb46b">产物区</text>
+          <text x="718" y="70" class="node-sub">report.pdf　　分析报告</text>
+          <text x="718" y="92" class="node-sub">charts/*.png　可视化图表</text>
+          <text x="718" y="114" class="node-sub">TODO_LIST.md　中间清单</text>
+          <text x="718" y="136" class="node-sub">scripts/*.py　　可复用脚本</text>
+          <text x="718" y="170" class="node-sub" fill="#7d8fae">产物是文件，不是聊天记录——</text>
+          <text x="718" y="188" class="node-sub" fill="#7d8fae">所以能被检查、被复用、被交付。</text>
+          <rect x="718" y="208" width="220" height="60" rx="7" fill="rgba(79,227,255,.06)" stroke="rgba(79,227,255,.22)"/>
+          <text x="734" y="231" class="node-sub" fill="#4fe3ff">交付给用户的，是文件系统里</text>
+          <text x="734" y="250" class="node-sub" fill="#4fe3ff">真实存在的产物</text>
+
+          <!-- 箭头 -->
+          <path d="M236 74 L296 74" stroke="#8b7bff" stroke-width="1.2" marker-end="url(#ar2)" fill="none"/>
+          <path d="M236 220 L296 220" stroke="#4fe3ff" stroke-width="1.2" marker-end="url(#ar1)" fill="none"/>
+          <path d="M634 150 L696 150" stroke="#ffb46b" stroke-width="1.2" marker-end="url(#ar3)" fill="none"/>
+          <text x="646" y="142" class="node-sub" font-size="9">写</text>
+
+          <!-- 底部文件系统 -->
+          <rect x="4" y="312" width="952" height="52" rx="10" fill="rgba(79,227,255,.055)" stroke="rgba(79,227,255,.35)"/>
+          <text x="24" y="334" class="node-label" fill="#4fe3ff">文件系统 · 信息流转的枢纽</text>
+          <text x="24" y="353" class="node-sub">记忆从文件读取 → 中间结果写文件 → 产物落文件 → 经验存文件。整条链路不经过对话上下文。</text>
+          <path d="M465 292 L465 308" stroke="#4fe3ff" stroke-width="1.1" marker-end="url(#ar1)" fill="none"/>
+          <path d="M828 292 L828 308" stroke="#ffb46b" stroke-width="1.1" marker-end="url(#ar3)" fill="none"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 14 五步执行流 ========== -->
+  <section class="slide" data-sec="5.1.2">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.2 · 一次真实执行<span class="sep">/</span><span class="tag">五步全部落在文件上</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">「分析上季度销售数据，<em>生成一份总结报告</em>」</h2>
+
+      <div class="split" style="margin-top:16px;grid-template-columns:1.12fr .88fr;align-items:start">
+        <div class="steps">
+          <div class="step reveal" style="--d:.14s">
+            <div class="no">01</div>
+            <div><h4>读记忆</h4><p>读 <b>MEMORY.md</b>：用户偏好 PDF 格式的报告，数据源是 Google Sheets。不用再问一遍。</p></div>
+          </div>
+          <div class="step reveal" style="--d:.2s">
+            <div class="no">02</div>
+            <div><h4>调工具</h4><p>通过网络搜索模块拿到 Sheets API 用法，再用<b>代码执行</b>把数据下载到本地。</p></div>
+          </div>
+          <div class="step reveal" style="--d:.26s">
+            <div class="no">03</div>
+            <div><h4>写代码</h4><p>生成 Python 脚本：<b>pandas</b> 做聚合，<b>matplotlib</b> 出图。数字由代码算，不由模型算。</p></div>
+          </div>
+          <div class="step reveal" style="--d:.32s">
+            <div class="no">04</div>
+            <div><h4>生成产物</h4><p>分析结果写入 <b>report.pdf</b>，图表写入 <b>charts/</b> 目录。</p></div>
+          </div>
+          <div class="step reveal" style="--d:.38s">
+            <div class="no">05</div>
+            <div><h4>更新记忆</h4><p>在 MEMORY.md 记下 <b>「User's sales data is in Google Sheets, ID: xxx」</b>，下次直接开始干活。</p></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="spec reveal" style="--d:.3s">
+            <div class="spec-h"><span class="b"></span>WORKSPACE AFTER TASK</div>
+            <div class="spec-body">
+              <div class="spec-code">~/
+├─ <span class="y">MEMORY.md</span>        <span class="c"># 用户偏好 + 数据源 ID</span>
+│   <span class="c">└ 本次新增 1 行</span>
+├─ memory/
+│   └─ <span class="y">2026-11-04.md</span>  <span class="c"># 今天的日志</span>
+├─ charts/
+│   ├─ <span class="g">revenue.png</span>
+│   └─ <span class="g">region.png</span>
+├─ <span class="g">report.pdf</span>       <span class="c"># 最终交付物</span>
+└─ scripts/
+    └─ <span class="g">analyze.py</span>     <span class="c"># 可复用</span></div>
+            </div>
+          </div>
+          <div class="note reveal" style="--d:.44s">
+            <b>注意第 5 步。</b>这一步没有产出任何「用户可见」的东西，但它让下一次执行成本下降——
+            <b>记忆是复利</b>，而它保存在一个 Markdown 文件里。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 15 文件系统中枢 ========== -->
+  <section class="slide" data-sec="5.1.2">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.2 · 记忆层<span class="sep">/</span><span class="tag">为什么是 Markdown 而不是向量库</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">文件系统不只是存储，<em>是记忆、知识和能力的中枢</em></h2>
+
+      <div class="split" style="margin-top:18px;grid-template-columns:.92fr 1.08fr;align-items:start">
+        <div class="spec reveal" style="--d:.16s">
+          <div class="spec-h"><span class="b"></span>MEMORY.md · 长这样</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 用户偏好</span>
+- 报告格式：<span class="y">PDF</span>
+- 语言：中文
+- 称呼：Bojie
+
+<span class="c"># 环境事实</span>
+- 数据源：Google Sheets
+  ID: <span class="g">1a2b3c...</span>
+- 时区：<span class="g">Asia/Shanghai</span>
+
+<span class="c"># 经验</span>
+- 该银行电话验证需要<span class="y">开户行地址</span>
+  <span class="c">（2026-10-22 实测）</span></div>
+          </div>
+        </div>
+
+        <div>
+          <p class="lede reveal" style="--d:.22s;font-size:14.5px">
+            选择 Markdown 而不是向量数据库，看起来反直觉，实际上极其有效：
+          </p>
+          <ul class="list reveal" style="--d:.28s;margin-top:14px">
+            <li><b>用户能直接读、直接改。</b>Agent 记错了某件事？打开文件删掉那一行就行——不需要「重训」，也不需要写一条纠正指令。</li>
+            <li><b>天然保留时间顺序。</b>按日期归档的日志，避免了语义检索里最常见的时间混淆（「上周说的」和「上个月说的」混在一起）。</li>
+            <li><b>可以进 Git。</b>版本控制、diff、回滚——记忆的每一次变化都可追溯。</li>
+          </ul>
+          <div class="note cy reveal" style="--d:.4s">
+            <b>更关键的一点：</b>Agent 有写文件的能力，就意味着它具备了<b>修改自身外部产物的技术条件</b>。
+            第一次做某个任务时发现的新知识（比如「这家银行要开户行地址才能验证身份」），可以先写进记录——
+            什么时候这条记录足够可靠、能升级成知识或程序，是第 9 章要讨论的持续进化问题。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 16 适用边界 ========== -->
+  <section class="slide" data-sec="5.1.2">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.2 · 别推过头<span class="sep">/</span><span class="tag">这个判断有边界</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">「Coding 是核心」<em>只对开放任务型 Agent 成立</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        原文在这里做了一个重要的自我限定。如果你把它理解成「所有 Agent 都该以 Coding 为中心」，就会做错架构决策。
+      </p>
+
+      <table class="tbl reveal" style="--d:.2s">
+        <thead>
+          <tr><th style="width:170px">维度</th><th style="width:400px">开放任务型通用 Agent</th><th>垂直领域 Agent（如客服）</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>任务边界</td>
+            <td class="cy">不确定。任务千变万化，<b>无法预先枚举所需工具</b></td>
+            <td>相对封闭。围绕固定业务流程、领域工具、对话策略构建</td>
+          </tr>
+          <tr>
+            <td>产物形态</td>
+            <td class="cy">多样：报告 / 表格 / 网页 / 视频 / 代码</td>
+            <td>稳定：回答、工单、退款单、订单变更</td>
+          </tr>
+          <tr>
+            <td>代码的角色</td>
+            <td class="cy"><b>架构中枢</b>——元能力，动态扩展能力边界最经济的路径</td>
+            <td class="mu">工具箱里的一件工具，不是架构中枢</td>
+          </tr>
+          <tr>
+            <td>代表</td>
+            <td class="cy">Manus、OpenClaw、Claude Cowork</td>
+            <td class="mu">τ-bench 里的航空 / 电商客服 Agent</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note reveal" style="--d:.36s">
+        <b>但注意后半句：</b>即便在垂直 Agent 里，coding 仍是<b>重要的基础能力</b>——
+        精确计算、数据处理、规则校验都离不开它。区别只是：它是「必备零件」，而不是「承重墙」。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 18 结尾 ========== -->
+  <!-- frag:10-5.1.3.html -->
+<!-- ========== 5.1.3 分隔页 ========== -->
+  <section class="slide part" data-sec="5.1.3" data-tier="a">
+    <div class="ghost">5.1.3</div>
+    <div class="slide-inner">
+      <div class="part-num reveal" style="--d:.04s">SECTION 05.1.3</div>
+      <h2 class="reveal" style="--d:.1s">Coding Agent<br><em>接到一个需求之后</em></h2>
+      <p class="sub reveal" style="--d:.16s">
+        上一节回答「为什么核心是 Coding」；<br>这一节把镜头拉近：从接手一个陌生仓库，到交付一次改动。
+      </p>
+
+      <div class="cards c3 part-band" style="margin-top:46px">
+        <div class="card reveal" style="--d:.24s">
+          <div class="k"><span>01 — 06</span><b>流程</b></div>
+          <h3>六个阶段</h3>
+          <p>从读懂项目到同步文档，流水线比想象中长。</p>
+        </div>
+        <div class="card reveal" style="--d:.3s">
+          <div class="k"><span>LOOP</span><b>回流</b></div>
+          <h3>一条回退箭头</h3>
+          <p>测试失败就回到代码，写完不等于完成。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.36s">
+          <div class="k"><span>MODEL</span><b>变量</b></div>
+          <h3>节奏因人而异</h3>
+          <p>何时停止调查、开始动手，是学出来的。</p>
+        </div>
+      </div>
+
+      <p class="lede reveal" style="--d:.44s;margin-top:30px">
+        先看理想型：<span class="hl">六个阶段一步不落</span>，然后再说真实项目里它会怎么被裁剪。
+      </p>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-01 图 5-2 六阶段全图 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 图 5-2<span class="sep">/</span><span class="tag">六个阶段，只有一步在写代码</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">前三个阶段，<em>一行代码都不写</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        顺序比阶段本身更重要：先建认知，再定方案，<strong>最后才动键盘</strong>。
+      </p>
+
+      <div style="margin-top:14px" class="reveal">
+        <svg viewBox="0 0 1124 336" style="width:100%;height:auto;overflow:visible">
+          <defs>
+            <marker id="f52cy" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#4fe3ff"/></marker>
+            <marker id="f52gy" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#8fa2c4"/></marker>
+            <marker id="f52am" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#ffb46b"/></marker>
+          </defs>
+
+          <!-- 第一行：只读 -->
+          <rect x="0" y="24" width="340" height="88" rx="10" fill="#08141f" stroke="rgba(79,227,255,.40)"/>
+          <text x="18" y="48" class="node-label" font-size="11" fill="#4fe3ff">STEP 01 · 只读</text>
+          <text x="18" y="74" font-size="14" font-weight="600" fill="#e9f0ff">项目文档化</text>
+          <text x="18" y="96" class="node-sub" font-size="11" fill="#7d8fae">先读文档，缺就补出来</text>
+
+          <rect x="392" y="24" width="340" height="88" rx="10" fill="#08141f" stroke="rgba(79,227,255,.40)"/>
+          <text x="410" y="48" class="node-label" font-size="11" fill="#4fe3ff">STEP 02 · 只读</text>
+          <text x="410" y="74" font-size="14" font-weight="600" fill="#e9f0ff">需求澄清</text>
+          <text x="410" y="96" class="node-sub" font-size="11" fill="#7d8fae">边界不清就先问，别猜</text>
+
+          <rect x="784" y="24" width="340" height="88" rx="10" fill="#08141f" stroke="rgba(79,227,255,.40)"/>
+          <text x="802" y="48" class="node-label" font-size="11" fill="#4fe3ff">STEP 03 · 只读</text>
+          <text x="802" y="74" font-size="14" font-weight="600" fill="#e9f0ff">编写设计文档</text>
+          <text x="802" y="96" class="node-sub" font-size="11" fill="#7d8fae">一页纸，换一次人审</text>
+
+          <path d="M342 68 L386 68" stroke="#4fe3ff" stroke-width="1.2" marker-end="url(#f52cy)" fill="none"/>
+          <path d="M734 68 L778 68" stroke="#4fe3ff" stroke-width="1.2" marker-end="url(#f52cy)" fill="none"/>
+
+          <!-- 闸门 -->
+          <path d="M954 112 L954 140 L170 140 L170 162" stroke="#8fa2c4" stroke-width="1.1"
+                stroke-dasharray="5 5" marker-end="url(#f52gy)" fill="none"/>
+          <text x="562" y="132" class="node-sub" font-size="11" fill="#8fa2c4" text-anchor="middle">设计文档通过人类审查，才进入实现</text>
+
+          <!-- 第二行：写入 -->
+          <rect x="0" y="168" width="340" height="88" rx="10" fill="rgba(79,227,255,.05)" stroke="rgba(79,227,255,.30)"/>
+          <text x="18" y="192" class="node-label" font-size="11" fill="#4fe3ff">STEP 04 · 写入</text>
+          <text x="18" y="218" font-size="14" font-weight="600" fill="#e9f0ff">代码实现与测试</text>
+          <text x="18" y="240" class="node-sub" font-size="11" fill="#7d8fae">复用抽象，补测试，跑绿</text>
+
+          <rect x="392" y="168" width="340" height="88" rx="10" fill="#08141f" stroke="rgba(140,170,220,.28)"/>
+          <text x="410" y="192" class="node-label" font-size="11" fill="#8fa2c4">STEP 05 · 写入</text>
+          <text x="410" y="218" font-size="14" font-weight="600" fill="#e9f0ff">自我审查</text>
+          <text x="410" y="240" class="node-sub" font-size="11" fill="#7d8fae">读代码 / lint / 审查子 Agent</text>
+
+          <rect x="784" y="168" width="340" height="88" rx="10" fill="#08141f" stroke="rgba(140,170,220,.28)"/>
+          <text x="802" y="192" class="node-label" font-size="11" fill="#8fa2c4">STEP 06 · 写入</text>
+          <text x="802" y="218" font-size="14" font-weight="600" fill="#e9f0ff">文档同步与交付</text>
+          <text x="802" y="240" class="node-sub" font-size="11" fill="#7d8fae">架构变了，文档跟着改</text>
+
+          <path d="M342 212 L386 212" stroke="#4fe3ff" stroke-width="1.2" marker-end="url(#f52cy)" fill="none"/>
+          <path d="M734 212 L778 212" stroke="#4fe3ff" stroke-width="1.2" marker-end="url(#f52cy)" fill="none"/>
+
+          <!-- 回流 -->
+          <path d="M560 256 L560 292 L170 292 L170 262" stroke="#ffb46b" stroke-width="1.3"
+                stroke-dasharray="5 4" marker-end="url(#f52am)" fill="none"/>
+          <text x="366" y="314" class="node-sub" font-size="11" fill="#ffb46b" text-anchor="middle">测试失败或审查不通过 → 回到代码修改，重跑到全绿</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-02 新工程师的第一天 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 项目文档化<span class="sep">/</span><span class="tag">第一件事不是改代码</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">第一天，<em>不会直接提交代码</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        Agent 首次接触一个仓库，和新人第一天入职是同一件事：先熟悉环境，还是先改文件？
+      </p>
+
+      <div class="split" style="margin-top:38px;grid-template-columns:1.02fr .98fr;align-items:start">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>AGENT 的第一小时 · 只读</div>
+          <div class="spec-body" style="padding:18px 18px 26px">
+            <div class="spec-code" style="font-size:13px;line-height:2"><span class="c"># 建立认知框架，而不是急着定位</span>
+
+<span class="y">01</span> 目录结构   src/ tests/ docs/ 各放什么
+<span class="y">02</span> 模块边界   谁负责什么、谁依赖谁
+<span class="y">03</span> 核心抽象   被最多地方引用的那几个类型
+<span class="y">04</span> 指令文件   有没有 README / CLAUDE.md
+<span class="y">05</span> 测试入口   怎么跑起来，跑得起来吗
+
+<span class="g">产出</span>：一张「这个仓库怎么组织」的地图
+<span class="g">然后</span>：才决定改哪里、怎么改</div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.28s;gap:15px">
+            <li><b>顺序不能颠倒。</b>先目录、再模块、最后才是具体文件。反过来，就是从细节里爬不出来。</li>
+            <li><b>先建模，再定位。</b>没有全局地图的搜索，找到的永远是「看起来像」的那一处。</li>
+            <li><b>这一步没有输出物。</b>但它决定了后面五步的判断质量——读错结构，改得越快错得越远。</li>
+          </ul>
+          <div class="note reveal" style="--d:.4s">
+            <b>原文的类比很准：</b>新工程师第一天不会提 PR。Agent 也一样，先读，再写。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-03 缺失就补文档 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 项目文档化<span class="sep">/</span><span class="tag">文档缺失的时候</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">文档缺失，<em>补文档是 Agent 自己的活</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        原文的措辞很硬：「不应在盲目状态下开始工作，而应<strong>主动承担文档化的责任</strong>。」
+      </p>
+
+      <div class="cards c3" style="margin-top:44px">
+        <div class="card reveal" style="--d:.22s;padding:24px 21px 22px">
+          <div class="k"><span>READ</span><b>输入</b></div>
+          <h3>系统性地读库</h3>
+          <p>不是抽几个文件看看，而是按目录把仓库完整走一遍——先看目录树与入口文件，再顺着 import 往下钻。</p>
+        </div>
+        <div class="card reveal" style="--d:.28s;padding:24px 21px 22px">
+          <div class="k"><span>PARSE</span><b>识别</b></div>
+          <h3>认出骨架</h3>
+          <p>主要模块、核心抽象、组件之间的依赖关系。这三样是后面所有判断的地基：改哪里、会不会碰到别人。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.34s;padding:24px 21px 22px">
+          <div class="k"><span>WRITE</span><b>产出</b></div>
+          <h3>写一份初始文档</h3>
+          <p>架构概览、目录结构、测试运行指南——给别人入门，也给自己当蓝图。写下来的那一刻，下一次任务就不必从零理解。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>原则：</b>知识的显式化是高效协作的前提。没写下来的理解，只有这一个 Agent 有，下一个还得重新读一遍。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-04 两种读者 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 项目文档化<span class="sep">/</span><span class="tag">仓库里的知识有两种读者</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">README 给人读，<em>指令文件给 Agent 读</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        写给人的那份讲究叙事，写给 Agent 的那份讲究<strong>约束</strong>——两者的差别不在格式，在读者。
+      </p>
+
+      <table class="tbl reveal" style="--d:.2s">
+        <thead>
+          <tr><th style="width:300px">文件</th><th style="width:180px">写给谁</th><th>什么时候被读到</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>README.md</td>
+            <td class="mu">刚加入的开发者</td>
+            <td>第一次接触项目时从头读一遍；之后偶尔回来查命令。</td>
+          </tr>
+          <tr>
+            <td class="cy">CLAUDE.md · AGENTS.md · .cursorrules</td>
+            <td class="mu">本项目的 Agent</td>
+            <td>每次会话开始，自动注入上下文——不需要谁提醒它去读。</td>
+          </tr>
+          <tr>
+            <td class="vi">SOUL.md</td>
+            <td class="mu">跨项目工作的 Agent</td>
+            <td>定义「Agent 是谁」：身份与行为规则，换项目也不变。</td>
+          </tr>
+          <tr>
+            <td class="vi">MEMORY.md</td>
+            <td class="mu">同一个 Agent 的过去</td>
+            <td>每次开工前回读：跨会话沉淀的经验与用户偏好。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note reveal" style="--d:.36s">
+        <b>前两行在说「这个项目怎么干活」，后两行在说「这个 Agent 是谁、记得什么」</b>——层次不同，但都是文件。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-05 最经济的稳定前缀 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 上下文工程<span class="sep">/</span><span class="tag">项目级的系统提示词</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">指令文件，是<em>最经济的稳定前缀</em></h2>
+
+      <div class="split" style="margin-top:38px;grid-template-columns:.96fr 1.04fr;align-items:start">
+        <div class="spec reveal" style="--d:.18s">
+          <div class="spec-h"><span class="b"></span>CLAUDE.md · 一个真实的样子</div>
+          <div class="spec-body" style="padding:18px 18px 26px">
+            <div class="spec-code" style="font-size:13px;line-height:2"><span class="y">## 构建与测试</span>
+用 <span class="g">pnpm test</span>，不要用 npm test
+<span class="y">## 代码风格</span>
+禁用 <span class="g">any</span> 类型；组件一律函数式
+<span class="y">## 禁区</span>
+不要改动 <span class="g">migrations/</span> 目录
+
+<span class="c"># 每次会话开始，整段自动进入上下文</span>
+<span class="c"># 相当于这个项目自己的系统提示词</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.28s;gap:15px">
+            <li><b>注入即前缀。</b>不是每次对话里重复交代规矩，而是开工前它已经在上下文里了。</li>
+            <li><b>稳定即便宜。</b>内容不随任务变化 → 前缀命中 KV Cache，省的是钱，也是首字延迟。</li>
+            <li><b>落地即原则。</b>「知识必须存在于代码库本身」，这是它最直接的一种形态。</li>
+          </ul>
+          <div class="note cy reveal" style="--d:.4s">
+            与 README 的真正区别不在形式：一个回答「这是什么」，一个回答「在这里该怎么干」。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-06 对的仓库长什么样 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 项目文档化<span class="sep">/</span><span class="tag">什么样的仓库对 Agent 友好</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">好的仓库，<em>让 Agent 读得到</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        第二章那条判断在代码库层面的落点：<strong>Agent 只能读到被写下来的东西</strong>，口口相传的规矩对它等于不存在。
+      </p>
+
+      <div class="split" style="margin-top:38px;grid-template-columns:1.06fr .94fr;align-items:start">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>知识该住在哪里</div>
+          <div class="spec-body" style="padding:18px 18px 26px">
+            <div class="spec-code" style="font-size:13px;line-height:2">repo/
+├─ docs/adr/          <span class="c"># 决策：为什么选 A 不选 B</span>
+├─ .github/
+│   └─ pull_request_template.md
+│                     <span class="c"># 上下文：改了什么、为什么</span>
+├─ CONTRIBUTING.md    <span class="c"># 经验：环境、发布、踩过的坑</span>
+└─ <span class="y">CLAUDE.md</span>          <span class="c"># 约定：在这里怎么干活</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.28s;gap:15px">
+            <li><b>决策记录在文档里。</b>半年后没人记得为什么这么选——Agent 更不可能从代码里猜出来。</li>
+            <li><b>上下文写在 issue 与 PR 里。</b>diff 只说「改了什么」，描述才说「为什么」。</li>
+            <li><b>经验沉淀在开发者指南里。</b>资深同事心里的那些坑，写下来才成为团队资产。</li>
+          </ul>
+          <div class="note reveal" style="--d:.4s">
+            <b>一个可操作的指标：</b>一个远程新人，只靠代码仓库和文档，能不能独立开展工作。能，Agent 通常也能。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-07 简单与复杂 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 需求澄清<span class="sep">/</span><span class="tag">先判断该不该问</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">简单需求直接做，<em>复杂需求先问</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        修一个已知的 bug、调一个参数——可以直接进入实现。但原文说，<strong>软件开发中大多数任务并非如此简单</strong>。
+      </p>
+
+      <div class="cards c3" style="margin-top:44px">
+        <div class="card reveal" style="--d:.22s;padding:24px 21px 22px">
+          <div class="k"><span>维度 01</span><b>输入</b></div>
+          <h3>需求本身的模糊</h3>
+          <p>用户知道想要什么，但说不清边界；说出来的只是症状，不是目标。</p>
+        </div>
+        <div class="card reveal" style="--d:.28s;padding:24px 21px 22px">
+          <div class="k"><span>维度 02</span><b>路径</b></div>
+          <h3>实现路径的多样</h3>
+          <p>多条技术路线都可行，各有取舍，没有唯一正确的那个答案——选哪条取决于团队栈、维护成本和上线压力。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.34s;padding:24px 21px 22px">
+          <div class="k"><span>维度 03</span><b>影响</b></div>
+          <h3>影响范围的广泛</h3>
+          <p>要改多个模块，可能顺手破坏现有功能——越自信越危险，所以越要先有人确认边界。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>碰上任一条：</b>先做探索性调研把边界澄清，必要时主动与用户对话。在模糊状态下动键盘，返工的成本远高于多问一句。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-08 优化性能到底指什么 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 需求澄清<span class="sep">/</span><span class="tag">一句话需求里的三个洞</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">「优化系统性能」，<em>到底指什么</em></h2>
+
+      <div class="split" style="margin-top:38px;grid-template-columns:1.06fr .94fr;align-items:start">
+        <div class="spec reveal" style="--d:.18s">
+          <div class="spec-h"><span class="b"></span>澄清对话 · 三问三答</div>
+          <div class="spec-body" style="padding:18px 18px 26px">
+            <div class="spec-code" style="font-size:13px;line-height:2"><span class="w">用户</span>：优化一下系统性能
+
+<span class="g">Agent 追问</span>
+<span class="y">① 目标</span>  响应时间 / 内存 / 吞吐？
+     <span class="c">→ 接口 P99 从 800ms 降到 200ms</span>
+<span class="y">② 权衡</span>  能改接口吗？能牺牲易用性吗？
+     <span class="c">→ 接口不能动，加缓存可以</span>
+<span class="y">③ 瓶颈</span>  profile 过吗，还是凭感觉猜？
+     <span class="c">→ 先跑一轮 profile 再谈方案</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.28s;gap:15px">
+            <li><b>三问答完，「优化」才可验证。</b>P99 降 75%、接口不动、允许加缓存——这才是一个能验收的目标。</li>
+            <li><b>少问一条，方案就偏。</b>换了接口、动了易用性，指标却纹丝不动，是这类需求最常见的结局。</li>
+            <li><b>能自己查的别问人。</b>profile、日志、慢查询 Agent 可以自己跑；查不到的取舍才值得打断用户。</li>
+          </ul>
+          <div class="note reveal" style="--d:.4s">
+            在需求模糊的状态下开始编码，往往导致大量返工——返工的不是代码，是方向。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-09 设计文档 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 设计文档<span class="sep">/</span><span class="tag">人类的介入点</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">设计文档不是交付物，<em>是换一次审查的接口</em></h2>
+
+      <div class="split" style="margin-top:38px;grid-template-columns:.94fr 1.06fr;align-items:start">
+        <div class="spec reveal" style="--d:.18s">
+          <div class="spec-h"><span class="b"></span>DESIGN.md · 四个必答问题</div>
+          <div class="spec-body" style="padding:18px 18px 26px">
+            <div class="spec-code" style="font-size:13px;line-height:2"><span class="c"># 一页纸，回答四件事</span>
+
+<span class="y">①</span> 修改哪些模块，<span class="w">为什么是它们</span>
+<span class="y">②</span> 采用什么方案，<span class="w">相对优势在哪</span>
+<span class="y">③</span> 需要引入哪些新依赖
+<span class="y">④</span> 预期对系统的影响
+
+<span class="c"># 写完 → 提交人审 → 批准 → 才动手</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.28s;gap:15px">
+            <li><b>写的过程就是预演。</b>很多方案在画调用链的时候就被自己否掉了——那时还没花一行代码的成本。</li>
+            <li><b>审查成本差两个数量级。</b>一页文档能看出方向对不对；三百行 diff 只能看出细节对不对。</li>
+            <li><b>所以它是一道闸门。</b>Agent 提交设计文档，等批准，再继续；批准之前不动键盘。</li>
+          </ul>
+          <div class="note reveal" style="--d:.4s">
+            这是整套流程里<b>最划算的一次人工介入</b>：花十分钟读一页纸，省下的是几百行的返工。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-10 完成的标准 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 实现与验收<span class="sep">/</span><span class="tag">由验证判定何时可以停</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">完成的标准是测试通过，<em>不是代码写完</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        设计获批之后才动键盘。而代码写完，只走到了一半——剩下的一半由测试来判定。
+      </p>
+
+      <div class="steps" style="margin-top:22px">
+        <div class="step reveal" style="--d:.2s">
+          <div class="no">01</div>
+          <div><h4>按规范实现</h4><p>遵循项目代码规范，复用已有抽象和工具；不为这次任务另造一套写法，必要时做适度重构。</p></div>
+        </div>
+        <div class="step reveal" style="--d:.26s">
+          <div class="no">02</div>
+          <div><h4>写测试</h4><p>覆盖正常路径、边界条件、异常情况——而不是只测一遍「能跑通的那条路」。</p></div>
+        </div>
+        <div class="step reveal" style="--d:.32s">
+          <div class="no">03</div>
+          <div><h4>跑测试，进入「测试-修复」循环</h4><p>失败不是上报：读报错、定位、改代码、重跑。这个循环可能转好几轮。</p></div>
+        </div>
+        <div class="step reveal" style="--d:.38s">
+          <div class="no">04</div>
+          <div><h4>修到全绿</h4><p>迭代到全部通过为止。这一刻才算「完成」，也才是可以交给用户的那一刻。</p></div>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>最常见的偷懒：</b>写完代码不跑测试，直接报「任务完成」。把「测试通过」当作完成标准，
+        正是 Loop 工程「由验证判定何时可以停」在编码场景的落地。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-11 自我审查 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 自我审查<span class="sep">/</span><span class="tag">测试全绿之后还没完</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">绿了之后，<em>换一副眼睛看代码</em></h2>
+
+      <div class="split" style="margin-top:38px;grid-template-columns:.94fr 1.06fr;align-items:start">
+        <div class="spec reveal" style="--d:.18s">
+          <div class="spec-h"><span class="b"></span>自审清单 · 五个问题</div>
+          <div class="spec-body" style="padding:18px 18px 26px">
+            <div class="spec-code" style="font-size:13px;line-height:2"><span class="c"># 测试全绿之后，逐条过一遍</span>
+<span class="y">[ ]</span> 可读性  命名和结构，别人能看懂吗
+<span class="y">[ ]</span> 注释    写的是「为什么」，还是「做了什么」
+<span class="y">[ ]</span> 性能    有没有 N+1、有没有重复计算
+<span class="y">[ ]</span> 安全    输入校验、权限、注入面
+<span class="y">[ ]</span> 风格    和项目既有写法一致吗</div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.28s;gap:15px">
+            <li><b>重读代码。</b>不是扫一遍 diff，是按「第一次看这段代码的人」的角度读。</li>
+            <li><b>跑 lint 与类型检查。</b>机器能查的那部分，不要浪费人的注意力。</li>
+            <li><b>调一个审查子 Agent。</b>换一份上下文重新读，比同一份上下文自己夸自己有效。</li>
+          </ul>
+          <div class="note reveal" style="--d:.4s">
+            <b>分界线很清楚：</b>审查发现问题，就回到修改阶段；把有缺陷的代码交出去，前面那些绿测试等于白跑。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-12 文档与代码共同演化 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 文档同步<span class="sep">/</span><span class="tag">什么时候必须改文档</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">过时的文档，<em>比没有文档更糟</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        没有文档，读者知道自己在猜；过时的文档，读者以为自己在读事实——<strong>它会误导后来的开发者</strong>。
+      </p>
+
+      <div class="cards c3" style="margin-top:44px">
+        <div class="card reveal" style="--d:.22s;padding:24px 21px 22px">
+          <div class="k"><span>变化 01</span><b>结构</b></div>
+          <h3>引入新模块</h3>
+          <p>目录和职责变了，架构图上的框就对不上现实；新同事按图找代码，会找到一片空白。</p>
+        </div>
+        <div class="card reveal" style="--d:.28s;padding:24px 21px 22px">
+          <div class="k"><span>变化 02</span><b>依赖</b></div>
+          <h3>依赖关系变化</h3>
+          <p>谁调用谁变了，照着旧图找代码就会走进死路——拆分层、换中间件这类大动作最容易留下这种图。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.34s;padding:24px 21px 22px">
+          <div class="k"><span>变化 03</span><b>语义</b></div>
+          <h3>核心抽象改语义</h3>
+          <p>名字没变、行为变了——签名一样，返回值的意思变了，比直接报错更难查。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>这套流程的三条原则：</b>计划先于行动（先设计再编码）、验证贯穿始终（测试与审查）、文档与代码共同演化（改完就同步）。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-13 裁剪与模型差异 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 现实中的裁剪<span class="sep">/</span><span class="tag">推荐流程不是必选流程</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">同一套流程，<em>不同模型裁剪的位置不一样</em></h2>
+
+      <div class="cards c2" style="margin-top:20px">
+        <div class="card reveal" style="--d:.16s">
+          <div class="k"><span>SIMPLE</span><b>跳过</b></div>
+          <h3>简单 bug 修复</h3>
+          <p>直接进入实现，跳过设计文档；但测试这一步仍然要跑。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.22s">
+          <div class="k"><span>COMPLEX</span><b>完整</b></div>
+          <h3>复杂且影响面大</h3>
+          <p>六个阶段一个不落，设计文档必须先过人类审查。</p>
+        </div>
+      </div>
+
+      <table class="tbl reveal" style="--d:.28s;margin-top:18px">
+        <thead>
+          <tr><th style="width:160px">动手之前</th><th style="width:480px">先调查型</th><th>先提交型</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>读多少</td>
+            <td class="cy">目录、实现、调用方、测试，读到能画出调用链</td>
+            <td class="am">只读少数最可能相关的文件</td>
+          </tr>
+          <tr>
+            <td>什么时候动手</td>
+            <td class="cy">想清楚再写，第一次提交就接近正确</td>
+            <td class="am">先提交补丁，把编译与测试的报错当作调查</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="lede reveal" style="--d:.36s;margin-top:16px">
+        换 Harness，这个阈值可能不变；同一个 Harness 里换模型，它又可能变——<br>
+        <span class="hl">它首先是模型学到的行为策略，不是 Coding 产品的界面风格。</span>
+      </p>
+
+      <div class="note reveal" style="--d:.44s">
+        Harness 的提示词、工具和预算能放大或抑制它，但不必是它的来源。第七章在固定 Harness 里衡量这一差异，第八章再从后训练角度解释。
+      </div>
+    </div>
+  </section>
+
+  <!-- frag:20-5.1.4.html -->
+<!-- ========== 20 5.1.4 Harness 到底是什么 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · Harness 工程<span class="sep">/</span><span class="tag">先把定义对齐</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">Harness 不是模型外面的一圈，<em>它就是公式的另一半</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        第一章给过 Agent = Model + Harness。这里的 Harness 不止上下文和工具，还包含约束、验证、纠正——<strong>五样凑齐，才是一套完整的 Harness</strong>。
+      </p>
+
+      <div class="reveal" style="--d:.2s;margin-top:18px">
+        <svg viewBox="0 0 1124 264" style="width:100%;height:auto;overflow:visible">
+          <rect x="0" y="0" width="1124" height="42" rx="9" fill="rgba(255,255,255,.03)" stroke="rgba(140,170,220,.14)"/>
+          <text x="20" y="27" class="node-label" font-size="13" fill="#cfe0ff">Agent = Model + Harness</text>
+          <text x="1104" y="27" text-anchor="end" font-size="11" fill="#6a7a9a">第一章 · 公式</text>
+
+          <rect x="0" y="58" width="380" height="206" rx="12" fill="rgba(79,227,255,.05)" stroke="rgba(79,227,255,.3)"/>
+          <text x="22" y="86" class="node-label" font-size="11.5" fill="#4fe3ff">第一层 · 让 Agent 能做事</text>
+          <text x="22" y="116" font-size="15" fill="#e9f0ff">上下文 + 工具</text>
+          <rect x="22" y="132" width="336" height="34" rx="7" fill="rgba(255,255,255,.04)" stroke="rgba(140,170,220,.1)"/>
+          <text x="38" y="154" class="node-sub" font-size="11.5" fill="#a9b8d6">上下文　提示词、记忆、检索到的文件</text>
+          <rect x="22" y="176" width="336" height="34" rx="7" fill="rgba(255,255,255,.04)" stroke="rgba(140,170,220,.1)"/>
+          <text x="38" y="198" class="node-sub" font-size="11.5" fill="#a9b8d6">工具　　七个工具、沙盒、外部 API</text>
+          <text x="22" y="244" class="node-sub" font-size="11" fill="#7d8fae">这一层决定它「能做什么」</text>
+
+          <rect x="404" y="58" width="720" height="206" rx="12" fill="rgba(139,123,255,.05)" stroke="rgba(139,123,255,.3)"/>
+          <text x="426" y="86" class="node-label" font-size="11.5" fill="#a89bff">第二层 · 让 Agent 不做错事</text>
+          <text x="426" y="116" font-size="15" fill="#e9f0ff">约束 + 验证 + 纠正</text>
+
+          <rect x="426" y="132" width="208" height="84" rx="8" fill="rgba(255,255,255,.03)" stroke="rgba(140,170,220,.12)"/>
+          <text x="440" y="160" font-size="13" fill="#e9f0ff">约束</text>
+          <text x="440" y="184" class="node-sub" font-size="11.5" fill="#a9b8d6">不许碰的目录与接口</text>
+          <text x="440" y="202" class="node-sub" font-size="11.5" fill="#a9b8d6">不许用的依赖</text>
+
+          <rect x="656" y="132" width="208" height="84" rx="8" fill="rgba(255,255,255,.03)" stroke="rgba(140,170,220,.12)"/>
+          <text x="670" y="160" font-size="13" fill="#e9f0ff">验证</text>
+          <text x="670" y="184" class="node-sub" font-size="11.5" fill="#a9b8d6">测试、Linter、类型检查</text>
+          <text x="670" y="202" class="node-sub" font-size="11.5" fill="#a9b8d6">自动判对错</text>
+
+          <rect x="886" y="132" width="208" height="84" rx="8" fill="rgba(255,255,255,.03)" stroke="rgba(140,170,220,.12)"/>
+          <text x="900" y="160" font-size="13" fill="#e9f0ff">纠正</text>
+          <text x="900" y="184" class="node-sub" font-size="11.5" fill="#a9b8d6">读报错、改、重跑</text>
+          <text x="900" y="202" class="node-sub" font-size="11.5" fill="#a9b8d6">错了能退回上一个版本</text>
+
+          <text x="426" y="244" class="node-sub" font-size="11" fill="#7d8fae">这一层决定它「不做什么」</text>
+        </svg>
+      </div>
+
+      <div class="note reveal" style="--d:.3s;margin-top:14px">
+        <b>为什么先讲 Coding：</b>代码任务的可验证性在所有 Agent 任务里最高，约束、验证、纠正三样都有现成基础设施可以依托——
+        这是 Harness 红利最大的一个领域。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 21 四件组件 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 四件组件<span class="sep">/</span><span class="tag">缺一件就漏水</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">稳定不稳定，看的不是模型，<em>是这四件东西</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        第一章的第二层，落到 Coding 场景就是四件可以逐条检查的工程组件——<strong>没有一件属于模型</strong>。
+      </p>
+
+      <div class="cards c4" style="margin-top:30px">
+        <div class="card reveal" style="--d:.22s;padding:20px 18px 18px">
+          <div class="k"><span>01</span><b>验收基线</b></div>
+          <h3>什么算做完了</h3>
+          <p>测试套件、CI 管道、代码审查标准。把「做完了」从一个感觉，变成一次跑得出结果的检查。</p>
+        </div>
+        <div class="card reveal" style="--d:.28s;padding:20px 18px 18px">
+          <div class="k"><span>02</span><b>执行边界</b></div>
+          <h3>能碰什么、不能碰什么</h3>
+          <p>模块边界、依赖规则、权限控制。哪些目录、哪些接口不在可写范围里，写清楚。</p>
+        </div>
+        <div class="card reveal" style="--d:.34s;padding:20px 18px 18px">
+          <div class="k"><span>03</span><b>反馈信号</b></div>
+          <h3>自动化的对错判断</h3>
+          <p>Linter 输出、测试结果、类型检查错误。对错当场由机器判，不等人类说一句「不太对」。</p>
+        </div>
+        <div class="card reveal" style="--d:.4s;padding:20px 18px 18px">
+          <div class="k"><span>04</span><b>回退手段</b></div>
+          <h3>出了问题怎么恢复</h3>
+          <p>Git、沙盒隔离、快照回滚。做错了能一步退回去，它才敢试错。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.48s;margin-top:28px">
+        <b>分工：</b>验收基线和执行边界负责「说清楚」——什么算对、什么不许碰；
+        反馈信号和回退手段负责「拉回来」——跑偏了当场发现，砸了能退回上一个好状态。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 22 表 5-1 四象限 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 表 5-1<span class="sep">/</span><span class="tag">任务清晰度 × 验证自动化</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">Coding 天生站在<em>最好的那个象限</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        两个维度切一刀：目标清不清晰、结果能不能自动验。四块地的瓶颈<strong>完全不同</strong>。
+      </p>
+
+      <table class="tbl reveal" style="--d:.22s;font-size:13.4px">
+        <thead>
+          <tr>
+            <th style="padding-right:24px">目标清晰度</th>
+            <th style="padding-right:36px">结果可自动验证</th>
+            <th>结果需人工验证</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:18px 24px 18px 0">目标明确</td>
+            <td class="cy" style="padding:18px 36px 18px 0"><b>最佳区域</b><br>修复有测试用例的 bug。测试一跑，就知道对不对。</td>
+            <td class="mu" style="padding:18px 0"><b>吞吐量受限</b><br>代码重构需人工审查。天花板是人的审查速度。</td>
+          </tr>
+          <tr>
+            <td style="padding:18px 24px 18px 0">目标模糊</td>
+            <td class="mu" style="padding:18px 36px 18px 0"><b>高效地跑偏</b><br>用 linter 优化「代码质量」。越努力，离目标越远。</td>
+            <td class="mu" style="padding:18px 0"><b>难以启动</b><br>「让 UI 更好看」。连验收标准都写不出来。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note cy reveal" style="--d:.34s;margin-top:28px">
+        <b>代码为什么天生在这个象限的核心：</b>测试套件给验收标准，Linter 和类型检查给即时验证，Git 给回退——
+        四件组件在这里全都有现货。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 23 往左上角推 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 往哪推<span class="sep">/</span><span class="tag">四个瓶颈不一样</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">Harness 唯一的目标，<em>是把任务往左上角推</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        四个格子的瓶颈不一样，所以「换一个更强的模型」只对其中一格有效。
+      </p>
+
+      <div class="reveal" style="--d:.2s;margin-top:12px">
+        <svg viewBox="0 0 1124 322" style="width:100%;height:auto;overflow:visible">
+          <defs>
+            <marker id="q514a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+              <path d="M0 0L8 4L0 8z" fill="#4fe3ff"/></marker>
+          </defs>
+
+          <path d="M1100 22 L340 22" stroke="rgba(79,227,255,.45)" stroke-width="1.2" stroke-dasharray="5 7" fill="none" marker-end="url(#q514a)"/>
+          <text x="1104" y="42" text-anchor="end" font-size="11" fill="#6a7a9a">Harness 在做的事</text>
+          <text x="430" y="42" text-anchor="middle" font-size="11" fill="#6a7a9a">结果可自动验证</text>
+          <text x="902" y="42" text-anchor="middle" font-size="11" fill="#6a7a9a">结果需人工验证</text>
+
+          <text x="188" y="122" text-anchor="end" font-size="11" fill="#6a7a9a">目标明确</text>
+          <text x="188" y="258" text-anchor="end" font-size="11" fill="#6a7a9a">目标模糊</text>
+
+          <rect x="200" y="56" width="460" height="126" rx="10" fill="rgba(79,227,255,.08)" stroke="rgba(79,227,255,.45)"/>
+          <text x="220" y="84" font-size="15" fill="#4fe3ff">最佳区域</text>
+          <text x="220" y="110" class="node-sub" font-size="11.5" fill="#cfe0ff">修复有测试用例的 bug</text>
+          <text x="220" y="134" class="node-sub" font-size="11" fill="#7d8fae">瓶颈：等测试跑完（几秒）</text>
+          <text x="220" y="160" class="node-sub" font-size="11" fill="#4fe3ff">← 目标是这里</text>
+
+          <rect x="680" y="56" width="444" height="126" rx="10" fill="rgba(255,255,255,.02)" stroke="rgba(140,170,220,.14)"/>
+          <text x="700" y="84" font-size="15" fill="#a9b8d6">吞吐量受限</text>
+          <text x="700" y="110" class="node-sub" font-size="11.5" fill="#a9b8d6">代码重构需人工审查</text>
+          <text x="700" y="134" class="node-sub" font-size="11" fill="#7d8fae">瓶颈：等人审完</text>
+          <text x="700" y="160" class="node-sub" font-size="11" fill="#7d8fae">加模型没用，要加审查吞吐</text>
+
+          <rect x="200" y="192" width="460" height="126" rx="10" fill="rgba(255,255,255,.02)" stroke="rgba(140,170,220,.14)"/>
+          <text x="220" y="220" font-size="15" fill="#a9b8d6">高效地跑偏</text>
+          <text x="220" y="246" class="node-sub" font-size="11.5" fill="#a9b8d6">用 linter 优化「代码质量」</text>
+          <text x="220" y="270" class="node-sub" font-size="11" fill="#7d8fae">瓶颈：越努力，越偏</text>
+          <text x="220" y="296" class="node-sub" font-size="11" fill="#7d8fae">先补目标，再谈自动化</text>
+
+          <rect x="680" y="192" width="444" height="126" rx="10" fill="rgba(255,255,255,.02)" stroke="rgba(140,170,220,.14)"/>
+          <text x="700" y="220" font-size="15" fill="#a9b8d6">难以启动</text>
+          <text x="700" y="246" class="node-sub" font-size="11.5" fill="#a9b8d6">「让 UI 更好看」</text>
+          <text x="700" y="270" class="node-sub" font-size="11" fill="#7d8fae">瓶颈：验收标准都写不出</text>
+          <text x="700" y="296" class="node-sub" font-size="11" fill="#7d8fae">先派人，别派 Agent</text>
+        </svg>
+      </div>
+
+      <div class="note reveal" style="--d:.3s;margin-top:14px">
+        <b>一句话记住：</b>加模型只解第一格；剩下三格要靠补验收标准、补人工吞吐、补目标定义——这些全是 Harness 的活。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 24 成熟度不是模型给的 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 成熟度的来源<span class="sep">/</span><span class="tag">不是代码模型特别强</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">Coding 成熟度最高，<em>不是因为代码模型特别强</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        而是因为软件工程几十年攒下的基础设施，<strong>天然就是一套强大的 Harness</strong>——它们本来不是为 Agent 造的。
+      </p>
+
+      <table class="tbl reveal" style="--d:.22s;font-size:13.4px">
+        <thead>
+          <tr>
+            <th style="padding-right:34px">早就存在的设施</th>
+            <th style="padding-right:34px">在 Harness 里担任</th>
+            <th>它本来是为谁造的</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:16px 34px 16px 0">测试套件 · CI</td>
+            <td class="cy" style="padding:16px 34px 16px 0">验收基线 + 反馈信号</td>
+            <td style="padding:16px 0">为「改代码别改坏」</td>
+          </tr>
+          <tr>
+            <td style="padding:16px 34px 16px 0">Linter · 类型检查</td>
+            <td class="cy" style="padding:16px 34px 16px 0">反馈信号</td>
+            <td style="padding:16px 0">为把规范写成可执行的规则</td>
+          </tr>
+          <tr>
+            <td style="padding:16px 34px 16px 0">Git 分支 · 回滚</td>
+            <td class="cy" style="padding:16px 34px 16px 0">回退手段</td>
+            <td style="padding:16px 0">为多人协作与合并</td>
+          </tr>
+          <tr>
+            <td style="padding:16px 34px 16px 0">权限 · 模块边界</td>
+            <td class="mu" style="padding:16px 34px 16px 0">执行边界</td>
+            <td class="mu" style="padding:16px 0">为团队分工与隔离</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note cy reveal" style="--d:.32s;margin-top:26px">
+        <b>可以迁移的判断：</b>一个领域能被 Agent 自动化的程度，取决于它的「错」能不能被机器判定。
+        判得了，就能交给 Agent；判不了，模型再强也只能等人。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 25 案例一 大规模迁移 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 案例一<span class="sep">/</span><span class="tag">大规模代码迁移</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">大规模迁移赢在 Harness，<em>不在模型</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        一家大型科技公司公开分享的迁移实践：任务量以万计，人不可能逐个看。真正的杠杆是三件 Harness 上的事。
+      </p>
+
+      <div class="cards c3" style="margin-top:44px">
+        <div class="card reveal" style="--d:.22s;padding:24px 21px 22px">
+          <div class="k"><span>01</span><b>知识</b></div>
+          <h3>知识必须活在代码库里</h3>
+          <p>迁移规则、目标写法、历史先例都写进仓库里的文件。<b>Agent 看不到的，等于不存在</b>——开会讲一遍不算。</p>
+        </div>
+        <div class="card reveal" style="--d:.28s;padding:24px 21px 22px">
+          <div class="k"><span>02</span><b>约束</b></div>
+          <h3>约束编进 Linter 和 CI</h3>
+          <p>不写成文档等人自觉。规则一旦进了流水线，写法不对就提交不上去——不需要谁记得住。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.34s;padding:24px 21px 22px">
+          <div class="k"><span>03</span><b>闭环</b></div>
+          <h3>验证与纠正全链路自动</h3>
+          <p>改完自动跑测试，报错自动回改，直到整条链路转绿。人只在最后抽样，不在中间守。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s;margin-top:32px">
+        <b>换个说法：</b>知识若只存在于某个人嘴里，Agent 的规模上限就是那个人的时间。
+        把知识搬进仓库，才是「一万个文件」和「一百个文件」的区别。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 26 案例二 LangChain ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 案例二<span class="sep">/</span><span class="tag">LangChain</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">一行模型都没换，<em>基准分数照样涨</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        只优化 Harness 的三个面——系统提示词、工具中间件、自验证循环——基准任务表现就显著提升。
+      </p>
+
+      <div class="cards c3" style="margin-top:44px">
+        <div class="card reveal" style="--d:.2s;padding:24px 21px 22px">
+          <div class="k"><span>01</span><b>说清怎么干</b></div>
+          <h3>系统提示词</h3>
+          <p>任务边界、输出格式、什么时候该停下来问人。<b>把默认做法写死</b>，不让模型每次自由发挥。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:24px 21px 22px">
+          <div class="k"><span>02</span><b>工具护栏</b></div>
+          <h3>工具中间件</h3>
+          <p>参数校验、失败重试、结果裁剪。脏数据在进上下文之前就被挡住，模型看不到，也就不会被它带偏。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s;padding:24px 21px 22px">
+          <div class="k"><span>03</span><b>交卷前自查</b></div>
+          <h3>自验证循环</h3>
+          <p>交卷之前先跑一遍检查，不合格就自己重来。把「发现问题」提前到<strong>还没交出去</strong>的时候。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.42s;margin-top:30px">
+        <b>更值得抄的是方法论：</b>用 Agent 去分析失败轨迹，再从轨迹里改 Harness。
+        这一步让 Harness 工程从「老师傅凭经验」，变成「看数据改配置」。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 27 案例三 Anthropic ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 案例三<span class="sep">/</span><span class="tag">Anthropic 的长任务</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">长任务的两个老毛病，<em>用两个角色治</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        一次想做太多、过早声称完成——这是长时运行 Agent 最常见的两种失败，也都不是模型能力问题。
+      </p>
+
+      <div class="split" style="margin-top:16px">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>TASKS.md · 跨轮次传递的中间成果</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 初始化 Agent 产出，执行 Agent 维护</span>
+<span class="g">[x]</span> 01 抽出公共鉴权模块
+<span class="g">[x]</span> 02 迁移 user 服务
+<span class="y">[ ]</span> 03 迁移 order 服务   <span class="c">← 下一轮从这里继续</span>
+<span class="y">[ ]</span> 04 补集成测试
+<span class="c">[ ]</span> 05 删除旧鉴权代码
+
+<span class="c"># 已完成的代码文件也在仓库里</span>
+<span class="v">services/order/</span> 已改 4 个文件</div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.3s">
+            <li><b>初始化 Agent 只管拆。</b>把大任务分解成一份可勾选的清单，先想清楚再动手。</li>
+            <li><b>执行 Agent 只管推。</b>一次只做清单上的一行，做完打勾，接着下一行。</li>
+            <li><b>中间成果留在文件里。</b>已改的代码、更新后的清单，下一轮直接接着用——不靠上下文记。</li>
+          </ul>
+          <div class="note reveal" style="--d:.4s">
+            <b>两个毛病各有一味药：</b>拆清单治「一次想做太多」，清单上没打勾就不算完治「过早声称完成」。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 28 三个案例的同一个动作 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 收束<span class="sep">/</span><span class="tag">三个案例对位</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">三个案例，<em>改的是同一个位置</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        都不是让模型更聪明，而是把「对不对」的判断权，从模型手里挪到基础设施手里。
+      </p>
+
+      <table class="tbl reveal" style="--d:.22s;font-size:13.4px">
+        <thead>
+          <tr>
+            <th style="padding-right:34px">案例</th>
+            <th style="padding-right:34px">主要动了哪件组件</th>
+            <th>挪走了什么判断</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:18px 34px 18px 0">大规模迁移</td>
+            <td class="cy" style="padding:18px 34px 18px 0">执行边界 + 反馈信号</td>
+            <td style="padding:18px 0">规则从文档挪进 Linter 与 CI，写错就提交不上</td>
+          </tr>
+          <tr>
+            <td style="padding:18px 34px 18px 0">LangChain</td>
+            <td class="cy" style="padding:18px 34px 18px 0">反馈信号 + 纠正</td>
+            <td style="padding:18px 0">「哪里错了」改由失败轨迹来说，人只看轨迹</td>
+          </tr>
+          <tr>
+            <td style="padding:18px 34px 18px 0">Anthropic</td>
+            <td class="cy" style="padding:18px 34px 18px 0">验收基线 + 纠正</td>
+            <td style="padding:18px 0">「做完了」改由清单和文件说，模型无权宣布</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note reveal" style="--d:.32s;margin-top:26px">
+        <b>一个可检验的推论：</b>判断权一旦交出去，换不换模型就没那么要命了。
+        这也解释了为什么三个案例的收益，都不来自换一个更强的模型。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 29 原则一 约束优先于指导 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 原则一<span class="sep">/</span><span class="tag">约束优先于指导</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">能强制的就别只建议，<em>差别是「做不了」</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        能用代码强制的规则，就不要写成文档建议。前者是「做不了」，后者只是「建议别做」——中间隔着一整次模型自觉。
+      </p>
+
+      <div class="split" style="margin-top:14px">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>把一条口头规范改成一条检查</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 改造前：写在文档里，靠人看 PR</span>
+「禁止直接 import requests，
+  统一走 http/client.py」
+
+<span class="c"># 改造后：写成一条会失败的检查</span>
+<span class="y">ci/lint.sh</span>
+  grep -rn <span class="y">"^import requests"</span> src/ \
+    &amp;&amp; exit 1
+  <span class="c"># PR 直接红，Agent 也读得到这行报错</span>
+
+<span class="c"># 附带效果：改完当场知道，不用等人说</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.3s">
+            <li><b>最小可执行的改造动作：</b>翻出团队规范里最常被违反的一条，把它写成一条 lint 规则或一个 CI 检查。</li>
+            <li><b>差别在长任务里会被放大。</b>「做不了」一次生效；「建议别做」每一步都要重新赌一次模型的自觉。</li>
+            <li><b>提示词该留给别的事：</b>什么时候该停下来问人、输出成什么形状——这些本来就写不成检查。</li>
+          </ul>
+          <div class="note reveal" style="--d:.4s">
+            <b>判断标准很简单：</b>这条规则，能不能写成一条会失败的检查？能，就别只写进文档。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 30 原则二、三 验证与反馈 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 原则二、三<span class="sep">/</span><span class="tag">验证与反馈</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">人工审查是瓶颈，<em>而且反馈太慢</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        验证要自动化，因为人工审查不可扩展；反馈要快、要结构化，因为越接近出错时刻，纠正越省事。
+      </p>
+
+      <table class="tbl reveal" style="--d:.22s;font-size:13.4px">
+        <thead>
+          <tr>
+            <th style="padding-right:30px">维度</th>
+            <th style="padding-right:34px">人工审查</th>
+            <th>自动化验证</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:15px 30px 15px 0">吞吐</td>
+            <td class="mu" style="padding:15px 34px 15px 0">天花板是审查者的时间</td>
+            <td class="cy" style="padding:15px 0">与任务量无关，可以并行</td>
+          </tr>
+          <tr>
+            <td style="padding:15px 30px 15px 0">延迟</td>
+            <td class="mu" style="padding:15px 34px 15px 0">几小时到几天</td>
+            <td class="cy" style="padding:15px 0">秒级，改完立刻出结果</td>
+          </tr>
+          <tr>
+            <td style="padding:15px 30px 15px 0">判法</td>
+            <td class="mu" style="padding:15px 34px 15px 0">换个 reviewer 换一套标准</td>
+            <td class="cy" style="padding:15px 0">同一条规则，每次同一种判法</td>
+          </tr>
+          <tr>
+            <td style="padding:15px 30px 15px 0">信息量</td>
+            <td class="mu" style="padding:15px 34px 15px 0">一句「这里不太对」</td>
+            <td class="cy" style="padding:15px 0">文件:行号 + 错误码 + 期望值</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note reveal" style="--d:.32s;margin-top:26px">
+        <b>第二章的 Agent 状态栏就是这条原则的界面化：</b>详细错误信息、工具调用计数器——
+        把「哪里错了、错了几次」直接摆在模型面前，而不是让它自己猜。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 31 原则四 + 过程性错误 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 原则四<span class="sep">/</span><span class="tag">回退与过程性错误</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">结果对不算完，<em>过程错也是失败</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        回退要可靠——错误可逆，Agent 才敢大胆试错。而验收基线管结果，执行边界管过程：用错方法达成，同样是失败。
+      </p>
+
+      <div class="split" style="margin-top:14px">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>两条破坏性捷径 · 验收指标全绿</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 反例 1 · 修数据库连接故障</span>
+Agent → <span class="y">把库删了，重新建</span>
+        <span class="g">服务恢复 ✓</span>　<span class="y">数据没了 ✗</span>
+
+<span class="c"># 反例 2 · 修编译错误</span>
+Agent → <span class="y">删掉整个文件，重写</span>
+        <span class="g">编译通过 ✓</span>　<span class="y">实现没了 ✗</span>
+
+<span class="c"># 两单任务，验收指标都是绿的</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.3s">
+            <li><b>回退是试错的前提。</b>Git 分支、沙盒环境、快照回滚——任何错误都可逆，它才敢动手。</li>
+            <li><b>但指标挡不住捷径。</b>把限制写进最终评估指标，Agent 也常能找到绕过去的办法，这就是 reward hacking 的日常形态。</li>
+            <li><b>所以对动作设闸门。</b><i>rm -rf</i>、删生产数据、覆盖未读文件，执行前审批——约束的是动作，不只是结果。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.42s;margin-top:16px">
+        <b>一句话：</b>结果指标是事后审计，动作审批是事前闸门。前者挡不住有意绕路，后者能——
+        本章安全一节的语义解析、第四章的 Sidecar 复核，做的都是这道闸门。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 32 工具编排 故障边界 ========== -->
+  <section class="slide" data-sec="5.1.4" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.4 · 工具编排<span class="sep">/</span><span class="tag">故障边界控制</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">一个工具挂了，<em>不该带走整批任务</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        并行调用下，Harness 要回答一个模型不会回答的问题：一个失败，要不要连坐？
+      </p>
+
+      <div class="reveal" style="--d:.2s;margin-top:12px">
+        <svg viewBox="0 0 1124 292" style="width:100%;height:auto;overflow:visible">
+          <defs>
+            <marker id="t514a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#4fe3ff"/></marker>
+            <marker id="t514b" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#ffb46b"/></marker>
+          </defs>
+
+          <rect x="372" y="0" width="380" height="56" rx="10" fill="rgba(255,255,255,.04)" stroke="rgba(140,170,220,.22)"/>
+          <text x="392" y="24" class="node-label" font-size="11.5" fill="#cfe0ff">父任务 · 核对三份配置</text>
+          <text x="392" y="44" class="node-sub" font-size="11" fill="#7d8fae">同一批并行读，缺一份也只影响这一份</text>
+
+          <path d="M430 58 L246 94" stroke="rgba(79,227,255,.4)" stroke-width="1.1" fill="none" marker-end="url(#t514a)"/>
+          <path d="M562 58 L562 94" stroke="rgba(79,227,255,.4)" stroke-width="1.1" fill="none" marker-end="url(#t514a)"/>
+          <path d="M694 58 L878 94" stroke="rgba(79,227,255,.4)" stroke-width="1.1" fill="none" marker-end="url(#t514a)"/>
+
+          <rect x="46" y="100" width="300" height="76" rx="9" fill="rgba(79,227,255,.05)" stroke="rgba(79,227,255,.28)"/>
+          <text x="66" y="126" class="node-label" font-size="11.5" fill="#cfe0ff">read config/a.yml</text>
+          <text x="66" y="148" class="node-sub" font-size="11" fill="#4fe3ff">✓ 1.2 KB</text>
+          <text x="66" y="166" class="node-sub" font-size="11" fill="#7d8fae">正常返回，进上下文</text>
+
+          <rect x="412" y="100" width="300" height="76" rx="9" fill="rgba(255,180,107,.06)" stroke="rgba(255,180,107,.4)"/>
+          <text x="432" y="126" class="node-label" font-size="11.5" fill="#cfe0ff">read config/b.yml</text>
+          <text x="432" y="148" class="node-sub" font-size="11" fill="#ffb46b">✗ ENOENT 文件不存在</text>
+          <text x="432" y="166" class="node-sub" font-size="11" fill="#7d8fae">只报这一个失败</text>
+          <text x="432" y="194" font-size="10.5" fill="#ffb46b">故障止于此，不传给兄弟调用</text>
+
+          <rect x="778" y="100" width="300" height="76" rx="9" fill="rgba(79,227,255,.05)" stroke="rgba(79,227,255,.28)"/>
+          <text x="798" y="126" class="node-label" font-size="11.5" fill="#cfe0ff">read config/c.yml</text>
+          <text x="798" y="148" class="node-sub" font-size="11" fill="#4fe3ff">✓ 0.8 KB</text>
+          <text x="798" y="166" class="node-sub" font-size="11" fill="#7d8fae">不受兄弟失败影响</text>
+
+          <path d="M196 178 L196 210" stroke="rgba(79,227,255,.4)" stroke-width="1.1" fill="none" marker-end="url(#t514a)"/>
+          <path d="M562 178 L562 210" stroke="rgba(255,180,107,.45)" stroke-width="1.1" fill="none" marker-end="url(#t514b)"/>
+          <path d="M928 178 L928 210" stroke="rgba(79,227,255,.4)" stroke-width="1.1" fill="none" marker-end="url(#t514a)"/>
+
+          <rect x="46" y="216" width="1032" height="72" rx="10" fill="rgba(79,227,255,.06)" stroke="rgba(79,227,255,.3)"/>
+          <text x="70" y="244" class="node-label" font-size="12" fill="#4fe3ff">父任务继续：两份已到，只有 b.yml 报失败</text>
+          <text x="70" y="268" class="node-sub" font-size="11.5" fill="#a9b8d6">故障只在同一批并行调用内传播，不上升到父级操作</text>
+        </svg>
+      </div>
+
+      <div class="note reveal" style="--d:.3s;margin-top:14px">
+        <b>这就是反面教材的镜像：</b>「一个命令失败，整个任务中止」是最脆的那种 Harness。
+        边界划对了，局部失败只是数据；划错了，一次网络抖动就能报废整轮工作。
+      </div>
+    </div>
+  </section>
+
+  <!-- frag:30-5.1.5.html -->
+<!-- ========== 5.1.5-1 本节要回答的三个问题 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 故障与错误恢复<span class="sep">/</span><span class="tag">三个问题，一条线索</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">故障恢复，<em>才是真正的分水岭</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        上一节给的是原则与组件；这一节把它们放进真实故障里跑一遍。
+        三个问题，顺序不能换：<strong>先分类，再检测，最后才谈恢复与终止</strong>。
+      </p>
+
+      <div class="cards c3" style="margin-top:30px">
+        <div class="card reveal" style="--d:.2s;padding:22px 20px 20px">
+          <div class="k"><span>Q1</span><b>分类</b></div>
+          <h3>会遇到哪些故障</h3>
+          <p>API、工具、上下文、控制流四层。<b>层不同，处置手段完全不同</b>——不能都用一句「重试一下」打发。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:22px 20px 20px">
+          <div class="k"><span>Q2</span><b>检测</b></div>
+          <h3>怎么发现它坏了</h3>
+          <p>单次错误只看类型；真正该盯的是<b>重复调用指纹与连续失败次数</b>——那是行为出了问题。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s;padding:22px 20px 20px">
+          <div class="k"><span>Q3</span><b>终止</b></div>
+          <h3>什么时候必须放手</h3>
+          <p>恢复机制自己也会失效。每条恢复路径都要有上限，<b>「什么时候停」和「怎么救」同样重要</b>。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>问题的严重性，第一章已经演示过：</b>仅仅缺失一条工具结果反馈，就足以让 Agent 陷入无限循环。
+        真实生产里的故障只会更多样，所以这一节从分类讲起。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.5-2 四层故障总览 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 故障分类学<span class="sep">/</span><span class="tag">先分类，再谈处置</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">按发生的位置，<em>把故障切成四层</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        这是系统应对的第一步。分类不是为了归档，而是为了选手段——同一句「重试一下」，在四层里的含义完全不同。
+      </p>
+
+      <div class="cards c4" style="margin-top:44px">
+        <div class="card reveal" style="--d:.2s;padding:24px 21px 22px">
+          <div class="k"><span>L1</span><b>基础设施</b></div>
+          <h3>API 层<small>API LAYER</small></h3>
+          <p>限流、过载、超时、断连、输出截断。任务可能完全正确，<b>是基础设施在报错</b>。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:24px 21px 22px">
+          <div class="k"><span>L2</span><b>手脚</b></div>
+          <h3>工具层<small>TOOL LAYER</small></h3>
+          <p>幻觉调用、参数畸形、执行抛异常。错在<b>Agent 伸出去的那只手</b>。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s;padding:24px 21px 22px">
+          <div class="k"><span>L3</span><b>记忆</b></div>
+          <h3>上下文层<small>CONTEXT LAYER</small></h3>
+          <p>窗口溢出、压缩失败、轨迹结构损坏。错在<b>喂给模型的那段历史</b>。</p>
+        </div>
+        <div class="card reveal" style="--d:.38s;padding:24px 21px 22px">
+          <div class="k"><span>L4</span><b>循环</b></div>
+          <h3>控制流层<small>CONTROL LAYER</small></h3>
+          <p>死循环与死亡螺旋。错在<b>Agent 自己的下一步</b>，外部环境其实正常。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>分层的用处很直接：</b>前两层多半靠「等」或「改输入」，后两层必须靠「打断」。
+        把四层混成一类，就只能一律重试——而重试恰恰救不了后两层。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.5-3 API 层 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · API 层<span class="sep">/</span><span class="tag">与任务内容无关</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">API 层的故障，<em>不说明任务做错了什么</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        它只说明「这一次请求没被服务好」。所以在这一层里改任务、改提示词，都是无效动作。
+      </p>
+
+      <div class="split" style="margin-top:22px;grid-template-columns:1.02fr .98fr;align-items:center">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>API LAYER · 五种噪声</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="y">429</span>  Too Many Requests    <span class="c">← 配额用尽</span>
+<span class="y">503</span>  Service Unavailable  <span class="c">← 上游过载</span>
+<span class="y">—</span>    request timeout      <span class="c">← 链路太慢</span>
+<span class="y">—</span>    connection reset     <span class="c">← 连接被掐断</span>
+<span class="y">—</span>    finish_reason=length <span class="c">← 输出触顶</span>
+
+<span class="c"># 任务没变、提示词没变，重发还是同样的结果</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.28s">
+            <li><b>共同点：与任务内容无关。</b>换一个任务、换一句提示词，这些错误照样出现。</li>
+            <li><b>所以有效的动作只有两个：</b>等（退避之后再来），或者改请求（上限、模型、区域）。</li>
+            <li><b>但「可重试」不等于「原样重试」。</b>输出触顶也能再发，前提是先把上限提高，或从断点接续。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.4s">
+        <b>把它当噪声，还有个隐性好处：</b>不用去怀疑模型的判断——在错误的地方调提示词，是最常见的排查浪费。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.5-4 工具层 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 工具层<span class="sep">/</span><span class="tag">三种畸形，一种循环</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">三种单次事故，<em>和一种行为模式</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        前三种错在「这一次调用」，装成工具结果喂回去，模型下一轮就能自己改；
+        最后一种错在「反复做同一件事」。
+      </p>
+
+      <div class="cards c4" style="margin-top:44px">
+        <div class="card reveal" style="--d:.2s;padding:24px 21px 22px">
+          <div class="k"><span>01</span><b>幻觉</b></div>
+          <h3>幻觉调用<small>HALLUCINATED CALL</small></h3>
+          <p>调用了不存在的工具。错不在参数，在它<b>以为这个工具存在</b>。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:24px 21px 22px">
+          <div class="k"><span>02</span><b>约束</b></div>
+          <h3>参数畸形<small>MALFORMED ARGS</small></h3>
+          <p>不符合输入约束——<b>该给对象，却给了字符串</b>。模型知道要做什么，只是写错了。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s;padding:24px 21px 22px">
+          <div class="k"><span>03</span><b>运行</b></div>
+          <h3>执行抛异常<small>EXECUTION ERROR</small></h3>
+          <p>工具真的跑了，但中途失败。以上三种，<b>都可以装成一条工具结果返回</b>。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.38s;padding:24px 21px 22px">
+          <div class="k"><span>04</span><b>最危险</b></div>
+          <h3>同错重试<small>RETRY LOOP</small></h3>
+          <p>工具反复返回同一个错误，模型<b>不加改变地反复重试</b>。这不是事故，是行为模式。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>两类故障，两种治法：</b>单次事故靠「更具体的错误信息」就能治；
+        行为模式不行——错误早就返回了，模型只是没改，它需要的是计数器，而不是再重试一次。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.5-5 上下文层与控制流层 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 后两层<span class="sep">/</span><span class="tag">错在 Agent 自己</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">后两层不是环境坏了，<em>是 Agent 自己坏了</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        请求发得出去，工具也跑得动。坏的是它对历史的记忆，和对下一步的选择——外部一切正常，对话却已经走不下去。
+      </p>
+
+      <div class="cards c2" style="margin-top:30px">
+        <div class="card reveal" style="--d:.2s;padding:24px 22px 22px">
+          <div class="k"><span>L3</span><b>记忆</b></div>
+          <h3>上下文层<small>CONTEXT LAYER</small></h3>
+          <p>窗口溢出、压缩失败、轨迹结构损坏——比如工具调用<b>缺少配对的结果消息</b>。错在「模型看到的历史」，不在模型本身。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:24px 22px 22px">
+          <div class="k"><span>L4</span><b>循环</b></div>
+          <h3>控制流层<small>CONTROL LAYER</small></h3>
+          <p><b>死循环</b>是反复执行相同操作却毫无进展；<b>死亡螺旋</b>是恢复逻辑自己又调 LLM、再次出错、连锁反应。错在「Agent 的下一步」。</p>
+        </div>
+      </div>
+
+      <div class="card sum reveal" style="--d:.34s;margin-top:13px;padding:18px 22px 16px">
+        <div class="k"><span>COMMON</span><b>处置方式</b></div>
+        <h3 style="font-size:15px;margin-bottom:2px">共同点：越「努力」越糟——所以不能等，只能打断</h3>
+        <p>前两层还能换一种输入来修；后两层继续跑下去，只会烧掉更多 token，把错误固化成更大的错误。</p>
+      </div>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>这就是分类的价值：</b>同样是「失败了」，L1 该退避、L2 该改参数、L3 该压缩或修复轨迹、L4 该直接终止这条路径。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.5-6 值不值得重试 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 检测<span class="sep">/</span><span class="tag">先判断值不值得</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">先问「值不值得」，<em>再决定怎么重试</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        捕获故障后的第一个判断，不是「要不要重试」，而是「原样重发，会不会得到不同结果」。
+      </p>
+
+      <table class="tbl reveal" style="--d:.2s">
+        <thead>
+          <tr><th style="width:420px">捕获到的故障</th><th style="width:190px">可重试？</th><th>该做什么</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>限流 429 · 服务过载 · 网络抖动</td>
+            <td class="cy">可重试</td>
+            <td>同一个请求，退避之后再发——退避要叠加随机抖动。</td>
+          </tr>
+          <tr>
+            <td>输出触顶被截断</td>
+            <td class="cy">可重试，但请求要变</td>
+            <td>先提高输出上限；仍不够，就在末尾追加元指令从断点接续。</td>
+          </tr>
+          <tr>
+            <td>参数不合法 · 参数畸形</td>
+            <td class="am">不可重试</td>
+            <td>原样重发多少次都是同样结果，必须改输入。</td>
+          </tr>
+          <tr>
+            <td>权限不足 · 工具不存在</td>
+            <td class="am">不可重试</td>
+            <td>改策略：升级人工，或把结构化错误喂回给模型。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note reveal" style="--d:.36s">
+        <b>所以生产级 Harness 维护的是一张「错误 → 恢复策略」映射表，</b>而不是一句笼统的「出错就重试」。
+        可重试与不可重试的分界线，就是「重发会不会有信息增量」。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.5-7 检测模式 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 检测模式<span class="sep">/</span><span class="tag">单次之外看模式</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">比单次错误更该盯的，<em>是重复出现的模式</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        单次错误告诉你「哪里坏了」；重复出现的模式才告诉你「它已经修不好了」。
+        两个计数器，盯的都是后者。
+      </p>
+
+      <div class="cards c3" style="margin-top:30px">
+        <div class="card reveal" style="--d:.2s;padding:22px 20px 20px">
+          <div class="k"><span>01</span><b>指纹</b></div>
+          <h3>重复调用指纹<small>CALL FINGERPRINT</small></h3>
+          <p>对「工具名 + 参数」算指纹。同一指纹反复出现，说明它在原地打转——第一章消融实验里反复调同一工具，正是这个模式。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:22px 20px 20px">
+          <div class="k"><span>02</span><b>计数</b></div>
+          <h3>连续失败计数<small>FAILURE COUNTER</small></h3>
+          <p>每条恢复路径各记一本账：压缩、权限询问、输出接续分别计数。混在一起，一条路径的问题会污染另一条的判断。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.32s;padding:22px 20px 20px">
+          <div class="k"><span>03</span><b>去处</b></div>
+          <h3>为熔断提供依据<small>CIRCUIT BREAKER</small></h3>
+          <p>计数不是为了统计，是为了在「再试也没用」那一刻之前停手。阈值一到就掐断这条路径，把配额留给别的办法。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>这两个机制都不需要模型参与：</b>它们跑在 Harness 里——所以模型「觉得自己还在努力」的时候，外面已经能判定它卡住了。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.5-8 静默卡死与看门狗 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 活性监控<span class="sep">/</span><span class="tag">连接在，数据不来</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">最危险的失败不是断开，<em>是静默卡死</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        断开至少会立刻报错；静默卡死不会——连接建立成功，数据流却停了，像水管通着但不出水。
+      </p>
+
+      <div class="split" style="margin-top:20px;grid-template-columns:1.04fr .96fr;align-items:center">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>STREAM · 连接正常，数据停了</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="g">[00:00]</span> connect      200 OK        <span class="g">✓</span>
+<span class="g">[00:01]</span> chunk        「分析这个…」  <span class="g">✓</span>
+<span class="g">[00:02]</span> chunk        「仓库的…」    <span class="g">✓</span>
+<span class="y">[00:47]</span> —            无新字节       <span class="y">?</span>
+<span class="y">[00:48]</span> sdk timeout  —             <span class="v">✗ 不触发</span>
+<span class="g">[00:49]</span> watchdog     idle &gt; 20s    <span class="g">✓ 判定卡死</span>
+<span class="g">[00:50]</span> kill stream                <span class="c">→ 触发重试</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.28s">
+            <li><b>SDK 的超时往往只管建连。</b>连上之后就不再计时，传输停住它也不会报错。</li>
+            <li><b>所以要独立的空闲看门狗</b>（watchdog timer，超过设定时间没有新输出就判定卡死），而不是复用连接超时。</li>
+            <li><b>超时之后要主动杀死挂起的流，再触发重试。</b>挂着的流不释放，重试只会让并发越叠越高。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.4s">
+        <b>可推广成一条原则：</b>每个长连接都需要活性信号，而不能只依赖连接超时。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.5-9 完整性监控与双重标准 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 完整性监控<span class="sep">/</span><span class="tag">结构坏了，先修再喂</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">轨迹缺了配对，<em>要在注入之前补好</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        工具调用必须有配对的结果消息；缺了，模型看到的就是一段自相矛盾的历史。
+        修复发生在注入上下文之前，而不是把结构异常抛给模型或用户。
+      </p>
+
+      <div class="cards c2" style="margin-top:32px">
+        <div class="card reveal" style="--d:.22s;padding:26px 24px 24px">
+          <div class="k"><span>MODE 01</span><b>产品</b></div>
+          <h3>产品模式<small>PRODUCT · 宽容</small></h3>
+          <p>缺哪条结果，就补一条<b>占位消息</b>，让轨迹保持结构完整。用户不该因为一个内部结构问题被打断。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.28s;padding:26px 24px 24px">
+          <div class="k"><span>MODE 02</span><b>训练</b></div>
+          <h3>训练数据收集<small>TRAINING · 严格</small></h3>
+          <p><b>拒绝修复</b>：合成占位符会污染训练数据——模型会学到「结果可以是编的」。宁可丢弃这条样本。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.38s">
+        <b>「产品模式宽容、训练模式严格」：</b>同一个修复动作，在产品里是兜底，在训练里是污染。
+        这条双重标准，体现的是 Harness 与模型训练的深度耦合。
+      </div>
+    </div>
+  </section>
+
+  <!-- frag:31-5.1.5b.html -->
+<!-- ========== 10 恢复三级总览 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 恢复<span class="sep">/</span><span class="tag">按对用户透明的程度分级</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">能用低一级的手段，<em>就不要升级</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        分完类、计完数，才轮到「怎么救」。三级手段按<strong>对用户透明的程度</strong>排列，
+        判断标准只有一条：这一级能不能自己把问题吃掉。
+      </p>
+
+      <div class="split" style="margin-top:24px">
+        <div class="steps">
+          <div class="step reveal" style="--d:.2s">
+            <div class="no">01</div>
+            <div><h4>静默重试</h4><p>同一个请求，退避之后再发，对用户完全不可见。<b>升级条件：重试用尽仍失败。</b></p></div>
+          </div>
+          <div class="step reveal" style="--d:.26s">
+            <div class="no">02</div>
+            <div><h4>降级与接续</h4><p>改变请求本身再试：提上限、换模型、换模式。<b>升级条件：怎么改都不通。</b></p></div>
+          </div>
+          <div class="step reveal" style="--d:.32s">
+            <div class="no">03</div>
+            <div><h4>暴露给用户</h4><p>所有自动手段用尽，才呈现错误并附上已尝试的动作。<b>这里没有下一级。</b></p></div>
+          </div>
+        </div>
+
+        <div class="spec reveal" style="--d:.34s">
+          <div class="spec-h"><span class="b"></span>VISIBILITY · 用户视角</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 用户能感知到哪一层</span>
+<span class="y">L1</span>  静默重试      <span class="c">（看不见）</span>
+<span class="y">L2</span>  降级 · 接续   <span class="c">（看不见）</span>
+<span class="v">—— 以上都在扣留错误 ——</span>
+<span class="y">L3</span>  暴露错误      <span class="w">一条完整说明</span>
+
+<span class="c"># 越往下，代价越高</span>
+<span class="c"># 时间 → 请求 → 用户重新理解</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card sum reveal" style="--d:.44s;margin-top:6px">
+        <div class="k"><span>SUMMARY</span><b>分级的意义</b></div>
+        <h3 style="font-size:15.5px;margin-bottom:4px">大多数故障停在第一级，第二级是例外，第三级是兜底</h3>
+        <p>每升一级，代价就翻一倍：第一级只花时间，第二级要改请求，第三级要用户重新理解任务。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 11 静默重试的两个细节 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 静默重试<span class="sep">/</span><span class="tag">两个细节决定成败</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">「失败就重试」有<em>两个坑</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        同样是重试，退避策略没做对会<strong>制造二次拥塞</strong>；调用优先级没分清，
+        后台重试会<strong>挤占主链路的配额</strong>。
+      </p>
+
+      <div class="split" style="margin-top:22px">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>RETRY POLICY · 退避与抖动</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 两个细节都在这几行里</span>
+<span class="w">for</span> attempt <span class="w">in</span> 1..N:
+    <span class="w">if not</span> retryable(err): <span class="w">break</span>
+
+    wait = min(cap, base * 2 ** attempt)
+    wait += random(0, jitter)   <span class="c"># 抖动</span>
+
+    <span class="w">if</span> err.retry_after:        <span class="c"># 服务端提示</span>
+        wait = max(wait, err.retry_after)
+
+    sleep(wait)</div>
+          </div>
+        </div>
+
+        <ul class="list reveal" style="--d:.3s">
+          <li><b>抖动不是装饰。</b>纯指数退避会让所有客户端在同一毫秒发起第 N 次重试；随机抖动把这一批打散，否则重试本身就是一次小型 DDoS。</li>
+          <li><b>服务端说了算。</b>返回里带等待时长时，就按它来——那是对方最清楚自己什么时候能缓过来的时刻。</li>
+          <li><b>前台重试，后台放弃。</b>主循环的请求失败要重试；标题生成、输入建议这类辅助调用失败直接丢掉。后台重试挤占的是主链路的配额，这叫重试放大。</li>
+        </ul>
+      </div>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>重试放大的可怕之处：</b>它不报错。用户只会觉得「今天这个 Agent 有点慢」，
+        而账单和限流额度已经在后台被一堆没人看的标题消耗掉了。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 12 降级与接续 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 降级与接续<span class="sep">/</span><span class="tag">改请求本身再试</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">重试无效，说明问题<em>不在「什么时候发」</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        而在「发什么」。这一级的动作是改变请求的形状：改上限、改模型、改模式——三个最常见的场景。
+      </p>
+
+      <div class="cards c3" style="margin-top:28px">
+        <div class="card reveal" style="--d:.2s;padding:20px 18px">
+          <div class="k"><span>01</span><b>输出触顶</b></div>
+          <h3>被长度限制截断<small>OUTPUT TRUNCATED</small></h3>
+          <p>先<b>静默提高输出上限</b>重发；仍不够，就在消息末尾追加一条元指令，让模型从断点接着往下写。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:20px 18px">
+          <div class="k"><span>02</span><b>主模型过载</b></div>
+          <h3>降级到备用模型<small>FAILOVER</small></h3>
+          <p>但<b>先剥离旧模型私有的格式块</b>——否则新模型解析不了历史消息，降级当场失败。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s;padding:20px 18px">
+          <div class="k"><span>03</span><b>成本模式</b></div>
+          <h3>高成本模式被限流<small>RATE LIMITED</small></h3>
+          <p>暂时回落到标准模式。先用可接受的答案把这一轮跑完，质量优化留到配额恢复之后。</p>
+        </div>
+      </div>
+
+      <p class="lede reveal" style="--d:.38s;margin-top:26px;max-width:1000px">
+        三件事的共同点：<span class="hl">改的不是重试次数，是请求本身。</span>
+        所以这一级必须知道「这次失败到底缺什么」——只看到 429 就降模型，等于用更大的代价换一个不相干的答案。
+      </p>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>顺序不能反：</b>先提上限再谈接续，先剥格式再谈换模型。
+        跳过前置条件直接降级，是把一次可恢复的失败变成一次不可解析的失败。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 13 暴露给用户 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 最后一级<span class="sep">/</span><span class="tag">所有自动手段用尽之后</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">最后一步，才是<em>让用户看见</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        不是一句「出错了」，而是一份交接单：我试过什么、走到哪一步、你接手时能从哪儿继续。
+      </p>
+
+      <div class="split" style="margin-top:18px">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>ERROR · 呈现给用户的样子</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="y">任务未完成</span>：修改 src/db.py 时连接超时
+
+<span class="c"># 已尝试的恢复（按顺序）</span>
+1. 静默重试 3 次 · 指数退避
+2. 降级到备用模型
+3. 压缩上下文后重发        <span class="g">✓</span>
+4. 跨厂商接管              <span class="c">✗</span>
+
+<span class="c"># 建议的下一步</span>
+- 文件较大，可拆成两次编辑
+- 或先只读，产出一份补丁</div>
+          </div>
+        </div>
+
+        <ul class="list reveal" style="--d:.3s">
+          <li><b>位置。</b>明确停在第几步，而不是笼统的「失败了」——用户才知道该从哪儿重来。</li>
+          <li><b>动作。</b>列出已经试过的恢复路径，避免用户重复你已经做过的事，也避免他误以为你没试。</li>
+          <li><b>出口。</b>至少给一条可执行的下一步：拆小任务、换模式、只读产出补丁。</li>
+        </ul>
+      </div>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>前两级对用户完全不可见。</b>这不是体验打磨，而是「恢复期间扣留错误」这条工程纪律的直接结果——
+        下一页把它讲成一条通用原则。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 14 工具层错误 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 工具层<span class="sep">/</span><span class="tag">错误变成模型的输入</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">工具层错误<em>不终止会话</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        幻觉调用、参数不合法、执行抛异常——这些错误若抛给用户，任务就死在这里；
+        喂回给模型，下一轮还有机会自己改。
+      </p>
+
+      <div class="split" style="margin-top:16px">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>TOOL RESULT · 错误也是结果</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 模型幻觉调用了一个不存在的工具</span>
+<span class="v">工具返回</span> {
+  "ok": false,
+  "error": "tool_not_found",
+  "tool": "read_dir",
+  "available": ["read","write","edit",
+                "glob","grep","bash"]
+}
+
+<span class="c"># 它和正常结果没有区别</span>
+<span class="c"># 只是 content 里的一段 JSON</span></div>
+          </div>
+        </div>
+
+        <ul class="list reveal" style="--d:.3s">
+          <li><b>幻觉调用。</b>收到「工具不存在」的结构化结果，并附上真实可用的工具清单——它下一轮就知道该用哪个。</li>
+          <li><b>参数校验失败。</b>错误里带上输入约束：哪个字段、什么类型、取值范围。只说「参数错误」等于没说。</li>
+          <li><b>畸形参数。</b>本该是对象却给了字符串，这类在执行前先做程序化修复，修不好才作为错误返回。</li>
+        </ul>
+      </div>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>这是「反馈越结构化越好」的直接应用：</b>喂回的错误越具体，模型自我纠正的成功率越高；
+        一句「调用失败」，只会让它把同一个错误再犯一次。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 15 恢复循环时间轴 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 核心原则<span class="sep">/</span><span class="tag">边界是整个恢复循环</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">错误处理的边界<em>不是单次请求</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        是整个恢复循环。在确认无法恢复之前，中间错误不该让消费者看见——无论是用户，还是订阅事件的下游系统。
+      </p>
+
+      <div class="reveal" style="--d:.22s;margin-top:14px">
+        <svg viewBox="0 0 1124 272" style="width:100%;height:auto;overflow:visible">
+          <defs>
+            <marker id="rv5b1a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#4fe3ff"/></marker>
+            <marker id="rv5b1b" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#ffb46b"/></marker>
+          </defs>
+
+          <path d="M208 92 L208 50 L800 50 L800 92" fill="none"
+                stroke="rgba(79,227,255,.35)" stroke-width="1" stroke-dasharray="4 6"/>
+          <text x="504" y="40" class="node-sub" fill="#4fe3ff" font-size="11"
+                text-anchor="middle">恢复期间：错误全部扣留，不向上暴露</text>
+
+          <rect x="0" y="100" width="176" height="62" rx="10" fill="#0a1120" stroke="rgba(140,170,220,.25)"/>
+          <text x="18" y="126" class="node-label" fill="#cfe0ff" font-size="12">错误发生</text>
+          <text x="18" y="146" class="node-sub" font-size="11">429 / 超时 / 截断</text>
+
+          <rect x="208" y="100" width="176" height="62" rx="10" fill="#0a1120" stroke="rgba(79,227,255,.45)"/>
+          <text x="226" y="126" class="node-label" fill="#4fe3ff" font-size="12">静默重试</text>
+          <text x="226" y="146" class="node-sub" font-size="11">退避 + 抖动</text>
+
+          <rect x="416" y="100" width="176" height="62" rx="10" fill="#0a1120" stroke="rgba(79,227,255,.45)"/>
+          <text x="434" y="126" class="node-label" fill="#4fe3ff" font-size="12">降级 · 接续</text>
+          <text x="434" y="146" class="node-sub" font-size="11">改请求再试</text>
+
+          <rect x="624" y="100" width="176" height="62" rx="10" fill="#0a1120" stroke="rgba(79,227,255,.45)"/>
+          <text x="642" y="126" class="node-label" fill="#4fe3ff" font-size="12">跨厂商接管</text>
+          <text x="642" y="146" class="node-sub" font-size="11">换一家跑完</text>
+
+          <rect x="856" y="54" width="264" height="64" rx="10" fill="rgba(79,227,255,.07)" stroke="rgba(79,227,255,.45)"/>
+          <text x="874" y="80" class="node-label" fill="#4fe3ff" font-size="12">恢复成功</text>
+          <text x="874" y="100" class="node-sub" font-size="11">消费者毫无感知</text>
+
+          <rect x="856" y="170" width="264" height="64" rx="10" fill="rgba(255,180,107,.07)" stroke="rgba(255,180,107,.4)"/>
+          <text x="874" y="196" class="node-label" fill="#ffb46b" font-size="12">恢复失败</text>
+          <text x="874" y="216" class="node-sub" font-size="11">一次性呈现完整错误</text>
+
+          <path d="M176 131 L202 131" fill="none" stroke="#4fe3ff" stroke-width="1.1" marker-end="url(#rv5b1a)"/>
+          <path d="M384 131 L410 131" fill="none" stroke="#4fe3ff" stroke-width="1.1" marker-end="url(#rv5b1a)"/>
+          <path d="M592 131 L618 131" fill="none" stroke="#4fe3ff" stroke-width="1.1" marker-end="url(#rv5b1a)"/>
+          <path d="M800 131 C824 131 828 86 850 86" fill="none" stroke="#4fe3ff" stroke-width="1.1" marker-end="url(#rv5b1a)"/>
+          <path d="M800 131 C824 131 828 202 850 202" fill="none" stroke="#ffb46b" stroke-width="1.1" marker-end="url(#rv5b1b)"/>
+
+          <text x="0" y="256" class="node-sub" fill="#7d8fae" font-size="11">消费者只看见两端：要么什么都没有发生，要么一条说清楚了的错误。</text>
+        </svg>
+      </div>
+
+      <div class="note reveal" style="--d:.4s">
+        <b>这就是第一章那条纠正原则的工程化：</b>在确认无法恢复之前，不暴露中间态。
+        恢复成功，消费者毫无感知；全部失败，才统一呈现一次。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 16 接管：文字与凭证 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 跨厂商接管<span class="sep">/</span><span class="tag">把没跑完的轨迹交给另一家</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">能带走的是文字，<em>带不走的是凭证</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        主模型持续不可用时，要换一家把这条轨迹接着跑完。障碍不在接口地址，
+        而在轨迹里有一部分东西<strong>只属于原厂商</strong>。
+      </p>
+
+      <div class="split" style="margin-top:16px">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>THOUGHT · 一段思考的两个部分</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="y">[thought]</span>
+  text       「先读 package.json 看脚本」
+  signature   厂商签发的凭证   <span class="c">✗ 换家即失效</span>
+
+<span class="y">[tool_call]</span>
+  name       read
+  args       {"path": "package.json"}
+
+<span class="y">[tool_result]</span>
+  ref        call #1
+
+<span class="c"># 工具调用：结构不同，语义一致</span>
+<span class="c"># 按目标厂商重新渲染即可</span></div>
+          </div>
+        </div>
+
+        <ul class="list reveal" style="--d:.3s">
+          <li><b>工具调用好办。</b>各家字段名不同、嵌套不同，但「调了什么、参数是什么」的语义一致，重渲染就行。</li>
+          <li><b>难办的是思考。</b>它由可读的文字与厂商附上的凭证构成——凭证用来证明这段思考确实出自它自己。</li>
+          <li><b>换一家，文字照读，凭证作废。</b>这就是接管的可行边界：搬得动的是内容，搬不动的是身份。</li>
+        </ul>
+      </div>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>一句话记住：</b>跨厂商接管的边界，就是「可移植的文字」与「不可移植的凭证」之间那条线。
+        后面所有的工程动作，都是在这条线的两侧做取舍。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 17 凭证要求各家不同 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 凭证<span class="sep">/</span><span class="tag">三家三种态度</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">各家要求不同，<em>方案按最严的一端设计</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        从「根本不校验」到「拒绝一切非自己签发的」，中间还有把凭证挂在工具调用上的——同一份轨迹，三种反应。
+      </p>
+
+      <table class="tbl reveal" style="--d:.2s">
+        <thead>
+          <tr><th style="width:150px">接收端</th><th style="width:430px">对凭证的态度</th><th>你的对策</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cy">宽松</td>
+            <td>不做校验，思考与凭证都照收</td>
+            <td>直传能过，但别把它当成通用方案</td>
+          </tr>
+          <tr>
+            <td class="vi">中等</td>
+            <td>校验签发方，外来凭证一律不认</td>
+            <td>丢弃凭证，文字以普通内容身份带入</td>
+          </tr>
+          <tr>
+            <td class="am">严格</td>
+            <td>凭证还挂在工具调用上，删思考不管用</td>
+            <td>把历史调用改写成文字叙述，只求能接着跑</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="lede reveal" style="--d:.32s;margin-top:24px;max-width:1000px">
+        所以「把思考删干净就安全了」这条看似稳妥的策略，在严格的一端反而通不过——
+        <span class="hl">它删的是文字，凭证还在调用上。</span>
+      </p>
+
+      <div class="note reveal" style="--d:.4s">
+        <b>退路要提前想好：</b>历史工具调用改写成文字叙述后，模型不再把它当作真正调用过的工具，
+        但它至少能接着往下跑——这就是「降级到能跑」，而不是「保证无损」。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 18 中立轨迹 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 中立格式<span class="sep">/</span><span class="tag">可移植的留下，不可移植的标出来</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">轨迹不该按<em>任何一家的接口格式</em>存储</h2>
+      <p class="lede reveal" style="--d:.14s">
+        既然换厂商时必然要重写一遍，不如一开始就存成中立的——四种字段，一条原则。
+      </p>
+
+      <div class="split" style="margin-top:14px">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>NEUTRAL · 一条中立记录</div>
+          <div class="spec-body">
+            <div class="spec-code">{
+  "role": "assistant",
+  "thought": {
+    "text": "先读 package.json",
+    "sig":  null        <span class="c"># 切换时丢弃</span>
+  },
+  "calls": [
+    {"name": "read",
+     "args": {"path": "package.json"}}
+  ]
+}
+
+<span class="c"># 标识符在渲染成请求时才生成</span></div>
+          </div>
+        </div>
+
+        <ul class="list reveal" style="--d:.3s">
+          <li><b>思考拆两半。</b>文字是可移植的，凭证不是——存的时候分开，切换时只丢后半。</li>
+          <li><b>调用只记名称与参数。</b>不记厂商的 call id，标识符在渲染成具体请求时按目标厂商重新生成。</li>
+          <li><b>文字当普通内容带入。</b>不塞回目标厂商放思考的位置——那不是它的思考，它会拒绝。</li>
+          <li><b>摘要本来就是副本。</b>厂商返回的思考摘要，正是为这种场合准备的可移植版本，留着即可。</li>
+        </ul>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>它的价值不止故障切换：</b>第七章的评估重放、第八章的训练样本构造、第九章的经验提取，
+        依赖的都是同一份产物——中立格式是这套系统的公共底座。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 19 实验 5-1 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 实验 5-1<span class="sep">/</span><span class="tag">难度 ★★★</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">实验 5-1：<em>换一家，把没跑完的轨迹接着跑</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        目标：验证中立格式能否让跑到一半的 Agent 换一家接着跑完，并量化「原样直传」与「一刀切剥光」的代价。
+      </p>
+
+      <div class="cards c3" style="margin-top:26px">
+        <div class="card reveal" style="--d:.2s;padding:20px 18px">
+          <div class="k"><span>01</span><b>设置</b></div>
+          <h3>在哪儿切换<small>SETUP</small></h3>
+          <p>任务需多轮工具调用；中途注入连续的限流与过载，熔断后切换。选三家线上格式互不相同的厂商，两两切换。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:20px 18px">
+          <div class="k"><span>02</span><b>对照</b></div>
+          <h3>三种做法<small>METHODS</small></h3>
+          <p><b>直传</b> 原样搬进新结构<br><b>剥离</b> 删掉全部思考与凭证<br><b>中立</b> 只丢凭证，文字照带、标识符重渲染</p>
+        </div>
+        <div class="card reveal" style="--d:.32s;padding:20px 18px">
+          <div class="k"><span>03</span><b>验收</b></div>
+          <h3>拿什么比<small>METRICS</small></h3>
+          <p>首个请求留原始响应，失败必须是厂商真实报错。比完成率、切换后重复调用同一工具的次数、额外轮数与 token。</p>
+        </div>
+      </div>
+
+      <p class="lede reveal" style="--d:.38s;margin-top:24px;max-width:1010px">
+        三种做法的差别只在<b>「换手时丢掉什么」</b>：直传不丢、剥离全丢、中立只丢凭证。
+        其余变量——任务、断点位置、目标厂商——必须完全一致，否则数字没有意义。
+      </p>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>验收里有一条逆向要求：</b>若中立做法在「重复调用」上并未优于剥离，同样如实记录。
+        实验的职责是给数，不是证明观点。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 20 实验 5-2 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 实验 5-2<span class="sep">/</span><span class="tag">难度 ★★</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">实验 5-2：<em>输出断在一半，怎么接</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        目标：比较「整轮重发」与「以半截输出为前缀续写」，在成本、正确性与副作用上差多少。
+      </p>
+
+      <div class="cards c3" style="margin-top:26px">
+        <div class="card reveal" style="--d:.2s;padding:20px 18px">
+          <div class="k"><span>01</span><b>断点</b></div>
+          <h3>切在三个位置<small>BREAKPOINTS</small></h3>
+          <p>在流式响应上分别切断：思考中途、正文中途、工具调用参数中途。三个位置坏的形状完全不同。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:20px 18px">
+          <div class="k"><span>02</span><b>三种接法</b></div>
+          <h3>怎么续<small>RECOVERIES</small></h3>
+          <p>丢弃整轮重发；半截作为末尾 assistant 消息要求接着写；追加元指令说明从断点继续。半截调用要先转成文字再补完。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s;padding:20px 18px">
+          <div class="k"><span>03</span><b>验收</b></div>
+          <h3>记四个数<small>METRICS</small></h3>
+          <p>恢复成功率、相对整轮重发省下的输出 token、补完后参数的合法率与语义正确率、重复副作用次数。</p>
+        </div>
+      </div>
+
+      <p class="lede reveal" style="--d:.38s;margin-top:24px;max-width:1010px">
+        前三项是成本账，第四项是安全账：<span class="hl">省下来的 token 一旦换来一次重复执行，就是负收益。</span>
+      </p>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>判分点在最后两项：</b>合法不等于正确——拼接处常多出空白或重复字符；
+        而重复副作用，一次就够毁掉整轮结果。续写前按「工具名 + 参数」指纹去重。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 21 熔断阈值 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 熔断<span class="sep">/</span><span class="tag">每条恢复路径都要有上限</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">阈值从生产数据来，<em>不靠拍脑袋</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        恢复机制自己也会失效，所以每条路径都要封顶。上限设成几，不该由直觉决定。
+      </p>
+
+      <div class="cards c3" style="margin-top:24px">
+        <div class="card reveal" style="--d:.2s;padding:18px">
+          <div class="k"><span>01</span><b>上下文</b></div>
+          <h3>压缩封顶<small>COMPACTION</small></h3>
+          <p>连续失败若干次就<b>放弃压缩</b>，改用硬截断。继续压缩只会把上下文越压越坏。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s;padding:18px">
+          <div class="k"><span>02</span><b>权限</b></div>
+          <h3>分类封顶<small>PERMISSION</small></h3>
+          <p>权限分类连续失败，就<b>回退到人工询问</b>。分类器不确定时，问人比猜便宜。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s;padding:18px">
+          <div class="k"><span>03</span><b>输出</b></div>
+          <h3>接续封顶<small>CONTINUATION</small></h3>
+          <p>续写最多尝试<b>固定轮数</b>，到点停手，把半截结果交出去。续到第 N 轮还断，说明接续解不了。</p>
+        </div>
+      </div>
+
+      <div class="card sum reveal" style="--d:.38s;margin-top:13px;padding:16px 20px">
+        <div class="k"><span>THRESHOLD</span><b>这个「3」从哪来</b></div>
+        <h3 style="font-size:30px;margin-bottom:2px">连续 3 次<small style="display:inline;margin-left:10px">CLAUDE CODE · 上下文压缩熔断</small></h3>
+        <p>真实会话统计：曾有一个会话在这条路径上连续失败三千余次；这类无效重试每天在全球浪费约 <b>25 万次</b> API 调用，逾千个会话出现过 50 次以上连续失败。</p>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>3 次是拐点，不是最优解：</b>它落在「绝大多数故障在此之前已恢复」与「继续重试基本无望」之间——
+        有数据支撑的解，比拍脑袋的解更容易在下一次事故里被辩护。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 22 死亡螺旋与全局终止 ========== -->
+  <section class="slide" data-sec="5.1.5" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.5 · 终止<span class="sep">/</span><span class="tag">单点熔断之外，还有连锁</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">死亡螺旋：<em>恢复逻辑自己也会故障</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        单点熔断管一条路径的失败次数；死亡螺旋管的是路径之间——恢复动作触发的错误，又去触发同一个恢复动作。
+      </p>
+
+      <div class="split" style="margin-top:14px">
+        <div class="steps">
+          <div class="step reveal" style="--d:.2s">
+            <div class="no">01</div>
+            <div><h4>上下文溢出，Agent 停止</h4><p>这一轮已经跑不动了。</p></div>
+          </div>
+          <div class="step reveal" style="--d:.25s">
+            <div class="no">02</div>
+            <div><h4>停止钩子被触发</h4><p>「结束时自动提交代码」——结束时自动执行的清理逻辑。</p></div>
+          </div>
+          <div class="step reveal" style="--d:.3s">
+            <div class="no">03</div>
+            <div><h4>钩子调用 LLM 写 commit message</h4><p>本来只是补一句说明。</p></div>
+          </div>
+          <div class="step reveal" style="--d:.35s">
+            <div class="no">04</div>
+            <div><h4>又撑爆上下文，再次触发钩子</h4><p><b>回到第 01 步。</b>这一次没人叫停。</p></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card reveal" style="--d:.3s;padding:18px">
+            <div class="k"><span>01</span><b>切断源头</b></div>
+            <h3>错误路径上禁用副作用</h3>
+            <p>一切会再次调用模型的逻辑都停掉。宁可丢掉一次辅助功能，比如自动记忆提取——它不是这轮任务的一部分。</p>
+          </div>
+          <div class="card reveal" style="--d:.36s;padding:18px;margin-top:12px">
+            <div class="k"><span>02</span><b>打断残余</b></div>
+            <h3>递归深度计数器</h3>
+            <p>检测并打断残余的连锁：已经在恢复里了，就不要再进入恢复。深度是唯一不会说谎的信号。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>最后还有一层全局兜底：</b>最大迭代轮数、会话预算上限、连续失败超阈值时升级人工干预——
+        单点熔断管单条路径，全局条件管整个会话。
+      </div>
+    </div>
+  </section>
+
+  <!-- frag:40-5.1.6.html -->
+<!-- ========== 5.1.6 · 01 五个技巧，两个靶子 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 实现技巧<span class="sep">/</span><span class="tag">五个技巧，两个靶子</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">五个技巧，只打<em>两个靶子</em>：慢和贵</h2>
+      <p class="lede reveal" style="--d:.14s">
+        前面几节描述的工作流程是理想状态。真让它跑起来还要做到三件事——思考质量不降、响应更快、上下文更省。
+        下面五条就是落地手段，全部来自第二章与第四章的通用技术。
+      </p>
+
+      <table class="tbl reveal" style="--d:.2s;margin-top:18px">
+        <thead>
+          <tr><th style="width:250px">技巧</th><th style="width:132px">打哪个靶</th><th>怎么打</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>并行与流式执行</td>
+            <td class="cy">延迟</td>
+            <td>参数一完整就开跑，等待被藏进后续的生成过程里。</td>
+          </tr>
+          <tr>
+            <td>上下文精细化管理</td>
+            <td class="vi">上下文</td>
+            <td>文件按行号取片段，命令输出掐头去尾。</td>
+          </tr>
+          <tr>
+            <td>环境信息动态注入</td>
+            <td class="vi">上下文</td>
+            <td>每轮追加一份状态快照，替换掉过时的假设。</td>
+          </tr>
+          <tr>
+            <td>终端会话持久化</td>
+            <td class="cy">延迟</td>
+            <td>不重复 cd、不重复激活虚拟环境。</td>
+          </tr>
+          <tr>
+            <td>即时语法反馈</td>
+            <td class="cy">延迟</td>
+            <td>错误在写入那一刻暴露，省掉一整轮返工。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>别当成五个独立开关：</b>第一条改的是<b>执行时序</b>，中间三条改的是<b>上下文里放什么</b>，最后一条改的是<b>反馈回路</b>——它们互相咬合。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 02 串行在排队等自己 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 串行模式<span class="sep">/</span><span class="tag">严格的排队</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">串行的瓶颈不是算得慢，<em>是排队等自己</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        传统 Agent 是「生成一个工具调用 → 执行完 → 拿结果 → 再决定下一步」。同一条链路上，模型和工具
+        <strong>轮流上班</strong>，任何时刻只有一个在干活。
+      </p>
+
+      <div class="reveal" style="--d:.22s;margin-top:28px">
+        <svg viewBox="0 0 1124 272" style="width:100%;height:auto;overflow:visible">
+          <defs>
+            <pattern id="p16a-hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="7" stroke="rgba(255,180,107,.30)" stroke-width="1.2"/>
+            </pattern>
+            <marker id="p16c-ar" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+              <path d="M0 1.2L8 4.5L0 7.8z" fill="#5b6b88"/></marker>
+            <marker id="p16c-al" markerWidth="9" markerHeight="9" refX="1" refY="4.5" orient="auto-start-reverse">
+              <path d="M8 1.2L0 4.5L8 7.8z" fill="#5b6b88"/></marker>
+          </defs>
+
+          <text x="12" y="20" class="node-label" font-size="11.5" fill="#6a7a9a">一次推理里的三个工具调用 · 严格串行</text>
+          <rect x="12" y="34" width="176" height="74" rx="6" fill="rgba(79,227,255,.09)" stroke="rgba(79,227,255,.38)"/>
+          <text x="100" y="76" class="node-sub" font-size="12" fill="#4fe3ff" text-anchor="middle">① 生成 · 模型在跑</text>
+          <rect x="188" y="34" width="196" height="74" rx="6" fill="rgba(255,180,107,.10)" stroke="rgba(255,180,107,.42)"/>
+          <text x="286" y="76" class="node-sub" font-size="12" fill="#ffb46b" text-anchor="middle">① 执行 · 模型空转</text>
+          <rect x="188" y="34" width="196" height="74" rx="6" fill="url(#p16a-hatch)"/>
+          <rect x="384" y="34" width="186" height="74" rx="6" fill="rgba(79,227,255,.09)" stroke="rgba(79,227,255,.38)"/>
+          <text x="477" y="76" class="node-sub" font-size="12" fill="#4fe3ff" text-anchor="middle">② 生成 · 模型在跑</text>
+          <rect x="570" y="34" width="206" height="74" rx="6" fill="rgba(255,180,107,.10)" stroke="rgba(255,180,107,.42)"/>
+          <text x="673" y="76" class="node-sub" font-size="12" fill="#ffb46b" text-anchor="middle">② 执行 · 模型空转</text>
+          <rect x="570" y="34" width="206" height="74" rx="6" fill="url(#p16a-hatch)"/>
+          <rect x="776" y="34" width="166" height="74" rx="6" fill="rgba(79,227,255,.09)" stroke="rgba(79,227,255,.38)"/>
+          <text x="859" y="76" class="node-sub" font-size="12" fill="#4fe3ff" text-anchor="middle">③ 生成 · 模型在跑</text>
+          <rect x="942" y="34" width="170" height="74" rx="6" fill="rgba(255,180,107,.10)" stroke="rgba(255,180,107,.42)"/>
+          <text x="1027" y="76" class="node-sub" font-size="12" fill="#ffb46b" text-anchor="middle">③ 执行 · 模型空转</text>
+          <rect x="942" y="34" width="170" height="74" rx="6" fill="url(#p16a-hatch)"/>
+
+          <text x="12" y="152" class="node-sub" font-size="11.5" fill="#7d8fae">墙钟总长：三段生成 + 三段执行，首尾相接，中间没有一处重叠</text>
+          <path d="M12 172 H1112" stroke="#5b6b88" stroke-width="1" fill="none" marker-start="url(#p16c-al)" marker-end="url(#p16c-ar)"/>
+
+          <text x="12" y="212" class="node-sub" font-size="12" fill="#8fa2c4">三段执行全排在链路上：这段时间模型一个字都不生成，只是在等一个早就该跑起来的调用。</text>
+          <text x="12" y="246" class="node-sub" font-size="12" fill="#6a7a9a">如果下一个调用的参数依赖这个结果，它连参数都还写不出来——只能干等。</text>
+        </svg>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>问题留在这里：</b>如果把执行挪进生成的过程里去，这条长条能被压短多少？
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 03 流式执行时间轴 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 流式执行<span class="sep">/</span><span class="tag">参数完整即启动</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">第一个调用的参数一完整，<em>就开始跑</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        不必等整轮生成结束。第一个工具调用的参数一经完整生成并<b>通过校验</b>，立刻启动，与后两个调用的生成过程重叠进行。
+      </p>
+
+      <div class="reveal" style="--d:.22s;margin-top:18px">
+        <svg viewBox="0 0 1124 378" style="width:100%;height:auto;overflow:visible">
+          <defs>
+            <marker id="f16b-ar" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+              <path d="M0 0L8 4L0 8z" fill="#4fe3ff"/></marker>
+          </defs>
+
+          <rect x="104" y="12" width="1016" height="60" rx="8" fill="rgba(255,255,255,.02)" stroke="rgba(140,170,220,.12)"/>
+          <text x="0" y="46" class="node-label" fill="#a9b8d6">模型 · 生成</text>
+          <rect x="112" y="24" width="228" height="32" rx="5" fill="rgba(79,227,255,.11)" stroke="rgba(79,227,255,.42)"/>
+          <text x="226" y="44" class="node-sub" font-size="12" fill="#4fe3ff" text-anchor="middle">① 搜代码</text>
+          <rect x="340" y="24" width="260" height="32" rx="5" fill="rgba(79,227,255,.11)" stroke="rgba(79,227,255,.42)"/>
+          <text x="470" y="44" class="node-sub" font-size="12" fill="#4fe3ff" text-anchor="middle">② 查配置文件</text>
+          <rect x="600" y="24" width="180" height="32" rx="5" fill="rgba(79,227,255,.11)" stroke="rgba(79,227,255,.42)"/>
+          <text x="690" y="44" class="node-sub" font-size="12" fill="#4fe3ff" text-anchor="middle">③ 读日志</text>
+
+          <path d="M340 72 L340 90" stroke="#4fe3ff" stroke-width="1.3" fill="none" marker-end="url(#f16b-ar)"/>
+          <text x="330" y="86" class="node-sub" font-size="11" fill="#4fe3ff" text-anchor="end">参数完整</text>
+
+          <rect x="104" y="96" width="1016" height="98" rx="8" fill="rgba(255,255,255,.02)" stroke="rgba(140,170,220,.12)"/>
+          <text x="0" y="149" class="node-label" fill="#a9b8d6">工具 · 执行</text>
+          <rect x="340" y="104" width="260" height="32" rx="5" fill="rgba(139,123,255,.16)" stroke="rgba(139,123,255,.55)"/>
+          <text x="470" y="124" class="node-sub" font-size="12" fill="#a89bff" text-anchor="middle">跑 ①</text>
+          <rect x="600" y="104" width="260" height="32" rx="5" fill="rgba(139,123,255,.16)" stroke="rgba(139,123,255,.55)"/>
+          <text x="730" y="124" class="node-sub" font-size="12" fill="#a89bff" text-anchor="middle">跑 ②</text>
+          <rect x="780" y="150" width="180" height="32" rx="5" fill="rgba(139,123,255,.16)" stroke="rgba(139,123,255,.55)"/>
+          <text x="870" y="170" class="node-sub" font-size="12" fill="#a89bff" text-anchor="middle">跑 ③</text>
+
+          <rect x="780" y="104" width="80" height="78" fill="rgba(139,123,255,.10)"/>
+          <text x="972" y="124" class="node-sub" font-size="11.5" fill="#9b8fff">① 还没跑完，② ③ 已经起来</text>
+          <text x="972" y="146" class="node-sub" font-size="11" fill="#6a7a9a">同一时刻有三条执行在跑</text>
+
+          <path d="M340 214 V232 H780 V214" stroke="#8b7bff" stroke-width="1.2" fill="none"/>
+          <text x="792" y="228" class="node-sub" font-size="11.5" fill="#9b8fff">生成 ② ③ 的同时，执行 ① 已经在跑</text>
+
+          <rect x="104" y="248" width="1016" height="54" rx="8" fill="rgba(255,255,255,.012)" stroke="rgba(140,170,220,.18)" stroke-dasharray="5 5"/>
+          <text x="0" y="279" class="node-label" fill="#6a7a9a">串行 · 对照</text>          <rect x="112" y="260" width="155" height="32" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text x="189" y="280" class="node-sub" font-size="11" fill="#7d8fae" text-anchor="middle">① 生成</text>
+          <rect x="267" y="260" width="177" height="32" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text x="355" y="280" class="node-sub" font-size="11" fill="#7d8fae" text-anchor="middle">① 执行</text>
+          <rect x="444" y="260" width="177" height="32" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text x="532" y="280" class="node-sub" font-size="11" fill="#7d8fae" text-anchor="middle">② 生成</text>
+          <rect x="621" y="260" width="177" height="32" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text x="709" y="280" class="node-sub" font-size="11" fill="#7d8fae" text-anchor="middle">② 执行</text>
+          <rect x="798" y="260" width="122" height="32" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text x="859" y="280" class="node-sub" font-size="11" fill="#7d8fae" text-anchor="middle">③ 生成</text>
+          <rect x="920" y="260" width="150" height="32" rx="4" fill="rgba(140,170,220,.05)" stroke="rgba(140,170,220,.20)"/>
+          <text x="995" y="280" class="node-sub" font-size="11" fill="#7d8fae" text-anchor="middle">③ 执行</text>
+
+          <text x="0" y="338" class="node-sub" font-size="12" fill="#8fa2c4">串行是六段首尾相接；流式把「等结果」这段时间填进了生成里，总长只由最长的那条链决定。</text>
+          <text x="0" y="366" class="node-sub" font-size="11.5" fill="#6a7a9a">所以优化的方向不是「让模型更快」，而是「让等待有地方去」。</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 04 并行的另一面：故障边界 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 并发与故障<span class="sep">/</span><span class="tag">默认不并发</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">并行省下的时间，<em>要用边界守住</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        并发把失败的影响面放大了：一批调用同时在跑，一个炸了，其余的怎么办。答案写进工具定义里。
+      </p>
+
+      <div class="cards c3" style="margin-top:44px">
+        <div class="card reveal" style="--d:.22s;padding:24px 21px 22px">
+          <div class="k"><span>01</span><b>声明</b></div>
+          <h3>并发是一个字段<small>parallel: false</small></h3>
+          <p>每个工具定义都应写明自己能否并发执行。<b>默认是否</b>——不声明就不并行，这是失败安全的默认值。</p>
+        </div>
+        <div class="card reveal" style="--d:.28s;padding:24px 21px 22px">
+          <div class="k"><span>02</span><b>传播</b></div>
+          <h3>失败沿依赖中止<small>cascade abort</small></h3>
+          <p>某个调用失败时，级联中止<b>同一批并行启动、且依赖该结果</b>的其他调用，不浪费算力。</p>
+        </div>
+        <div class="card reveal" style="--d:.34s;padding:24px 21px 22px">
+          <div class="k"><span>03</span><b>边界</b></div>
+          <h3>独立调用不连坐</h3>
+          <p>与失败无关的调用照常跑完，发起它们的<b>父级操作也不被终止</b>——中止只沿依赖边传播。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>接得上 5.1.4：</b>那一节讲的是「一个失败不该拖垮整批」这条原则，这里看到它的实现形态——一个布尔字段，加一次沿依赖边的传播。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 05 上下文的第一笔账 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 上下文<span class="sep">/</span><span class="tag">先算一笔账</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">窗口有百万 token，<em>也不该把仓库塞进去</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        Coding Agent 的根本矛盾很朴素：代码库通常很大，上下文窗口有限。即使模型号称支持百万级 token，
+        把整个代码库一股脑塞进去，<strong>既不经济，也没必要</strong>。
+      </p>
+
+      <div class="cards c3" style="margin-top:24px">
+        <div class="card reveal" style="--d:.2s">
+          <div class="k"><span>01</span><b>一个文件</b></div>
+          <h3>5,000 行 ≈ 6 万 token<small>按每行约 12 token 估算</small></h3>
+          <p>一个中等大小的源码文件全文读进来，就已经是一次小型对话的量级。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s">
+          <div class="k"><span>02</span><b>一个任务</b></div>
+          <h3>读十来个文件，就是几十万</h3>
+          <p>改一个功能，看十几个文件是常态。还没动第一行代码，窗口先去了一大半。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s">
+          <div class="k"><span>03</span><b>一笔账</b></div>
+          <h3>读进来的每一行，之后每轮都跟着走</h3>
+          <p>一次贪心的全文读取，会在后续每一轮推理里重复计费，直到它被挤出窗口。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>所以上下文管理要在多个层面展开：</b>读文件、跑命令、看环境——下面三页，一层一层看。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 06 文件读取：按行号取片段 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 文件读取<span class="sep">/</span><span class="tag">按行号取，不读全文</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">读文件也要有<em>粒度</em>：只要那五十行</h2>
+      <p class="lede reveal" style="--d:.14s">
+        对大型文件，工具应支持按行号范围读取；返回时每行以<b>真实行号</b>作前缀。这个设计小到几乎看不见，价值却很大。
+      </p>
+
+      <div class="split" style="margin-top:16px;align-items:start">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>READ · 按行号范围取，带行号返回</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="g">Agent →</span> read(<span class="y">"src/main.py"</span>, <span class="y">100..150</span>)
+
+<span class="v">工具返回</span>：
+<span class="c">100|</span> def handle_request(req):
+<span class="c">101|</span>     token = req.headers[<span class="y">"auth"</span>]
+<span class="c">102|</span>     user = verify(token, cfg)
+   <span class="c">| … （103–141 行省略）</span>
+<span class="c">142|</span>     return jsonify(resp)
+
+<span class="c"># 3,842 行的文件，这次只进来 51 行</span>
+<span class="g">Agent →</span> edit(<span class="y">"src/main.py:142"</span>, …)</div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.3s">
+            <li><b>只加载要看的那一段。</b>三千多行的文件，没必要为了改一行而整体读进来。</li>
+            <li><b>行号是坐标。</b>模型因此能说「src/main.py 第 142 行」——引用没有歧义，后续 edit 才落得准。</li>
+            <li><b>省略处要标出来。</b>让模型知道手上是片段，不会误以为文件到此为止。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 07 命令输出：掐头去尾 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 命令输出<span class="sep">/</span><span class="tag">前因后果留下，中间不留</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">终端输出要<em>掐头去尾</em>，全量落到磁盘上</h2>
+      <p class="lede reveal" style="--d:.14s">
+        编译或测试可能吐几千行。错误通常在两头：开头是<b>出错的上下文</b>，结尾是<b>总结和退出码</b>。
+      </p>
+
+      <div class="split" style="margin-top:16px;align-items:start">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>BASH · 一次失败的测试运行</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="g">$</span> pytest -q tests/        <span class="c"># 1,284 行</span>
+
+<span class="y">FAILED</span> tests/test_api.py::test_rate_limit
+  assert resp.status == <span class="y">429</span>
+  <span class="y">AssertionError: 200 != 429</span>
+
+<span class="c">… 中间 1,204 行已省略 …</span>
+<span class="c">（完整输出 → /tmp/agent/pytest-7f3a.log）</span>
+
+=============================
+<span class="y">1 failed</span>, 212 passed in 8.4s</div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.3s">
+            <li><b>头留上下文。</b>失败发生在哪个用例、断言什么、期望与实际差在哪——这些都在前面。</li>
+            <li><b>尾留总结。</b>失败总数、通过总数、耗时，一行就够判断「这次改动是变好还是变坏」。</li>
+            <li><b>中间换一行提示。</b>省略多少行、去哪找全文，都写清楚，模型就知道还有后手。</li>
+            <li><b>全量落盘，按需再读。</b>真要细节，用上一页的按行号读取，把一小段取回来。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>不是新机制：</b>这就是第四章的长输出截断与持久化，在编程场景里最频繁的一次应用。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 08 环境信息：状态栏快照 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 环境感知<span class="sep">/</span><span class="tag">每轮一份快照</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">模型缺的不是更长的提示词，<em>是当前的现场</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        这是第二章的 Agent 状态栏在编程场景里的集中体现：每次推理前，把环境状态追加在上下文末尾。
+      </p>
+
+      <div class="spec reveal" style="--d:.2s;margin-top:16px">
+        <div class="spec-h"><span class="b"></span>AGENT STATUS · 每轮推理前注入</div>
+        <div class="spec-body" style="padding:12px 16px 14px">
+          <div class="spec-code"><span class="c">cwd</span>     ~/proj/agent-core
+<span class="c">branch</span>  <span class="y">feat/stream-tools</span>          <span class="c">↑2 未推送</span>
+<span class="c">commit</span>  3f2a1c9  校验流式参数是否完整
+        b71d0e4  拆分 tool 定义
+        9c4a882  给工具加并发标记
+<span class="c">dirty</span>   M core/stream.py    <span class="g">+42</span> <span class="y">−7</span>
+        M core/tools.py     <span class="g">+18</span> <span class="y">−3</span></div>
+        </div>
+      </div>
+
+      <div class="cards c4" style="margin-top:13px">
+        <div class="card reveal" style="--d:.28s;padding:13px 15px 12px">
+          <div class="k"><span>01</span><b>cwd</b></div>
+          <h3 style="font-size:14px">路径不写错</h3>
+          <p>相对路径、模块名、测试路径，全都相对它。</p>
+        </div>
+        <div class="card reveal" style="--d:.33s;padding:13px 15px 12px">
+          <div class="k"><span>02</span><b>branch</b></div>
+          <h3 style="font-size:14px">不以为在 main</h3>
+          <p>分支错了，提交和回滚都会落在错的地方。</p>
+        </div>
+        <div class="card reveal" style="--d:.38s;padding:13px 15px 12px">
+          <div class="k"><span>03</span><b>log</b></div>
+          <h3 style="font-size:14px">知道演化脉络</h3>
+          <p>最近几条提交说明这块代码刚被谁动过、为什么。</p>
+        </div>
+        <div class="card reveal" style="--d:.43s;padding:13px 15px 12px">
+          <div class="k"><span>04</span><b>diff</b></div>
+          <h3 style="font-size:14px">知道改了什么</h3>
+          <p>未暂存与已暂存的差异，决定「改完」还是「还要改」。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.48s">
+        <b>四项各堵一个错。</b>这份快照每轮都会变，所以它不能写死在系统提示词里——下一页算这笔账。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 09 为什么不能硬编码：KV Cache ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · KV Cache<span class="sep">/</span><span class="tag">位置决定成本</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">改一个分支名，<em>整段缓存全废</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        静态系统提示词是一段<b>稳定前缀</b>。一旦为了塞进「当前分支」去改写它，前缀就变了——缓存整体失效，每轮从头重算。
+      </p>
+
+      <div class="reveal" style="--d:.2s;margin-top:18px">
+        <svg viewBox="0 0 1124 216" style="width:100%;height:auto;overflow:visible">
+          <defs>
+            <pattern id="p16c-hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="7" stroke="rgba(255,180,107,.30)" stroke-width="1.2"/>
+            </pattern>
+          </defs>
+
+          <!-- 写法 A：追加 -->
+          <text x="0" y="54" class="node-label" fill="#4fe3ff">追加式</text>
+          <rect x="118" y="24" width="580" height="52" rx="5" fill="rgba(79,227,255,.09)" stroke="rgba(79,227,255,.34)"/>
+          <text x="408" y="55" class="node-sub" font-size="11.5" fill="#9fd8ea" text-anchor="middle">系统提示词 + 工具定义 + 历史消息 · 约 100k，命中缓存</text>
+          <rect x="698" y="24" width="46" height="52" rx="5" fill="rgba(79,227,255,.30)" stroke="rgba(79,227,255,.6)"/>
+          <text x="754" y="55" class="node-sub" font-size="11.5" fill="#4fe3ff">只算新增的几千 token</text>
+
+          <!-- 写法 B：改写前缀 -->
+          <text x="0" y="150" class="node-label" fill="#ffb46b">硬编码</text>
+          <rect x="118" y="120" width="626" height="52" rx="5" fill="rgba(255,180,107,.10)" stroke="rgba(255,180,107,.42)"/>
+          <rect x="118" y="120" width="626" height="52" rx="5" fill="url(#p16c-hatch)"/>
+          <text x="431" y="151" class="node-sub" font-size="11.5" fill="#ffb46b" text-anchor="middle">前缀被改写 → 这 100k 全部重算</text>
+          <text x="754" y="151" class="node-sub" font-size="11.5" fill="#ffb46b">每轮都要重付这一遍</text>
+
+          <text x="0" y="204" class="node-sub" font-size="11.5" fill="#6a7a9a">同样的信息量，只因为位置不同，逐轮的算力账单差一个数量级。</text>
+        </svg>
+      </div>
+
+      <div class="cards c2" style="margin-top:13px">
+        <div class="card reveal" style="--d:.28s;padding:14px 16px 13px">
+          <div class="k"><span>写法 A</span><b>追加在末尾</b></div>
+          <h3 style="font-size:15px">前缀不动，只算增量</h3>
+          <p>状态栏挂在历史消息之后，每轮只为新增的几千 token 付费，前缀始终命中缓存。</p>
+        </div>
+        <div class="card reveal" style="--d:.33s;padding:14px 16px 13px">
+          <div class="k"><span>写法 B</span><b>写进系统提示词</b></div>
+          <h3 style="font-size:15px">前缀一变，全量重算</h3>
+          <p>省了「在哪注入」这点设计，代价是每轮都把十万 token 重新 prefill 一遍。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>收一条判断：</b>上下文的结构——什么在前、什么在后——<b>本身就是性能设计</b>，不只是内容设计。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 10 终端会话持久化 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 状态持久化<span class="sep">/</span><span class="tag">终端要一直开着</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">每条命令一个全新 shell，<em>状态就全丢了</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        与代码交互的许多操作都依赖环境状态：切换目录、激活虚拟环境、设置环境变量、启动后台服务。
+        这些东西<b>住在 shell 里</b>，不在文件里。
+      </p>
+
+      <div class="split" style="margin-top:16px;align-items:start">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>SHELL · 每次都从零开始</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 会话 A</span>
+<span class="g">$</span> cd ~/proj/agent && source .venv/bin/activate
+<span class="g">$</span> python -V
+<span class="w">Python 3.12.4</span>
+
+<span class="c"># 会话 B · 下一条命令，全新 shell</span>
+<span class="g">$</span> pwd
+<span class="w">/home/dev</span>          <span class="y">← 目录回去了</span>
+<span class="g">$</span> python -V
+<span class="w">Python 3.9.1</span>       <span class="y">← 虚拟环境没了</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.3s">
+            <li><b>状态只在当前会话有效。</b>激活虚拟环境这类操作，效果无法跨会话传递——不是权限问题，是进程边界。</li>
+            <li><b>重复劳动还在其次。</b>更贵的是每次都要重新确认「我在哪、用哪个解释器」，而这些信息本来不该重复消耗推理。</li>
+            <li><b>所以启动时开一个终端，全程复用。</b>工作目录、环境变量、后台进程都留在里面。</li>
+            <li><b>但保留隔离终端。</b>并行任务需要互不干扰的会话——<b>持久化是默认，隔离是能力</b>，不是二选一。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>这更符合人的习惯：</b>我们本来就长期开着一个终端窗口，而不是每条命令都新开一个。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.6 · 11 即时语法反馈 ========== -->
+  <section class="slide" data-sec="5.1.6" data-tier="b">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.6 · 即时反馈<span class="sep">/</span><span class="tag">把 IDE 的红线搬到工具层</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">写完就检查，<em>别等用户说「跑一下」</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        文件写入操作一完成，工具层就自动运行对应的 linter 或语法检查器，把结果作为<b>工具返回值的一部分</b>交回去。
+      </p>
+
+      <div class="split" style="margin-top:16px;align-items:start">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>WRITE · 返回值里带检查结果</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="g">Agent →</span> write(<span class="y">"core/stream.py"</span>, patch)
+
+<span class="v">工具返回</span>：
+  已写入 core/stream.py       <span class="g">+42</span> <span class="y">−7</span>
+  <span class="y">lint · E999 IndentationError</span>
+    line 88   unexpected indent
+  <span class="y">lint · 1 error, 0 warning</span>
+
+<span class="c"># 下一轮推理，第一眼就是第 88 行</span>
+<span class="g">Agent →</span> edit(<span class="y">"core/stream.py:88"</span>, …)</div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list reveal" style="--d:.3s">
+            <li><b>不等测试。</b>等到跑测试才发现语法错，中间已经白跑了一整轮推理。</li>
+            <li><b>错误带坐标。</b>文件名、行号、错误类型一起回去，模型下一步就能直接改那一行。</li>
+            <li><b>就像 IDE 的红线。</b>打错一个括号，编辑器立刻标出来——Agent 也该有同样的即时性。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>五条收在一起：</b>并行与流式、上下文管理、环境感知、状态持久化、即时反馈——它们不是孤立的优化点，而是相互配合的设计决策，指向同一件事：<b>让 Agent 像经验丰富的开发者那样流畅地工作</b>。
+      </div>
+    </div>
+  </section>
+
+  <!-- frag:90-summary.html -->
+<!-- ========== 小结 A 一条主线 ========== -->
+  <section class="slide" data-sec="SUMMARY" data-tier="c">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.1 — 5.1.6<span class="sep">/</span><span class="tag">阶段小结</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">六节讲完，<em>其实是一条因果链</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        不是因为 Coding 重要才拿它当例子，是因为它同时具备三件事：能造工具、能被验证、有现成的工程基础设施。
+      </p>
+
+      <div class="cards c3" style="margin-top:34px">
+        <div class="card reveal" style="--d:.2s;padding:27px 23px 26px">
+          <div class="k"><span>ARC 01</span><b>凭什么</b></div>
+          <h3 style="font-size:19px">代码是元能力</h3>
+          <p style="margin-top:8px">
+            七个工具里没有「搜索网页」，但会写代码就有了一切：缺什么能力，当场造一个。
+            通用 Agent 也是把 Coding 当内核，把文件系统当中枢。
+          </p>
+          <p style="margin-top:10px;font-size:11px;color:var(--dim);letter-spacing:.08em">5.1.1 · 5.1.2</p>
+        </div>
+        <div class="card on reveal" style="--d:.28s;padding:27px 23px 26px">
+          <div class="k"><span>ARC 02</span><b>怎么干</b></div>
+          <h3 style="font-size:19px">先认知，再动手，用测试收口</h3>
+          <p style="margin-top:8px">
+            六个阶段里前三个一行代码都不写：补文档、澄清边界、写一页可被审的设计。
+            完成的标准不是「代码写完」，是「测试通过」。
+          </p>
+          <p style="margin-top:10px;font-size:11px;color:var(--dim);letter-spacing:.08em">5.1.3</p>
+        </div>
+        <div class="card reveal" style="--d:.36s;padding:27px 23px 26px">
+          <div class="k"><span>ARC 03</span><b>怎么稳</b></div>
+          <h3 style="font-size:19px">把判断权交给基础设施</h3>
+          <p style="margin-top:8px">
+            四件组件、四层故障、三级恢复，每条路径都配上限。
+            这些东西一件都不在模型里——所以换模型，它们仍然成立。
+          </p>
+          <p style="margin-top:10px;font-size:11px;color:var(--dim);letter-spacing:.08em">5.1.4 · 5.1.5 · 5.1.6</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>串起来看：</b>因为代码能造工具，它才接得住开放式任务；因为任务开放，才必须先对齐再动手；
+        因为动手的次数多了，稳定就只能靠工程，不能靠模型。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 小结 B 三件事 ========== -->
+  <section class="slide" data-sec="SUMMARY" data-tier="c">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.1 — 5.1.6<span class="sep">/</span><span class="tag">明天就能动</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">读完不用等新模型，<em>下周就能动的三件事</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        三件事都不碰模型、不等版本，改的都是模型外面那一圈——而那一圈本来就是你团队现成的资产。
+      </p>
+
+      <div class="cards c3" style="margin-top:44px">
+        <div class="card reveal" style="--d:.2s;padding:24px 21px 22px">
+          <div class="k"><span>ACTION 01</span><b>一小时</b></div>
+          <h3 style="font-size:19px">给仓库写一份指令文件</h3>
+          <p style="margin-top:8px">
+            技术栈、目录职责、怎么跑测试、哪些目录别碰。
+            它每次会话自动注入，是最便宜的稳定前缀，也最不容易过期。
+          </p>
+        </div>
+        <div class="card on reveal" style="--d:.28s;padding:24px 21px 22px">
+          <div class="k"><span>ACTION 02</span><b>半天</b></div>
+          <h3 style="font-size:19px">把一条口头规范写成规则</h3>
+          <p style="margin-top:8px">
+            「请遵循命名规范」是建议，「不符合就红」是约束。
+            先挑最常被违反的那一条，把它从文档搬进 Linter。
+          </p>
+        </div>
+        <div class="card reveal" style="--d:.36s;padding:24px 21px 22px">
+          <div class="k"><span>ACTION 03</span><b>一天</b></div>
+          <h3 style="font-size:19px">给每条重试配一个上限</h3>
+          <p style="margin-top:8px">
+            重试几次、退避多久、什么条件下放弃并交给人。
+            没有上限的重试，是账单上最贵的那类 bug。
+          </p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>判据只有一条：</b>这套东西交给一个新来的远程同事，他能不能只靠仓库和文档独立干活。
+        能，Agent 也能；不能，先补仓库，别急着换模型。
+      </div>
+    </div>
+  </section>
+
+    <section class="slide s-end" data-sec="END">
+    <div class="horizon"></div>
+    <div class="end-floor"><i></i></div>
+    <div class="end-wrap">
+      <div class="kicker reveal" style="--d:.05s">Chapter 05 · Part 1 · 5.1.1 — 5.1.6</div>
+      <h2 class="end-h reveal" style="--d:.14s">
+        它跑得稳，不是因为模型更强，<br>
+        <em>而是因为模型外面那圈东西更硬。</em>
+      </h2>
+
+      <div class="take">
+        <div class="reveal" style="--d:.26s">
+          <div class="t">TAKEAWAY 01</div>
+          <p>把四个问题写进工程里：什么算做完、能碰什么、错在哪、怎么退回去。这四件事没有一件属于模型。</p>
+        </div>
+        <div class="reveal" style="--d:.34s">
+          <div class="t">TAKEAWAY 02</div>
+          <p>你团队那套测试、类型、Lint、版本控制，换个使用者（Agent）就能直接复用——这是传统开发者现成的起跑优势。</p>
+        </div>
+        <div class="reveal" style="--d:.42s">
+          <div class="t">TAKEAWAY 03</div>
+          <p>自动化能走到哪一步，取决于验证能不能自动化。凡是「对不对」还得靠人点头的环节，就是吞吐量的天花板。</p>
+        </div>
+      </div>
+
+      <div class="end-sign">下一节 · 5.1.7 搜索工具 →</div>
+    </div>
+  </section>
+
+  </div><!-- /slides -->
+
+  <!-- HUD -->
+  <div class="hud hide" id="hud">
+    <div class="rail" id="rail"><div class="rail-tip" id="railTip">5.1.1</div></div>
+    <div class="pager">
+      <span><b id="pNow">01</b> / <span id="pAll">18</span></span>
+      <div class="nav">
+        <button id="prev" aria-label="上一页">←</button>
+        <button id="next" aria-label="下一页">→</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var stage = document.getElementById('stage');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var rail = document.getElementById('rail');
+  var tip = document.getElementById('railTip');
+  var progress = document.getElementById('progress');
+  var pNow = document.getElementById('pNow');
+  var pAll = document.getElementById('pAll');
+  var hud = document.getElementById('hud');
+  var idx = 0;
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+  pAll.textContent = pad(slides.length);
+
+  function tier(i){
+    var el = slides[i];
+    if(el.hasAttribute('data-tier')) return el.getAttribute('data-tier');
+    var sec = el.dataset.sec || '';
+    if(sec.indexOf('5.1.2') > -1) return 'b';
+    if(sec === 'SUMMARY' || sec === 'END') return 'c';
+    if(sec === 'COVER' || sec === 'CHAPTER MAP' || sec === '5.1') return '';
+    return 'a';
+  }
+
+  var ticks = slides.map(function(s, i){
+    var b = document.createElement('button');
+    b.className = 'tick ' + tier(i);
+    b.type = 'button';
+    b.setAttribute('aria-label', '第 ' + (i+1) + ' 页 · ' + (s.dataset.sec || ''));
+    var bar = document.createElement('span');
+    bar.className = 'bar';
+    b.appendChild(bar);
+    b.addEventListener('click', function(e){ e.stopPropagation(); go(i); });
+    rail.insertBefore(b, tip);
+    return b;
+  });
+
+  function paint(){
+    ticks.forEach(function(t, i){ t.classList.toggle('active', i === idx); });
+    tip.textContent = slides[idx].dataset.sec || '—';
+    var pct = ((idx + 1) / slides.length) * 100;
+    tip.style.left = (pct - (100 / slides.length) / 2) + '%';
+    progress.style.width = Math.max(2, pct) + '%';
+    pNow.textContent = pad(idx + 1);
+    hud.classList.toggle('hide', idx === 0 || idx === slides.length - 1);
+    try { history.replaceState(null, '', '#' + (idx + 1)); } catch(err){}
+  }
+
+  function go(n){
+    n = Math.max(0, Math.min(slides.length - 1, n));
+    if(n === idx) return;
+    slides.forEach(function(s, i){
+      s.classList.toggle('active', i === n);
+      s.classList.toggle('before', i < n);
+    });
+    idx = n;
+    paint();
+  }
+
+  function step(d){ go(idx + d); }
+
+  document.addEventListener('keydown', function(e){
+    if(['ArrowRight','ArrowDown','PageDown',' '].indexOf(e.key) > -1){ e.preventDefault(); step(1); }
+    else if(['ArrowLeft','ArrowUp','PageUp'].indexOf(e.key) > -1){ e.preventDefault(); step(-1); }
+    else if(e.key === 'Home'){ e.preventDefault(); go(0); }
+    else if(e.key === 'End'){ e.preventDefault(); go(slides.length - 1); }
+    else if(e.key === 'f' || e.key === 'F'){
+      if(!document.fullscreenElement){ document.documentElement.requestFullscreen && document.documentElement.requestFullscreen(); }
+      else { document.exitFullscreen && document.exitFullscreen(); }
+    }
+  });
+
+  var wt = 0;
+  window.addEventListener('wheel', function(e){
+    var now = Date.now();
+    if(now - wt < 620) return;
+    if(Math.abs(e.deltaY) < 12 && Math.abs(e.deltaX) < 12) return;
+    wt = now;
+    var d = (Math.abs(e.deltaX) > Math.abs(e.deltaY)) ? e.deltaX : e.deltaY;
+    step(d > 0 ? 1 : -1);
+  }, { passive:true });
+
+  var tx = 0, ty = 0;
+  window.addEventListener('touchstart', function(e){
+    tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+  }, { passive:true });
+  window.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - tx;
+    var dy = e.changedTouches[0].clientY - ty;
+    if(Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1);
+  }, { passive:true });
+
+  document.getElementById('next').addEventListener('click', function(e){ e.stopPropagation(); step(1); });
+  document.getElementById('prev').addEventListener('click', function(e){ e.stopPropagation(); step(-1); });
+
+  stage.addEventListener('click', function(e){
+    if(e.target.closest('.tick') || e.target.closest('.nav') || e.target.closest('.rail')) return;
+    step(1);
+  });
+
+  function fit(){
+    var s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+    stage.style.setProperty('--s', s.toFixed(4));
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  var h = parseInt((location.hash || '').replace('#',''), 10);
+  var wrap = document.getElementById('slides');
+  if(h && h >= 1 && h <= slides.length && h !== 1){
+    wrap.classList.add('noanim');
+    idx = h - 1;
+    slides.forEach(function(s, i){
+      s.classList.toggle('active', i === idx);
+      s.classList.toggle('before', i < idx);
+    });
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ wrap.classList.remove('noanim'); });
+    });
+  }
+  paint();
+
+  var settle = function(){
+    var cur = slides[idx];
+    if(!cur) return;
+    Array.prototype.forEach.call(cur.querySelectorAll('.reveal'), function(el){
+      var o = parseFloat(getComputedStyle(el).opacity);
+      if(o < 0.9){ el.style.opacity = '1'; el.style.transform = 'none'; }
+    });
+  };
+  setTimeout(settle, 1400);
+  window.addEventListener('pageshow', function(){ setTimeout(settle, 900); });
+})();
+</script>
+</body>
+</html>

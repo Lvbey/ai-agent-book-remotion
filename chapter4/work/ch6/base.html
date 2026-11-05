@@ -1,0 +1,247 @@
+  <!-- ========== 01 封面 ========== -->
+  <section class="slide s-cover active" data-sec="COVER" data-tier="">
+    <svg class="cover-orbit" viewBox="0 0 760 760" aria-hidden="true">
+      <g class="spin60" fill="none">
+        <circle cx="380" cy="380" r="300" stroke="rgba(79,227,255,.10)" stroke-width="1"/>
+        <circle cx="380" cy="380" r="300" stroke="rgba(79,227,255,.34)" stroke-width="1" stroke-dasharray="2 26"/>
+        <circle cx="380" cy="380" r="238" stroke="rgba(139,123,255,.12)" stroke-width="1"/>
+      </g>
+      <g class="spin90" fill="none">
+        <circle cx="380" cy="380" r="176" stroke="rgba(139,123,255,.35)" stroke-width="1" stroke-dasharray="90 240"/>
+        <circle cx="380" cy="380" r="120" stroke="rgba(79,227,255,.18)" stroke-width="1"/>
+      </g>
+      <circle cx="380" cy="380" r="62" fill="none" stroke="rgba(79,227,255,.5)" stroke-width="1"/>
+      <circle cx="380" cy="380" r="6" fill="#4fe3ff" opacity=".9"/>
+      <g stroke="rgba(140,170,220,.22)" stroke-width="1">
+        <line x1="380" y1="52" x2="380" y2="76"/><line x1="380" y1="684" x2="380" y2="708"/>
+        <line x1="52" y1="380" x2="76" y2="380"/><line x1="684" y1="380" x2="708" y2="380"/>
+      </g>
+      <g fill="#4fe3ff" opacity=".8">
+        <circle cx="380" cy="80" r="2.6"/><circle cx="380" cy="680" r="2.6"/>
+        <circle cx="680" cy="380" r="2.6"/><circle cx="80" cy="380" r="2.6"/>
+      </g>
+      <text x="380" y="384" text-anchor="middle" font-family="Consolas,monospace" font-size="11"
+            fill="#6a7a9a" letter-spacing="4">06</text>
+    </svg>
+    <div class="cover-glow"></div>
+
+    <div class="cover-wrap">
+      <div class="kicker reveal" style="--d:.05s">AI Agents in Depth · Chapter 06 · Part 2</div>
+      <div class="cover-en reveal" style="--d:.12s">INTER<br>ACTION</div>
+      <div class="cover-rule reveal" style="--d:.2s">
+        <span class="ln"></span>
+        <span class="tx">6.1 — 6.7</span>
+      </div>
+      <div class="cover-cn reveal" style="--d:.26s">交互：观察与动作空间的扩展</div>
+      <p class="cover-sub reveal" style="--d:.34s">
+        前五章里，Agent 思考时世界被默认为静止的。如果世界不等它想完呢？<br>
+        <span class="hl-k">换的不是模型，是观察与动作的模态和时机。</span>
+      </p>
+    </div>
+
+    <div class="cover-foot">
+      <div class="left">READING DECK · <span>73 SLIDES</span> · 6.1 — 6.7</div>
+      <div class="hint"><i></i>← → 翻页 / 空格前进 / F 全屏</div>
+    </div>
+  </section>
+
+  <!-- ========== 02 章节地图 ========== -->
+  <section class="slide" data-sec="CHAPTER MAP" data-tier="">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>CHAPTER MAP<span class="sep">/</span><span class="tag">四节，按世界变化的快慢排开</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">这一章不按技术分类，<em>按时间尺度分类</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        同一套「感知—思考—行动」循环，放进四个不同速度的世界里，难点完全不一样。<br>
+        <strong>尺度越短，留给「想清楚再动」的时间越少。</strong>
+      </p>
+
+      <div class="track reveal" style="--d:.2s;margin-top:24px">
+        <span>第 1 章 · 论断</span><span>→</span>
+        <span>第 2–5 章 · 内容</span><span>→</span>
+        <span class="on">第 6 章 · 模态与时机</span><span>→</span>
+        <span>第 7–10 章 · 评估与进化</span>
+      </div>
+
+      <div class="map">
+        <div class="era reveal" style="--d:.26s">
+          <div class="no">SECTION 6.2</div>
+          <div class="yr">秒 — 天</div>
+          <h4>异步与事件驱动</h4>
+          <p>世界主动推来；动作先发起，后续靠事件收尾</p>
+        </div>
+        <div class="era reveal" style="--d:.31s">
+          <div class="no">SECTION 6.3</div>
+          <div class="yr">10 毫秒 — 1 秒</div>
+          <h4>语音</h4>
+          <p>边说边听，边想边说，随时可被打断</p>
+        </div>
+        <div class="era reveal" style="--d:.36s">
+          <div class="no">SECTION 6.4</div>
+          <div class="yr">亚秒 — 秒</div>
+          <h4>Computer Use</h4>
+          <p>屏幕两帧之间就变了，点完要重新确认现实</p>
+        </div>
+        <div class="era reveal" style="--d:.41s">
+          <div class="no">SECTION 6.5</div>
+          <div class="yr">毫秒</div>
+          <h4>机器人操作</h4>
+          <p>传感器连续回流，动作分块、可被抢占</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.48s">
+        <b>读这一章的顺序：</b>6.1 先给出坐标（模态 × 时机），6.2—6.5 各守一个尺度，
+        6.6 把四节收成一条控制骨架，6.7 留十二道题。本章也是「构建 Agent」这一部分的最后一块。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 03 6.1 分隔页 ========== -->
+  <section class="slide part" data-sec="6.1" data-tier="a">
+    <div class="ghost">6.1</div>
+    <div class="slide-inner">
+      <div class="part-num reveal" style="--d:.04s">SECTION 06.1</div>
+      <h2 class="reveal" style="--d:.1s">模态与触发时机<br><em>两根轴，四个格子</em></h2>
+      <p class="sub reveal" style="--d:.16s">
+        把观察空间和动作空间摊开，会发现它们各有一个模态轴、一个时机轴。<br>
+        前五章扩的是这两个空间的<strong style="color:#e9f0ff">内容</strong>，这一章扩的是它们的<strong style="color:#e9f0ff">形式与节奏</strong>。
+      </p>
+
+      <div class="subgrid" style="margin-top:44px">
+        <div class="on reveal" style="--d:.22s"><b>6.1</b>坐标：两根轴</div>
+        <div class="reveal" style="--d:.25s"><b>6.2</b>时机：异步与事件</div>
+        <div class="reveal" style="--d:.28s"><b>6.3</b>模态：语音</div>
+        <div class="reveal" style="--d:.31s"><b>6.4</b>模态：屏幕</div>
+        <div class="reveal" style="--d:.34s"><b>6.5</b>模态：物理世界</div>
+        <div class="reveal" style="--d:.37s"><b>6.6</b>收束：一条骨架</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 04 6.1.1 四个格子 ========== -->
+  <section class="slide" data-sec="6.1.1" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.1.1 · 两根轴<span class="sep">/</span><span class="tag">观察和动作各有两个方向</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">观察和动作，<em>各有一组模态与时机</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        模态决定「以什么形式」，时机决定「按什么节奏」。<br>
+        <strong>四种组合不是四个技术点，而是这一章的四个入口。</strong>
+      </p>
+
+      <div class="cards c2">
+        <div class="card reveal" style="--d:.22s">
+          <div class="k"><span>01</span><b>观察 × 模态</b></div>
+          <h3>以什么形式看</h3>
+          <p>只读文本是默认值。加上声音、屏幕像素、力矩传感器，它能看见的东西就换了。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.28s">
+          <div class="k"><span>02</span><b>观察 × 时机</b></div>
+          <h3>什么时候看</h3>
+          <p>是 Agent 主动去取、一回合取一次；还是世界主动推来，变成一条连续流。</p>
+        </div>
+        <div class="card reveal" style="--d:.34s">
+          <div class="k"><span>03</span><b>动作 × 模态</b></div>
+          <h3>以什么形式动</h3>
+          <p>只输出 token，还是发声、点击鼠标、驱动关节——换的是它伸出去的那只手。</p>
+        </div>
+        <div class="card reveal" style="--d:.4s">
+          <div class="k"><span>04</span><b>动作 × 时机</b></div>
+          <h3>什么时候能停</h3>
+          <p>必须在一个回合内做完；还是跨回合、中途被打断、被更紧急的事抢占。</p>
+        </div>
+      </div>
+
+      <div class="note cy reveal" style="--d:.48s">
+        <b>先记住这张图：</b>本章真正难的格子是右边两个——时机一侧。形式往往有现成的接口，
+        而「什么时候该动、什么时候必须停」需要系统自己判断。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 05 6.1.2 三行两列 ========== -->
+  <section class="slide" data-sec="6.1.2" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.1.2 · 在整本书里的位置<span class="sep">/</span><span class="tag">第 2–5 章填了第一行</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">前五章铺满了「内容」，<em>另外两行还是空的</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        横着看是观察与动作，竖着看是三个扩展方向。<br>
+        第二至五章只把这张表填了第一行，剩下的留给本章。
+      </p>
+
+      <table class="tbl" style="margin-top:34px">
+        <tr><th>扩展方向</th><th>观察空间</th><th>动作空间</th></tr>
+        <tr><td>内容 · 第 2–5 章</td><td>上下文工程、记忆与知识库</td><td>工具、代码生成</td></tr>
+        <tr><td>模态 · 6.3–6.5</td><td class="cy">语音、屏幕、物理传感器</td><td class="cy">说话、点击、关节运动</td></tr>
+        <tr><td>时机 · 6.2</td><td class="vi">世界主动推送、连续流</td><td class="vi">跨回合、可打断、可抢占</td></tr>
+      </table>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>竖着读这四节：</b>6.2 只动时机（观察与动作仍是文本），6.3 动形式并把尺度压到毫秒，
+        6.4 把闭环搬上屏幕，6.5 再搬到物理世界——到机器人，模态与时机同时在变。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 06 6.1.3 回合制是约定 ========== -->
+  <section class="slide" data-sec="6.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.1.3 · 一个被忽略的假设<span class="sep">/</span><span class="tag">世界在它思考时是静止的</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">回合制是接口的约定，<em>不是世界的性质</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        提问—回答、调用—补结果，这套同步轮次只是消息格式的历史包袱。<br>
+        真实环境不会等模型作出反应，它在四个尺度上同时越界：
+      </p>
+
+      <div class="cards c2">
+        <div class="card reveal" style="--d:.2s">
+          <div class="k"><span>01</span><b>秒 — 天</b></div>
+          <h3>邮件到了</h3>
+          <p>它还在想上一封该怎么回，新到的这封已经把上下文换掉了。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s">
+          <div class="k"><span>02</span><b>10 毫秒 — 1 秒</b></div>
+          <h3>用户插话</h3>
+          <p>它说到一半，人已经把它打断，并且换了一个问题。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s">
+          <div class="k"><span>03</span><b>亚秒 — 秒</b></div>
+          <h3>页面变了</h3>
+          <p>两次截图之间界面已经刷新，上一轮锁定的目标不在原位了。</p>
+        </div>
+        <div class="card reveal" style="--d:.38s">
+          <div class="k"><span>04</span><b>毫秒</b></div>
+          <h3>杯子被碰倒</h3>
+          <p>机械臂伸手的途中，目标被挪走，整段计划当场作废。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>约定正在松动：</b>截至 2026 年 9 月，GPT-6 Astra 已提供原生异步工具调用与回合中途追加用户指令。
+        本章因此同时讨论两条路线——原生支持，以及在既有同步接口上做兼容。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 07 6.1.4 四尺度表 ========== -->
+  <section class="slide" data-sec="6.1.4" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.1.4 · 尺度<span class="sep">/</span><span class="tag">四节各守一格</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">尺度越短，<em>越买不到想清楚的时间</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        四节用的是同一套循环，区别只在世界变化的速度：<br>
+        <strong>观察是推来的还是取来的，动作还能不能等。</strong>
+      </p>
+
+      <table class="tbl" style="margin-top:34px">
+        <tr><th>尺度</th><th>场景</th><th>观察侧的变化</th><th>动作侧的变化</th></tr>
+        <tr><td>秒 — 天</td><td class="cy">异步与事件驱动</td><td>会被外部事件主动唤醒</td><td>跨回合：先发起，后续靠事件收尾</td></tr>
+        <tr><td>10 毫秒 — 1 秒</td><td class="vi">语音</td><td>边说边听，不等一句说完</td><td>边想边说，可被打断</td></tr>
+        <tr><td>亚秒 — 秒</td><td class="cy">Computer Use</td><td>屏幕在两帧之间持续变化</td><td>动作后必须重新确认现实</td></tr>
+        <tr><td>毫秒</td><td class="vi">机器人</td><td>传感器连续回流</td><td>动作分块：一次规划一小段，可被抢占</td></tr>
+      </table>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>分成上下半场：</b>上半场（秒—天）要解决「谁来触发」，下半场（亚秒—毫秒）要解决「来不及想完怎么办」。
+      </div>
+    </div>
+  </section>

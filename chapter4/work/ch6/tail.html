@@ -1,0 +1,198 @@
+  <!-- ========== 6.6 小结 1/2 ========== -->
+  <section class="slide" data-sec="6.6" data-tier="c">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.6 · 本章小结<span class="sep">/</span><span class="tag">四节各换了什么，又都卡在哪</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">四节做完，<em>只验证了一句话</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        底层模型一次没换。换的只是观察与动作的形式和时机，表现就变了——
+        <strong>这是第一章那个论断的又一次复现。</strong>
+      </p>
+
+      <table class="tbl">
+        <tr><th>场景</th><th>观察侧的新接口</th><th>动作侧的新接口</th><th>仍然没解决</th></tr>
+        <tr><td>6.2 异步</td><td>世界主动推来，事件队列</td><td>先发起，后续靠事件收尾</td><td class="am">优先级判断本身要语义理解</td></tr>
+        <tr><td>6.3 语音</td><td>持续听，边说边听</td><td>边想边说，可被打断</td><td class="am">延迟、可观测性、说错再纠正</td></tr>
+        <tr><td>6.4 Computer Use</td><td>关键帧、声音、文字压缩</td><td>点完必须重新确认现实</td><td class="am">步骤仍多于人类</td></tr>
+        <tr><td>6.5 机器人</td><td>传感器连续回流</td><td>动作分块，可被抢占</td><td class="am">仿真到真机的差距</td></tr>
+      </table>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>一句话收：</b>模态决定「能感知什么、能做什么」，时机决定「还来不来得及」；
+        而四节的难点几乎都落在时机一侧——这也解释了为什么这一章的标题不是「多模态」。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.6 小结 2/2 ========== -->
+  <section class="slide" data-sec="6.6" data-tier="c">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.6 · 本章小结<span class="sep">/</span><span class="tag">四节共享一套骨架</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">四个场景，<em>同一条循环和五个原语</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        语音、屏幕、机器人听起来是三件事，落到代码上却是同一个循环，
+        只是每一格的超时时间不同。
+      </p>
+
+      <div class="split">
+        <div class="spec">
+          <div class="spec-h"><span class="b"></span>控制骨架 · 四个场景通用</div>
+          <div class="spec-body">
+            <div class="spec-code">持续感知
+  → 判断当前状态与时机
+  → 选择回复或动作
+  → 让输出进入环境
+  → 观察反馈
+  → <span class="g">继续</span> / <span class="g">修正</span> / <span class="g">重试</span>
+  → <span class="y">停止</span> / <span class="y">重新规划</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list">
+            <li><b>唤醒</b> —— 事件到了才醒来，不必空转等待。</li>
+            <li><b>安全点</b> —— 动作与动作之间留一个可以停下的位置。</li>
+            <li><b>取消</b> —— 已经发出的动作要能被撤回或中止。</li>
+            <li><b>抢占</b> —— 更急的事到了，可以打断正在进行的动作。</li>
+            <li><b>快慢分离</b> —— 前台实时交互，后台深度思考。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>本章的位置：</b>到这里「构建 Agent」这部分讲完了。第七章判断建得对不对，
+        第八章用后训练改参数，第九章把轨迹、评估与更新组织成进化闭环，第十章转向多 Agent。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.7 思考题 1/3 ========== -->
+  <section class="slide" data-sec="6.7" data-tier="c">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.7 · 思考题 01–04<span class="sep">/</span><span class="tag">时机一侧</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">时机一旦可编程，<em>判断权就成了设计题</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        异步把决定权交给系统，系统就必须自己回答：什么算急，什么可以先放着。
+      </p>
+
+      <div class="cards c2">
+        <div class="card reveal" style="--d:.2s">
+          <div class="k"><span>★★</span><b>6.2 · 优先级</b></div>
+          <h3>优先级由谁判断</h3>
+          <p>判断新消息是否比当前任务更紧急，本身需要语义理解。规则引擎还是再调一次 LLM？各自的代价是什么？</p>
+        </div>
+        <div class="card reveal" style="--d:.26s">
+          <div class="k"><span>★★</span><b>6.2 · 呈现</b></div>
+          <h3>积压 20 个事件怎么排</h3>
+          <p>10 个工具结果 + 5 条用户消息 + 5 条系统提醒。你如何组织顺序与格式，使模型不漏关键信息？</p>
+        </div>
+        <div class="card reveal" style="--d:.32s">
+          <div class="k"><span>★★★</span><b>6.2 · 身份</b></div>
+          <h3>虚拟身份，还是用户本人</h3>
+          <p>独立身份能后台自主，但第三方未必信任非真人；用本人账号上下文齐全，却带授权与安全边界。什么场景选哪个？</p>
+        </div>
+        <div class="card reveal" style="--d:.38s">
+          <div class="k"><span>★★★</span><b>6.6 · 原语</b></div>
+          <h3>同一个原语，两处实现</h3>
+          <p>任选唤醒、安全点、取消、抢占、快慢分离之一，说明它在秒—天与毫秒两处的差异，以及差异由什么决定。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.7 思考题 2/3 ========== -->
+  <section class="slide" data-sec="6.7" data-tier="c">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.7 · 思考题 05–08<span class="sep">/</span><span class="tag">感知一侧</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">感知的每条捷径，<em>都有一个失效边界</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        把定位变成选择题、把三个模型合成一个，都是在换准确率和可调试性。
+      </p>
+
+      <div class="cards c2">
+        <div class="card reveal" style="--d:.2s">
+          <div class="k"><span>★★</span><b>6.3 · 可观测性</b></div>
+          <h3>合成一个模型之后怎么排错</h3>
+          <p>端到端把 ASR-LLM-TTS 合成单一模型，降了延迟也失去模块化。若识别环节出错，你怎么设计可观测性？</p>
+        </div>
+        <div class="card reveal" style="--d:.26s">
+          <div class="k"><span>★</span><b>6.3 · 人味</b></div>
+          <h3>要不要模仿人的犹豫</h3>
+          <p>人边想边说时会自我纠正、会说填充词。Agent 的「边想边说」应该模仿这些特征吗？</p>
+        </div>
+        <div class="card reveal" style="--d:.32s">
+          <div class="k"><span>★★</span><b>6.4 · 回退</b></div>
+          <h3>标注不全时退回坐标</h3>
+          <p>SoM 与 DOM 索引都要先检测、标注元素。遇到非标准控件或动态元素，应该退回坐标预测吗？</p>
+        </div>
+        <div class="card reveal" style="--d:.38s">
+          <div class="k"><span>★★</span><b>6.4 · 两条路径</b></div>
+          <h3>押注视觉，还是双轨</h3>
+          <p>Canvas/WebGL 与自绘控件不提供结构化信息。押注纯视觉，还是同时维护两条路径？成本与收益各是什么？</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.7 思考题 3/3 ========== -->
+  <section class="slide" data-sec="6.7" data-tier="c">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.7 · 思考题 09–12<span class="sep">/</span><span class="tag">动作与架构</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">越快动手，<em>越要提前想好怎么停</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        动作分块把延迟藏进执行时间，代价是环境变了来不及改。效率与可撤回性，是一对硬约束。
+      </p>
+
+      <div class="cards c2">
+        <div class="card reveal" style="--d:.2s">
+          <div class="k"><span>★★</span><b>6.5 · 数据质量</b></div>
+          <h3>便宜的数据未必能用</h3>
+          <p>遥操作让采集变廉价，但质量取决于操作者。不熟练的人采的数据会怎样影响 VLA？怎么自动筛掉？</p>
+        </div>
+        <div class="card reveal" style="--d:.26s">
+          <div class="k"><span>★★</span><b>6.5 · 动作分块</b></div>
+          <h3>物体被移走之后</h3>
+          <p>预生成的动作序列在环境突变时会失效。如何在分块的效率优势与环境变化的响应速度之间取平衡？</p>
+        </div>
+        <div class="card reveal" style="--d:.32s">
+          <div class="k"><span>★★★</span><b>架构 · 取舍</b></div>
+          <h3>统一模型，还是快慢分工</h3>
+          <p>未来五年的 Agent 该优先追求更强的统一模型，还是保留可替换的快慢分工？请结合延迟、可观测性、迭代速度与任务风险讨论。</p>
+        </div>
+        <div class="card reveal" style="--d:.38s">
+          <div class="k"><span>★★★</span><b>安全 · 兜底</b></div>
+          <h3>快，但不能不可挽回</h3>
+          <p>说错了再纠正、先点再看、走一步看一步。如何用动作分级、可逆操作、状态确认、权限控制与安全停止兜住后果？</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 结尾 ========== -->
+  <section class="slide s-end" data-sec="END" data-tier="c">
+    <div class="horizon"></div>
+    <div class="end-floor"><i></i></div>
+    <div class="end-wrap">
+      <div class="kicker reveal" style="--d:.05s">Chapter 06 · Interaction · End</div>
+      <h2 class="end-h reveal" style="--d:.14s">
+        世界不会等你把话说完，<br>
+        <em>所以 Agent 得学会边看边动。</em>
+      </h2>
+
+      <div class="take">
+        <div class="reveal" style="--d:.26s">
+          <div class="t">TAKEAWAY 01</div>
+          <p>交互不是接口，是两根轴：模态决定形式，时机决定节奏。这一章真正的难题几乎都在时机一侧。</p>
+        </div>
+        <div class="reveal" style="--d:.34s">
+          <div class="t">TAKEAWAY 02</div>
+          <p>先给 Agent 补三个原语：唤醒、安全点、取消/抢占。不用换模型，改动都在 Harness 这一层。</p>
+        </div>
+        <div class="reveal" style="--d:.42s">
+          <div class="t">TAKEAWAY 03</div>
+          <p>下一步不是继续加能力，而是判断建得对不对——第七章讲评估，从单条轨迹到可复现的评测。</p>
+        </div>
+      </div>
+
+      <div class="end-sign">下一章 · 第 7 章 评估 →</div>
+    </div>
+  </section>

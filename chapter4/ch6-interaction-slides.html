@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DECK TITLE</title>
+<style>
+:root{
+  --bg:#05070c;
+  --ink:#e9f0ff;
+  --ink2:#a9b8d6;
+  --dim:#6a7a9a;
+  --cyan:#4fe3ff;
+  --violet:#8b7bff;
+  --amber:#ffb46b;
+  --rose:#ff7aa8;
+  --line:rgba(140,170,220,.14);
+  --line2:rgba(140,170,220,.07);
+  --mono:"Cascadia Code","SF Mono",ui-monospace,Consolas,"Roboto Mono",monospace;
+  --sans:"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:var(--bg)}
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  cursor:default;
+  user-select:none;
+}
+
+/* ---------- background layers ---------- */
+#bg{position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(1100px 700px at 74% 16%, rgba(79,227,255,.09), transparent 62%),
+    radial-gradient(900px 620px at 12% 86%, rgba(139,123,255,.11), transparent 62%),
+    radial-gradient(700px 500px at 50% 110%, rgba(255,180,107,.04), transparent 60%),
+    #05070c;
+}
+#grid{position:fixed;inset:0;z-index:0;opacity:.5;
+  background-image:
+    linear-gradient(rgba(120,160,220,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120,160,220,.05) 1px, transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(circle at 50% 42%, #000 20%, transparent 78%);
+  mask-image:radial-gradient(circle at 50% 42%, #000 20%, transparent 78%);
+}
+#vign{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(circle at 50% 50%, transparent 42%, rgba(0,0,0,.55) 100%);
+}
+
+/* ---------- stage ---------- */
+#stage{
+  position:fixed;left:50%;top:50%;
+  width:1280px;height:720px;
+  transform:translate(-50%,-50%) scale(var(--s,1));
+  transform-origin:center center;
+  z-index:2;
+  background:
+    radial-gradient(900px 520px at 62% 30%, rgba(30,50,90,.35), transparent 70%),
+    linear-gradient(160deg,#070b14 0%, #05070d 55%, #04060b 100%);
+  overflow:hidden;
+}
+#stage:before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(120,160,220,.032) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(120,160,220,.032) 1px,transparent 1px);
+  background-size:32px 32px;
+  -webkit-mask-image:radial-gradient(circle at 50% 40%,#000,transparent 88%);
+  mask-image:radial-gradient(circle at 50% 40%,#000,transparent 88%);
+}
+.frame{position:absolute;inset:14px;border:1px solid var(--line2);pointer-events:none;z-index:20}
+.frame:before,.frame:after,
+.frame i:before,.frame i:after{
+  content:"";position:absolute;width:14px;height:14px;border:1px solid rgba(79,227,255,.42);
+}
+.frame:before{left:-1px;top:-1px;border-right:0;border-bottom:0}
+.frame:after{right:-1px;top:-1px;border-left:0;border-bottom:0}
+.frame i:before{left:-1px;bottom:-1px;border-right:0;border-top:0}
+.frame i:after{right:-1px;bottom:-1px;border-left:0;border-top:0}
+
+.progress{position:absolute;top:0;left:0;height:2px;z-index:21;
+  background:linear-gradient(90deg,var(--cyan),var(--violet) 60%,var(--amber));
+  box-shadow:0 0 14px rgba(79,227,255,.6);
+  transition:width .5s cubic-bezier(.22,.61,.36,1);
+  width:3%;
+}
+
+/* ---------- slides ---------- */
+#slides{position:absolute;inset:0;z-index:5}
+.slide{
+  position:absolute;inset:0;
+  padding:58px 78px 106px 78px;
+  display:flex;flex-direction:column;justify-content:center;
+  opacity:0;transform:translateX(52px);
+  transition:opacity .5s ease, transform .62s cubic-bezier(.22,.61,.36,1);
+  pointer-events:none;
+}
+.slide.before{transform:translateX(-52px)}
+.slide.active{opacity:1;transform:none;pointer-events:auto;z-index:3}
+#slides.noanim .slide{transition:none!important}
+
+/* 左侧时间线脊 */
+.slide:before{
+  content:"";position:absolute;left:40px;top:58px;bottom:106px;width:1px;
+  background:linear-gradient(180deg,rgba(79,227,255,.45),rgba(139,123,255,.20) 40%,transparent 92%);
+  opacity:.65;
+}
+.slide:after{
+  content:"";position:absolute;left:37px;top:58px;width:7px;height:7px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 12px rgba(79,227,255,.9);
+}
+.s-cover:before,.s-cover:after,.s-end:before,.s-end:after{display:none}
+
+.reveal{opacity:0;transform:translateY(16px)}
+.slide.active .reveal{animation:rv .78s cubic-bezier(.16,.84,.44,1) forwards;animation-delay:var(--d,0s)}
+@keyframes rv{to{opacity:1;transform:none}}
+
+/* ---------- type ---------- */
+.chip{display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:18px}
+.chip .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);
+  box-shadow:0 0 10px var(--cyan),0 0 22px rgba(79,227,255,.6);
+  animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.8)}}
+.chip .sep{color:rgba(140,170,220,.4)}
+.chip .tag{color:var(--dim);letter-spacing:.1em}
+
+h2.h2{font-size:44px;line-height:1.2;font-weight:650;letter-spacing:-.012em;margin-bottom:14px;max-width:1050px}
+h2.h2 em{font-style:normal;
+  background:linear-gradient(100deg,var(--cyan),var(--violet) 76%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-size:15.5px;line-height:1.8;color:var(--ink2);max-width:840px;font-weight:350}
+.lede strong{color:var(--ink);font-weight:600}
+.lede .hl{color:var(--cyan);font-weight:500}
+.lede code,.mono-inline{font-family:var(--mono);font-size:.92em;color:var(--amber);
+  background:rgba(255,180,107,.08);padding:1px 6px;border-radius:4px}
+
+.slide-inner{width:100%}
+.split{display:grid;grid-template-columns:1.06fr .94fr;gap:46px;align-items:center;width:100%}
+.split.wide{grid-template-columns:1.28fr .72fr}
+
+/* ---------- cards ---------- */
+.cards{display:grid;gap:13px;margin-top:26px}
+.cards.c2{grid-template-columns:repeat(2,1fr)}
+.cards.c3{grid-template-columns:repeat(3,1fr)}
+.cards.c4{grid-template-columns:repeat(4,1fr)}
+.card{
+  position:relative;padding:17px 17px 15px;border-radius:12px;overflow:hidden;
+  border:1px solid var(--line);
+  background:linear-gradient(158deg,rgba(255,255,255,.05),rgba(255,255,255,.012) 62%);
+}
+.card:before{content:"";position:absolute;inset:0 0 auto 0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(79,227,255,.5),transparent);opacity:.85}
+.card .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--dim);
+  text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;gap:8px}
+.card .k b{color:var(--cyan);font-weight:500}
+.card h3{font-size:16px;font-weight:600;margin-bottom:6px;letter-spacing:.01em;line-height:1.35}
+.card h3 small{display:block;font-family:var(--mono);font-size:10.5px;font-weight:400;
+  color:var(--dim);letter-spacing:.08em;margin-top:3px}
+.card p{font-size:12.5px;line-height:1.62;color:var(--ink2);font-weight:350}
+.card p b{color:var(--ink);font-weight:600}
+.card .yr{font-family:var(--mono);font-size:10.5px;color:var(--amber);letter-spacing:.08em}
+.card.on{border-color:rgba(79,227,255,.32);background:linear-gradient(158deg,rgba(79,227,255,.09),rgba(255,255,255,.012) 65%)}
+.card.dim{opacity:.46}
+.card.sum{border-color:rgba(255,180,107,.3);background:linear-gradient(158deg,rgba(255,180,107,.09),rgba(255,255,255,.012) 65%)}
+.card.sum:before{background:linear-gradient(90deg,transparent,rgba(255,180,107,.55),transparent)}
+
+/* ---------- spec / terminal ---------- */
+.spec{border:1px solid var(--line);border-radius:13px;overflow:hidden;
+  background:linear-gradient(165deg,rgba(12,22,40,.9),rgba(6,10,20,.92));
+  box-shadow:0 24px 60px -30px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.05)}
+.spec-h{display:flex;align-items:center;gap:8px;padding:10px 15px;border-bottom:1px solid var(--line2);
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--dim);text-transform:uppercase}
+.spec-h .b{width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber)}
+.spec-body{padding:14px 16px 20px}
+.spec-code{font-family:var(--mono);font-size:11.5px;line-height:1.8;color:var(--ink2);white-space:pre}
+.spec-code .c{color:#5d6d8a}
+.spec-code .g{color:var(--cyan)}
+.spec-code .y{color:var(--amber)}
+.spec-code .v{color:#a89bff}
+.spec-code .w{color:var(--ink)}
+
+/* ---------- list ---------- */
+.list{list-style:none;display:flex;flex-direction:column;gap:11px}
+.list li{position:relative;padding-left:19px;font-size:13.6px;line-height:1.62;color:var(--ink2);font-weight:350}
+.list li:before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;
+  border:1px solid var(--cyan);transform:rotate(45deg);box-shadow:0 0 8px rgba(79,227,255,.45)}
+.list li b{color:var(--ink);font-weight:600}
+.list li i{font-style:normal;font-family:var(--mono);font-size:11.5px;color:var(--amber);letter-spacing:.04em}
+.list li em{font-style:normal;color:var(--cyan)}
+
+.note{margin-top:20px;padding:12px 16px;border-radius:9px;border-left:2px solid var(--amber);
+  background:linear-gradient(90deg,rgba(255,180,107,.10),rgba(255,180,107,.02));
+  font-size:13px;line-height:1.62;color:var(--ink2)}
+.note b{color:var(--amber);font-weight:600}
+.note.cy{border-left-color:var(--cyan);background:linear-gradient(90deg,rgba(79,227,255,.10),rgba(79,227,255,.02))}
+.note.cy b{color:var(--cyan)}
+
+/* ---------- table ---------- */
+.tbl{width:100%;border-collapse:collapse;margin-top:24px;font-size:13.2px}
+.tbl th{text-align:left;font-family:var(--mono);font-size:9.8px;letter-spacing:.14em;color:var(--dim);
+  font-weight:400;padding:0 14px 10px;border-bottom:1px solid var(--line);text-transform:uppercase}
+.tbl td{padding:11px 14px;border-bottom:1px solid rgba(140,170,220,.07);color:var(--ink2);line-height:1.55}
+.tbl td:first-child{color:var(--ink);font-weight:500}
+.tbl tr:last-child td{border-bottom:0}
+.tbl .cy{color:var(--cyan)}
+.tbl .vi{color:#a89bff}
+.tbl .am{color:var(--amber)}
+.tbl .mu{color:var(--dim)}
+
+/* ---------- timeline steps ---------- */
+.steps{display:flex;flex-direction:column;gap:9px;margin-top:24px}
+.step{display:grid;grid-template-columns:52px 1fr;gap:15px;align-items:start;
+  padding:11px 15px 11px 0;border-top:1px solid var(--line2)}
+.step:first-child{border-top:0}
+.step .no{font-family:var(--mono);font-size:12px;color:var(--cyan);letter-spacing:.08em;padding-top:1px}
+.step h4{font-size:14px;font-weight:600;margin-bottom:3px;color:var(--ink)}
+.step p{font-size:12.4px;line-height:1.55;color:var(--ink2)}
+.step p b{color:var(--amber);font-weight:500}
+
+/* ---------- cover ---------- */
+.s-cover{padding:0;justify-content:center}
+.cover-wrap{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 84px}
+.cover-orbit{position:absolute;right:-110px;top:50%;transform:translateY(-50%);width:760px;height:760px;opacity:.8;pointer-events:none}
+.cover-glow{position:absolute;width:660px;height:660px;right:-60px;top:50%;transform:translateY(-50%);
+  background:radial-gradient(circle,rgba(79,227,255,.15),transparent 62%);filter:blur(20px);pointer-events:none}
+.spin60{animation:spin 64s linear infinite;transform-box:fill-box;transform-origin:center}
+.spin90{animation:spin 96s linear infinite reverse;transform-box:fill-box;transform-origin:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+.kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.34em;color:var(--dim);text-transform:uppercase;margin-bottom:24px}
+.cover-en{font-size:112px;font-weight:800;letter-spacing:.1em;line-height:.94;
+  background:linear-gradient(100deg,#dff6ff 0%,var(--cyan) 34%,var(--violet) 82%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 40px rgba(79,227,255,.22));margin-left:-6px}
+.cover-rule{display:flex;align-items:center;gap:14px;margin:20px 0 18px}
+.cover-rule .ln{height:1px;width:120px;background:linear-gradient(90deg,var(--cyan),transparent)}
+.cover-rule .tx{font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;color:var(--cyan)}
+.cover-cn{font-size:40px;font-weight:600;letter-spacing:.1em;line-height:1.25}
+.cover-sub{font-size:15.5px;color:var(--ink2);margin-top:15px;letter-spacing:.01em;font-weight:300;max-width:640px;line-height:1.75}
+.cover-sub b{color:var(--ink);font-weight:600}
+.cover-sub .hl-k{color:#dff2ff;font-weight:500}
+.cover-foot{position:absolute;left:84px;right:84px;bottom:52px;display:flex;justify-content:space-between;align-items:flex-end;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase}
+.cover-foot .left span{color:var(--cyan)}
+.cover-foot .hint{display:flex;align-items:center;gap:8px;color:var(--ink2)}
+.cover-foot .hint i{width:22px;height:1px;background:var(--cyan);display:inline-block;animation:sweep 2.4s ease-in-out infinite}
+@keyframes sweep{0%,100%{opacity:.25;transform:scaleX(.6)}50%{opacity:1;transform:scaleX(1)}}
+
+/* ---------- part divider ---------- */
+.part .ghost{position:absolute;right:78px;top:5%;transform:none;
+  font-family:var(--mono);font-size:150px;font-weight:600;letter-spacing:-.03em;line-height:1;
+  color:transparent;-webkit-text-stroke:1px rgba(79,227,255,.14);pointer-events:none;z-index:0}
+.part .card{background:#0a1120}
+.part .slide-inner{position:relative;z-index:2}
+.part-num{font-family:var(--mono);font-size:13px;letter-spacing:.3em;color:var(--cyan);margin-bottom:14px}
+.part h2{font-size:58px;font-weight:650;letter-spacing:-.01em;line-height:1.14;margin-bottom:16px}
+.part h2 em{font-style:normal;background:linear-gradient(100deg,var(--cyan),var(--violet) 78%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.part .sub{font-size:15px;color:var(--ink2);line-height:1.75;max-width:680px;font-weight:350}
+.part .sub .nw{white-space:nowrap}
+.part-band .card{padding:22px 20px 20px}
+.part-band .card h3{font-size:17px;margin-bottom:8px}
+.part-band .card p{font-size:12.8px}
+.subgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:34px;position:relative;z-index:2}
+.subgrid div{display:flex;align-items:center;gap:9px;padding:9px 13px;border-radius:8px;
+  border:1px solid var(--line2);font-size:12px;color:var(--dim);background:#0a1120}
+.subgrid div b{font-family:var(--mono);font-size:10.5px;color:var(--dim);font-weight:400;letter-spacing:.06em}
+.subgrid div.on{border-color:rgba(79,227,255,.35);color:var(--ink);background:#0c1a2b}
+.subgrid div.on b{color:var(--cyan)}
+.track{display:flex;align-items:center;gap:14px;margin-top:26px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--dim);position:relative;z-index:2}
+.track:before{content:"";flex:0 0 46px;height:1px;background:linear-gradient(90deg,rgba(79,227,255,.55),rgba(79,227,255,0))}
+.track span{white-space:nowrap}
+.track span.on{color:var(--cyan)}
+.subgrid div.on:after{content:"本次";margin-left:auto;font-family:var(--mono);font-size:9px;
+  color:var(--cyan);letter-spacing:.1em;border:1px solid rgba(79,227,255,.3);padding:1px 5px;border-radius:3px}
+
+/* ---------- map ---------- */
+.map{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:30px}
+.era{position:relative;padding:16px 15px 15px;border-radius:11px;border:1px solid var(--line);
+  background:linear-gradient(170deg,rgba(255,255,255,.045),rgba(255,255,255,.008));overflow:hidden}
+.era:after{content:"";position:absolute;left:0;bottom:0;width:100%;height:2px;background:var(--cyan);opacity:.45}
+.era:nth-child(2):after{background:var(--violet)}
+.era:nth-child(3):after{background:var(--dim);opacity:.3}
+.era:nth-child(4):after{background:var(--dim);opacity:.3}
+.era .no{font-family:var(--mono);font-size:9.5px;color:var(--dim);letter-spacing:.2em}
+.era .yr{font-family:var(--mono);font-size:12px;color:var(--ink);margin:9px 0 5px;letter-spacing:.06em}
+.era h4{font-size:14px;font-weight:600;margin-bottom:5px;letter-spacing:.02em;line-height:1.4}
+.era p{font-size:11.5px;line-height:1.55;color:var(--dim)}
+.era.off{opacity:.45}
+
+/* ---------- end ---------- */
+.s-end{padding:0 0 96px;justify-content:center;text-align:left}
+.end-wrap{position:relative;z-index:2;padding:0 84px;width:100%}
+.horizon{position:absolute;left:0;right:0;top:72%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(79,227,255,.95) 26%,rgba(160,150,255,.95) 50%,rgba(139,123,255,.92) 74%,transparent);
+  box-shadow:0 0 18px rgba(79,227,255,.55),0 0 60px rgba(139,123,255,.35),0 0 140px rgba(79,227,255,.18)}
+.horizon:after{content:"";position:absolute;left:50%;top:-180px;width:620px;height:200px;transform:translateX(-50%);
+  background:radial-gradient(ellipse at bottom,rgba(79,227,255,.20),transparent 72%);filter:blur(10px)}
+.end-floor{position:absolute;left:0;right:0;top:72%;bottom:0;overflow:hidden;z-index:1;pointer-events:none;
+  perspective:420px;perspective-origin:50% 0}
+.end-floor i{position:absolute;inset:-14% -70%;display:block;
+  background:
+    repeating-linear-gradient(90deg,rgba(79,227,255,.30) 0 1px,transparent 1px 58px),
+    repeating-linear-gradient(0deg,rgba(139,123,255,.26) 0 1px,transparent 1px 40px);
+  transform:rotateX(74deg);transform-origin:50% 0;
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.96),rgba(0,0,0,.45) 40%,rgba(0,0,0,.12) 72%,transparent 94%);
+  mask-image:linear-gradient(180deg,rgba(0,0,0,.96),rgba(0,0,0,.45) 40%,rgba(0,0,0,.12) 72%,transparent 94%)}
+.end-floor:after{content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0,rgba(79,227,255,.10),transparent 62%)}
+.end-h{font-size:46px;font-weight:600;line-height:1.34;letter-spacing:.01em;margin:14px 0 30px;max-width:940px}
+.end-h em{font-style:normal;background:linear-gradient(100deg,var(--cyan),var(--violet));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.take{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:980px}
+.take div{border-top:1px solid var(--line);padding-top:13px}
+.take .t{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--cyan);margin-bottom:7px}
+.take p{font-size:12.4px;line-height:1.62;color:var(--ink2)}
+.end-sign{margin-top:40px;font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;color:var(--dim);text-transform:uppercase}
+
+/* ---------- hud ---------- */
+.hud{position:absolute;left:40px;right:40px;bottom:22px;height:60px;z-index:22;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+  transition:opacity .4s ease, transform .4s ease}
+.hud.hide{opacity:0;transform:translateY(8px);pointer-events:none}
+.rail{position:relative;flex:1;height:42px;display:flex;align-items:flex-end;gap:3px;padding-bottom:13px}
+.rail:after{content:"";position:absolute;left:0;right:0;bottom:10px;height:1px;background:var(--line)}
+.tick{flex:1;height:22px;display:flex;align-items:flex-end;justify-content:center;background:none;border:0;cursor:pointer;padding:0}
+.tick .bar{width:100%;max-width:6px;height:6px;border-radius:1px;background:rgba(140,170,220,.22);transition:all .35s ease}
+.tick.a .bar{background:rgba(79,227,255,.30)}
+.tick.b .bar{background:rgba(139,123,255,.34)}
+.tick.c .bar{background:rgba(255,180,107,.30)}
+.tick:hover .bar{height:12px;background:rgba(233,240,255,.7)}
+.tick.active .bar{height:20px;background:linear-gradient(180deg,var(--cyan),var(--violet));box-shadow:0 0 12px rgba(79,227,255,.85)}
+.rail-tip{position:absolute;bottom:32px;transform:translateX(-50%);font-family:var(--mono);font-size:10px;
+  color:var(--cyan);letter-spacing:.1em;white-space:nowrap;transition:left .4s cubic-bezier(.22,.61,.36,1);opacity:.9}
+.rail-tip:after{content:"";position:absolute;left:50%;bottom:-8px;width:1px;height:6px;background:rgba(79,227,255,.4)}
+.pager{display:flex;align-items:center;gap:13px;font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.12em;padding-bottom:15px;white-space:nowrap}
+.pager b{color:var(--ink);font-weight:500}
+.nav{display:flex;gap:6px}
+.nav button{width:27px;height:27px;border-radius:50%;border:1px solid var(--line);
+  background:rgba(255,255,255,.03);color:var(--ink2);cursor:pointer;font-size:12px;
+  display:flex;align-items:center;justify-content:center;transition:.25s}
+.nav button:hover{border-color:rgba(79,227,255,.6);color:var(--cyan);box-shadow:0 0 14px rgba(79,227,255,.25)}
+
+/* svg helpers */
+.node-label{font-family:var(--mono);font-size:12px;fill:#cfe0ff;letter-spacing:.06em}
+.node-sub{font-family:var(--sans);font-size:10.5px;fill:#7d8fae}
+.dash{stroke-dasharray:4 8;animation:dashmove 24s linear infinite}
+@keyframes dashmove{to{stroke-dashoffset:-200}}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="grid"></div>
+<div id="vign"></div>
+
+<div id="stage">
+  <div class="progress" id="progress"></div>
+  <div class="frame"><i></i></div>
+  <div id="slides">
+<!-- ========== 01 封面 ========== -->
+  <section class="slide s-cover active" data-sec="COVER" data-tier="">
+    <svg class="cover-orbit" viewBox="0 0 760 760" aria-hidden="true">
+      <g class="spin60" fill="none">
+        <circle cx="380" cy="380" r="300" stroke="rgba(79,227,255,.10)" stroke-width="1"/>
+        <circle cx="380" cy="380" r="300" stroke="rgba(79,227,255,.34)" stroke-width="1" stroke-dasharray="2 26"/>
+        <circle cx="380" cy="380" r="238" stroke="rgba(139,123,255,.12)" stroke-width="1"/>
+      </g>
+      <g class="spin90" fill="none">
+        <circle cx="380" cy="380" r="176" stroke="rgba(139,123,255,.35)" stroke-width="1" stroke-dasharray="90 240"/>
+        <circle cx="380" cy="380" r="120" stroke="rgba(79,227,255,.18)" stroke-width="1"/>
+      </g>
+      <circle cx="380" cy="380" r="62" fill="none" stroke="rgba(79,227,255,.5)" stroke-width="1"/>
+      <circle cx="380" cy="380" r="6" fill="#4fe3ff" opacity=".9"/>
+      <g stroke="rgba(140,170,220,.22)" stroke-width="1">
+        <line x1="380" y1="52" x2="380" y2="76"/><line x1="380" y1="684" x2="380" y2="708"/>
+        <line x1="52" y1="380" x2="76" y2="380"/><line x1="684" y1="380" x2="708" y2="380"/>
+      </g>
+      <g fill="#4fe3ff" opacity=".8">
+        <circle cx="380" cy="80" r="2.6"/><circle cx="380" cy="680" r="2.6"/>
+        <circle cx="680" cy="380" r="2.6"/><circle cx="80" cy="380" r="2.6"/>
+      </g>
+      <text x="380" y="384" text-anchor="middle" font-family="Consolas,monospace" font-size="11"
+            fill="#6a7a9a" letter-spacing="4">06</text>
+    </svg>
+    <div class="cover-glow"></div>
+
+    <div class="cover-wrap">
+      <div class="kicker reveal" style="--d:.05s">AI Agents in Depth · Chapter 06 · Part 2</div>
+      <div class="cover-en reveal" style="--d:.12s">INTER<br>ACTION</div>
+      <div class="cover-rule reveal" style="--d:.2s">
+        <span class="ln"></span>
+        <span class="tx">6.1 — 6.7</span>
+      </div>
+      <div class="cover-cn reveal" style="--d:.26s">交互：观察与动作空间的扩展</div>
+      <p class="cover-sub reveal" style="--d:.34s">
+        前五章里，Agent 思考时世界被默认为静止的。如果世界不等它想完呢？<br>
+        <span class="hl-k">换的不是模型，是观察与动作的模态和时机。</span>
+      </p>
+    </div>
+
+    <div class="cover-foot">
+      <div class="left">READING DECK · <span>13 SLIDES</span> · 6.1 — 6.7</div>
+      <div class="hint"><i></i>← → 翻页 / 空格前进 / F 全屏</div>
+    </div>
+  </section>
+
+  <!-- ========== 02 章节地图 ========== -->
+  <section class="slide" data-sec="CHAPTER MAP" data-tier="">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>CHAPTER MAP<span class="sep">/</span><span class="tag">四节，按世界变化的快慢排开</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">这一章不按技术分类，<em>按时间尺度分类</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        同一套「感知—思考—行动」循环，放进四个不同速度的世界里，难点完全不一样。<br>
+        <strong>尺度越短，留给「想清楚再动」的时间越少。</strong>
+      </p>
+
+      <div class="track reveal" style="--d:.2s;margin-top:24px">
+        <span>第 1 章 · 论断</span><span>→</span>
+        <span>第 2–5 章 · 内容</span><span>→</span>
+        <span class="on">第 6 章 · 模态与时机</span><span>→</span>
+        <span>第 7–10 章 · 评估与进化</span>
+      </div>
+
+      <div class="map">
+        <div class="era reveal" style="--d:.26s">
+          <div class="no">SECTION 6.2</div>
+          <div class="yr">秒 — 天</div>
+          <h4>异步与事件驱动</h4>
+          <p>世界主动推来；动作先发起，后续靠事件收尾</p>
+        </div>
+        <div class="era reveal" style="--d:.31s">
+          <div class="no">SECTION 6.3</div>
+          <div class="yr">10 毫秒 — 1 秒</div>
+          <h4>语音</h4>
+          <p>边说边听，边想边说，随时可被打断</p>
+        </div>
+        <div class="era reveal" style="--d:.36s">
+          <div class="no">SECTION 6.4</div>
+          <div class="yr">亚秒 — 秒</div>
+          <h4>Computer Use</h4>
+          <p>屏幕两帧之间就变了，点完要重新确认现实</p>
+        </div>
+        <div class="era reveal" style="--d:.41s">
+          <div class="no">SECTION 6.5</div>
+          <div class="yr">毫秒</div>
+          <h4>机器人操作</h4>
+          <p>传感器连续回流，动作分块、可被抢占</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.48s">
+        <b>读这一章的顺序：</b>6.1 先给出坐标（模态 × 时机），6.2—6.5 各守一个尺度，
+        6.6 把四节收成一条控制骨架，6.7 留十二道题。本章也是「构建 Agent」这一部分的最后一块。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 03 6.1 分隔页 ========== -->
+  <section class="slide part" data-sec="6.1" data-tier="a">
+    <div class="ghost">6.1</div>
+    <div class="slide-inner">
+      <div class="part-num reveal" style="--d:.04s">SECTION 06.1</div>
+      <h2 class="reveal" style="--d:.1s">模态与触发时机<br><em>两根轴，四个格子</em></h2>
+      <p class="sub reveal" style="--d:.16s">
+        把观察空间和动作空间摊开，会发现它们各有一个模态轴、一个时机轴。<br>
+        前五章扩的是这两个空间的<strong style="color:#e9f0ff">内容</strong>，这一章扩的是它们的<strong style="color:#e9f0ff">形式与节奏</strong>。
+      </p>
+
+      <div class="subgrid" style="margin-top:44px">
+        <div class="on reveal" style="--d:.22s"><b>6.1</b>坐标：两根轴</div>
+        <div class="reveal" style="--d:.25s"><b>6.2</b>时机：异步与事件</div>
+        <div class="reveal" style="--d:.28s"><b>6.3</b>模态：语音</div>
+        <div class="reveal" style="--d:.31s"><b>6.4</b>模态：屏幕</div>
+        <div class="reveal" style="--d:.34s"><b>6.5</b>模态：物理世界</div>
+        <div class="reveal" style="--d:.37s"><b>6.6</b>收束：一条骨架</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 04 6.1.1 四个格子 ========== -->
+  <section class="slide" data-sec="6.1.1" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.1.1 · 两根轴<span class="sep">/</span><span class="tag">观察和动作各有两个方向</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">观察和动作，<em>各有一组模态与时机</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        模态决定「以什么形式」，时机决定「按什么节奏」。<br>
+        <strong>四种组合不是四个技术点，而是这一章的四个入口。</strong>
+      </p>
+
+      <div class="cards c2">
+        <div class="card reveal" style="--d:.22s">
+          <div class="k"><span>01</span><b>观察 × 模态</b></div>
+          <h3>以什么形式看</h3>
+          <p>只读文本是默认值。加上声音、屏幕像素、力矩传感器，它能看见的东西就换了。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.28s">
+          <div class="k"><span>02</span><b>观察 × 时机</b></div>
+          <h3>什么时候看</h3>
+          <p>是 Agent 主动去取、一回合取一次；还是世界主动推来，变成一条连续流。</p>
+        </div>
+        <div class="card reveal" style="--d:.34s">
+          <div class="k"><span>03</span><b>动作 × 模态</b></div>
+          <h3>以什么形式动</h3>
+          <p>只输出 token，还是发声、点击鼠标、驱动关节——换的是它伸出去的那只手。</p>
+        </div>
+        <div class="card reveal" style="--d:.4s">
+          <div class="k"><span>04</span><b>动作 × 时机</b></div>
+          <h3>什么时候能停</h3>
+          <p>必须在一个回合内做完；还是跨回合、中途被打断、被更紧急的事抢占。</p>
+        </div>
+      </div>
+
+      <div class="note cy reveal" style="--d:.48s">
+        <b>先记住这张图：</b>本章真正难的格子是右边两个——时机一侧。形式往往有现成的接口，
+        而「什么时候该动、什么时候必须停」需要系统自己判断。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 05 6.1.2 三行两列 ========== -->
+  <section class="slide" data-sec="6.1.2" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.1.2 · 在整本书里的位置<span class="sep">/</span><span class="tag">第 2–5 章填了第一行</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">前五章铺满了「内容」，<em>另外两行还是空的</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        横着看是观察与动作，竖着看是三个扩展方向。<br>
+        第二至五章只把这张表填了第一行，剩下的留给本章。
+      </p>
+
+      <table class="tbl" style="margin-top:34px">
+        <tr><th>扩展方向</th><th>观察空间</th><th>动作空间</th></tr>
+        <tr><td>内容 · 第 2–5 章</td><td>上下文工程、记忆与知识库</td><td>工具、代码生成</td></tr>
+        <tr><td>模态 · 6.3–6.5</td><td class="cy">语音、屏幕、物理传感器</td><td class="cy">说话、点击、关节运动</td></tr>
+        <tr><td>时机 · 6.2</td><td class="vi">世界主动推送、连续流</td><td class="vi">跨回合、可打断、可抢占</td></tr>
+      </table>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>竖着读这四节：</b>6.2 只动时机（观察与动作仍是文本），6.3 动形式并把尺度压到毫秒，
+        6.4 把闭环搬上屏幕，6.5 再搬到物理世界——到机器人，模态与时机同时在变。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 06 6.1.3 回合制是约定 ========== -->
+  <section class="slide" data-sec="6.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.1.3 · 一个被忽略的假设<span class="sep">/</span><span class="tag">世界在它思考时是静止的</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">回合制是接口的约定，<em>不是世界的性质</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        提问—回答、调用—补结果，这套同步轮次只是消息格式的历史包袱。<br>
+        真实环境不会等模型作出反应，它在四个尺度上同时越界：
+      </p>
+
+      <div class="cards c2">
+        <div class="card reveal" style="--d:.2s">
+          <div class="k"><span>01</span><b>秒 — 天</b></div>
+          <h3>邮件到了</h3>
+          <p>它还在想上一封该怎么回，新到的这封已经把上下文换掉了。</p>
+        </div>
+        <div class="card reveal" style="--d:.26s">
+          <div class="k"><span>02</span><b>10 毫秒 — 1 秒</b></div>
+          <h3>用户插话</h3>
+          <p>它说到一半，人已经把它打断，并且换了一个问题。</p>
+        </div>
+        <div class="card reveal" style="--d:.32s">
+          <div class="k"><span>03</span><b>亚秒 — 秒</b></div>
+          <h3>页面变了</h3>
+          <p>两次截图之间界面已经刷新，上一轮锁定的目标不在原位了。</p>
+        </div>
+        <div class="card reveal" style="--d:.38s">
+          <div class="k"><span>04</span><b>毫秒</b></div>
+          <h3>杯子被碰倒</h3>
+          <p>机械臂伸手的途中，目标被挪走，整段计划当场作废。</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>约定正在松动：</b>截至 2026 年 9 月，GPT-6 Astra 已提供原生异步工具调用与回合中途追加用户指令。
+        本章因此同时讨论两条路线——原生支持，以及在既有同步接口上做兼容。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 07 6.1.4 四尺度表 ========== -->
+  <section class="slide" data-sec="6.1.4" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.1.4 · 尺度<span class="sep">/</span><span class="tag">四节各守一格</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">尺度越短，<em>越买不到想清楚的时间</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        四节用的是同一套循环，区别只在世界变化的速度：<br>
+        <strong>观察是推来的还是取来的，动作还能不能等。</strong>
+      </p>
+
+      <table class="tbl" style="margin-top:34px">
+        <tr><th>尺度</th><th>场景</th><th>观察侧的变化</th><th>动作侧的变化</th></tr>
+        <tr><td>秒 — 天</td><td class="cy">异步与事件驱动</td><td>会被外部事件主动唤醒</td><td>跨回合：先发起，后续靠事件收尾</td></tr>
+        <tr><td>10 毫秒 — 1 秒</td><td class="vi">语音</td><td>边说边听，不等一句说完</td><td>边想边说，可被打断</td></tr>
+        <tr><td>亚秒 — 秒</td><td class="cy">Computer Use</td><td>屏幕在两帧之间持续变化</td><td>动作后必须重新确认现实</td></tr>
+        <tr><td>毫秒</td><td class="vi">机器人</td><td>传感器连续回流</td><td>动作分块：一次规划一小段，可被抢占</td></tr>
+      </table>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>分成上下半场：</b>上半场（秒—天）要解决「谁来触发」，下半场（亚秒—毫秒）要解决「来不及想完怎么办」。
+      </div>
+    </div>
+  </section>
+
+<!-- ========== 6.6 小结 1/2 ========== -->
+  <section class="slide" data-sec="6.6" data-tier="c">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.6 · 本章小结<span class="sep">/</span><span class="tag">四节各换了什么，又都卡在哪</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">四节做完，<em>只验证了一句话</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        底层模型一次没换。换的只是观察与动作的形式和时机，表现就变了——
+        <strong>这是第一章那个论断的又一次复现。</strong>
+      </p>
+
+      <table class="tbl">
+        <tr><th>场景</th><th>观察侧的新接口</th><th>动作侧的新接口</th><th>仍然没解决</th></tr>
+        <tr><td>6.2 异步</td><td>世界主动推来，事件队列</td><td>先发起，后续靠事件收尾</td><td class="am">优先级判断本身要语义理解</td></tr>
+        <tr><td>6.3 语音</td><td>持续听，边说边听</td><td>边想边说，可被打断</td><td class="am">延迟、可观测性、说错再纠正</td></tr>
+        <tr><td>6.4 Computer Use</td><td>关键帧、声音、文字压缩</td><td>点完必须重新确认现实</td><td class="am">步骤仍多于人类</td></tr>
+        <tr><td>6.5 机器人</td><td>传感器连续回流</td><td>动作分块，可被抢占</td><td class="am">仿真到真机的差距</td></tr>
+      </table>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>一句话收：</b>模态决定「能感知什么、能做什么」，时机决定「还来不来得及」；
+        而四节的难点几乎都落在时机一侧——这也解释了为什么这一章的标题不是「多模态」。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.6 小结 2/2 ========== -->
+  <section class="slide" data-sec="6.6" data-tier="c">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.6 · 本章小结<span class="sep">/</span><span class="tag">四节共享一套骨架</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">四个场景，<em>同一条循环和五个原语</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        语音、屏幕、机器人听起来是三件事，落到代码上却是同一个循环，
+        只是每一格的超时时间不同。
+      </p>
+
+      <div class="split">
+        <div class="spec">
+          <div class="spec-h"><span class="b"></span>控制骨架 · 四个场景通用</div>
+          <div class="spec-body">
+            <div class="spec-code">持续感知
+  → 判断当前状态与时机
+  → 选择回复或动作
+  → 让输出进入环境
+  → 观察反馈
+  → <span class="g">继续</span> / <span class="g">修正</span> / <span class="g">重试</span>
+  → <span class="y">停止</span> / <span class="y">重新规划</span></div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="list">
+            <li><b>唤醒</b> —— 事件到了才醒来，不必空转等待。</li>
+            <li><b>安全点</b> —— 动作与动作之间留一个可以停下的位置。</li>
+            <li><b>取消</b> —— 已经发出的动作要能被撤回或中止。</li>
+            <li><b>抢占</b> —— 更急的事到了，可以打断正在进行的动作。</li>
+            <li><b>快慢分离</b> —— 前台实时交互，后台深度思考。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>本章的位置：</b>到这里「构建 Agent」这部分讲完了。第七章判断建得对不对，
+        第八章用后训练改参数，第九章把轨迹、评估与更新组织成进化闭环，第十章转向多 Agent。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.7 思考题 1/3 ========== -->
+  <section class="slide" data-sec="6.7" data-tier="c">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.7 · 思考题 01–04<span class="sep">/</span><span class="tag">时机一侧</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">时机一旦可编程，<em>判断权就成了设计题</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        异步把决定权交给系统，系统就必须自己回答：什么算急，什么可以先放着。
+      </p>
+
+      <div class="cards c2">
+        <div class="card reveal" style="--d:.2s">
+          <div class="k"><span>★★</span><b>6.2 · 优先级</b></div>
+          <h3>优先级由谁判断</h3>
+          <p>判断新消息是否比当前任务更紧急，本身需要语义理解。规则引擎还是再调一次 LLM？各自的代价是什么？</p>
+        </div>
+        <div class="card reveal" style="--d:.26s">
+          <div class="k"><span>★★</span><b>6.2 · 呈现</b></div>
+          <h3>积压 20 个事件怎么排</h3>
+          <p>10 个工具结果 + 5 条用户消息 + 5 条系统提醒。你如何组织顺序与格式，使模型不漏关键信息？</p>
+        </div>
+        <div class="card reveal" style="--d:.32s">
+          <div class="k"><span>★★★</span><b>6.2 · 身份</b></div>
+          <h3>虚拟身份，还是用户本人</h3>
+          <p>独立身份能后台自主，但第三方未必信任非真人；用本人账号上下文齐全，却带授权与安全边界。什么场景选哪个？</p>
+        </div>
+        <div class="card reveal" style="--d:.38s">
+          <div class="k"><span>★★★</span><b>6.6 · 原语</b></div>
+          <h3>同一个原语，两处实现</h3>
+          <p>任选唤醒、安全点、取消、抢占、快慢分离之一，说明它在秒—天与毫秒两处的差异，以及差异由什么决定。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.7 思考题 2/3 ========== -->
+  <section class="slide" data-sec="6.7" data-tier="c">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.7 · 思考题 05–08<span class="sep">/</span><span class="tag">感知一侧</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">感知的每条捷径，<em>都有一个失效边界</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        把定位变成选择题、把三个模型合成一个，都是在换准确率和可调试性。
+      </p>
+
+      <div class="cards c2">
+        <div class="card reveal" style="--d:.2s">
+          <div class="k"><span>★★</span><b>6.3 · 可观测性</b></div>
+          <h3>合成一个模型之后怎么排错</h3>
+          <p>端到端把 ASR-LLM-TTS 合成单一模型，降了延迟也失去模块化。若识别环节出错，你怎么设计可观测性？</p>
+        </div>
+        <div class="card reveal" style="--d:.26s">
+          <div class="k"><span>★</span><b>6.3 · 人味</b></div>
+          <h3>要不要模仿人的犹豫</h3>
+          <p>人边想边说时会自我纠正、会说填充词。Agent 的「边想边说」应该模仿这些特征吗？</p>
+        </div>
+        <div class="card reveal" style="--d:.32s">
+          <div class="k"><span>★★</span><b>6.4 · 回退</b></div>
+          <h3>标注不全时退回坐标</h3>
+          <p>SoM 与 DOM 索引都要先检测、标注元素。遇到非标准控件或动态元素，应该退回坐标预测吗？</p>
+        </div>
+        <div class="card reveal" style="--d:.38s">
+          <div class="k"><span>★★</span><b>6.4 · 两条路径</b></div>
+          <h3>押注视觉，还是双轨</h3>
+          <p>Canvas/WebGL 与自绘控件不提供结构化信息。押注纯视觉，还是同时维护两条路径？成本与收益各是什么？</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6.7 思考题 3/3 ========== -->
+  <section class="slide" data-sec="6.7" data-tier="c">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>6.7 · 思考题 09–12<span class="sep">/</span><span class="tag">动作与架构</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">越快动手，<em>越要提前想好怎么停</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        动作分块把延迟藏进执行时间，代价是环境变了来不及改。效率与可撤回性，是一对硬约束。
+      </p>
+
+      <div class="cards c2">
+        <div class="card reveal" style="--d:.2s">
+          <div class="k"><span>★★</span><b>6.5 · 数据质量</b></div>
+          <h3>便宜的数据未必能用</h3>
+          <p>遥操作让采集变廉价，但质量取决于操作者。不熟练的人采的数据会怎样影响 VLA？怎么自动筛掉？</p>
+        </div>
+        <div class="card reveal" style="--d:.26s">
+          <div class="k"><span>★★</span><b>6.5 · 动作分块</b></div>
+          <h3>物体被移走之后</h3>
+          <p>预生成的动作序列在环境突变时会失效。如何在分块的效率优势与环境变化的响应速度之间取平衡？</p>
+        </div>
+        <div class="card reveal" style="--d:.32s">
+          <div class="k"><span>★★★</span><b>架构 · 取舍</b></div>
+          <h3>统一模型，还是快慢分工</h3>
+          <p>未来五年的 Agent 该优先追求更强的统一模型，还是保留可替换的快慢分工？请结合延迟、可观测性、迭代速度与任务风险讨论。</p>
+        </div>
+        <div class="card reveal" style="--d:.38s">
+          <div class="k"><span>★★★</span><b>安全 · 兜底</b></div>
+          <h3>快，但不能不可挽回</h3>
+          <p>说错了再纠正、先点再看、走一步看一步。如何用动作分级、可逆操作、状态确认、权限控制与安全停止兜住后果？</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 结尾 ========== -->
+  <section class="slide s-end" data-sec="END" data-tier="c">
+    <div class="horizon"></div>
+    <div class="end-floor"><i></i></div>
+    <div class="end-wrap">
+      <div class="kicker reveal" style="--d:.05s">Chapter 06 · Interaction · End</div>
+      <h2 class="end-h reveal" style="--d:.14s">
+        世界不会等你把话说完，<br>
+        <em>所以 Agent 得学会边看边动。</em>
+      </h2>
+
+      <div class="take">
+        <div class="reveal" style="--d:.26s">
+          <div class="t">TAKEAWAY 01</div>
+          <p>交互不是接口，是两根轴：模态决定形式，时机决定节奏。这一章真正的难题几乎都在时机一侧。</p>
+        </div>
+        <div class="reveal" style="--d:.34s">
+          <div class="t">TAKEAWAY 02</div>
+          <p>先给 Agent 补三个原语：唤醒、安全点、取消/抢占。不用换模型，改动都在 Harness 这一层。</p>
+        </div>
+        <div class="reveal" style="--d:.42s">
+          <div class="t">TAKEAWAY 03</div>
+          <p>下一步不是继续加能力，而是判断建得对不对——第七章讲评估，从单条轨迹到可复现的评测。</p>
+        </div>
+      </div>
+
+      <div class="end-sign">下一章 · 第 7 章 评估 →</div>
+    </div>
+  </section>
+  </div><!-- /slides -->
+
+  <!-- HUD -->
+  <!-- HUD -->
+  <div class="hud hide" id="hud">
+    <div class="rail" id="rail"><div class="rail-tip" id="railTip">5.1.1</div></div>
+    <div class="pager">
+      <span><b id="pNow">01</b> / <span id="pAll">18</span></span>
+      <div class="nav">
+        <button id="prev" aria-label="上一页">←</button>
+        <button id="next" aria-label="下一页">→</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+(function(){
+  var stage = document.getElementById('stage');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var rail = document.getElementById('rail');
+  var tip = document.getElementById('railTip');
+  var progress = document.getElementById('progress');
+  var pNow = document.getElementById('pNow');
+  var pAll = document.getElementById('pAll');
+  var hud = document.getElementById('hud');
+  var idx = 0;
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+  pAll.textContent = pad(slides.length);
+
+  // 刻度条配色：优先读 data-tier（'' | 'a' | 'b' | 'c'），否则按 data-sec 推断
+  function tier(i){
+    var el = slides[i];
+    if(el.dataset.tier !== undefined) return el.dataset.tier;
+    var sec = el.dataset.sec || '';
+    if(sec === 'SUMMARY' || sec === 'END') return 'c';
+    if(sec === 'COVER') return '';
+    return 'a';
+  }
+
+  var ticks = slides.map(function(s, i){
+    var b = document.createElement('button');
+    b.className = 'tick ' + tier(i);
+    b.type = 'button';
+    b.setAttribute('aria-label', '第 ' + (i+1) + ' 页 · ' + (s.dataset.sec || ''));
+    var bar = document.createElement('span');
+    bar.className = 'bar';
+    b.appendChild(bar);
+    b.addEventListener('click', function(e){ e.stopPropagation(); go(i); });
+    rail.insertBefore(b, tip);
+    return b;
+  });
+
+  function paint(){
+    ticks.forEach(function(t, i){ t.classList.toggle('active', i === idx); });
+    tip.textContent = slides[idx].dataset.sec || '—';
+    var pct = ((idx + 1) / slides.length) * 100;
+    tip.style.left = (pct - (100 / slides.length) / 2) + '%';
+    progress.style.width = Math.max(2, pct) + '%';
+    pNow.textContent = pad(idx + 1);
+    hud.classList.toggle('hide', idx === 0 || idx === slides.length - 1);
+    try { history.replaceState(null, '', '#' + (idx + 1)); } catch(err){}
+  }
+
+  function go(n){
+    n = Math.max(0, Math.min(slides.length - 1, n));
+    if(n === idx) return;
+    slides.forEach(function(s, i){
+      s.classList.toggle('active', i === n);
+      s.classList.toggle('before', i < n);
+    });
+    idx = n;
+    paint();
+  }
+
+  function step(d){ go(idx + d); }
+
+  document.addEventListener('keydown', function(e){
+    if(['ArrowRight','ArrowDown','PageDown',' '].indexOf(e.key) > -1){ e.preventDefault(); step(1); }
+    else if(['ArrowLeft','ArrowUp','PageUp'].indexOf(e.key) > -1){ e.preventDefault(); step(-1); }
+    else if(e.key === 'Home'){ e.preventDefault(); go(0); }
+    else if(e.key === 'End'){ e.preventDefault(); go(slides.length - 1); }
+    else if(e.key === 'f' || e.key === 'F'){
+      if(!document.fullscreenElement){ document.documentElement.requestFullscreen && document.documentElement.requestFullscreen(); }
+      else { document.exitFullscreen && document.exitFullscreen(); }
+    }
+  });
+
+  var wt = 0;
+  window.addEventListener('wheel', function(e){
+    var now = Date.now();
+    if(now - wt < 620) return;
+    if(Math.abs(e.deltaY) < 12 && Math.abs(e.deltaX) < 12) return;
+    wt = now;
+    var d = (Math.abs(e.deltaX) > Math.abs(e.deltaY)) ? e.deltaX : e.deltaY;
+    step(d > 0 ? 1 : -1);
+  }, { passive:true });
+
+  var tx = 0, ty = 0;
+  window.addEventListener('touchstart', function(e){
+    tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+  }, { passive:true });
+  window.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - tx;
+    var dy = e.changedTouches[0].clientY - ty;
+    if(Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1);
+  }, { passive:true });
+
+  document.getElementById('next').addEventListener('click', function(e){ e.stopPropagation(); step(1); });
+  document.getElementById('prev').addEventListener('click', function(e){ e.stopPropagation(); step(-1); });
+
+  stage.addEventListener('click', function(e){
+    if(e.target.closest('.tick') || e.target.closest('.nav') || e.target.closest('.rail')) return;
+    step(1);
+  });
+
+  function fit(){
+    var s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+    stage.style.setProperty('--s', s.toFixed(4));
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  var h = parseInt((location.hash || '').replace('#',''), 10);
+  var wrap = document.getElementById('slides');
+  if(h && h >= 1 && h <= slides.length && h !== 1){
+    wrap.classList.add('noanim');
+    idx = h - 1;
+    slides.forEach(function(s, i){
+      s.classList.toggle('active', i === idx);
+      s.classList.toggle('before', i < idx);
+    });
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ wrap.classList.remove('noanim'); });
+    });
+  } else if(!slides[0].classList.contains('active')){
+    // 兜底：首页忘了写 class="active" 就整屏全黑（go(0) 会因 n===idx 提前返回）
+    slides[0].classList.add('active');
+    idx = 0;
+  }
+  paint();
+
+  var settle = function(){
+    var cur = slides[idx];
+    if(!cur) return;
+    Array.prototype.forEach.call(cur.querySelectorAll('.reveal'), function(el){
+      var o = parseFloat(getComputedStyle(el).opacity);
+      if(o < 0.9){ el.style.opacity = '1'; el.style.transform = 'none'; }
+    });
+  };
+  setTimeout(settle, 1400);
+  window.addEventListener('pageshow', function(){ setTimeout(settle, 900); });
+})();
+</script>
+</body>
+</html>

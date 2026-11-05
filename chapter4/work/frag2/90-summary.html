@@ -1,0 +1,88 @@
+  <!-- ========== 小结 A 一条主线 ========== -->
+  <section class="slide" data-sec="SUMMARY" data-tier="c">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.1 — 5.1.6<span class="sep">/</span><span class="tag">阶段小结</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">六节讲完，<em>其实是一条因果链</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        不是因为 Coding 重要才拿它当例子，是因为它同时具备三件事：能造工具、能被验证、有现成的工程基础设施。
+      </p>
+
+      <div class="cards c3" style="margin-top:34px">
+        <div class="card reveal" style="--d:.2s;padding:27px 23px 26px">
+          <div class="k"><span>ARC 01</span><b>凭什么</b></div>
+          <h3 style="font-size:19px">代码是元能力</h3>
+          <p style="margin-top:8px">
+            七个工具里没有「搜索网页」，但会写代码就有了一切：缺什么能力，当场造一个。
+            通用 Agent 也是把 Coding 当内核，把文件系统当中枢。
+          </p>
+          <p style="margin-top:10px;font-size:11px;color:var(--dim);letter-spacing:.08em">5.1.1 · 5.1.2</p>
+        </div>
+        <div class="card on reveal" style="--d:.28s;padding:27px 23px 26px">
+          <div class="k"><span>ARC 02</span><b>怎么干</b></div>
+          <h3 style="font-size:19px">先认知，再动手，用测试收口</h3>
+          <p style="margin-top:8px">
+            六个阶段里前三个一行代码都不写：补文档、澄清边界、写一页可被审的设计。
+            完成的标准不是「代码写完」，是「测试通过」。
+          </p>
+          <p style="margin-top:10px;font-size:11px;color:var(--dim);letter-spacing:.08em">5.1.3</p>
+        </div>
+        <div class="card reveal" style="--d:.36s;padding:27px 23px 26px">
+          <div class="k"><span>ARC 03</span><b>怎么稳</b></div>
+          <h3 style="font-size:19px">把判断权交给基础设施</h3>
+          <p style="margin-top:8px">
+            四件组件、四层故障、三级恢复，每条路径都配上限。
+            这些东西一件都不在模型里——所以换模型，它们仍然成立。
+          </p>
+          <p style="margin-top:10px;font-size:11px;color:var(--dim);letter-spacing:.08em">5.1.4 · 5.1.5 · 5.1.6</p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>串起来看：</b>因为代码能造工具，它才接得住开放式任务；因为任务开放，才必须先对齐再动手；
+        因为动手的次数多了，稳定就只能靠工程，不能靠模型。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 小结 B 三件事 ========== -->
+  <section class="slide" data-sec="SUMMARY" data-tier="c">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.1 — 5.1.6<span class="sep">/</span><span class="tag">明天就能动</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">读完不用等新模型，<em>下周就能动的三件事</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        三件事都不碰模型、不等版本，改的都是模型外面那一圈——而那一圈本来就是你团队现成的资产。
+      </p>
+
+      <div class="cards c3" style="margin-top:34px">
+        <div class="card reveal" style="--d:.2s;padding:27px 23px 26px">
+          <div class="k"><span>ACTION 01</span><b>一小时</b></div>
+          <h3 style="font-size:19px">给仓库写一份指令文件</h3>
+          <p style="margin-top:8px">
+            技术栈、目录职责、怎么跑测试、哪些目录别碰。
+            它每次会话自动注入，是最便宜的稳定前缀，也最不容易过期。
+          </p>
+        </div>
+        <div class="card on reveal" style="--d:.28s;padding:27px 23px 26px">
+          <div class="k"><span>ACTION 02</span><b>半天</b></div>
+          <h3 style="font-size:19px">把一条口头规范写成规则</h3>
+          <p style="margin-top:8px">
+            「请遵循命名规范」是建议，「不符合就红」是约束。
+            先挑最常被违反的那一条，把它从文档搬进 Linter。
+          </p>
+        </div>
+        <div class="card reveal" style="--d:.36s;padding:27px 23px 26px">
+          <div class="k"><span>ACTION 03</span><b>一天</b></div>
+          <h3 style="font-size:19px">给每条重试配一个上限</h3>
+          <p style="margin-top:8px">
+            重试几次、退避多久、什么条件下放弃并交给人。
+            没有上限的重试，是账单上最贵的那类 bug。
+          </p>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>判据只有一条：</b>这套东西交给一个新来的远程同事，他能不能只靠仓库和文档独立干活。
+        能，Agent 也能；不能，先补仓库，别急着换模型。
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,280 @@
+  <!-- ========== 5.1.3 章节页 ========== -->
+  <section class="slide part" data-sec="5.1.3" data-tier="a">
+    <div class="ghost">5.1.3</div>
+    <div class="slide-inner">
+      <div class="part-num reveal" style="--d:.04s">SECTION 05.1.3</div>
+      <h2 class="reveal" style="--d:.1s">Coding Agent<br><em>接到一个需求之后</em></h2>
+      <p class="sub reveal" style="--d:.16s">
+        上一节回答「为什么核心是 Coding」；<br>这一节把镜头拉近：从接手一个陌生仓库，到交付一次改动。
+      </p>
+
+      <div class="cards c3 part-band" style="margin-top:66px">
+        <div class="card reveal" style="--d:.24s">
+          <div class="k"><span>01 — 06</span><b>流程</b></div>
+          <h3>六个阶段</h3>
+          <p>从读懂项目到同步文档，流水线比想象中长。</p>
+        </div>
+        <div class="card reveal" style="--d:.3s">
+          <div class="k"><span>LOOP</span><b>回流</b></div>
+          <h3>一条回退箭头</h3>
+          <p>测试失败就回到代码，写完不等于完成。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.36s">
+          <div class="k"><span>MODEL</span><b>变量</b></div>
+          <h3>节奏因人而异</h3>
+          <p>何时停止调查、开始动手，是学出来的。</p>
+        </div>
+      </div>
+
+      <p class="lede reveal" style="--d:.44s;margin-top:36px">
+        先看理想型：<span class="hl">六个阶段一步不落，然后再说真实项目里它会怎么被裁剪。</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-1 六阶段流程图 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 图 5-2<span class="sep">/</span><span class="tag">六个阶段，只有一步在写代码</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">前三个阶段，<em>一行代码都不写</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        它的第一反应不是改代码，而是先搞清楚两件事：<br>这个项目是怎么组织的，这次到底要改什么。
+      </p>
+
+      <div style="margin-top:14px" class="reveal">
+        <svg viewBox="0 0 960 328" style="width:100%;height:auto;overflow:visible">
+          <defs>
+            <marker id="f13a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#4fe3ff"/></marker>
+            <marker id="f13b" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#ffb46b"/></marker>
+            <marker id="f13c" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0 0L7 3.5L0 7z" fill="#8fa2c4"/></marker>
+          </defs>
+
+          <!-- 第一行：只读阶段 -->
+          <rect x="20" y="28" width="289" height="76" rx="10" fill="#08141f" stroke="rgba(79,227,255,.42)"/>
+          <text x="36" y="50" font-size="11" fill="#4fe3ff" letter-spacing="1">STEP 01 · 只读</text>
+          <text x="36" y="74" font-size="13.5" fill="#e9f0ff" font-weight="600">项目文档化</text>
+          <text x="36" y="93" font-size="11" fill="#7d8fae">先读文档，缺就补出来</text>
+
+          <rect x="335" y="28" width="289" height="76" rx="10" fill="#08141f" stroke="rgba(79,227,255,.42)"/>
+          <text x="351" y="50" font-size="11" fill="#4fe3ff" letter-spacing="1">STEP 02 · 只读</text>
+          <text x="351" y="74" font-size="13.5" fill="#e9f0ff" font-weight="600">任务理解与需求澄清</text>
+          <text x="351" y="93" font-size="11" fill="#7d8fae">边界不清就先问，别猜</text>
+
+          <rect x="650" y="28" width="289" height="76" rx="10" fill="#08141f" stroke="rgba(79,227,255,.42)"/>
+          <text x="666" y="50" font-size="11" fill="#4fe3ff" letter-spacing="1">STEP 03 · 只读</text>
+          <text x="666" y="74" font-size="13.5" fill="#e9f0ff" font-weight="600">编写设计文档</text>
+          <text x="666" y="93" font-size="11" fill="#7d8fae">一页纸，换一次人审</text>
+
+          <path d="M311 66 L331 66" stroke="#4fe3ff" stroke-width="1.2" marker-end="url(#f13a)" fill="none"/>
+          <path d="M626 66 L646 66" stroke="#4fe3ff" stroke-width="1.2" marker-end="url(#f13a)" fill="none"/>
+
+          <!-- 闸门：人审通过才进入实现 -->
+          <path d="M794 106 L794 150 L164 150 L164 182" stroke="#8fa2c4" stroke-width="1.1"
+                stroke-dasharray="5 5" marker-end="url(#f13c)" fill="none"/>
+          <text x="480" y="141" font-size="11" fill="#8fa2c4" text-anchor="middle">设计文档通过人类审查，才进入实现</text>
+
+          <!-- 第二行：写入阶段 -->
+          <rect x="20" y="186" width="289" height="76" rx="10" fill="#08141f" stroke="rgba(140,170,220,.3)"/>
+          <text x="36" y="208" font-size="11" fill="#8fa2c4" letter-spacing="1">STEP 04 · 写入</text>
+          <text x="36" y="232" font-size="13.5" fill="#e9f0ff" font-weight="600">代码实现与测试</text>
+          <text x="36" y="251" font-size="11" fill="#7d8fae">复用现有抽象，补测试</text>
+
+          <rect x="335" y="186" width="289" height="76" rx="10" fill="#08141f" stroke="rgba(140,170,220,.3)"/>
+          <text x="351" y="208" font-size="11" fill="#8fa2c4" letter-spacing="1">STEP 05 · 写入</text>
+          <text x="351" y="232" font-size="13.5" fill="#e9f0ff" font-weight="600">自我审查</text>
+          <text x="351" y="251" font-size="11" fill="#7d8fae">读代码 / lint / 子 Agent</text>
+
+          <rect x="650" y="186" width="289" height="76" rx="10" fill="#08141f" stroke="rgba(140,170,220,.3)"/>
+          <text x="666" y="208" font-size="11" fill="#8fa2c4" letter-spacing="1">STEP 06 · 写入</text>
+          <text x="666" y="232" font-size="13.5" fill="#e9f0ff" font-weight="600">文档同步与交付</text>
+          <text x="666" y="251" font-size="11" fill="#7d8fae">架构变了，文档跟着变</text>
+
+          <path d="M311 224 L331 224" stroke="#4fe3ff" stroke-width="1.2" marker-end="url(#f13a)" fill="none"/>
+          <path d="M626 224 L646 224" stroke="#4fe3ff" stroke-width="1.2" marker-end="url(#f13a)" fill="none"/>
+
+          <!-- 回流：测试失败 / 审查不通过 -->
+          <path d="M479 264 L479 292 L164 292 L164 268" stroke="#ffb46b" stroke-width="1.3"
+                stroke-dasharray="5 4" marker-end="url(#f13b)" fill="none"/>
+          <text x="322" y="312" font-size="11" fill="#ffb46b" text-anchor="middle">测试失败或审查不通过 → 回到修改</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-2 项目指令文件 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 项目文档化<span class="sep">/</span><span class="tag">知识必须存在于代码库里</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">README 给人读，<em>指令文件给 Agent 读</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        仓库里的知识有两种读者：写给人的那份讲究叙事，写给 Agent 的那份讲究约束。
+      </p>
+
+      <table class="tbl reveal" style="--d:.2s">
+        <thead>
+          <tr><th style="width:250px">文件</th><th style="width:170px">写给谁</th><th>承载什么</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>README.md</td>
+            <td class="mu">新加入的开发者</td>
+            <td>这是什么项目、怎么装、怎么跑起来。第一次接触时读。</td>
+          </tr>
+          <tr>
+            <td class="cy">CLAUDE.md · AGENTS.md</td>
+            <td class="mu">本项目的 Agent</td>
+            <td>行为约定：构建与测试命令、代码风格、明确禁区。每次会话自动注入。</td>
+          </tr>
+          <tr>
+            <td class="vi">SOUL.md</td>
+            <td class="mu">OpenClaw 的 Agent</td>
+            <td>身份与行为规则——约定「Agent 是谁」，跨项目不变。</td>
+          </tr>
+          <tr>
+            <td class="vi">MEMORY.md</td>
+            <td class="mu">同一个 Agent</td>
+            <td>跨会话沉淀的经验与用户偏好——约定「这个用户怎么伺候」。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ul class="list reveal" style="--d:.34s;margin-top:18px">
+        <li><b>自动注入 = 项目级系统提示词。</b>每个会话开始时它已经在上下文里，不用你在对话里重复交代项目规矩。<i>.cursorrules</i> 也是同一类东西，只是名字不同。</li>
+        <li><b>它还是最经济的稳定前缀。</b>内容不随任务变化，天然对 KV Cache 友好——省的是钱，也是首字延迟。</li>
+      </ul>
+
+      <div class="note reveal" style="--d:.44s">
+        <b>作者给出的 AI-ready 判据：</b>一个远程新人，只靠代码仓库和文档，能不能独立开展工作。能，说明知识真的写在了代码库里，Agent 也读得到。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-3 设计文档 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 需求与设计<span class="sep">/</span><span class="tag">把模糊需求压成一页可审查的计划</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">设计文档不是交付物，<em>是换取一次人类审查的接口</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        复杂性有三个来源：需求本身模糊、实现路径多样、影响范围广。<br>任何一个，都足以让「直接开干」变成返工。
+      </p>
+
+      <div class="split" style="margin-top:20px;align-items:start">
+        <div class="spec reveal" style="--d:.2s">
+          <div class="spec-h"><span class="b"></span>DESIGN DOC · 四个必答问题</div>
+          <div class="spec-body">
+            <div class="spec-code"><span class="c"># 一页纸，回答四件事</span>
+
+<span class="y">①</span> 修改哪些模块，<span class="w">为什么是它们</span>
+<span class="y">②</span> 采用什么方案，<span class="w">优势在哪</span>
+<span class="y">③</span> 引入哪些新依赖
+<span class="y">④</span> 预期对系统的影响
+
+<span class="c"># 写的过程 = 编码前的预演</span>
+<span class="c"># 提交人审 → 批准 → 才动手</span></div>
+          </div>
+        </div>
+
+        <div>
+          <p class="lede reveal" style="--d:.26s;font-size:14.5px">
+            「优化系统性能」这五个字，至少藏着三个必须先问清的问题：
+          </p>
+          <ul class="list reveal" style="--d:.32s;margin-top:14px">
+            <li><b>目标是什么？</b>降响应时间、省内存，还是提吞吐量——三者常常互相拉扯，得先定一个主指标。</li>
+            <li><b>可接受什么权衡？</b>能不能改接口、能不能牺牲一部分易用性，必须先谈清楚。</li>
+            <li><b>瓶颈在哪？</b>慢在查询、渲染还是网络，有没有数据支撑，还是凭感觉猜。</li>
+            <li><b>为什么值这一页纸？</b>审查一页设计文档，比审查几百行代码便宜得多。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.42s">
+        <b>写文档不是走流程：</b>它逼 Agent 在概念层先把方案跑一遍。很多方案在读代码、画调用链的时候就被自己否掉了——那时还没花一行代码的成本。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-4 测试驱动的完成标准 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 实现与验收<span class="sep">/</span><span class="tag">由验证判定何时可以停</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">完成的标准是测试通过，<em>不是代码写完</em></h2>
+      <p class="lede reveal" style="--d:.14s">
+        设计获批之后才动键盘。实现不是终点——写代码、跑测试、自我审查，是同一段循环里的三个动作。
+      </p>
+
+      <div class="steps" style="margin-top:22px">
+        <div class="step reveal" style="--d:.2s">
+          <div class="no">01</div>
+          <div><h4>按规范实现</h4><p>遵循项目代码规范，复用已有抽象和工具；不为这次任务另造一套写法，必要时做适度重构。</p></div>
+        </div>
+        <div class="step reveal" style="--d:.26s">
+          <div class="no">02</div>
+          <div><h4>写测试</h4><p>覆盖正常路径、边界条件、异常情况，而不是只测一遍「能跑通的那条路」。</p></div>
+        </div>
+        <div class="step reveal" style="--d:.32s">
+          <div class="no">03</div>
+          <div><h4>跑测试，进入「测试-修复」循环</h4><p>不是把失败原样上报：读报错、定位、改代码、重跑。可能迭代多轮，直到全部通过。</p></div>
+        </div>
+        <div class="step reveal" style="--d:.38s">
+          <div class="no">04</div>
+          <div><h4>自我审查</h4><p>可读性、注释是否足够、有无性能与安全隐患、是否符合风格——读代码、跑 lint，或调用专门的审查子 Agent。</p></div>
+        </div>
+      </div>
+
+      <div class="note reveal" style="--d:.46s">
+        <b>最常见的偷懒：</b>写完代码不跑测试，直接报告「任务完成」。把「测试通过」而不是「代码写完」定义为完成标准，
+        正是 Loop 工程「由验证判定何时可以停」在编码场景的落地。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5.1.3-5 流程按复杂度裁剪 ========== -->
+  <section class="slide" data-sec="5.1.3" data-tier="a">
+    <div class="slide-inner">
+      <div class="chip reveal" style="--d:.02s"><span class="dot"></span>5.1.3 · 现实中的裁剪<span class="sep">/</span><span class="tag">推荐流程不是必选流程</span></div>
+      <h2 class="h2 reveal" style="--d:.08s">同一套流程，<em>不同模型裁剪的位置不一样</em></h2>
+
+      <div class="cards c2" style="margin-top:18px">
+        <div class="card reveal" style="--d:.14s">
+          <div class="k"><span>SIMPLE</span><b>跳过设计文档</b></div>
+          <h3>简单 bug 修复</h3>
+          <p>改一个已知缺陷、调一个参数：直接进入实现，但测试这一步仍然要跑。</p>
+        </div>
+        <div class="card sum reveal" style="--d:.2s">
+          <div class="k"><span>COMPLEX</span><b>走完整流程</b></div>
+          <h3>复杂且影响面大</h3>
+          <p>跨模块、路径不确定：六个阶段一个不落，设计文档必须先过人类审查。</p>
+        </div>
+      </div>
+
+      <table class="tbl reveal" style="--d:.24s;margin-top:20px">
+        <thead>
+          <tr><th style="width:150px">动手之前</th><th>先调查型</th><th>先提交型</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>读多少</td>
+            <td class="cy">目录、实现、调用方、测试，读到能画出调用链</td>
+            <td class="am">只读几个最可能相关的文件</td>
+          </tr>
+          <tr>
+            <td>怎么改</td>
+            <td class="cy">想清楚再动手，第一次提交就接近正确</td>
+            <td class="am">先提交补丁，把编译与测试的报错当作调查</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="lede reveal" style="--d:.34s;margin-top:20px">
+        这个「何时停止收集信息、开始行动」的阈值，换 Harness 可能不变，换模型却可能变——<br>
+        <span class="hl">它首先是模型学到的行为策略，不是 Coding 产品的界面风格。</span>
+      </p>
+
+      <div class="note reveal" style="--d:.44s">
+        Harness 的提示词、工具和预算能放大或抑制它，但不必是它的来源。第七章在固定 Harness 里衡量这一差异，第八章再从后训练角度解释它怎样写进参数。
+      </div>
+    </div>
+  </section>
